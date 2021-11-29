@@ -4,11 +4,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 
+import Map from './components/Map';
+
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Routes>
-        <Route exact path="/" element={<App />} />
+        <Route exact path="/" element={<Map />} />
         <Route path="/admin" element={<App />} />
         <Route path="/login" element={<App />} />
         <Route path="/dropoff-form" element={<App />} />
