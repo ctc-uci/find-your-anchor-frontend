@@ -1,3 +1,4 @@
+/* Required for displaying the map properly */
 .leaflet-container {
   width: 100%;
   height: 100vh;
