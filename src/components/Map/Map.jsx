@@ -18,11 +18,13 @@ const Map = () => {
       id: 'San Diego',
       coordinates: [32.715736, -117.161087],
       description: 'Sample marker at San Diego',
+      image: 'https://pngimg.com/uploads/box/box_PNG49.png',
     },
     {
       id: 'Los Angeles',
       coordinates: [34.052235, -118.243683],
       description: 'Sample marker at Los Angeles',
+      image: 'https://pngimg.com/uploads/box/box_PNG49.png',
     },
   ];
 
@@ -67,10 +69,6 @@ const Map = () => {
               setActiveMarker(obj);
               mapState.flyTo(obj.coordinates, 12);
             },
-            // Marker hover effect
-            mouseover: () => {
-              mapState.flyTo(obj.coordinates, 12);
-            },
           }}
         />
       ))}
@@ -83,6 +81,7 @@ const Map = () => {
           onClose={() => setActiveMarker(null)}
         >
           <p>{activeMarker.description}</p>
+          <img src={activeMarker.image} alt="Sample" height={50} width={50} />
         </Popup>
       )}
     </MapContainer>

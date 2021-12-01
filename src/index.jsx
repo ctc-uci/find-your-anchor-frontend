@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 
-import Map from './components/Map';
+import Map from './components/Map/Map';
 
 ReactDOM.render(
   <React.StrictMode>
