@@ -1,0 +1,33 @@
+.boxApproval {
+  width: 20%;
+  padding: 1%;
+  border: 1px solid black;
+}
+
+.boxApprovalHeading {
+  text-align: left;
+}
+
+.boxApprovalMenu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonStack {
+  width: 100%;
+}
+
+.button-true {
+  background-color: #c4c4c4;
+}
+
+.button-false {
+  background-color: #efefef;
+}
+
+.buttonText {
+  margin: 0;
+  padding: 5px 15px 5px 15px;
+}
