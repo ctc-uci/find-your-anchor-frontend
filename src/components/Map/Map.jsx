@@ -13,7 +13,8 @@ const Map = () => {
 
   // This is sample data for Markers
   // The only required pieces of data for Markers to show up are the long/lat coordinates
-  const markerCoords = [
+  // Could use Nominatim to convert from city/state/etc name to coordinates (https://nominatim.org/release-docs/develop/api/Overview/)
+  const markerData = [
     {
       id: 'San Diego',
       coordinates: [32.715736, -117.161087],
@@ -36,7 +37,6 @@ const Map = () => {
       provider: new OpenStreetMapProvider(),
       style: 'button',
       showMarker: false,
-      // autoClose: true
     });
     useEffect(() => {
       map.addControl(searchControl);
@@ -59,15 +59,15 @@ const Map = () => {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
       {/* Map the marker data into <Marker /> components */}
-      {markerCoords.map(obj => (
+      {markerData.map(markerObject => (
         <Marker
-          key={obj.id}
-          position={obj.coordinates}
+          key={markerObject.id}
+          position={markerObject.coordinates}
           eventHandlers={{
             // Marker click effect
             click: () => {
-              setActiveMarker(obj);
-              mapState.flyTo(obj.coordinates, 12);
+              setActiveMarker(markerObject);
+              mapState.flyTo(markerObject.coordinates, 12);
             },
           }}
         />
