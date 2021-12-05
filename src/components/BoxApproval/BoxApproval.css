@@ -31,3 +31,16 @@
   margin: 0;
   padding: 5px 15px 5px 15px;
 }
+
+.approveButton {
+  background: none;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.box {
+  padding: 0px 15px 15px 15px;
+  margin-top: 15px;
+  border-radius: 10px;
+  background-color: #c4c4c4;
+}

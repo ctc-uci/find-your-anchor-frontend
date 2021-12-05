@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Stack, Button } from '@chakra-ui/react';
+import Box from './Box';
 import './BoxApproval.css';
 
 function BoxApproval() {
   const [currentTab, setCurrentTab] = useState('requiresApproval');
   // eslint-disable-next-line no-unused-vars
-  const [requiresApprovalBoxes, setRequiresApprovalBoxes] = useState(['box 1', 'box 2', 'box 3']);
+  const [requiresApprovalBoxes, setRequiresApprovalBoxes] = useState([Box(), Box(), Box()]);
   // eslint-disable-next-line no-unused-vars
-  const [approvedDeniedBoxes, setApprovedDeniedBoxes] = useState(['box 1', 'box 2']);
+  const [approvedDeniedBoxes, setApprovedDeniedBoxes] = useState([Box(), Box()]);
 
   return (
     <div className="boxApproval">
@@ -35,9 +36,10 @@ function BoxApproval() {
         </Stack>
       </div>
 
-      {currentTab === 'requiresApproval'
+      {/* {currentTab === 'requiresApproval'
         ? requiresApprovalBoxes.map(box => <p key="">{box}</p>)
-        : approvedDeniedBoxes.map(box => <p key="">{box}</p>)}
+        : approvedDeniedBoxes.map(box => <p key="">{box}</p>)} */}
+      {currentTab === 'requiresApproval' ? requiresApprovalBoxes : approvedDeniedBoxes}
     </div>
   );
 }
