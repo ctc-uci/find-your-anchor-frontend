@@ -36,9 +36,6 @@ function BoxApproval() {
         </Stack>
       </div>
 
-      {/* {currentTab === 'requiresApproval'
-        ? requiresApprovalBoxes.map(box => <p key="">{box}</p>)
-        : approvedDeniedBoxes.map(box => <p key="">{box}</p>)} */}
       {currentTab === 'requiresApproval' ? requiresApprovalBoxes : approvedDeniedBoxes}
     </div>
   );
