@@ -11,11 +11,11 @@ function Box() {
           <Text>date</Text>
         </VStack>
         <Spacer />
-        <Button size="xs" border="none" className="ApproveButton">
-          <p className="buttonText">Yes</p>
-        </Button>
-        <Button size="xs" border="none" className="ApproveButton">
+        <Button size="xs" className="approveButton">
           <p className="buttonText">No</p>
+        </Button>
+        <Button size="xs" className="approveButton">
+          <p className="buttonText">Yes</p>
         </Button>
       </HStack>
       <VStack spacing={0} direction="column" align="left" className="boxContent">
