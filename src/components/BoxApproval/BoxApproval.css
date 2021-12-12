@@ -8,39 +8,26 @@
   text-align: left;
 }
 
-.boxApprovalMenu {
+.boxApprovalTabs {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-}
-
-.buttonStack {
-  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .button-true {
   background-color: #c4c4c4;
+  border: none;
 }
 
 .button-false {
   background-color: #efefef;
+  border: none;
 }
 
 .buttonText {
   margin: 0;
   padding: 5px 15px 5px 15px;
-}
-
-.approveButton {
-  background: none;
-  border: 1px solid black;
-  cursor: pointer;
-}
-
-.box {
-  padding: 0px 15px 15px 15px;
-  margin-top: 15px;
-  border-radius: 10px;
-  background-color: #c4c4c4;
 }

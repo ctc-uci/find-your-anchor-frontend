@@ -1,42 +1,36 @@
 import React, { useState } from 'react';
-import { Stack, Button } from '@chakra-ui/react';
-import Box from './Box';
+import { Button } from '@chakra-ui/react';
+import Box from '../Box/Box';
 import './BoxApproval.css';
 
 function BoxApproval() {
-  const [currentTab, setCurrentTab] = useState('requiresApproval');
+  const [currentTab, setCurrentTab] = useState('underReview');
   // eslint-disable-next-line no-unused-vars
-  const [requiresApprovalBoxes, setRequiresApprovalBoxes] = useState([Box(), Box(), Box()]);
+  const [underReviewBoxes, setunderReviewBoxes] = useState([Box(), Box(), Box()]);
   // eslint-disable-next-line no-unused-vars
-  const [approvedDeniedBoxes, setApprovedDeniedBoxes] = useState([Box(), Box()]);
+  const [previouslyReviewedBoxes, setpreviouslyReviewedBoxes] = useState([Box(), Box()]);
 
   return (
     <div className="boxApproval">
       <h1 className="boxApprovalHeading">Box Approval</h1>
-      <div className="boxApprovalMenu">
-        <Stack spacing={0} direction="row" align="center" className="buttonStack">
-          <Button
-            onClick={() => setCurrentTab('requiresApproval')}
-            size="xs"
-            border="none"
-            width="100%"
-            className={`button-${currentTab === 'requiresApproval'}`}
-          >
-            <p className="buttonText">requires approval</p>
-          </Button>
-          <Button
-            onClick={() => setCurrentTab('approvedDenied')}
-            size="xs"
-            border="none"
-            width="100%"
-            className={`button-${currentTab === 'approvedDenied'}`}
-          >
-            <p className="buttonText">approved/denied</p>
-          </Button>
-        </Stack>
+      <div className="boxApprovalTabs">
+        <Button
+          onClick={() => setCurrentTab('underReview')}
+          width="50%"
+          className={`button-${currentTab === 'underReview'}`}
+        >
+          <p className="buttonText">Under Review</p>
+        </Button>
+        <Button
+          onClick={() => setCurrentTab('previouslyReviewed')}
+          width="50%"
+          className={`button-${currentTab === 'previouslyReviewed'}`}
+        >
+          <p className="buttonText">Previously Reviewed</p>
+        </Button>
       </div>
 
-      {currentTab === 'requiresApproval' ? requiresApprovalBoxes : approvedDeniedBoxes}
+      {currentTab === 'underReview' ? underReviewBoxes : previouslyReviewedBoxes}
     </div>
   );
 }
