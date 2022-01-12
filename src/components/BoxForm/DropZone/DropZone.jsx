@@ -1,0 +1,63 @@
+/* eslint-disable react/jsx-props-no-spreading */
+import React, { useMemo, useState, useEffect } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { CloseIcon } from '@chakra-ui/icons';
+import './DropZone.css';
+
+function DropZone() {
+  const { getRootProps, getInputProps, isDragAccept, isDragReject, acceptedFiles, open } =
+    useDropzone({
+      noClick: true,
+      noKeyboard: true,
+      accept: 'image/*',
+      maxFiles: 1,
+    });
+  const [uploaded, setUploaded] = useState(false);
+
+  useEffect(() => {
+    if (acceptedFiles.length > 0) {
+      setUploaded(true);
+    }
+  });
+
+  const dropzoneBox = useMemo(() => {
+    let base = 'dropzone-zone';
+    base += isDragAccept ? ' dropzone-accept' : '';
+    base += isDragReject ? ' dropzone-reject' : '';
+    return base;
+  }, [isDragReject, isDragAccept]);
+
+  const removeUploadedPhoto = () => {
+    acceptedFiles.pop();
+    setUploaded(false);
+  };
+
+  const acceptedFileItems = acceptedFiles.map(file => (
+    <li key={file.path} className="file-item">
+      <button type="button" aria-label="Remove" onClick={removeUploadedPhoto}>
+        <CloseIcon w={4} h={4} color="gray.400" />
+      </button>
+      <span>{file.path}</span>
+    </li>
+  ));
+
+  return (
+    <>
+      {!uploaded ? (
+        <div className={dropzoneBox} {...getRootProps()}>
+          <input {...getInputProps()} />
+          <span className="dropzone-text">Drag & drop or </span>
+          <button type="button" className="fileSelector" onClick={open}>
+            browse
+          </button>
+        </div>
+      ) : (
+        <div>
+          <ul className="files-list">{acceptedFileItems}</ul>
+        </div>
+      )}
+    </>
+  );
+}
+
+export default DropZone;
