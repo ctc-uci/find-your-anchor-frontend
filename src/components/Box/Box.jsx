@@ -1,30 +1,39 @@
 import React from 'react';
-import { Button } from '@chakra-ui/react';
-import { CloseIcon, CheckIcon } from '@chakra-ui/icons';
+import { Button, Icon, Textarea } from '@chakra-ui/react';
+// import { Textarea } from "@chakra-ui/core";
+import { ChevronDownIcon, MoonIcon } from '@chakra-ui/icons';
 import './Box.css';
 
 function Box() {
   return (
     <div className="box">
       <div className="boxHeader">
+        <Icon as={MoonIcon} />
         <div className="boxHeaderInfo">
-          <h3>Box #</h3>
-          <p>date</p>
+          <h3>Box #1234</h3>
+          <p>01/20/22</p>
         </div>
-        <div className="boxHeaderButtons">
+        <div className="toggleCollapseButton">
+          <Button size="lg" className="collapseButton">
+            <ChevronDownIcon />
+          </Button>
+        </div>
+        {/* <div className="boxHeaderButtons">
           <Button size="xs" className="reviewButton">
             <CloseIcon />
           </Button>
           <Button size="xs" className="reviewButton">
             <CheckIcon />
           </Button>
-        </div>
+        </div> */}
       </div>
       <div className="boxDetails">
-        <p>ID</p>
-        <p>Date</p>
+        <p>Name</p>
+        <Textarea placeholder="Jane Doe" />
+        <p>Email</p>
+        <Textarea placeholder="jdoe12@gmail.com" />
         <p>Zip Code</p>
-        <p>Description/Notes</p>
+        <Textarea placeholder="91345" />
       </div>
     </div>
   );

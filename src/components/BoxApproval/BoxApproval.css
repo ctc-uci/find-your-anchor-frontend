@@ -1,12 +1,12 @@
 .boxApproval {
-  width: 20%;
+  width: 28.6%;
   padding: 1%;
-  border: 1px solid black;
+  height: 100%;
+  
+  background-color: #e5e5e5;
 }
 
-.boxApprovalHeading {
-  text-align: left;
-}
+
 
 .boxApprovalTabs {
   display: flex;
