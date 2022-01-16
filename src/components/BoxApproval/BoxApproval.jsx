@@ -14,25 +14,29 @@ function BoxApproval() {
     <ChakraProvider>
       <div className="boxApproval">
         <Tabs align="center" variant="line">
-          <TabList>
-            <Tab>Under Review</Tab>
-            <Tab>Pending Changes</Tab>
-            <Tab>Evaluated</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              <Box />
-              <Box />
-            </TabPanel>
-            <TabPanel>
-              <Box />
-            </TabPanel>
-            <TabPanel>
-              <Box />
-              <Box />
-              <Box />
-            </TabPanel>
-          </TabPanels>
+          <div>
+            <TabList>
+              <Tab>Under Review</Tab>
+              <Tab>Pending Changes</Tab>
+              <Tab>Evaluated</Tab>
+            </TabList>
+          </div>
+          <div className="boxList">
+            <TabPanels>
+              <TabPanel>
+                <Box />
+                <Box />
+              </TabPanel>
+              <TabPanel>
+                <Box />
+              </TabPanel>
+              <TabPanel>
+                <Box />
+                <Box />
+                <Box />
+              </TabPanel>
+            </TabPanels>
+          </div>
         </Tabs>
       </div>
     </ChakraProvider>

@@ -3,7 +3,11 @@ import BoxApproval from '../../components/BoxApproval/BoxApproval';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
-  return <BoxApproval />;
+  return (
+    <div className="adminDashBoardDiv">
+      <BoxApproval />
+    </div>
+  );
 }
 
 export default AdminDashboard;
