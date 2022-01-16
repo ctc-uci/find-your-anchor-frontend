@@ -7,6 +7,10 @@
 .arrowButton {
   float: right;
 }
+
+.boxNumber {
+  font-weight: bold;
+}
 .boxHeader {
   display: flex;
   flex-direction: row;
@@ -75,6 +79,7 @@
   justify-content: flex-start;
   align-items: flex-start;
   padding: 0;
+  width: 90%;
 }
 
 .boxDetails p {

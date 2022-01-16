@@ -7,8 +7,12 @@ import {
   AccordionIcon,
   ChakraProvider,
   Icon,
-  Textarea,
+  FormControl,
+  FormLabel,
+  Input,
+  Box as ImageBox,
 } from '@chakra-ui/react';
+
 // import { Textarea } from "@chakra-ui/core";
 
 import { MoonIcon, ArrowForwardIcon, CloseIcon, CheckIcon } from '@chakra-ui/icons';
@@ -25,8 +29,7 @@ function Box() {
                 <Icon as={MoonIcon} />
                 <div className="titleDiv">
                   <p className="title">
-                    Box #1234
-                    <br />
+                    <p className="boxNumber">Box #1234</p>
                     01/20/22
                   </p>
                 </div>
@@ -37,18 +40,31 @@ function Box() {
             </h3>
             <AccordionPanel pb={4}>
               <div className="boxDetails">
-                <div className="subtitle">
-                  <p>Name</p>
-                </div>
-                <Textarea resize="none" placeholder="Jane Doe" />
-                <div className="subtitle">
-                  <p>Email</p>
-                </div>
-                <Textarea resize="none" placeholder="jdoe12@gmail.com" />
-                <div className="subtitle">
-                  <p>Zip Code</p>
-                </div>
-                <Textarea resize="none" placeholder="91345" />
+                <ImageBox
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                  bg="white"
+                  w="100%"
+                  p={24}
+                  color="white"
+                >
+                  This is the Box
+                </ImageBox>
+                <FormControl>
+                  <FormLabel htmlFor="name" placeholder="Jane Doe" marginTop="5%">
+                    Name
+                  </FormLabel>
+                  <Input id="name" type="name" />
+                  <FormLabel htmlFor="email" placeholder="jdoe12@gmail.com" marginTop="5%">
+                    Email
+                  </FormLabel>
+                  <Input id="email" type="email" />
+                  <FormLabel htmlFor="zipCode" placeholder="91345" marginTop="5%">
+                    Zip Code
+                  </FormLabel>
+                  <Input id="zipCode" type="zipCode" />
+                </FormControl>
                 <div className="iconRow">
                   <div className="closeIcon">
                     <CloseIcon w={6} h={6} />
