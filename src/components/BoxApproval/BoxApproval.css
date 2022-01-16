@@ -1,11 +1,23 @@
 .boxApproval {
-  width: 28.6%;
+  width: 28%;
   padding: 1%;
   height: 100%;
   
   background-color: #e5e5e5;
 }
 
+.tabs {
+  width: 100%;
+  
+}
+
+.tab1 {
+  float: left;
+}
+
+.arrowButton {
+  float: right;
+}
 
 
 .boxApprovalTabs {

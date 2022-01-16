@@ -1,41 +1,71 @@
 import React from 'react';
-import { Button, Icon, Textarea } from '@chakra-ui/react';
+import {
+  Accordion,
+  AccordionItem,
+  AccordionPanel,
+  AccordionButton,
+  AccordionIcon,
+  ChakraProvider,
+  Icon,
+  Textarea,
+} from '@chakra-ui/react';
 // import { Textarea } from "@chakra-ui/core";
-import { ChevronDownIcon, MoonIcon } from '@chakra-ui/icons';
+
+import { MoonIcon, ArrowForwardIcon, CloseIcon, CheckIcon } from '@chakra-ui/icons';
 import './Box.css';
 
 function Box() {
   return (
-    <div className="box">
-      <div className="boxHeader">
-        <Icon as={MoonIcon} />
-        <div className="boxHeaderInfo">
-          <h3>Box #1234</h3>
-          <p>01/20/22</p>
-        </div>
-        <div className="toggleCollapseButton">
-          <Button size="lg" className="collapseButton">
-            <ChevronDownIcon />
-          </Button>
-        </div>
-        {/* <div className="boxHeaderButtons">
-          <Button size="xs" className="reviewButton">
-            <CloseIcon />
-          </Button>
-          <Button size="xs" className="reviewButton">
-            <CheckIcon />
-          </Button>
-        </div> */}
+    <ChakraProvider>
+      <div className="box">
+        <Accordion allowToggle>
+          <AccordionItem>
+            <h3>
+              <AccordionButton>
+                <Icon as={MoonIcon} />
+                <div className="titleDiv">
+                  <p className="title">
+                    Box #1234
+                    <br />
+                    01/20/22
+                  </p>
+                </div>
+                <div className="arrowButton">
+                  <AccordionIcon />
+                </div>
+              </AccordionButton>
+            </h3>
+            <AccordionPanel pb={4}>
+              <div className="boxDetails">
+                <div className="subtitle">
+                  <p>Name</p>
+                </div>
+                <Textarea resize="none" placeholder="Jane Doe" />
+                <div className="subtitle">
+                  <p>Email</p>
+                </div>
+                <Textarea resize="none" placeholder="jdoe12@gmail.com" />
+                <div className="subtitle">
+                  <p>Zip Code</p>
+                </div>
+                <Textarea resize="none" placeholder="91345" />
+                <div className="iconRow">
+                  <div className="closeIcon">
+                    <CloseIcon w={6} h={6} />
+                  </div>
+                  <div className="arrowForwardIcon">
+                    <ArrowForwardIcon w={6} h={6} />
+                  </div>
+                  <div className="checkIcon">
+                    <CheckIcon w={6} h={6} />
+                  </div>
+                </div>
+              </div>
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
       </div>
-      <div className="boxDetails">
-        <p>Name</p>
-        <Textarea placeholder="Jane Doe" />
-        <p>Email</p>
-        <Textarea placeholder="jdoe12@gmail.com" />
-        <p>Zip Code</p>
-        <Textarea placeholder="91345" />
-      </div>
-    </div>
+    </ChakraProvider>
   );
 }
 export default Box;
