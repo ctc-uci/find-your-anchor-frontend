@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import { ChakraProvider, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import Box from '../Box/Box';
 import './BoxApproval.css';
 
@@ -11,27 +11,31 @@ function BoxApproval() {
   const [previouslyReviewedBoxes, setpreviouslyReviewedBoxes] = useState([Box(), Box()]);
 
   return (
-    <div className="boxApproval">
-      <Tabs variant="enclosed">
-        <TabList>
-          <Tab>Under Review</Tab>
-          <Tab>Pending Changes</Tab>
-          <Tab>Evaluated</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <Box />
-            <p>one!</p>
-          </TabPanel>
-          <TabPanel>
-            <p>two!</p>
-          </TabPanel>
-          <TabPanel>
-            <p>three!</p>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </div>
+    <ChakraProvider>
+      <div className="boxApproval">
+        <Tabs align="center" variant="line">
+          <TabList>
+            <Tab>Under Review</Tab>
+            <Tab>Pending Changes</Tab>
+            <Tab>Evaluated</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <Box />
+              <Box />
+            </TabPanel>
+            <TabPanel>
+              <Box />
+            </TabPanel>
+            <TabPanel>
+              <Box />
+              <Box />
+              <Box />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </div>
+    </ChakraProvider>
   );
 }
 
