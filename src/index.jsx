@@ -18,7 +18,7 @@ ReactDOM.render(
           <Route path="/login" element={<App />} />
           <Route path="/dropoff-form" element={<App />} />
           <Route path="/pickup-form" element={<App />} />
-          <Route path="/box" element={<AddBoxForm />} />
+          <Route path="/add-box-form" element={<AddBoxForm />} />
         </Routes>
       </Router>
     </ChakraProvider>
