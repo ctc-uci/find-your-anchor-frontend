@@ -40,17 +40,16 @@
 .iconRow {
   width: 100%;
   float: bottom;
-  padding: 5%;
+  padding-top: 5%;
 }
 
 .closeIcon {
-  width: 33%;
   float: left;
 }
 
-.arrowForwardIcon {
-  width: 33%;
-  float: left;
+.checkIcon {
+  
+  float: right;
 }
 
 
@@ -94,10 +93,4 @@
   width: 25%;
 }
 
-.reviewButton {
-  background: none;
-  border: 2px solid black;
-  border-radius: 50%;
-  cursor: pointer;
-  padding: 10px;
-}
+

@@ -1,15 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ChakraProvider, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
-import Box from '../Box/Box';
+import PickupBox from '../PickupBox/PickupBox';
+import RelocationBox from '../RelocationBox/RelocationBox';
 import './BoxApproval.css';
 
 function BoxApproval() {
-  // const [currentTab, setCurrentTab] = useState('underReview');
-  // eslint-disable-next-line no-unused-vars
-  const [underReviewBoxes, setunderReviewBoxes] = useState([Box(), Box(), Box()]);
-  // eslint-disable-next-line no-unused-vars
-  const [previouslyReviewedBoxes, setpreviouslyReviewedBoxes] = useState([Box(), Box()]);
-
   return (
     <ChakraProvider>
       <div className="boxApproval">
@@ -24,16 +19,15 @@ function BoxApproval() {
           <div className="boxList">
             <TabPanels>
               <TabPanel>
-                <Box />
-                <Box />
+                <PickupBox />
+                <RelocationBox />
               </TabPanel>
               <TabPanel>
-                <Box />
+                <PickupBox />
+                <PickupBox />
               </TabPanel>
               <TabPanel>
-                <Box />
-                <Box />
-                <Box />
+                <PickupBox />
               </TabPanel>
             </TabPanels>
           </div>
