@@ -6,19 +6,19 @@ import {
   AccordionButton,
   AccordionIcon,
   ChakraProvider,
-  Icon,
   FormControl,
   FormLabel,
   Input,
   Box as ImageBox,
 } from '@chakra-ui/react';
 
-// import { Textarea } from "@chakra-ui/core";
+import './PickupBox.css';
+import ApproveBoxIcon from '../BoxIcons/ApproveBoxIcon.svg';
+import RejectBoxIcon from '../BoxIcons/RejectBoxIcon.svg';
+import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
+// import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 
-import { MoonIcon, ArrowForwardIcon, CloseIcon, CheckIcon } from '@chakra-ui/icons';
-import './Box.css';
-
-function Box() {
+function PickupBox() {
   return (
     <ChakraProvider>
       <div className="box">
@@ -26,7 +26,7 @@ function Box() {
           <AccordionItem>
             <h3>
               <AccordionButton>
-                <Icon as={MoonIcon} />
+                <img src={PickupBoxIcon} alt="" />
                 <div className="titleDiv">
                   <p className="title">
                     <p className="boxNumber">Box #1234</p>
@@ -46,6 +46,7 @@ function Box() {
                   overflow="hidden"
                   bg="white"
                   w="100%"
+                  h="calc((100vw - 20px) * 0.12)"
                   p={24}
                   color="white"
                 >
@@ -67,13 +68,14 @@ function Box() {
                 </FormControl>
                 <div className="iconRow">
                   <div className="closeIcon">
-                    <CloseIcon w={6} h={6} />
-                  </div>
-                  <div className="arrowForwardIcon">
-                    <ArrowForwardIcon w={6} h={6} />
+                    <button type="button">
+                      <img src={RejectBoxIcon} alt="" />
+                    </button>
                   </div>
                   <div className="checkIcon">
-                    <CheckIcon w={6} h={6} />
+                    <button type="button">
+                      <img src={ApproveBoxIcon} alt="" />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -84,4 +86,4 @@ function Box() {
     </ChakraProvider>
   );
 }
-export default Box;
+export default PickupBox;
