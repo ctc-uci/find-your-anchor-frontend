@@ -1,18 +1,30 @@
 /* Required for displaying the map properly */
 .leaflet-container {
+  position: absolute;
+  right: 0;
+  width: 78vw;
+  height: 100vh;
+}
+
+/* Customization of leaflet popup */
+.leaflet-popup-content-wrapper {
+  width: 250px;
+  background-color: #171923;
+}
+
+.leaflet-popup-tip {
+  background: none;
+  box-shadow: none;
+}
+
+/* Customization of material in popup  */
+.marker-popup {
   width: 100%;
-  height: 100vh;
+  text-align: center;
 }
 
-.popup-message-box {
-  border-style: solid;
-  border-width: thin;
-  padding: 5px;
-}
-
-#box-approval-overlay-container {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  z-index: 999;                     /* leaflet-pane z-index: 400 */
+.popup-header {
+  margin: 0px;
+  color: white;
+  font-size: 15px;
 }

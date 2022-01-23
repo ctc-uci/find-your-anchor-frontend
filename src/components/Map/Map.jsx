@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl } from 'react-leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import icons from 'leaflet-color-number-markers';
+import PopUpBox from '../PopUpBox/PopUpBox';
 
 import './Map.css';
-import BoxApproval from '../BoxApproval/BoxApproval';
 
 const Map = () => {
   // The activeMarker represents the current marker that is selected (i.e. which popup is shown)
@@ -81,7 +81,7 @@ const Map = () => {
             // Marker click effect
             click: () => {
               setActiveMarker(markerObject);
-              mapState.flyTo(markerObject.coordinates, 12);
+              mapState.flyTo(markerObject.coordinates, 10);
             },
           }}
         />
@@ -93,37 +93,16 @@ const Map = () => {
           className="popup"
           position={[activeMarker.coordinates[0], activeMarker.coordinates[1]]}
           onClose={() => setActiveMarker(null)}
+          offset={[0, 280]}
+          closeButton={false}
         >
-          <div className="popup-location">
-            <img src={activeMarker.image} alt="Sample" height={50} width={50} />
-            <p>
-              Location: {activeMarker.id}&emsp;&emsp;&emsp;Box Number: {activeMarker.number}
-            </p>
-          </div>
-          <div className="popup-message">
-            <span> Message: </span>
-            <div className="popup-message-box">
-              <span>
-                You have a purpose to be on this planet. Here is a gift to encourage you to go out
-                there and be yourself. Remember, life has meaning to itself. Don’t let other
-                people’s thoughts ruin your capability.
-              </span>
-            </div>
-          </div>
-          <div className="popup-message">
-            <br />
-            <span> Additional Comments: </span>
-            <div className="popup-message-box">
-              <span> Put this anonymous box outside, in front of a flower porch. </span>
-            </div>
+          <div className="marker-popup">
+            <p className="popup-header">Zip Code: 92627</p>
+            <PopUpBox number="Box #1234" date="01/22/2022" />
+            <PopUpBox number="Box #1234" date="01/22/2022" />
+            <PopUpBox number="Box #1234" date="01/22/2022" />
           </div>
         </Popup>
-      )}
-      {/* If a marker is selected, then show the popup for that marker */}
-      {activeMarker && (
-        <div id="box-approval-overlay-container">
-          <BoxApproval />
-        </div>
       )}
     </MapContainer>
   );
