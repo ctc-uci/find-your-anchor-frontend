@@ -6,20 +6,18 @@ import App from './App';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 
 import Map from './components/Map/Map';
-import BoxApproval from './components/BoxApproval/BoxApproval';
+import ExportCSV from './components/ExportCSV/ExportCSV';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <div id="box-approval-overlay-container">
-        <BoxApproval />
-      </div>
       <Routes>
         <Route exact path="/" element={<Map />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/login" element={<App />} />
         <Route path="/dropoff-form" element={<App />} />
         <Route path="/pickup-form" element={<App />} />
+        <Route path="/export-csv" element={<ExportCSV />} />
       </Routes>
     </Router>
   </React.StrictMode>,

@@ -1,0 +1,71 @@
+.export-csv-container {
+  padding: 50px;
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  gap: 100px;
+}
+
+.left-column {
+  flex-basis: 0;
+  flex-grow: 3;
+}
+
+.right-column {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  flex-basis: 0;
+  flex-grow: 2;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.two-text-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option-header {
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.filter-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.filter-names {
+  font-size: 19px;
+}
+
+.checkboxes {
+  display: flex;
+  justify-content: space-between;
+}
+
+.custom-option {
+  display: flex;
+  flex-direction: column;
+}
+
+label input {
+  margin-right: 5px;
+}
+
+.button-section {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
