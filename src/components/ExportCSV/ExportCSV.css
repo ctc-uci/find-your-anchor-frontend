@@ -15,6 +15,7 @@
 .right-column {
   height: 100%;
   width: 100%;
+  min-width: 500px;
 
   display: flex;
   flex-basis: 0;
@@ -36,7 +37,7 @@
 }
 
 .option-header {
-  font-size: 26px;
+  font-size: 30px;
   font-weight: 500;
 }
 
@@ -47,7 +48,7 @@
 }
 
 .filter-names {
-  font-size: 19px;
+  font-size: 23px;
 }
 
 .checkboxes {
@@ -55,17 +56,44 @@
   justify-content: space-between;
 }
 
-.custom-option {
+.drop-option {
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.custom-date {
+  display: flex;
+  gap: 10px;
+}
+
+.date-label {
+  color: #718096;
+}
+
+div[className=checkboxes] label {
+  font-size: 100px;
+}
+
+.checkbox-message {
+  font-size: 20px;
 }
 
 label input {
-  margin-right: 5px;
+  margin-right: 15px;
+}
+
+input[type=checkbox] {
+  transform: scale(1.25)
 }
 
 .button-section {
   display: flex;
   justify-content: flex-end;
   gap: 15px;
+}
+
+select{
+  font-size: 20px;
 }
