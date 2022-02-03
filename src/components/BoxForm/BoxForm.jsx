@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState } from 'react';
 import { Checkbox, Button, Textarea, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
@@ -19,13 +18,13 @@ function Box() {
   const { boxNumber, date, zipCode, boxLocation, message, comments } = formData;
 
   const onChange = e => {
-    setFormData({ [e.target.name]: e.target.value });  // eslint-disable-line
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const onSubmit = e => {
-    // console.log('submitted');
-    // console.log(formData);
-    e.preventDefault(); 
+    console.log('submitted');
+    console.log(formData);
+    e.preventDefault();
   };
 
   // const isError = input === '';
