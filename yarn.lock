@@ -9977,6 +9977,13 @@ lazy-universal-dotenv@^3.0.1:
     dotenv "^8.0.0"
     dotenv-expand "^5.1.0"
 
+leaflet-color-number-markers@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/leaflet-color-number-markers/-/leaflet-color-number-markers-1.0.7.tgz#4f1c2530d0b7ee5b150b6756c950af9e3a6f7024"
+  integrity sha512-YR7cGBQ+jHjOxQQrrh0y3cqt5h10WXZShi7/Is1vgLKmj2dJb12QpYAjc1yIY+mHY/dBpdwNy1qMA1crVxL1UQ==
+  dependencies:
+    leaflet ">=0.7.0"
+
 leaflet-geosearch@^3.6.0:
   version "3.6.0"
   resolved "https://registry.npmjs.org/leaflet-geosearch/-/leaflet-geosearch-3.6.0.tgz"
@@ -9984,7 +9991,7 @@ leaflet-geosearch@^3.6.0:
   optionalDependencies:
     leaflet "^1.6.0"
 
-leaflet@^1.6.0, leaflet@^1.7.1:
+leaflet@>=0.7.0, leaflet@^1.6.0, leaflet@^1.7.1:
   version "1.7.1"
   resolved "https://registry.npmjs.org/leaflet/-/leaflet-1.7.1.tgz"
   integrity sha512-/xwPEBidtg69Q3HlqPdU3DnrXQOvQU/CCHA1tcDQVzOwm91YMYaILjNp7L4Eaw5Z4sOYdbBz6koWyibppd8Zqw==
@@ -12321,6 +12328,15 @@ prop-types@^15.0.0, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, 
     object-assign "^4.1.1"
     react-is "^16.8.1"
 
+prop-types@^15.8.1:
+  version "15.8.1"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
+  integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
+  dependencies:
+    loose-envify "^1.4.0"
+    object-assign "^4.1.1"
+    react-is "^16.13.1"
+
 property-information@^5.0.0, property-information@^5.3.0:
   version "5.6.0"
   resolved "https://registry.npmjs.org/property-information/-/property-information-5.6.0.tgz"
@@ -12665,7 +12681,7 @@ react-is@17.0.2, react-is@^17.0.1, react-is@^17.0.2:
   resolved "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-is@^16.7.0, react-is@^16.8.1:
+react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==

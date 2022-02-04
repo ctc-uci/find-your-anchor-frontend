@@ -1,0 +1,12 @@
+.admin-dashboard-container {
+  padding: 0px;
+  display: flex;
+}
+
+.side-bar {
+  width: 20vw;
+}
+
+.map {
+  width: 80vw;
+}

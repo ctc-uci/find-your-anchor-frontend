@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl } from 'react-leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import icons from 'leaflet-color-number-markers';
+import PopUpBox from '../PopUpBox/PopUpBox';
 
 import './Map.css';
 
@@ -20,12 +22,21 @@ const Map = () => {
       coordinates: [32.715736, -117.161087],
       description: 'Sample marker at San Diego',
       image: 'https://pngimg.com/uploads/box/box_PNG49.png',
+      number: '1',
+    },
+    {
+      id: 'Irvine',
+      coordinates: [33.6846, -117.8265],
+      description: 'Sample marker at Irvine',
+      image: 'https://pngimg.com/uploads/box/box_PNG49.png',
+      number: '2',
     },
     {
       id: 'Los Angeles',
       coordinates: [34.052235, -118.243683],
       description: 'Sample marker at Los Angeles',
       image: 'https://pngimg.com/uploads/box/box_PNG49.png',
+      number: '3',
     },
   ];
 
@@ -36,7 +47,7 @@ const Map = () => {
     const searchControl = new GeoSearchControl({
       provider: new OpenStreetMapProvider(),
       style: 'button',
-      showMarker: false,
+      showMarker: true,
     });
     useEffect(() => {
       map.addControl(searchControl);
@@ -50,24 +61,27 @@ const Map = () => {
     <MapContainer
       whenCreated={setMapState}
       center={[33.684566, -117.826508]}
-      zoom={12}
+      zoom={8}
       scrollWheelZoom
+      zoomControl={false}
     >
       <TileLayer
         // Can change this url to display different tilelayers (samples: https://leaflet-extras.github.io/leaflet-providers/preview/)
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
+      <ZoomControl position="topright" />
       {/* Map the marker data into <Marker /> components */}
       {markerData.map(markerObject => (
         <Marker
+          icon={icons.blue.numbers[markerObject.number]}
           key={markerObject.id}
           position={markerObject.coordinates}
           eventHandlers={{
             // Marker click effect
             click: () => {
               setActiveMarker(markerObject);
-              mapState.flyTo(markerObject.coordinates, 12);
+              mapState.flyTo(markerObject.coordinates, 10);
             },
           }}
         />
@@ -77,11 +91,17 @@ const Map = () => {
       {activeMarker && (
         <Popup
           className="popup"
-          position={activeMarker.coordinates}
+          position={[activeMarker.coordinates[0], activeMarker.coordinates[1]]}
           onClose={() => setActiveMarker(null)}
+          offset={[0, 280]}
+          closeButton={false}
         >
-          <p>{activeMarker.description}</p>
-          <img src={activeMarker.image} alt="Sample" height={50} width={50} />
+          <div className="marker-popup">
+            <p className="popup-header">Zip Code: 92627</p>
+            <PopUpBox number="Box #1234" date="01/22/2022" />
+            <PopUpBox number="Box #1234" date="01/22/2022" />
+            <PopUpBox number="Box #1234" date="01/22/2022" />
+          </div>
         </Popup>
       )}
     </MapContainer>
