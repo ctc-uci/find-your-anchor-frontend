@@ -13,6 +13,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "axios": "^0.25.0",
     "babel-loader": "8.1.0",
     "eslint": "^7.2.0",
     "eslint-config-airbnb": "18.2.1",
@@ -91,5 +92,6 @@
     "@storybook/react": "^6.3.12",
     "husky": "^7.0.0",
     "prettier": "^2.4.1"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }
