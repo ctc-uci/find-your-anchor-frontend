@@ -92,6 +92,5 @@
     "@storybook/react": "^6.3.12",
     "husky": "^7.0.0",
     "prettier": "^2.4.1"
-  },
-  "proxy": "http://localhost:3001"
+  }
 }
