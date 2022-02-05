@@ -1,20 +1,18 @@
-import React from 'react';
-import axios from 'axios';
+import { React, useEffect, useState } from 'react';
+import utils from '../../common/utils';
 import BoxApproval from '../../components/BoxApproval/BoxApproval';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
-  // const [data, setData] = React.useState(null);
-
-  // React.useEffect(() => {
-  //   fetch("/")
-  //   .then((res) => res.json())
-  //   .then((data) => setData(data.message));
-  // }, []);
-
-  const FYABackend = axios.create({ baseURL: 'http://localhost:3001', withCredentials: true });
-  console.log('hello');
-  console.log(FYABackend);
+  const [relocationBoxes, setRelocationBoxes] = useState([]);
+  const fetchRelocationBoxes = () => {
+    utils.get('/relocationBoxes').then(response => {
+      console.log(response);
+      setRelocationBoxes(response.data);
+    });
+  };
+  console.log(relocationBoxes);
+  useEffect(() => fetchRelocationBoxes(), []);
 
   return (
     <div className="adminDashBoardDiv">

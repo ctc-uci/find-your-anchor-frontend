@@ -4,6 +4,12 @@ import PickupBox from '../PickupBox/PickupBox';
 import RelocationBox from '../RelocationBox/RelocationBox';
 import './BoxApproval.css';
 
+// Box ID: int
+// isApproved: boolean
+// message: String
+// currentLocation: (String, int) - (Irvine, 92627)
+// pickup: boolean - (true == pickup box, false == relocation box)
+
 function BoxApproval() {
   return (
     <ChakraProvider>
@@ -18,14 +24,17 @@ function BoxApproval() {
           </div>
           <div className="boxList">
             <TabPanels>
+              {/* 'Under Review' section */}
               <TabPanel>
                 <PickupBox />
                 <RelocationBox />
               </TabPanel>
+              {/* 'Pending Changes' section */}
               <TabPanel>
                 <PickupBox />
                 <PickupBox />
               </TabPanel>
+              {/* 'Evaluated' section */}
               <TabPanel>
                 <PickupBox />
               </TabPanel>
