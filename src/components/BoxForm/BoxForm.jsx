@@ -78,7 +78,6 @@ function Box() {
       const imageUrl = await uploadBoxPhoto(files[0]);
       setFormData({ ...formData, picture: imageUrl });
     }
-    console.log('SUBMITTED:', submit);
     setSubmit(true);
   };
 
