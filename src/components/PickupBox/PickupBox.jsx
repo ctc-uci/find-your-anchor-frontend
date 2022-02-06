@@ -13,12 +13,17 @@ import {
 } from '@chakra-ui/react';
 
 import './PickupBox.css';
+import PropTypes from 'prop-types';
 import ApproveBoxIcon from '../BoxIcons/ApproveBoxIcon.svg';
 import RejectBoxIcon from '../BoxIcons/RejectBoxIcon.svg';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 // import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 
-function PickupBox() {
+function PickupBox(props) {
+  const { boxID } = props;
+  PickupBox.propTypes = {
+    boxID: PropTypes.number.isRequired,
+  };
   return (
     <ChakraProvider>
       <div className="box">
@@ -29,7 +34,7 @@ function PickupBox() {
                 <img src={PickupBoxIcon} alt="" />
                 <div className="titleDiv">
                   <p className="title">
-                    <p className="boxNumber">Box #1234</p>
+                    <p className="boxNumber">Box #{boxID}</p>
                     01/20/22
                   </p>
                 </div>

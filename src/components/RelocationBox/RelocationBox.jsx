@@ -15,12 +15,17 @@ import {
 } from '@chakra-ui/react';
 
 import './RelocationBox.css';
+import PropTypes from 'prop-types';
 import ApproveBoxIcon from '../BoxIcons/ApproveBoxIcon.svg';
 import RejectBoxIcon from '../BoxIcons/RejectBoxIcon.svg';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 
-function RelocationBox() {
+function RelocationBox(props) {
+  const { boxID } = props;
+  RelocationBox.propTypes = {
+    boxID: PropTypes.number.isRequired,
+  };
   return (
     <ChakraProvider>
       <div className="box">
@@ -31,7 +36,7 @@ function RelocationBox() {
                 <img src={RelocateBoxIcon} alt="" />
                 <div className="titleDiv">
                   <p className="title">
-                    <p className="boxNumber">Box #1234</p>
+                    <p className="boxNumber">Box #{boxID}</p>
                     01/20/22
                   </p>
                 </div>
