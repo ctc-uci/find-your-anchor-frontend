@@ -64,7 +64,6 @@ function Box() {
   };
 
   const isValidZip = zip => {
-    console.log(/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip));
     return /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip);
   };
 
