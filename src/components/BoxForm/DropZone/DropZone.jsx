@@ -10,7 +10,7 @@ function DropZone({ setFiles }) {
     useDropzone({
       noClick: true,
       noKeyboard: true,
-      accept: 'image/*',
+      accept: 'image/jpeg, image/jpg, image/png',
       maxFiles: 1,
     });
   const [uploaded, setUploaded] = useState(false);
@@ -49,10 +49,11 @@ function DropZone({ setFiles }) {
       {!uploaded ? (
         <div className={dropzoneBox} {...getRootProps()}>
           <input {...getInputProps()} />
-          <span className="dropzone-text">Drag & drop or </span>
           <button type="button" className="fileSelector" onClick={open}>
-            browse
+            Click
           </button>
+          <span className="dropzone-text">/drag file to upload</span>
+          <p className="dropzone-support-text">Support for jpeg, jpg, png</p>
         </div>
       ) : (
         <div>

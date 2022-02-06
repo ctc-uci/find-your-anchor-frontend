@@ -20,11 +20,18 @@
   border-color: #ff1744;
 }
 
+.dropzone-text {
+  color: black;
+}
+.dropzone-support-text {
+  font-size: 0.8rem;
+}
+
 .fileSelector {
   border: none;
   background-color: transparent;
-  color: #808080;
-  font-weight: 700;
+  color: black;
+  /* font-weight: 700; */
   text-decoration: underline;
   font-size: 1rem;
   cursor: pointer;
