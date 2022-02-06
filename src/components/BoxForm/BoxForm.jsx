@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Textarea, FormControl, FormLabel, Input, Checkbox, Button } from '@chakra-ui/react';
+import {
+  FormErrorMessage,
+  Textarea,
+  FormControl,
+  FormLabel,
+  Input,
+  Checkbox,
+  Button,
+} from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import FYABackend from '../../common/utils';
@@ -55,6 +63,11 @@ function Box() {
     return formData[key] === '';
   };
 
+  const isValidZip = zip => {
+    console.log(/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip));
+    return /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip);
+  };
+
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -65,7 +78,7 @@ function Box() {
       const imageUrl = await uploadBoxPhoto(files[0]);
       setFormData({ ...formData, picture: imageUrl });
     }
-
+    console.log('SUBMITTED:', submit);
     setSubmit(true);
   };
 
@@ -87,7 +100,7 @@ function Box() {
               onChange={e => onChange(e)}
             />
           </FormControl>
-          <FormControl isRequired isInvalid={isError('zipCode')}>
+          <FormControl isRequired isInvalid={isError('zipCode') || !isValidZip(zipCode)}>
             <FormLabel htmlFor="zipCode">Zip Code</FormLabel>
             <Input
               id="zipCode"
@@ -96,6 +109,9 @@ function Box() {
               value={zipCode}
               onChange={e => onChange(e)}
             />
+            {!isValidZip(zipCode) && (
+              <FormErrorMessage>Invalid zipcode, please enter a valid zipcode</FormErrorMessage>
+            )}
           </FormControl>
           <FormControl>
             <FormLabel htmlFor="location">Box Location</FormLabel>
