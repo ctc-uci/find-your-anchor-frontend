@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Checkbox, Button, Textarea, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
 import './BoxForm.css';
@@ -7,6 +7,7 @@ import FYABackend from '../../common/utils';
 import DropZone from './DropZone/DropZone';
 
 function Box() {
+  const [submit, setSubmit] = useState(false);
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
     boxNumber: '',
@@ -14,9 +15,23 @@ function Box() {
     zipCode: '',
     boxLocation: '',
     message: '',
-    boxPhotoUrl: '',
+    picture: '',
     comments: '',
   });
+
+  // useEffect ensures the formData state is updated correctly
+  useEffect(async () => {
+    if (submit) {
+      // send formdata to server
+      const res = await FYABackend.post('/boxForm', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log(res.data);
+      setSubmit(false);
+    }
+  }, [submit]);
 
   const { boxNumber, date, zipCode, boxLocation, message, comments } = formData;
 
@@ -50,18 +65,20 @@ function Box() {
     if (files.length > 0) {
       const imageUrl = await uploadBoxPhoto(files[0]);
       console.log('IMAGE URL:', imageUrl);
-      setFormData({ ...formData, boxPhotoUrl: imageUrl });
-      console.log('FORMDATA', formData);
+      setFormData({ ...formData, picture: imageUrl }); // bug: setState doesn't update immediately
     }
 
-    // send formdata to server
-    const res = await FYABackend.post('/boxForm', formData, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    setSubmit(true);
 
-    console.log(res.data);
+    // console.log('FORMDATA', formData);
+    // // send formdata to server
+    // const res = await FYABackend.post('/boxForm', formData, {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // });
+
+    // console.log(res.data);
   };
 
   return (
