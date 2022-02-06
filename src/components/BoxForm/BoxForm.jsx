@@ -14,7 +14,7 @@ function Box() {
     zipCode: '',
     boxLocation: '',
     message: '',
-    // boxPhotoUrl: '',
+    boxPhotoUrl: '',
     comments: '',
   });
 
@@ -25,8 +25,6 @@ function Box() {
     // get S3 upload url from server
     const { data: uploadUrl } = await FYABackend.get('/s3Upload');
 
-    console.log('UPLOAD URL:', uploadUrl);
-
     // upload image directly to S3 bucket
     await axios.put(uploadUrl, file, {
       headers: {
@@ -36,11 +34,9 @@ function Box() {
 
     // get box photo image url
     const imageUrl = uploadUrl.split('?')[0];
-    console.log('IMAGE URL:', imageUrl);
     return imageUrl;
   };
 
-  // const isError = input === '';
   const isError = key => {
     return formData[key] === '';
   };
@@ -49,13 +45,23 @@ function Box() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = e => {
-    console.log('submitted');
-    console.log('FORMDATA:', formData);
-    console.log('FILE USESTATE: ', files);
-    uploadBoxPhoto(files[0]);
-    // send formdata to server
+  const onSubmit = async e => {
     e.preventDefault();
+    if (files.length > 0) {
+      const imageUrl = await uploadBoxPhoto(files[0]);
+      console.log('IMAGE URL:', imageUrl);
+      setFormData({ ...formData, boxPhotoUrl: imageUrl });
+      console.log('FORMDATA', formData);
+    }
+
+    // send formdata to server
+    const res = await FYABackend.post('/boxForm', formData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log(res.data);
   };
 
   return (
