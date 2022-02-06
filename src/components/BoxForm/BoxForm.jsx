@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Checkbox, Button, Textarea, FormControl, FormLabel, Input } from '@chakra-ui/react';
+import { Textarea, FormControl, FormLabel, Input, Checkbox, Button } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
-import './BoxForm.css';
 import axios from 'axios';
 import FYABackend from '../../common/utils';
 import DropZone from './DropZone/DropZone';
+import './BoxForm.css';
 
 function Box() {
   const [submit, setSubmit] = useState(false);
@@ -19,7 +19,7 @@ function Box() {
     comments: '',
   });
 
-  // useEffect ensures the formData state is updated correctly
+  // useEffect ensures that the most recently updated formData is reflected
   useEffect(async () => {
     if (submit) {
       // send formdata to server
@@ -35,7 +35,6 @@ function Box() {
 
   const { boxNumber, date, zipCode, boxLocation, message, comments } = formData;
 
-  // uploads box photo onto AWS S3 and returns url
   const uploadBoxPhoto = async file => {
     // get S3 upload url from server
     const { data: uploadUrl } = await FYABackend.get('/s3Upload');
@@ -47,7 +46,7 @@ function Box() {
       },
     });
 
-    // get box photo image url
+    // return box image url
     const imageUrl = uploadUrl.split('?')[0];
     return imageUrl;
   };
@@ -64,123 +63,114 @@ function Box() {
     e.preventDefault();
     if (files.length > 0) {
       const imageUrl = await uploadBoxPhoto(files[0]);
-      console.log('IMAGE URL:', imageUrl);
-      setFormData({ ...formData, picture: imageUrl }); // bug: setState doesn't update immediately
+      setFormData({ ...formData, picture: imageUrl });
     }
 
     setSubmit(true);
-
-    // console.log('FORMDATA', formData);
-    // // send formdata to server
-    // const res = await FYABackend.post('/boxForm', formData, {
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // });
-
-    // console.log(res.data);
   };
 
   return (
     <form className="boxForm" onSubmit={e => onSubmit(e)}>
-      <div className="boxInfo">
-        <FormControl isRequired isInvalid={isError('date')}>
-          <FormLabel htmlFor="date">Date</FormLabel>
-          <Input
-            // errorBorderColor="red.300"
-            type="date"
-            id="date"
-            name="date"
-            value={date}
-            onChange={e => onChange(e)}
-          />
-        </FormControl>
-        <FormControl isRequired isInvalid={isError('boxNumber')}>
-          <FormLabel htmlFor="boxNumber">Box Number</FormLabel>
-          <Input
-            id="boxNumber"
-            placeholder="12345"
-            name="boxNumber"
-            value={boxNumber}
-            onChange={e => onChange(e)}
-          />
-        </FormControl>
-        <FormControl isRequired isInvalid={isError('zipCode')}>
-          <FormLabel htmlFor="zipCode">Zip Code</FormLabel>
-          <Input
-            id="zipCode"
-            placeholder="12345"
-            name="zipCode"
-            value={zipCode}
-            onChange={e => onChange(e)}
-          />
-        </FormControl>
+      <div className="a">
+        <div className="boxInfo">
+          <FormControl isRequired isInvalid={isError('date')}>
+            <FormLabel htmlFor="date">Date</FormLabel>
+            <Input type="date" id="date" name="date" value={date} onChange={e => onChange(e)} />
+          </FormControl>
+          <FormControl isRequired isInvalid={isError('boxNumber')}>
+            <FormLabel htmlFor="boxNumber">Box Number</FormLabel>
+            <Input
+              id="boxNumber"
+              placeholder="12345"
+              name="boxNumber"
+              value={boxNumber}
+              onChange={e => onChange(e)}
+            />
+          </FormControl>
+          <FormControl isRequired isInvalid={isError('zipCode')}>
+            <FormLabel htmlFor="zipCode">Zip Code</FormLabel>
+            <Input
+              id="zipCode"
+              placeholder="12345"
+              name="zipCode"
+              value={zipCode}
+              onChange={e => onChange(e)}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="location">Box Location</FormLabel>
+            <Input
+              id="location"
+              placeholder="Enter city, zipcode"
+              name="boxLocation"
+              value={boxLocation}
+              onChange={e => onChange(e)}
+            />
+          </FormControl>
+        </div>
       </div>
-      <div className="boxLocation">
-        <FormControl>
-          <FormLabel htmlFor="location">Box Location</FormLabel>
-          <Input
-            id="location"
-            placeholder="Enter city, zipcode"
-            name="boxLocation"
-            value={boxLocation}
-            onChange={e => onChange(e)}
-          />
-        </FormControl>
-      </div>
-      <div className="boxDescription">
+      <div className="b">
         <FormControl>
           <FormLabel htmlFor="message">Message:</FormLabel>
           <Textarea
             id="message"
             placeholder="200 characters max"
             maxLength="200"
-            rows="5"
+            rows="6"
             name="message"
             value={message}
             onChange={e => onChange(e)}
           />
         </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
-          <DropZone setFiles={setFiles} />
-        </FormControl>
       </div>
-      <div className="boxComments">
+      <div className="c">
         <FormControl>
           <FormLabel htmlFor="comments">Additional Comments (for admin purposes)</FormLabel>
           <Textarea
             id="message"
             placeholder="200 characters max"
             maxLength="200"
-            rows="5"
+            rows="6"
             name="comments"
             value={comments}
             onChange={e => onChange(e)}
           />
         </FormControl>
       </div>
-      <div className="boxLaunched">
-        <FormControl isRequired>
-          <Checkbox className="checkbox" />
-          <FormLabel htmlFor="isLaunched">Launched Organically?</FormLabel>
-          <div className="infoIcon">
-            <InfoIcon />
-            <span className="tooltiptext">
-              Organic launch means when the box is left somewhere for an individual to stumble upon
-            </span>
-          </div>
+      <div className="d">
+        <FormControl>
+          <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
+          <DropZone setFiles={setFiles} />
         </FormControl>
       </div>
-      <div className="boxBottom">
-        <small>* represents required fields to fill out</small>
-        <div className="boxButtons">
-          <Button size="md" className="cancelButton">
-            Cancel
-          </Button>
-          <Button type="submit" size="md" colorScheme="teal">
-            Add Box
-          </Button>
+      <div className="e">
+        <div className="boxImage">
+          {files.length !== 0 && <img src={URL.createObjectURL(files[0])} alt="" />}
+        </div>
+      </div>
+      <div className="f">
+        <div className="boxLaunched">
+          <FormControl isRequired>
+            <Checkbox className="checkbox" />
+            <FormLabel htmlFor="isLaunched">Launched Organically?</FormLabel>
+            <div className="infoIcon">
+              <InfoIcon />
+              <span className="tooltiptext">
+                Organic launch means when the box is left somewhere for an individual to stumble
+                upon it.
+              </span>
+            </div>
+          </FormControl>
+        </div>
+        <div className="boxBottom">
+          <div className="boxButtons">
+            <Button size="md" className="cancelButton">
+              Cancel
+            </Button>
+            <Button type="submit" size="md" colorScheme="teal">
+              Add Box
+            </Button>
+          </div>
         </div>
       </div>
     </form>

@@ -1,12 +1,14 @@
+:root {
+  --dropzone-color: #FAFAFA;
+}
 .dropzone-zone {
-  height: 81%;
-  width: 100%;
   text-align: center;
-  padding-top: 55px;
+  padding: 55px;
   border-radius: 5px;
   border-width: 2px;
   border-style: dashed;
   border-color: #b9b9b9;
+  background-color: var(--dropzone-color);
   color: #b9b9b9;
 }
 

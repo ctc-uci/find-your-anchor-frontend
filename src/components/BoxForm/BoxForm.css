@@ -7,49 +7,78 @@
 }
 
 .boxForm {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 200px 200px 200px 80px;
+  color: #444;
   margin: 20px 50px;
+  column-gap: 4rem;
 }
 
-.boxForm > div {
-  margin-bottom: 20px;
+/* CSS Grid setup */
+.a {
+  grid-column: 1/3;
+  grid-row: 1 / 2;
 }
 
-.boxForm input {
-  color: var(--text-gray-color);
+.b {
+  grid-column: 1/ 3;
+  grid-row: 2 / 3;
 }
 
-/* box info (date, box number, zip code) */
-.boxForm div.boxInfo {
+.c {
+  grid-column: 1 / 3;
+  grid-row: 3 / 4;
+}
+
+.d {
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+}
+
+.e {
+  grid-column: 3 / 4;
+  grid-row: 2 / 4;
+}
+
+.f {
+  grid-column: 1 / 4;
+  grid-row: 4 / 5;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+/* box info section */
+.boxInfo {
   display: grid;
-  grid-template-columns: repeat(3, minmax(100px, 1fr));
-  grid-gap: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
 }
 
-.boxForm .boxInfo input {
-  width: 100%;
-}
-
-/* box location */
-input[id='location'] {
-  width: 100%;
-}
-
-/* box description (message and attach photo) */
-.boxForm .boxDescription {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(100px, 1fr));
-  grid-gap: 2rem;
-}
-
-textarea[id='message'] {
-  width: 100%;
+/* textarea section */
+.chakra-textarea {
   resize: none;
-  color: var(--text-gray-color);
 }
 
-/* checkbox */
+/* box image section */
+.boxImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  border-width: 2px;
+  border-style: dashed;
+  border-color: #b9b9b9;
+}
+
+.boxImage img {
+  width: 100%;
+  height: 100%;
+}
+
+
+/* launched organically checkbox */
 span.chakra-checkbox__control {
   background-color: #eee;
 }
@@ -59,36 +88,39 @@ span.chakra-checkbox__control {
   position: relative;
 }
 
+/* tooltip */
 .infoIcon:hover .tooltiptext {
   visibility: visible;
 }
 
 .infoIcon .tooltiptext {
   visibility: hidden;
+  /* tooltip styling */
   width: 200px;
   border-radius: 5px;
   text-align: center;
-  background-color: #f4f4f4;
-  color: black;
+  background-color: black;
+  color: white;
   padding: 5px;
+  /* position the tooltip */
   font-size: 0.7rem;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
   position: absolute;
   z-index: 1;
-  bottom: 150%;
+  top: 150%;
   left: 50%;
-  margin-left: -150px;
+  margin-left: -105px;
 }
 
 .infoIcon .tooltiptext::after {
   content: '';
   position: absolute;
-  top: 100%;
-  left: 70%;
+  bottom: 100%;
+  left: 50%;
   margin-left: -5px;
   border-width: 10px;
   border-style: solid;
-  border-color: #f4f4f4 transparent transparent transparent;
+  border-color: transparent transparent black transparent;
 }
 
 .boxLaunched .chakra-form-control {
@@ -102,13 +134,7 @@ span.chakra-checkbox__control {
   margin: 0;
 }
 
-/* buttons */
-.boxBottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
+/* cancel and submit buttons */
 .boxBottom small {
   color: var(--text-gray-color);
 }

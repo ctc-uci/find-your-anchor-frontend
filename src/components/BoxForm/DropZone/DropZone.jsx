@@ -32,6 +32,7 @@ function DropZone({ setFiles }) {
   const removeUploadedPhoto = () => {
     acceptedFiles.pop();
     setUploaded(false);
+    setFiles([]);
   };
 
   const acceptedFileItems = acceptedFiles.map(acceptedFile => (
