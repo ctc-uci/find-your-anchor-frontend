@@ -1,27 +1,23 @@
 .export-csv-container {
-  padding: 50px;
   height: 100vh;
   width: 100vw;
+  padding: 20px;
 
   display: flex;
-  gap: 100px;
-}
-
-.left-column {
-  flex-basis: 0;
-  flex-grow: 3;
+  overflow: hidden;
+  gap: 60px;
 }
 
 .right-column {
+  padding: 5px 20px 5px 5px;
   height: 100%;
   width: 100%;
-  min-width: 500px;
+  min-width: 400px;
 
   display: flex;
-  flex-basis: 0;
-  flex-grow: 2;
+  overflow-y: auto;
   flex-direction: column;
-  gap: 50px;
+  gap: 40px;
 }
 
 .two-text-header {
@@ -39,6 +35,12 @@
 .option-header {
   font-size: 30px;
   font-weight: 500;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .filter-options {
@@ -63,9 +65,25 @@
   gap: 5px;
 }
 
-.custom-date {
+.custom-text {
+  font-size: 20px !important;
+  width: 300px !important;
+}
+
+.custom-range-boxes {
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
+  width: 300px;
+}
+
+.custom-range {
+  font-size: 20px !important;
+  width: 140px !important;
+}
+
+.error-message {
+  font-size: 13px;
+  color: #E53E3E;
 }
 
 .date-label {
@@ -81,7 +99,7 @@ div[className=checkboxes] label {
 }
 
 label input {
-  margin-right: 15px;
+  margin-right: 10px;
 }
 
 input[type=checkbox] {

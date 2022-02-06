@@ -1,19 +1,100 @@
 import React from 'react';
-import { ChakraProvider, Select, Button, Input, FormControl, FormLabel } from '@chakra-ui/react';
+import { ChakraProvider, Select, Button, Input, FormLabel } from '@chakra-ui/react';
 
 import './ExportCSV.css';
-
-// use Modal Dialog Chakra for a popup rather than a page
-// https://chakra-ui.com/docs/overlay/modal
-// have modal popup be 50% device height by 50% device width
-// with a gray background with transparency to cover map behind it
 
 function ExportCSV() {
   const [sort, setSort] = React.useState('ascend');
   const [boxes, setBoxes] = React.useState('all');
-  const [date, setDate] = React.useState('none');
+  const [date, setDate] = React.useState('all');
   const [launch, setLaunch] = React.useState('both');
   const [zip, setZip] = React.useState('all');
+  const [boxesCustom, setBoxesCustom] = React.useState('');
+  const [dateCustom, setDateCustom] = React.useState('');
+  const [startCustom, setStartCustom] = React.useState('');
+  const [endCustom, setEndCustom] = React.useState('');
+  const [zipCustom, setZipCustom] = React.useState('');
+
+  // Function to check valid range
+  function checkRange(value) {
+    if (value === '') {
+      return true;
+    }
+    if (value.includes('-')) {
+      const numbers = value.split('-');
+      if (!Number.isNaN(Number(numbers[0])) && !Number.isNaN(Number(numbers[1]))) {
+        if (numbers[0] < numbers[1]) {
+          return false;
+        }
+      }
+    } else {
+      if (!Number.isNaN(Number(value))) return false;
+      return true;
+    }
+    return true;
+  }
+
+  // Function to check the valid date
+  function checkDate(value) {
+    const dates = {
+      1: 31,
+      2: 28,
+      3: 31,
+      4: 30,
+      5: 31,
+      6: 30,
+      7: 31,
+      8: 31,
+      9: 30,
+      10: 31,
+      11: 30,
+      12: 31,
+    };
+    const numbers = value.split('/');
+    if (
+      Number.isNaN(Number(numbers[0])) ||
+      Number.isNaN(Number(numbers[1])) ||
+      Number.isNaN(Number(numbers[2]))
+    )
+      return true;
+    if (numbers[2].length !== 2) return true;
+    if (numbers[0] === '2' && numbers[2] % 4 === 0) dates[2] += 1;
+    if (
+      Object.keys(dates).includes(numbers[0]) &&
+      numbers[1] >= 1 &&
+      numbers[1] <= dates[numbers[0]] &&
+      numbers[2] != null
+    )
+      return false;
+    return true;
+  }
+
+  // Function to check if start date is less than end date
+  function checkDateLess(value1, value2) {
+    if (checkDate(value1) || checkDate(value2)) return true;
+    const start = value1.split('/');
+    const end = value2.split('/');
+    if (end[2] - start[2] < 0) {
+      return true;
+    }
+    if (end[2] - start[2] === 0) {
+      if (end[1] - start[1] < 0) {
+        return true;
+      }
+      if (end[1] - start[1] === 0) {
+        if (end[0] - start[0] < 0) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  // Function to check valid zip code
+  function checkZip(value) {
+    if (value.length === 5 && !Number.isNaN(Number(value))) return false;
+    return true;
+  }
 
   return (
     <ChakraProvider>
@@ -38,79 +119,141 @@ function ExportCSV() {
           </div>
           <div className="section">
             <p className="option-header">Filter Options</p>
-            <div className="filter-options">
-              <p className="filter-names">Boxes</p>
-              <div className="drop-option">
-                <Select
-                  fontSize="20px"
-                  width="200px"
-                  value={boxes}
-                  onChange={e => setBoxes(e.target.value)}
-                >
-                  <option value="all">All</option>
-                  <option value="custom">Custom</option>
-                </Select>
-                {boxes === 'custom' && (
-                  <Input fontSize="20px" width="200px" placeholder="e.g. 1-9, 6, 12" />
-                )}
+            <div className="filters">
+              <div className="filter-options">
+                <p className="filter-names">Boxes</p>
+                <div className="drop-option">
+                  <Select
+                    fontSize="20px"
+                    width="300px"
+                    value={boxes}
+                    onChange={e => setBoxes(e.target.value)}
+                  >
+                    <option value="all">All</option>
+                    <option value="custom">Custom</option>
+                  </Select>
+                  {boxes === 'custom' && (
+                    <div>
+                      <Input
+                        value={boxesCustom}
+                        className="custom-text"
+                        placeholder="e.g. 1-9, 6, 12"
+                        isInvalid={checkRange(boxesCustom)}
+                        onChange={e => setBoxesCustom(e.target.value)}
+                      />
+                      {checkRange(boxesCustom) && (
+                        <p className="error-message">Invalid page range, e.g. 1-9, 6, 12</p>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="filter-options">
-              <p className="filter-names">Date</p>
-              <div className="drop-option">
-                <Select
-                  fontSize="20px"
-                  width="200px"
-                  value={date}
-                  onChange={e => setDate(e.target.value)}
-                >
-                  <option value="none">None</option>
-                  <option value="custom">Custom</option>
-                </Select>
-                {date === 'custom' && (
-                  <div className="custom-date">
-                    <FormControl>
-                      <FormLabel fontSize="18px" className="date-label" htmlFor="from-date">
-                        From
-                      </FormLabel>
-                      <Input id="from-date" fontSize="20px" width="200px" placeholder="1/1/2022" />
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel fontSize="18px" className="date-label" htmlFor="from-date">
-                        To
-                      </FormLabel>
-                      <Input id="to-date" fontSize="20px" width="200px" placeholder="1/1/2022" />
-                    </FormControl>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <div className="filter-options">
+                  <p className="filter-names">Date</p>
+                  <div className="drop-option">
+                    <Select
+                      fontSize="20px"
+                      width="300px"
+                      value={date}
+                      onChange={e => setDate(e.target.value)}
+                    >
+                      <option value="all">All</option>
+                      <option value="single">Single Day</option>
+                      <option value="range">Range</option>
+                    </Select>
+                    {date === 'single' && (
+                      <div>
+                        <Input
+                          value={dateCustom}
+                          className="custom-text"
+                          placeholder="MM/DD/YY"
+                          isInvalid={checkDate(dateCustom)}
+                          onChange={e => setDateCustom(e.target.value)}
+                        />
+                        {checkDate(dateCustom) && (
+                          <p className="error-message">Invalid date, use MM/DD/YY format</p>
+                        )}
+                      </div>
+                    )}
+                    {date === 'range' && (
+                      <div>
+                        <div className="custom-range-boxes">
+                          <div>
+                            <FormLabel fontSize="16px" className="date-label" htmlFor="from-date">
+                              Start
+                            </FormLabel>
+                            <Input
+                              value={startCustom}
+                              id="from-date"
+                              className="custom-range"
+                              placeholder="MM/DD/YY"
+                              isInvalid={checkDateLess(startCustom, endCustom)}
+                              onChange={e => setStartCustom(e.target.value)}
+                            />
+                          </div>
+                          <div>
+                            <FormLabel fontSize="16px" className="date-label" htmlFor="from-date">
+                              End
+                            </FormLabel>
+                            <Input
+                              value={endCustom}
+                              id="to-date"
+                              className="custom-range"
+                              placeholder="MM/DD/YY"
+                              isInvalid={checkDateLess(startCustom, endCustom)}
+                              onChange={e => setEndCustom(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                        {checkDateLess(startCustom, endCustom) && (
+                          <p className="error-message">Invalid date, use MM/DD/YY format</p>
+                        )}
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
-            </div>
-            <div className="filter-options">
-              <p className="filter-names">Launch Type</p>
-              <Select
-                fontSize="20px"
-                width="200px"
-                value={launch}
-                onChange={e => setLaunch(e.target.value)}
-              >
-                <option value="both">Both</option>
-                <option value="organically">Organically</option>
-                <option value="directly">Directly</option>
-              </Select>
-            </div>
-            <div className="filter-options">
-              <p className="filter-names">Zip Code</p>
-              <div className="drop-option">
+              <div className="filter-options">
+                <p className="filter-names">Launch Type</p>
                 <Select
                   fontSize="20px"
-                  width="200px"
-                  value={zip}
-                  onChange={e => setZip(e.target.value)}
+                  width="300px"
+                  value={launch}
+                  onChange={e => setLaunch(e.target.value)}
                 >
-                  <option value="all">All</option>
-                  <option value="custom">Custom</option>
+                  <option value="both">Both</option>
+                  <option value="organically">Organically</option>
+                  <option value="directly">Directly</option>
                 </Select>
-                {zip === 'custom' && <Input fontSize="20px" width="200px" placeholder="92697" />}
+              </div>
+              <div className="filter-options">
+                <p className="filter-names">Zip Code</p>
+                <div className="drop-option">
+                  <Select
+                    fontSize="20px"
+                    width="300px"
+                    value={zip}
+                    onChange={e => setZip(e.target.value)}
+                  >
+                    <option value="all">All</option>
+                    <option value="custom">Custom</option>
+                  </Select>
+                  {zip === 'custom' && (
+                    <div>
+                      <Input
+                        value={zipCustom}
+                        className="custom-text"
+                        placeholder="e.g. 96162, 91007"
+                        isInvalid={checkZip(zipCustom)}
+                        onChange={e => setZipCustom(e.target.value)}
+                      />
+                      {checkZip(zipCustom) && (
+                        <p className="error-message">Invalid zipcode, use e.g. 92602, 92123</p>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
