@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { Checkbox, Button, Textarea, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
 import './BoxForm.css';
+import axios from 'axios';
+import FYABackend from '../../common/utils';
 import DropZone from './DropZone/DropZone';
 
 function Box() {
+  const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
     boxNumber: '',
     date: '',
@@ -17,19 +20,42 @@ function Box() {
 
   const { boxNumber, date, zipCode, boxLocation, message, comments } = formData;
 
+  // uploads box photo onto AWS S3 and returns url
+  const uploadBoxPhoto = async file => {
+    // get S3 upload url from server
+    const { data: uploadUrl } = await FYABackend.get('/s3Upload');
+
+    console.log('UPLOAD URL:', uploadUrl);
+
+    // upload image directly to S3 bucket
+    await axios.put(uploadUrl, file, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    // get box photo image url
+    const imageUrl = uploadUrl.split('?')[0];
+    console.log('IMAGE URL:', imageUrl);
+    return imageUrl;
+  };
+
+  // const isError = input === '';
+  const isError = key => {
+    return formData[key] === '';
+  };
+
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const onSubmit = e => {
     console.log('submitted');
-    console.log(formData);
+    console.log('FORMDATA:', formData);
+    console.log('FILE USESTATE: ', files);
+    uploadBoxPhoto(files[0]);
+    // send formdata to server
     e.preventDefault();
-  };
-
-  // const isError = input === '';
-  const isError = key => {
-    return formData[key] === '';
   };
 
   return (
@@ -93,8 +119,8 @@ function Box() {
           />
         </FormControl>
         <FormControl>
-          <FormLabel htmlFor="location">Attach Box Photo</FormLabel>
-          <DropZone />
+          <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
+          <DropZone setFiles={setFiles} />
         </FormControl>
       </div>
       <div className="boxComments">
