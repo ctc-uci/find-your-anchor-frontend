@@ -65,12 +65,7 @@ function Box() {
     return imageUrl;
   };
 
-  // const isError = key => {
-  //   return formData[key] === '';
-  // };
-
   const isValidZip = zip => {
-    // return /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip);
     const countries = [
       'US',
       'AT',
