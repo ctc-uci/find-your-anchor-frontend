@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
 import axios from 'axios';
+import isValidZipcode from 'is-valid-zipcode';
 import FYABackend from '../../common/utils';
 import DropZone from './DropZone/DropZone';
 import './BoxForm.css';
@@ -69,7 +70,34 @@ function Box() {
   // };
 
   const isValidZip = zip => {
-    return /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip);
+    // return /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip);
+    const countries = [
+      'US',
+      'AT',
+      'BG',
+      'BR',
+      'CA',
+      'CZ',
+      'DK',
+      'FR',
+      'DE',
+      'IN',
+      'IT',
+      'IE',
+      'MA',
+      'NL',
+      'PL',
+      'PT',
+      'RO',
+      'RU',
+      'SG',
+      'SK',
+      'ES',
+      'SE',
+      'CH',
+      'GB',
+    ];
+    return countries.filter(country => isValidZipcode(zip, country)).length > 0;
   };
 
   const onChange = e => {
