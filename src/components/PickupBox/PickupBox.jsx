@@ -20,9 +20,13 @@ import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 // import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 
 function PickupBox(props) {
-  const { boxID } = props;
+  const { boxID, name, email, currentLocation, picture } = props;
   PickupBox.propTypes = {
     boxID: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    currentLocation: PropTypes.number.isRequired,
+    picture: PropTypes.string.isRequired,
   };
   return (
     <ChakraProvider>
@@ -49,27 +53,25 @@ function PickupBox(props) {
                   borderWidth="1px"
                   borderRadius="lg"
                   overflow="hidden"
-                  bg="white"
                   w="100%"
                   h="calc((100vw - 20px) * 0.12)"
                   p={24}
-                  color="white"
-                >
-                  This is the Box
-                </ImageBox>
+                  src={picture}
+                />
                 <FormControl>
-                  <FormLabel htmlFor="name" placeholder="Jane Doe" marginTop="5%">
+                  <FormLabel htmlFor="name" marginTop="5%">
                     Name
                   </FormLabel>
-                  <Input id="name" type="name" />
-                  <FormLabel htmlFor="email" placeholder="jdoe12@gmail.com" marginTop="5%">
+                  <Input id="name" type="name" placeholder={name} />
+
+                  <FormLabel htmlFor="email" marginTop="5%">
                     Email
                   </FormLabel>
-                  <Input id="email" type="email" />
-                  <FormLabel htmlFor="zipCode" placeholder="91345" marginTop="5%">
+                  <Input id="email" type="email" placeholder={email} />
+                  <FormLabel htmlFor="zipCode" marginTop="5%">
                     Zip Code
                   </FormLabel>
-                  <Input id="zipCode" type="zipCode" />
+                  <Input id="zipCode" type="zipCode" placeholder={currentLocation} />
                 </FormControl>
                 <div className="iconRow">
                   <div className="closeIcon">

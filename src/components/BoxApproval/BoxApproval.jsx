@@ -16,7 +16,18 @@ function BoxApproval() {
   const fetchRelocationBoxes = () => {
     utils.get('/relocationBoxes').then(response => {
       const allBoxData = response.data.rows.map(boxData => {
-        return <RelocationBox key={boxData.box_id} boxID={boxData.box_id} />;
+        return (
+          <RelocationBox
+            key={boxData.box_id}
+            boxID={boxData.box_id}
+            name={boxData.name}
+            email={boxData.email}
+            currentLocation={boxData.current_location}
+            picture={boxData.picture}
+            generalLocation={boxData.general_location}
+            message={boxData.message}
+          />
+        );
       });
       setRelocationBoxes(allBoxData);
     });
@@ -27,9 +38,18 @@ function BoxApproval() {
   const fetchPickupBoxes = () => {
     utils.get('/pickupBoxes').then(response => {
       const allBoxData = response.data.rows.map(boxData => {
-        return <PickupBox key={boxData.box_id} boxID={boxData.box_id} />;
+        return (
+          <PickupBox
+            key={boxData.box_id}
+            boxID={boxData.box_id}
+            name={boxData.name}
+            email={boxData.email}
+            currentLocation={boxData.current_location}
+            picture={boxData.picture}
+          />
+        );
       });
-      console.log(allBoxData);
+      // console.log(allBoxData);
       setPickupBoxes(allBoxData);
     });
   };

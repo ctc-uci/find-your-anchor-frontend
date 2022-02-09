@@ -22,9 +22,15 @@ import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 
 function RelocationBox(props) {
-  const { boxID } = props;
+  const { boxID, name, email, currentLocation, picture, generalLocation, message } = props;
   RelocationBox.propTypes = {
     boxID: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    currentLocation: PropTypes.number.isRequired,
+    picture: PropTypes.string.isRequired,
+    generalLocation: PropTypes.string.isRequired,
+    message: PropTypes.string.isRequired,
   };
   return (
     <ChakraProvider>
@@ -56,30 +62,29 @@ function RelocationBox(props) {
                   h="calc((100vw - 20px) * 0.12)"
                   p={24}
                   color="white"
-                >
-                  This is the Box
-                </ImageBox>
+                  src={picture}
+                />
                 <FormControl>
-                  <FormLabel htmlFor="name" placeholder="Jane Doe" marginTop="5%">
+                  <FormLabel htmlFor="name" marginTop="5%">
                     Name
                   </FormLabel>
-                  <Input id="name" type="name" />
-                  <FormLabel htmlFor="email" placeholder="jdoe12@gmail.com" marginTop="5%">
+                  <Input id="name" type="name" placeholder={name} />
+                  <FormLabel htmlFor="email" marginTop="5%">
                     Email
                   </FormLabel>
-                  <Input id="email" type="email" />
-                  <FormLabel htmlFor="zipCode" placeholder="91345" marginTop="5%">
+                  <Input id="email" type="email" placeholder={email} />
+                  <FormLabel htmlFor="zipCode" marginTop="5%">
                     Zip Code
                   </FormLabel>
-                  <Input id="zipCode" type="zipCode" />
-                  <FormLabel
-                    htmlFor="generalLocation"
-                    placeholder="Santa Monica Pier"
-                    marginTop="5%"
-                  >
+                  <Input id="zipCode" type="zipCode" placeholder={currentLocation} />
+                  <FormLabel htmlFor="generalLocation" marginTop="5%">
                     General Location
                   </FormLabel>
-                  <Input id="generalLocation" type="generalLocation" />
+                  <Input
+                    id="generalLocation"
+                    type="generalLocation"
+                    placeholder={generalLocation}
+                  />
                   <FormLabel htmlFor="dropOffMethod" marginTop="5%">
                     Drop Off Method
                   </FormLabel>
@@ -91,7 +96,7 @@ function RelocationBox(props) {
                     Message
                   </FormLabel>
                 </FormControl>
-                <Textarea placeholder="Hello" size="sm" resize="vertical" />
+                <Textarea placeholder={message} size="sm" resize="vertical" />
                 <div className="iconRow">
                   <div className="closeIcon">
                     <button type="button">
