@@ -27,6 +27,11 @@ function Box() {
     comments: '',
   });
 
+  // states for tracking error inputs
+  const [zipCodeError, setZipCodeError] = useState(false);
+  const [dateError, setDateError] = useState(false);
+  const [boxNumberError, setBoxNumberError] = useState(false);
+
   // useEffect ensures that the most recently updated formData is reflected
   useEffect(async () => {
     if (submit) {
@@ -59,9 +64,9 @@ function Box() {
     return imageUrl;
   };
 
-  const isError = key => {
-    return formData[key] === '';
-  };
+  // const isError = key => {
+  //   return formData[key] === '';
+  // };
 
   const isValidZip = zip => {
     return /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip);
@@ -71,8 +76,7 @@ function Box() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = async e => {
-    e.preventDefault();
+  const submitForm = async () => {
     if (files.length > 0) {
       const imageUrl = await uploadBoxPhoto(files[0]);
       setFormData({ ...formData, picture: imageUrl });
@@ -80,15 +84,28 @@ function Box() {
     setSubmit(true);
   };
 
+  const onSubmit = e => {
+    e.preventDefault();
+    setBoxNumberError(boxNumber === '' && true);
+    setZipCodeError((zipCode === '' || !isValidZip(zipCode)) && true);
+    setDateError(date === '' && true);
+    if (!(boxNumberError || dateError || zipCodeError)) {
+      submitForm();
+    }
+  };
+
   return (
     <form className="boxForm" onSubmit={e => onSubmit(e)}>
       <div className="a">
         <div className="boxInfo">
-          <FormControl isRequired isInvalid={isError('date')}>
+          <FormControl isInvalid={dateError}>
             <FormLabel htmlFor="date">Date</FormLabel>
             <Input type="date" id="date" name="date" value={date} onChange={e => onChange(e)} />
+            {dateError && (
+              <FormErrorMessage>Invalid month, please enter a valid month</FormErrorMessage>
+            )}
           </FormControl>
-          <FormControl isRequired isInvalid={isError('boxNumber')}>
+          <FormControl isInvalid={boxNumberError}>
             <FormLabel htmlFor="boxNumber">Box Number</FormLabel>
             <Input
               id="boxNumber"
@@ -97,17 +114,18 @@ function Box() {
               value={boxNumber}
               onChange={e => onChange(e)}
             />
+            {boxNumberError && <FormErrorMessage>Invalid box number</FormErrorMessage>}
           </FormControl>
-          <FormControl isRequired isInvalid={isError('zipCode') || !isValidZip(zipCode)}>
+          <FormControl isInvalid={zipCodeError}>
             <FormLabel htmlFor="zipCode">Zip Code</FormLabel>
             <Input
               id="zipCode"
-              placeholder="12345"
+              placeholder="ex. 90210"
               name="zipCode"
               value={zipCode}
               onChange={e => onChange(e)}
             />
-            {!isValidZip(zipCode) && (
+            {zipCodeError && (
               <FormErrorMessage>Invalid zipcode, please enter a valid zipcode</FormErrorMessage>
             )}
           </FormControl>
@@ -115,7 +133,7 @@ function Box() {
             <FormLabel htmlFor="location">Box Location</FormLabel>
             <Input
               id="location"
-              placeholder="Enter city, zipcode"
+              placeholder="ex. 90210"
               name="boxLocation"
               value={boxLocation}
               onChange={e => onChange(e)}
