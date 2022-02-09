@@ -17,9 +17,7 @@ function ExportCSV() {
 
   // Function to check valid range
   function checkRange(value) {
-    if (value === '') {
-      return true;
-    }
+    if (value === '') return false;
     if (value.includes('-')) {
       const numbers = value.split('-');
       if (!Number.isNaN(Number(numbers[0])) && !Number.isNaN(Number(numbers[1]))) {
@@ -50,6 +48,7 @@ function ExportCSV() {
       11: 30,
       12: 31,
     };
+    if (value === '') return false;
     const numbers = value.split('/');
     if (
       Number.isNaN(Number(numbers[0])) ||
@@ -92,6 +91,7 @@ function ExportCSV() {
 
   // Function to check valid zip code
   function checkZip(value) {
+    if (value === '') return false;
     if (value.length === 5 && !Number.isNaN(Number(value))) return false;
     return true;
   }
