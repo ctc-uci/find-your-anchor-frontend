@@ -12,9 +12,10 @@ import utils from '../../common/utils';
 // pickup: boolean - (true == pickup box, false == relocation box)
 
 function BoxApproval() {
-  const [relocationBoxes, setRelocationBoxes] = useState([]);
-  const fetchRelocationBoxes = () => {
-    utils.get('/relocationBoxes').then(response => {
+  // display relocation boxes under review
+  const [relocationBoxesUnderReview, setRelocationBoxesUnderReview] = useState([]);
+  const fetchRelocationBoxesUnderReview = () => {
+    utils.get('/relocationBoxes/underReview').then(response => {
       const allBoxData = response.data.rows.map(boxData => {
         return (
           <RelocationBox
@@ -29,14 +30,62 @@ function BoxApproval() {
           />
         );
       });
-      setRelocationBoxes(allBoxData);
+      setRelocationBoxesUnderReview(allBoxData);
     });
   };
-  useEffect(() => fetchRelocationBoxes(), []);
+  useEffect(() => fetchRelocationBoxesUnderReview(), []);
 
-  const [pickupBoxes, setPickupBoxes] = useState([]);
-  const fetchPickupBoxes = () => {
-    utils.get('/pickupBoxes').then(response => {
+  // display relocation boxes evaluated
+  const [relocationBoxesEvaluated, setRelocationBoxesEvaluated] = useState([]);
+  const fetchRelocationBoxesEvaluated = () => {
+    utils.get('/relocationBoxes/evaluated').then(response => {
+      const allBoxData = response.data.rows.map(boxData => {
+        return (
+          <RelocationBox
+            key={boxData.box_id}
+            boxID={boxData.box_id}
+            name={boxData.name}
+            email={boxData.email}
+            currentLocation={boxData.current_location}
+            picture={boxData.picture}
+            generalLocation={boxData.general_location}
+            message={boxData.message}
+          />
+        );
+      });
+      setRelocationBoxesEvaluated(allBoxData);
+    });
+  };
+  useEffect(() => fetchRelocationBoxesEvaluated(), []);
+
+  // a pickup box will never be pending
+  // display relocation boxes pending
+  const [relocationBoxesPending, setRelocationBoxesPending] = useState([]);
+  const fetchRelocationBoxesPending = () => {
+    utils.get('/relocationBoxes/pending').then(response => {
+      const allBoxData = response.data.rows.map(boxData => {
+        return (
+          <RelocationBox
+            key={boxData.box_id}
+            boxID={boxData.box_id}
+            name={boxData.name}
+            email={boxData.email}
+            currentLocation={boxData.current_location}
+            picture={boxData.picture}
+            generalLocation={boxData.general_location}
+            message={boxData.message}
+          />
+        );
+      });
+      setRelocationBoxesPending(allBoxData);
+    });
+  };
+  useEffect(() => fetchRelocationBoxesPending(), []);
+
+  // display pickup boxes evaluated
+  const [pickupBoxesEvaluated, setPickupBoxesEvaluated] = useState([]);
+  const fetchPickupBoxesEvaluated = () => {
+    utils.get('/pickupBoxes/evaluated').then(response => {
       const allBoxData = response.data.rows.map(boxData => {
         return (
           <PickupBox
@@ -50,10 +99,32 @@ function BoxApproval() {
         );
       });
       // console.log(allBoxData);
-      setPickupBoxes(allBoxData);
+      setPickupBoxesEvaluated(allBoxData);
     });
   };
-  useEffect(() => fetchPickupBoxes(), []);
+  useEffect(() => fetchPickupBoxesEvaluated(), []);
+
+  // display pickup boxes under review
+  const [pickupBoxesUnderReview, setPickupBoxesUnderReview] = useState([]);
+  const fetchPickupBoxesUnderReview = () => {
+    utils.get('/pickupBoxes/underReview').then(response => {
+      const allBoxData = response.data.rows.map(boxData => {
+        return (
+          <PickupBox
+            key={boxData.box_id}
+            boxID={boxData.box_id}
+            name={boxData.name}
+            email={boxData.email}
+            currentLocation={boxData.current_location}
+            picture={boxData.picture}
+          />
+        );
+      });
+      // console.log(allBoxData);
+      setPickupBoxesUnderReview(allBoxData);
+    });
+  };
+  useEffect(() => fetchPickupBoxesUnderReview(), []);
 
   return (
     <ChakraProvider>
@@ -70,17 +141,17 @@ function BoxApproval() {
             <TabPanels>
               {/* 'Under Review' section */}
               <TabPanel>
-                <div>{relocationBoxes}</div>
-                <div>{pickupBoxes}</div>
+                <div>{relocationBoxesUnderReview}</div>
+                <div>{pickupBoxesUnderReview}</div>
               </TabPanel>
               {/* 'Pending Changes' section */}
               <TabPanel>
-                <PickupBox />
-                <PickupBox />
+                <div>{relocationBoxesPending}</div>
               </TabPanel>
               {/* 'Evaluated' section */}
               <TabPanel>
-                <PickupBox />
+                <div>{relocationBoxesEvaluated}</div>
+                <div>{pickupBoxesEvaluated}</div>
               </TabPanel>
             </TabPanels>
           </div>

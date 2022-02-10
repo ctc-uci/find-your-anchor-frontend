@@ -7,7 +7,7 @@
   .arrowButton {
     float: right;
   }
-  
+
   .boxNumber {
     font-weight: bold;
   }
@@ -17,7 +17,7 @@
     justify-content: space-between;
     align-items: center;
   }
-  
+
   .boxHeaderInfo {
     display: flex;
     flex-direction: column;
@@ -25,59 +25,59 @@
     align-items: flex-start;
     margin: 15px 0px;
   }
-  
+
   .title {
     float: left;
     padding-left: 20px;
     text-align: left;
   }
-  
+
   .subtitle {
     margin-top: 3%;
     margin-bottom: 3%;
   }
-  
+
   .iconRow {
     width: 100%;
     float: bottom;
     padding: 5%;
   }
-  
+
   .closeIcon {
     width: 33%;
     float: left;
   }
-  
+
   .arrowForwardIcon {
-    
+
     width: 33%;
     float: left;
   }
-  
+
   .checkIcon {
     width: 33%;
     float: right;
   }
-  
+
   .titleDiv {
     float: left;
     float: top;
     width: 100%;
   }
-  
-  .boxHeaderInfo h3 { 
+
+  .boxHeaderInfo h3 {
     font-style: normal;
     font-size: 16px;
     font-weight: bold;
     line-height: 24px;
     display: flex;
   }
-  
+
   .boxHeaderInfo h3,
   .boxHeaderInfo p {
     margin: 0;
   }
-  
+
   .boxDetails {
     display: flex;
     flex-direction: column;
@@ -86,11 +86,11 @@
     padding: 0;
     width: 90%;
   }
-  
+
   .boxDetails p {
     margin: 0;
   }
-  
+
   .boxHeaderButtons {
     display: flex;
     flex-direction: row;
@@ -98,6 +98,8 @@
     align-items: center;
     width: 25%;
   }
-  
-  
-  
+
+
+.imageCorners {
+  border-radius: 5%;
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useEffect } from 'react';
 import {
   Accordion,
   AccordionItem,
@@ -9,7 +9,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Box as ImageBox,
 } from '@chakra-ui/react';
 
 import './PickupBox.css';
@@ -17,6 +16,7 @@ import PropTypes from 'prop-types';
 import ApproveBoxIcon from '../BoxIcons/ApproveBoxIcon.svg';
 import RejectBoxIcon from '../BoxIcons/RejectBoxIcon.svg';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
+import utils from '../../common/utils';
 // import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 
 function PickupBox(props) {
@@ -28,6 +28,21 @@ function PickupBox(props) {
     currentLocation: PropTypes.number.isRequired,
     picture: PropTypes.string.isRequired,
   };
+
+  const approvePickupBoxFromUR = response => {
+    utils.put('/pickupBoxes/approved', {
+      box_id: response,
+    });
+  };
+  useEffect(() => approvePickupBoxFromUR(), []);
+
+  const rejectPickupBoxFromUR = response => {
+    utils.put('/pickupBoxes/rejected', {
+      box_id: response,
+    });
+  };
+  useEffect(() => rejectPickupBoxFromUR(), []);
+
   return (
     <ChakraProvider>
       <div className="box">
@@ -49,38 +64,40 @@ function PickupBox(props) {
             </h3>
             <AccordionPanel pb={4}>
               <div className="boxDetails">
-                <ImageBox
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  overflow="hidden"
-                  w="100%"
-                  h="calc((100vw - 20px) * 0.12)"
-                  p={24}
-                  src={picture}
-                />
+                <img src={picture} alt="" className="pickUpImageCorners" />
                 <FormControl>
                   <FormLabel htmlFor="name" marginTop="5%">
                     Name
                   </FormLabel>
-                  <Input id="name" type="name" placeholder={name} />
+                  <Input isReadOnly id="name" type="name" placeholder={name} />
 
-                  <FormLabel htmlFor="email" marginTop="5%">
+                  <FormLabel isReadOnly htmlFor="email" marginTop="5%">
                     Email
                   </FormLabel>
-                  <Input id="email" type="email" placeholder={email} />
+                  <Input isReadOnly id="email" type="email" placeholder={email} />
                   <FormLabel htmlFor="zipCode" marginTop="5%">
                     Zip Code
                   </FormLabel>
-                  <Input id="zipCode" type="zipCode" placeholder={currentLocation} />
+                  <Input isReadOnly id="zipCode" type="zipCode" placeholder={currentLocation} />
                 </FormControl>
                 <div className="iconRow">
                   <div className="closeIcon">
-                    <button type="button">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        rejectPickupBoxFromUR(boxID);
+                      }}
+                    >
                       <img src={RejectBoxIcon} alt="" />
                     </button>
                   </div>
                   <div className="checkIcon">
-                    <button type="button">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        approvePickupBoxFromUR(boxID);
+                      }}
+                    >
                       <img src={ApproveBoxIcon} alt="" />
                     </button>
                   </div>
