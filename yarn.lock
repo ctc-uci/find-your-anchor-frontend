@@ -9187,7 +9187,7 @@ is-typedarray@^1.0.0:
 
 is-valid-zipcode@^1.0.3:
   version "1.0.3"
-  resolved "https://registry.npmjs.org/is-valid-zipcode/-/is-valid-zipcode-1.0.3.tgz"
+  resolved "https://registry.yarnpkg.com/is-valid-zipcode/-/is-valid-zipcode-1.0.3.tgz#e7bbb250cd39a05d809519565fcb3cd9ce0b7e43"
   integrity sha1-57uyUM05oF2AlRlWX8s82c4LfkM=
   dependencies:
     zipcodes-regex "^1.0.0"
@@ -15744,7 +15744,7 @@ yocto-queue@^0.1.0:
 
 zipcodes-regex@^1.0.0:
   version "1.0.3"
-  resolved "https://registry.npmjs.org/zipcodes-regex/-/zipcodes-regex-1.0.3.tgz"
+  resolved "https://registry.yarnpkg.com/zipcodes-regex/-/zipcodes-regex-1.0.3.tgz#1249c8ea533483901020f507f2ae7c5a285045d8"
   integrity sha512-ZZeokzfcmQDpu3nSDv6LqIcfsrsh5tlgpFeQdtzxlZupoMjxLwE9H5mZur/RBHsZdMwv6l2aELTLVq1lXCwURA==
 
 zwitch@^1.0.0:
