@@ -20,13 +20,14 @@ import utils from '../../common/utils';
 // import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 
 function PickupBox(props) {
-  const { boxID, name, email, currentLocation, picture } = props;
+  const { boxID, name, email, currentLocation, picture, date } = props;
   PickupBox.propTypes = {
     boxID: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     currentLocation: PropTypes.number.isRequired,
     picture: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
   };
 
   const approvePickupBoxFromUR = response => {
@@ -54,7 +55,7 @@ function PickupBox(props) {
                 <div className="titleDiv">
                   <p className="title">
                     <p className="boxNumber">Box #{boxID}</p>
-                    01/20/22
+                    {date}
                   </p>
                 </div>
                 <div className="arrowButton">

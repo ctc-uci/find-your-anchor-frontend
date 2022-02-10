@@ -22,7 +22,7 @@ import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 import utils from '../../common/utils';
 
 function RelocationBox(props) {
-  const { boxID, name, email, currentLocation, picture, generalLocation, message } = props;
+  const { boxID, name, email, currentLocation, picture, generalLocation, message, date } = props;
 
   // update to move box from under review to evaluated
   // const [RelocationBoxFromUR, updateApproval] = useState([]);
@@ -37,6 +37,7 @@ function RelocationBox(props) {
     picture: PropTypes.string.isRequired,
     generalLocation: PropTypes.string.isRequired,
     message: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
   };
 
   const approveRelocationBoxFromUR = response => {
@@ -66,7 +67,7 @@ function RelocationBox(props) {
                 <div className="titleDiv">
                   <p className="title">
                     <p className="boxNumber">Box #{boxID}</p>
-                    01/20/22
+                    {date}
                   </p>
                 </div>
                 <div className="arrowButton">

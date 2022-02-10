@@ -27,6 +27,7 @@ function BoxApproval() {
             picture={boxData.picture}
             generalLocation={boxData.general_location}
             message={boxData.message}
+            date={boxData.date}
           />
         );
       });
@@ -50,6 +51,7 @@ function BoxApproval() {
             picture={boxData.picture}
             generalLocation={boxData.general_location}
             message={boxData.message}
+            date={boxData.date}
           />
         );
       });
