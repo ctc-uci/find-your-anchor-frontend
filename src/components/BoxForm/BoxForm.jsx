@@ -26,6 +26,7 @@ function Box() {
     message: '',
     picture: '',
     comments: '',
+    launchedOrganically: false,
   });
 
   // states for tracking error inputs
@@ -97,6 +98,10 @@ function Box() {
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleCheckBox = e => {
+    setFormData({ ...formData, launchedOrganically: e.target.checked });
   };
 
   const submitForm = async () => {
@@ -206,7 +211,11 @@ function Box() {
       <div className="f">
         <div className="boxLaunched">
           <FormControl isRequired>
-            <Checkbox className="checkbox" />
+            <Checkbox
+              className="checkbox"
+              name="launchedOrganically"
+              onChange={e => handleCheckBox(e)}
+            />
             <FormLabel htmlFor="isLaunched">Launched Organically?</FormLabel>
             <div className="infoIcon">
               <InfoIcon />
