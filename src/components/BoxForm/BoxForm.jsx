@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   FormErrorMessage,
   Textarea,
@@ -31,10 +31,9 @@ function Box() {
     launchedOrganically: false,
   });
 
-  // useRef ensures that value will be updated immediately, unlike useState
-  const zipCodeError = useRef(false);
-  const dateError = useRef(false);
-  const boxNumberError = useRef(false);
+  const [zipCodeError, setZipCodeError] = useState(false);
+  const [dateError, setDateError] = useState(false);
+  const [boxNumberError, setBoxNumberError] = useState(false);
 
   // useEffect ensures that the most recently updated formData is reflected
   useEffect(async () => {
@@ -93,19 +92,16 @@ function Box() {
 
   const onSubmit = e => {
     e.preventDefault();
-    console.log(boxNumberError.current);
-    console.log(zipCodeError.current);
-    console.log(dateError.current);
-    boxNumberError.current = boxNumber === '';
-    zipCodeError.current = zipCode === '' || !checkZipValid(zipCode);
-    dateError.current = date === '';
-    console.log(boxNumberError.current);
-    console.log(zipCodeError.current);
-    console.log(dateError.current);
-    // setBoxNumberError();
-    // setZipCodeError();
-    // setDateError();
-    if (!(boxNumberError || dateError || zipCodeError)) {
+
+    const isBoxNumberValid = boxNumber === '';
+    const isZipValid = zipCode === '' || !checkZipValid(zipCode);
+    const isDateValid = date === '';
+
+    setBoxNumberError(isBoxNumberValid);
+    setZipCodeError(isZipValid);
+    setDateError(isDateValid);
+
+    if (!(isBoxNumberValid || isZipValid || isDateValid)) {
       console.log('no errors');
       submitForm();
     }
@@ -115,20 +111,19 @@ function Box() {
     <form className="box-form" onSubmit={e => onSubmit(e)}>
       <div className="box-info-section">
         <div className="box-info">
-          <FormControl isInvalid={dateError.current}>
+          <FormControl isInvalid={dateError}>
             <FormLabel htmlFor="date">Date</FormLabel>
-            {/* <Input type="date" id="date" name="date" value={date} onChange={e => onChange(e)} /> */}
+            <Input type="date" id="date" name="date" value={date} onChange={e => onChange(e)} />
             <DatePicker
-              className=""
+              className={dateError ? 'react-datepicker__input-container error' : ''}
+              type="date"
               selected={date}
               name="date"
               onChange={selectedDate => setDate(selectedDate)}
             />
-            {dateError.current && (
-              <FormErrorMessage>Invalid month, please enter a valid month</FormErrorMessage>
-            )}
+            {dateError && <FormErrorMessage>Invalid date, please enter a date</FormErrorMessage>}
           </FormControl>
-          <FormControl isInvalid={boxNumberError.current}>
+          <FormControl isInvalid={boxNumberError}>
             <FormLabel htmlFor="boxNumber">Box Number</FormLabel>
             <Input
               id="boxNumber"
@@ -137,9 +132,9 @@ function Box() {
               value={boxNumber}
               onChange={e => onChange(e)}
             />
-            {boxNumberError.current && <FormErrorMessage>Invalid box number</FormErrorMessage>}
+            {boxNumberError && <FormErrorMessage>Invalid box number</FormErrorMessage>}
           </FormControl>
-          <FormControl isInvalid={zipCodeError.current}>
+          <FormControl isInvalid={zipCodeError}>
             <FormLabel htmlFor="zipCode">Zip Code</FormLabel>
             <Input
               id="zipCode"
@@ -148,7 +143,7 @@ function Box() {
               value={zipCode}
               onChange={e => onChange(e)}
             />
-            {zipCodeError.current && (
+            {zipCodeError && (
               <FormErrorMessage>Invalid zipcode, please enter a valid zipcode</FormErrorMessage>
             )}
           </FormControl>

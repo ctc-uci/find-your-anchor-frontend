@@ -27,6 +27,13 @@
   box-shadow: 0 0 0 1px #3182ce;
 }
 
+
+.react-datepicker__input-container:invalid {
+  z-index: 1;
+  border-color: red;
+  box-shadow: 0 0 0 1px red;
+}
+
 .react-datepicker__input-container > input {
   width: 100%;
   height: 100%;
@@ -116,32 +123,4 @@
 
 .react-datepicker__close-icon::after:hover {
   color: hsl(0,0%,70%)
-}
-
-/* ADD CALENDAR ICON */
-
-input[type="date"] {
-  position: relative;
-  padding: 10px;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-  color: transparent;
-  background: none;
-  z-index: 1;
-}
-
-input[type="date"]:before {
-  color: transparent;
-  background: none;
-  display: block;
-  font-family: 'FontAwesome';
-  content: '\f073';
-  /* This is the calendar icon in FontAwesome */
-  width: 15px;
-  height: 20px;
-  position: absolute;
-  top: 12px;
-  right: 6px;
-  color: #999;
 }
