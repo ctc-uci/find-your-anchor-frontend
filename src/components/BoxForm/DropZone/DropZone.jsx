@@ -37,10 +37,15 @@ function DropZone({ setFiles }) {
 
   const acceptedFileItems = acceptedFiles.map(acceptedFile => (
     <li key={acceptedFile.path} className="file-item">
-      <button type="button" aria-label="Remove" onClick={removeUploadedPhoto}>
+      <button
+        className="file-item-span"
+        type="button"
+        aria-label="Remove"
+        onClick={removeUploadedPhoto}
+      >
         <CloseIcon w={4} h={4} color="gray.400" />
       </button>
-      <span>{acceptedFile.path}</span>
+      <span className="file-item-span">{acceptedFile.path}</span>
     </li>
   ));
 

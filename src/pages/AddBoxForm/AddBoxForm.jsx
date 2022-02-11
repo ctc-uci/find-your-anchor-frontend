@@ -6,8 +6,8 @@ import './AddBoxForm.css';
 function AddBoxForm() {
   return (
     <ChakraProvider>
-      <div className="addBoxForm">
-        <h1>Add Box</h1>
+      <div className="add-box-form">
+        <h1 className="add-box-form-title">Add Box</h1>
         <BoxForm />
       </div>
     </ChakraProvider>

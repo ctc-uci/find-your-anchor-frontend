@@ -6,7 +6,7 @@
   box-sizing: border-box;
 }
 
-.boxForm {
+.box-form {
   display: grid;
   grid-gap: 10px;
   grid-template-columns: repeat(3, 1fr);
@@ -17,32 +17,32 @@
 }
 
 /* CSS Grid setup */
-.a {
+.box-info-section {
   grid-column: 1 / 3;
   grid-row: 1 / 2;
 }
 
-.b {
+.box-message-section {
   grid-column: 1 / 3;
   grid-row: 2 / 3;
 }
 
-.c {
+.box-comments-section {
   grid-column: 1 / 3;
   grid-row: 3 / 4;
 }
 
-.d {
+.box-photo-section {
   grid-column: 3 / 4;
   grid-row: 1 / 2;
 }
 
-.e {
+.box-photo-preview-section {
   grid-column: 3 / 4;
   grid-row: 2 / 4;
 }
 
-.f {
+.box-launched-section {
   grid-column: 1 / 4;
   grid-row: 4 / 5;
   display: flex;
@@ -51,7 +51,7 @@
 }
 
 /* box info section */
-.boxInfo {
+.box-info {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 20px;
@@ -64,7 +64,7 @@
 }
 
 /* box image section */
-.boxImage {
+.box-image {
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -73,7 +73,7 @@
   border-color: #b9b9b9;
 }
 
-.boxImage img {
+.box-image img {
   width: 100%;
   height: 100%;
 }
@@ -83,17 +83,17 @@ span.chakra-checkbox__control {
   background-color: #eee;
 }
 
-.infoIcon {
+.info-icon {
   margin-bottom: 2px;
   position: relative;
 }
 
 /* tooltip */
-.infoIcon:hover .tooltiptext {
+.info-icon:hover .tooltiptext {
   visibility: visible;
 }
 
-.infoIcon .tooltiptext {
+.info-icon .tooltiptext {
   visibility: hidden;
   /* tooltip styling */
   width: 200px;
@@ -112,7 +112,7 @@ span.chakra-checkbox__control {
   margin-left: -105px;
 }
 
-.infoIcon .tooltiptext::after {
+.info-icon .tooltiptext::after {
   content: '';
   position: absolute;
   bottom: 100%;
@@ -123,23 +123,23 @@ span.chakra-checkbox__control {
   border-color: transparent transparent black transparent;
 }
 
-.boxLaunched .chakra-form-control {
+.box-launched .chakra-form-control {
   display: flex;
   flex-direction: row;
   align-items: center;
   column-gap: 10px;
 }
 
-.boxLaunched label {
+.box-launched label {
   margin: 0;
 }
 
 /* cancel and submit buttons */
-.boxBottom small {
+.box-bottom small {
   color: var(--text-gray-color);
 }
 
-.boxButtons {
+.box-buttons {
   display: flex;
   column-gap: 10px;
 }

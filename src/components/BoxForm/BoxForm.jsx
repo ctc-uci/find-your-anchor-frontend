@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   FormErrorMessage,
   Textarea,
@@ -10,10 +10,12 @@ import {
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
 import axios from 'axios';
-import isValidZipcode from 'is-valid-zipcode';
-import FYABackend from '../../common/utils';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { FYABackend, isValidZip } from '../../common/utils';
 import DropZone from './DropZone/DropZone';
 import './BoxForm.css';
+import './DatePicker.css';
 
 function Box() {
   const [submit, setSubmit] = useState(false);
@@ -29,21 +31,20 @@ function Box() {
     launchedOrganically: false,
   });
 
-  // states for tracking error inputs
-  const [zipCodeError, setZipCodeError] = useState(false);
-  const [dateError, setDateError] = useState(false);
-  const [boxNumberError, setBoxNumberError] = useState(false);
+  // useRef ensures that value will be updated immediately, unlike useState
+  const zipCodeError = useRef(false);
+  const dateError = useRef(false);
+  const boxNumberError = useRef(false);
 
   // useEffect ensures that the most recently updated formData is reflected
   useEffect(async () => {
     if (submit) {
       // send formdata to server
-      const res = await FYABackend.post('/boxForm', formData, {
+      await FYABackend.post('/boxForm', formData, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      console.log(res.data);
       setSubmit(false);
     }
   }, [submit]);
@@ -66,38 +67,16 @@ function Box() {
     return imageUrl;
   };
 
-  const isValidZip = zip => {
-    const countries = [
-      'US',
-      'AT',
-      'BG',
-      'BR',
-      'CA',
-      'CZ',
-      'DK',
-      'FR',
-      'DE',
-      'IN',
-      'IT',
-      'IE',
-      'MA',
-      'NL',
-      'PL',
-      'PT',
-      'RO',
-      'RU',
-      'SG',
-      'SK',
-      'ES',
-      'SE',
-      'CH',
-      'GB',
-    ];
-    return countries.filter(country => isValidZipcode(zip, country)).length > 0;
+  const checkZipValid = zip => {
+    return isValidZip(zip);
   };
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const setDate = selectedDate => {
+    setFormData({ ...formData, date: selectedDate });
   };
 
   const handleCheckBox = e => {
@@ -114,26 +93,42 @@ function Box() {
 
   const onSubmit = e => {
     e.preventDefault();
-    setBoxNumberError(boxNumber === '' && true);
-    setZipCodeError((zipCode === '' || !isValidZip(zipCode)) && true);
-    setDateError(date === '' && true);
+    console.log(boxNumberError.current);
+    console.log(zipCodeError.current);
+    console.log(dateError.current);
+    boxNumberError.current = boxNumber === '';
+    zipCodeError.current = zipCode === '' || !checkZipValid(zipCode);
+    dateError.current = date === '';
+    console.log(boxNumberError.current);
+    console.log(zipCodeError.current);
+    console.log(dateError.current);
+    // setBoxNumberError();
+    // setZipCodeError();
+    // setDateError();
     if (!(boxNumberError || dateError || zipCodeError)) {
+      console.log('no errors');
       submitForm();
     }
   };
 
   return (
-    <form className="boxForm" onSubmit={e => onSubmit(e)}>
-      <div className="a">
-        <div className="boxInfo">
-          <FormControl isInvalid={dateError}>
+    <form className="box-form" onSubmit={e => onSubmit(e)}>
+      <div className="box-info-section">
+        <div className="box-info">
+          <FormControl isInvalid={dateError.current}>
             <FormLabel htmlFor="date">Date</FormLabel>
-            <Input type="date" id="date" name="date" value={date} onChange={e => onChange(e)} />
-            {dateError && (
+            {/* <Input type="date" id="date" name="date" value={date} onChange={e => onChange(e)} /> */}
+            <DatePicker
+              className=""
+              selected={date}
+              name="date"
+              onChange={selectedDate => setDate(selectedDate)}
+            />
+            {dateError.current && (
               <FormErrorMessage>Invalid month, please enter a valid month</FormErrorMessage>
             )}
           </FormControl>
-          <FormControl isInvalid={boxNumberError}>
+          <FormControl isInvalid={boxNumberError.current}>
             <FormLabel htmlFor="boxNumber">Box Number</FormLabel>
             <Input
               id="boxNumber"
@@ -142,18 +137,18 @@ function Box() {
               value={boxNumber}
               onChange={e => onChange(e)}
             />
-            {boxNumberError && <FormErrorMessage>Invalid box number</FormErrorMessage>}
+            {boxNumberError.current && <FormErrorMessage>Invalid box number</FormErrorMessage>}
           </FormControl>
-          <FormControl isInvalid={zipCodeError}>
+          <FormControl isInvalid={zipCodeError.current}>
             <FormLabel htmlFor="zipCode">Zip Code</FormLabel>
             <Input
               id="zipCode"
-              placeholder="ex. 90210"
+              placeholder="e.g. 90210"
               name="zipCode"
               value={zipCode}
               onChange={e => onChange(e)}
             />
-            {zipCodeError && (
+            {zipCodeError.current && (
               <FormErrorMessage>Invalid zipcode, please enter a valid zipcode</FormErrorMessage>
             )}
           </FormControl>
@@ -161,7 +156,7 @@ function Box() {
             <FormLabel htmlFor="location">Box Location</FormLabel>
             <Input
               id="location"
-              placeholder="ex. 90210"
+              placeholder="e.g. University Park Library"
               name="boxLocation"
               value={boxLocation}
               onChange={e => onChange(e)}
@@ -169,7 +164,7 @@ function Box() {
           </FormControl>
         </div>
       </div>
-      <div className="b">
+      <div className="box-message-section">
         <FormControl>
           <FormLabel htmlFor="message">Message:</FormLabel>
           <Textarea
@@ -183,7 +178,7 @@ function Box() {
           />
         </FormControl>
       </div>
-      <div className="c">
+      <div className="box-comments-section">
         <FormControl>
           <FormLabel htmlFor="comments">Additional Comments (for admin purposes)</FormLabel>
           <Textarea
@@ -197,27 +192,27 @@ function Box() {
           />
         </FormControl>
       </div>
-      <div className="d">
+      <div className="box-photo-section">
         <FormControl>
           <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
           <DropZone setFiles={setFiles} />
         </FormControl>
       </div>
-      <div className="e">
-        <div className="boxImage">
+      <div className="box-photo-preview-section">
+        <div className="box-image">
           {files.length !== 0 && <img src={URL.createObjectURL(files[0])} alt="" />}
         </div>
       </div>
-      <div className="f">
-        <div className="boxLaunched">
-          <FormControl isRequired>
+      <div className="box-launched-section">
+        <div className="box-launched">
+          <FormControl>
             <Checkbox
               className="checkbox"
               name="launchedOrganically"
               onChange={e => handleCheckBox(e)}
             />
             <FormLabel htmlFor="isLaunched">Launched Organically?</FormLabel>
-            <div className="infoIcon">
+            <div className="info-icon">
               <InfoIcon />
               <span className="tooltiptext">
                 Organic launch means when the box is left somewhere for an individual to stumble
@@ -226,9 +221,9 @@ function Box() {
             </div>
           </FormControl>
         </div>
-        <div className="boxBottom">
-          <div className="boxButtons">
-            <Button size="md" className="cancelButton">
+        <div className="box-bottom">
+          <div className="box-buttons">
+            <Button size="md" className="cancel-button">
               Cancel
             </Button>
             <Button type="submit" size="md" colorScheme="teal">
