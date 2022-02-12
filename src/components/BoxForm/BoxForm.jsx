@@ -11,9 +11,9 @@ import {
 import { InfoIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { FYABackend, isValidZip } from '../../common/utils';
 import DropZone from './DropZone/DropZone';
+import 'react-datepicker/dist/react-datepicker.css';
 import './BoxForm.css';
 import './DatePicker.css';
 
@@ -95,14 +95,13 @@ function Box() {
 
     const isBoxNumberValid = boxNumber === '';
     const isZipValid = zipCode === '' || !checkZipValid(zipCode);
-    const isDateValid = date === '';
+    const isDateValid = date === '' || date === null;
 
     setBoxNumberError(isBoxNumberValid);
     setZipCodeError(isZipValid);
     setDateError(isDateValid);
 
     if (!(isBoxNumberValid || isZipValid || isDateValid)) {
-      console.log('no errors');
       submitForm();
     }
   };
@@ -112,10 +111,10 @@ function Box() {
       <div className="box-info-section">
         <div className="box-info">
           <FormControl isInvalid={dateError}>
-            <FormLabel htmlFor="date">Date</FormLabel>
-            <Input type="date" id="date" name="date" value={date} onChange={e => onChange(e)} />
+            <FormLabel htmlFor="date">Date *</FormLabel>
             <DatePicker
-              className={dateError ? 'react-datepicker__input-container error' : ''}
+              placeholderText="MM/DD/YYYY"
+              className={dateError ? 'date-picker date-picker-error' : 'date-picker'}
               type="date"
               selected={date}
               name="date"
@@ -124,7 +123,7 @@ function Box() {
             {dateError && <FormErrorMessage>Invalid date, please enter a date</FormErrorMessage>}
           </FormControl>
           <FormControl isInvalid={boxNumberError}>
-            <FormLabel htmlFor="boxNumber">Box Number</FormLabel>
+            <FormLabel htmlFor="boxNumber">Box Number *</FormLabel>
             <Input
               id="boxNumber"
               placeholder="12345"
@@ -135,7 +134,7 @@ function Box() {
             {boxNumberError && <FormErrorMessage>Invalid box number</FormErrorMessage>}
           </FormControl>
           <FormControl isInvalid={zipCodeError}>
-            <FormLabel htmlFor="zipCode">Zip Code</FormLabel>
+            <FormLabel htmlFor="zipCode">Zip Code *</FormLabel>
             <Input
               id="zipCode"
               placeholder="e.g. 90210"
