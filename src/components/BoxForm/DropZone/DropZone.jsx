@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable react/prop-types */
+
 import React, { useMemo, useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { CloseIcon } from '@chakra-ui/icons';
+import PropTypes from 'prop-types';
 import './DropZone.css';
 
 function DropZone({ setFiles }) {
@@ -68,5 +69,9 @@ function DropZone({ setFiles }) {
     </>
   );
 }
+
+DropZone.propTypes = {
+  setFiles: PropTypes.func.isRequired,
+};
 
 export default DropZone;
