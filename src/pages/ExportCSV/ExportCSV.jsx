@@ -69,18 +69,18 @@ function ExportCSV() {
   return (
     <ChakraProvider>
       <div className="export-csv-container">
-        <div className="export-table-preview">
+        <div className="export-table-preview-column">
           <img alt="sample" src="https://pngimg.com/uploads/box/box_PNG49.png" />
         </div>
-        <div className="filter-section">
+        <div className="filter-column">
           <div className="two-text-header">
-            <p style={{ fontSize: '36px', fontWeight: '700' }}>Export CSV</p>
-            <p style={{ fontSize: '26px' }}>30 boxes</p>
+            <p className="export-csv-header">Export CSV</p>
+            <p className="box-number">30 boxes</p>
           </div>
-          <div className="section">
+          <div className="filter-section">
             <p className="option-header">Sort By</p>
             <Select
-              fontSize="20px"
+              className="sort-by-select"
               value={sortOption}
               onChange={e => setSortOption(e.target.value)}
             >
@@ -91,15 +91,14 @@ function ExportCSV() {
               <option value="descend-zip-code">Descending Zip Code</option>
             </Select>
           </div>
-          <div className="section">
+          <div className="filter-section">
             <p className="option-header">Filter Options</p>
-            <div className="filters">
-              <div className="filter-options">
+            <div className="filter-options">
+              <div className="filter-option">
                 <p className="filter-names">Boxes</p>
                 <div className="drop-option">
                   <Select
-                    fontSize="20px"
-                    width="300px"
+                    className="filter-options-select"
                     value={boxesOption}
                     onChange={e => setBoxesOption(e.target.value)}
                   >
@@ -122,85 +121,84 @@ function ExportCSV() {
                   )}
                 </div>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <div className="filter-options">
-                  <p className="filter-names">Date</p>
-                  <div className="drop-option">
-                    <Select
-                      fontSize="20px"
-                      width="300px"
-                      value={dateOption}
-                      onChange={e => setDate(e.target.value)}
-                    >
-                      <option value="all">All</option>
-                      <option value="single">Single Day</option>
-                      <option value="range">Range</option>
-                    </Select>
-                    {dateOption === 'single' && (
-                      <DatePicker
-                        className="single-date-picker"
-                        placeholderText="MM/DD/YY"
-                        selected={customDate}
-                        onChange={date => setCustomDate(date)}
-                      />
-                    )}
-                    {dateOption === 'range' && (
-                      <div>
-                        <div className="custom-range-boxes">
-                          <div>
-                            <FormLabel fontSize="16px" className="date-label" htmlFor="from-date">
-                              Start
-                            </FormLabel>
-                            <DatePicker
-                              className="range-date-picker"
-                              placeholderText="MM/DD/YY"
-                              selected={customStartDate}
-                              onChange={date => setCustomStartDate(date)}
-                              selectsStart
-                              startDate={customStartDate}
-                              endDate={customEndDate}
-                            />
-                          </div>
-                          <div>
-                            <FormLabel fontSize="16px" className="date-label" htmlFor="from-date">
-                              End
-                            </FormLabel>
-                            <DatePicker
-                              className="range-date-picker"
-                              placeholderText="MM/DD/YY"
-                              selected={customEndDate}
-                              onChange={date => setCustomEndDate(date)}
-                              selectsEnd
-                              startDate={customStartDate}
-                              endDate={customEndDate}
-                              minDate={customStartDate}
-                            />
-                          </div>
+              <div className="filter-option">
+                <p className="filter-names">Date</p>
+                <div className="drop-option">
+                  <Select
+                    className="filter-options-select"
+                    value={dateOption}
+                    onChange={e => setDate(e.target.value)}
+                  >
+                    <option value="all">All</option>
+                    <option value="single">Single Day</option>
+                    <option value="range">Range</option>
+                  </Select>
+                  {dateOption === 'single' && (
+                    <DatePicker
+                      className="single-date-picker"
+                      placeholderText="MM/DD/YY"
+                      selected={customDate}
+                      onChange={date => setCustomDate(date)}
+                    />
+                  )}
+                  {dateOption === 'range' && (
+                    <div>
+                      <div className="custom-range-boxes">
+                        <div>
+                          <FormLabel fontSize="16px" className="date-label" htmlFor="from-date">
+                            Start
+                          </FormLabel>
+                          <DatePicker
+                            className="range-date-picker"
+                            placeholderText="MM/DD/YY"
+                            selected={customStartDate}
+                            onChange={date => setCustomStartDate(date)}
+                            selectsStart
+                            startDate={customStartDate}
+                            endDate={customEndDate}
+                          />
+                        </div>
+                        <div>
+                          <FormLabel fontSize="16px" className="date-label" htmlFor="from-date">
+                            End
+                          </FormLabel>
+                          <DatePicker
+                            className="range-date-picker"
+                            placeholderText="MM/DD/YY"
+                            selected={customEndDate}
+                            onChange={date => setCustomEndDate(date)}
+                            selectsEnd
+                            startDate={customStartDate}
+                            endDate={customEndDate}
+                            minDate={customStartDate}
+                          />
                         </div>
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="filter-options">
+              <div className="filter-option">
                 <p className="filter-names">Launch Type</p>
-                <Select
-                  fontSize="20px"
-                  width="300px"
-                  value={launchOption}
-                  onChange={e => setLaunchOption(e.target.value)}
-                >
-                  <option value="both">Both</option>
-                  <option value="organically">Organically</option>
-                  <option value="directly">Directly</option>
-                </Select>
+                <div className="drop-option">
+                  <Select
+                    // fontSize='20px'
+                    // width='300px'
+                    className="filter-options-select"
+                    value={launchOption}
+                    onChange={e => setLaunchOption(e.target.value)}
+                  >
+                    <option value="both">Both</option>
+                    <option value="organically">Organically</option>
+                    <option value="directly">Directly</option>
+                  </Select>
+                </div>
               </div>
-              <div className="filter-options">
+              <div className="filter-option">
                 <p className="filter-names">Zip Code</p>
                 <div className="drop-option">
                   <Select
-                    fontSize="20px"
-                    width="300px"
+                    className="filter-options-select"
                     value={zipOption}
                     onChange={e => setZipOption(e.target.value)}
                   >
@@ -225,12 +223,12 @@ function ExportCSV() {
               </div>
             </div>
           </div>
-          <div className="section">
+          <div className="filter-section">
             <div className="two-text-header">
               <p className="option-header">Box Details</p>
               <Button
                 variant="link"
-                style={{ fontSize: '18px' }}
+                className="buttons"
                 onClick={() => {
                   const checkboxes = document.querySelectorAll("input[type = 'checkbox']");
                   checkboxes.forEach(function uncheck(checkbox) {
@@ -280,8 +278,8 @@ function ExportCSV() {
             </div>
           </div>
           <div className="button-section">
-            <Button style={{ fontSize: '18px' }}>Cancel</Button>
-            <Button style={{ fontSize: '18px' }} colorScheme="teal">
+            <Button className="buttons">Cancel</Button>
+            <Button className="buttons" colorScheme="teal">
               Export
             </Button>
           </div>
