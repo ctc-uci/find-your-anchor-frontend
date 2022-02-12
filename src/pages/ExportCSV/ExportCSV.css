@@ -8,7 +8,7 @@
   gap: 60px;
 }
 
-.right-column {
+.filter-section {
   padding: 5px 20px 5px 5px;
   height: 100%;
   width: 100%;
@@ -53,6 +53,29 @@
   font-size: 23px;
 }
 
+.custom-text {
+  font-size: 20px !important;
+  width: 300px !important;
+}
+
+.single-date-picker {
+  font-size: 20px;
+  height: 2.5rem;
+  width: 300px;
+  border: 1px solid rgb(226, 232, 240);
+  border-radius: 0.375rem;
+  padding-left: 1rem;
+}
+
+.range-date-picker {
+  font-size: 20px;
+  height: 2.5rem;
+  width: 140px;
+  border: 1px solid rgb(226, 232, 240);
+  border-radius: 0.375rem;
+  padding-left: 1rem;
+}
+
 .checkboxes {
   display: flex;
   justify-content: space-between;
@@ -65,20 +88,10 @@
   gap: 5px;
 }
 
-.custom-text {
-  font-size: 20px !important;
-  width: 300px !important;
-}
-
 .custom-range-boxes {
   display: flex;
   justify-content: space-between;
   width: 300px;
-}
-
-.custom-range {
-  font-size: 20px !important;
-  width: 140px !important;
 }
 
 .error-message {
@@ -88,6 +101,7 @@
 
 .date-label {
   color: #718096;
+  margin: 0px !important;
 }
 
 div[className=checkboxes] label {
