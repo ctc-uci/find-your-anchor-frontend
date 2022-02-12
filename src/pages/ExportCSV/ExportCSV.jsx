@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import './ExportCSV.css';
+import { isValidZip } from '../../common/utils';
 
 function ExportCSV() {
   const [sortOption, setSortOption] = React.useState('ascend');
@@ -19,36 +20,40 @@ function ExportCSV() {
 
   // Function to check valid range
   function checkRange(value) {
+    function checkDash(data) {
+      if (data.includes('-')) {
+        const numbers = data.split('-');
+        if (numbers[0] === '' || numbers[1] === '') {
+          return true;
+        }
+        if (!Number.isNaN(Number(numbers[0])) && !Number.isNaN(Number(numbers[1]))) {
+          if (numbers[0] > numbers[1]) {
+            return true;
+          }
+        } else if (Number.isNaN(Number(numbers[0])) || Number.isNaN(Number(numbers[1]))) {
+          return true;
+        }
+      } else if (Number.isNaN(Number(data))) {
+        return true;
+      }
+      return false;
+    }
+
     if (value === '') {
       return false;
     }
     if (value.includes(',')) {
       const ranges = value.split(', ');
       for (let i = 0; i < ranges.length; i += 1) {
-        if (ranges[i].includes('-')) {
-          const numbers = ranges[i].split('-');
-          if (!Number.isNaN(Number(numbers[0])) && !Number.isNaN(Number(numbers[1]))) {
-            if (numbers[0] > numbers[1]) {
-              return true;
-            }
-          } else if (Number.isNaN(Number(numbers[0])) || Number.isNaN(Number(numbers[1]))) {
-            return true;
-          }
-        } else {
-          return Number.isNaN(Number(ranges[i]));
-        }
-      }
-    } else if (value.includes('-')) {
-      const numbers = value.split('-');
-      if (!Number.isNaN(Number(numbers[0])) && !Number.isNaN(Number(numbers[1]))) {
-        if (numbers[0] > numbers[1]) {
+        if (ranges[i] === '') {
           return true;
         }
-      } else if (Number.isNaN(Number(numbers[0])) || Number.isNaN(Number(numbers[1]))) {
-        return true;
+        if (checkDash(ranges[i])) {
+          return true;
+        }
       }
-    } else {
-      return Number.isNaN(Number(value));
+    } else if (checkDash(value)) {
+      return true;
     }
     return false;
   }
@@ -58,10 +63,7 @@ function ExportCSV() {
     if (value === '') {
       return false;
     }
-    if (value.length === 5 && !Number.isNaN(Number(value))) {
-      return false;
-    }
-    return true;
+    return !isValidZip(value);
   }
 
   return (
