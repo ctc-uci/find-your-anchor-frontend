@@ -1,4 +1,4 @@
-import { React, useEffect } from 'react';
+import { React } from 'react';
 import {
   Accordion,
   AccordionItem,
@@ -22,37 +22,53 @@ import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 import utils from '../../common/utils';
 
 function RelocationBox(props) {
-  const { boxID, name, email, currentLocation, picture, generalLocation, message, date } = props;
+  const { boxID, boxHolderName, boxHolderEmail, zipCode, picture, generalLocation, message, date } =
+    props;
 
-  // update to move box from under review to evaluated
-  // const [RelocationBoxFromUR, updateApproval] = useState([]);
-  // const [, updateState] = useState();
-  // const forceUpdate = useCallback(() => updateState({}), []);
+  // key={boxData.box_id}
+  //             box_id={boxData.box_id}
+  //             boxholder_name={boxData.boxholder_name}
+  //             boxholder_email={boxData.boxholder_email}
+  //             zip_code={boxData.zip_code}
+  //             picture={boxData.picture}
+  //             genera_location={boxData.general_location}
+  //             message={boxData.message}
+  //             date={boxData.date}
 
   RelocationBox.propTypes = {
     boxID: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    currentLocation: PropTypes.number.isRequired,
+    boxHolderName: PropTypes.string.isRequired,
+    boxHolderEmail: PropTypes.string.isRequired,
+    zipCode: PropTypes.number.isRequired,
     picture: PropTypes.string.isRequired,
     generalLocation: PropTypes.string.isRequired,
     message: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
   };
 
-  const approveRelocationBoxFromUR = response => {
-    utils.put('/relocationBoxes/approved', {
-      box_id: response,
+  const updateBoxStatus = (id, stat) => {
+    utils.put('/box/updateStatus', {
+      params: {
+        boxID: id,
+        status: stat,
+      },
     });
   };
-  useEffect(() => approveRelocationBoxFromUR(), []);
 
-  const rejectRelocationBoxFromUR = response => {
-    utils.put('/relocationBoxes/rejected', {
-      box_id: response,
+  const approveRelocationBoxFromUR = id => {
+    utils.put('/box/approveBox', {
+      boxID: id,
     });
   };
-  useEffect(() => rejectRelocationBoxFromUR(), []);
+
+  // const rejectRelocationBoxFromUR = id => {
+  //   utils.put('/box/updateStatus', {
+  //     params: {
+  //       box_id: id,
+  //       status: 'approved',
+  //     },
+  //   });
+  // };
 
   return (
     <ChakraProvider>
@@ -82,15 +98,15 @@ function RelocationBox(props) {
                   <FormLabel htmlFor="name" marginTop="5%">
                     Name
                   </FormLabel>
-                  <Input isReadOnly id="name" type="name" placeholder={name} />
+                  <Input isReadOnly id="name" type="name" placeholder={boxHolderName} />
                   <FormLabel htmlFor="email" marginTop="5%">
                     Email
                   </FormLabel>
-                  <Input isReadOnly id="email" type="email" placeholder={email} />
+                  <Input isReadOnly id="email" type="email" placeholder={boxHolderEmail} />
                   <FormLabel htmlFor="zipCode" marginTop="5%">
                     Zip Code
                   </FormLabel>
-                  <Input isReadOnly id="zipCode" type="zipCode" placeholder={currentLocation} />
+                  <Input isReadOnly id="zipCode" type="zipCode" placeholder={zipCode} />
                   <FormLabel htmlFor="generalLocation" marginTop="5%">
                     General Location
                   </FormLabel>
@@ -117,14 +133,19 @@ function RelocationBox(props) {
                     <button
                       type="button"
                       onClick={() => {
-                        rejectRelocationBoxFromUR(boxID);
+                        updateBoxStatus(boxID, 'rejected');
                       }}
                     >
                       <img src={RejectBoxIcon} alt="" />
                     </button>
                   </div>
                   <div className="arrowForwardIcon">
-                    <button type="button">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        updateBoxStatus(boxID, 'pending changes');
+                      }}
+                    >
                       <img src={RequestChangesIcon} alt="" />
                     </button>
                   </div>

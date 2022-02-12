@@ -1,4 +1,4 @@
-import { React, useEffect } from 'react';
+import { React } from 'react';
 import {
   Accordion,
   AccordionItem,
@@ -20,29 +20,36 @@ import utils from '../../common/utils';
 // import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 
 function PickupBox(props) {
-  const { boxID, name, email, currentLocation, picture, date } = props;
+  const { boxID, boxHolderName, boxHolderEmail, zipCode, picture, date } = props;
   PickupBox.propTypes = {
     boxID: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    currentLocation: PropTypes.number.isRequired,
+    boxHolderName: PropTypes.string.isRequired,
+    boxHolderEmail: PropTypes.string.isRequired,
+    zipCode: PropTypes.number.isRequired,
     picture: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
   };
 
-  const approvePickupBoxFromUR = response => {
-    utils.put('/pickupBoxes/approved', {
-      box_id: response,
+  const updateBoxStatus = (id, stat) => {
+    utils.put('/box/updateStatus', {
+      params: {
+        boxID: id,
+        status: stat,
+      },
     });
   };
-  useEffect(() => approvePickupBoxFromUR(), []);
 
-  const rejectPickupBoxFromUR = response => {
-    utils.put('/pickupBoxes/rejected', {
-      box_id: response,
+  const approvePickupBoxFromUR = id => {
+    utils.put('/pickupBoxes/approved', {
+      boxID: id,
     });
   };
-  useEffect(() => rejectPickupBoxFromUR(), []);
+
+  // const rejectPickupBoxFromUR = id => {
+  //   utils.put('/pickupBoxes/rejected', {
+  //     boxID: id,
+  //   });
+  // };
 
   return (
     <ChakraProvider>
@@ -70,23 +77,23 @@ function PickupBox(props) {
                   <FormLabel htmlFor="name" marginTop="5%">
                     Name
                   </FormLabel>
-                  <Input isReadOnly id="name" type="name" placeholder={name} />
+                  <Input isReadOnly id="name" type="name" placeholder={boxHolderName} />
 
                   <FormLabel isReadOnly htmlFor="email" marginTop="5%">
                     Email
                   </FormLabel>
-                  <Input isReadOnly id="email" type="email" placeholder={email} />
+                  <Input isReadOnly id="email" type="email" placeholder={boxHolderEmail} />
                   <FormLabel htmlFor="zipCode" marginTop="5%">
                     Zip Code
                   </FormLabel>
-                  <Input isReadOnly id="zipCode" type="zipCode" placeholder={currentLocation} />
+                  <Input isReadOnly id="zipCode" type="zipCode" placeholder={zipCode} />
                 </FormControl>
                 <div className="iconRow">
                   <div className="closeIcon">
                     <button
                       type="button"
                       onClick={() => {
-                        rejectPickupBoxFromUR(boxID);
+                        updateBoxStatus(boxID, 'evaluated');
                       }}
                     >
                       <img src={RejectBoxIcon} alt="" />

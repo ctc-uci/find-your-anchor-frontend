@@ -1,9 +1,10 @@
 import { React, useEffect, useState } from 'react';
 import { ChakraProvider, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import PickupBox from '../PickupBox/PickupBox';
+
 import RelocationBox from '../RelocationBox/RelocationBox';
 import './BoxApproval.css';
-import utils from '../../common/utils';
+import FYABackend from '../../common/utils';
 
 // Box ID: int
 // isApproved: boolean
@@ -11,19 +12,24 @@ import utils from '../../common/utils';
 // currentLocation: (String, int) - (Irvine, 92627)
 // pickup: boolean - (true == pickup box, false == relocation box)
 
-function BoxApproval() {
+const BoxApproval = () => {
   // display relocation boxes under review
   const [relocationBoxesUnderReview, setRelocationBoxesUnderReview] = useState([]);
   const fetchRelocationBoxesUnderReview = () => {
-    utils.get('/relocationBoxes/underReview').then(response => {
+    FYABackend.get('/box/getBoxes', {
+      params: {
+        status: 'under review',
+        pickup: false,
+      },
+    }).then(response => {
       const allBoxData = response.data.rows.map(boxData => {
         return (
           <RelocationBox
             key={boxData.box_id}
             boxID={boxData.box_id}
-            name={boxData.name}
-            email={boxData.email}
-            currentLocation={boxData.current_location}
+            boxHolderName={boxData.boxholder_name}
+            boxHolderEmail={boxData.boxholder_email}
+            zipCode={boxData.zip_code}
             picture={boxData.picture}
             generalLocation={boxData.general_location}
             message={boxData.message}
@@ -39,15 +45,20 @@ function BoxApproval() {
   // display relocation boxes evaluated
   const [relocationBoxesEvaluated, setRelocationBoxesEvaluated] = useState([]);
   const fetchRelocationBoxesEvaluated = () => {
-    utils.get('/relocationBoxes/evaluated').then(response => {
+    FYABackend.get('/box/getBoxes', {
+      params: {
+        status: 'evaluated',
+        pickup: false,
+      },
+    }).then(response => {
       const allBoxData = response.data.rows.map(boxData => {
         return (
           <RelocationBox
             key={boxData.box_id}
             boxID={boxData.box_id}
-            name={boxData.name}
-            email={boxData.email}
-            currentLocation={boxData.current_location}
+            boxHolderName={boxData.boxholder_name}
+            boxHolderEmail={boxData.boxholder_email}
+            zipCode={boxData.zip_code}
             picture={boxData.picture}
             generalLocation={boxData.general_location}
             message={boxData.message}
@@ -64,18 +75,24 @@ function BoxApproval() {
   // display relocation boxes pending
   const [relocationBoxesPending, setRelocationBoxesPending] = useState([]);
   const fetchRelocationBoxesPending = () => {
-    utils.get('/relocationBoxes/pending').then(response => {
+    FYABackend.get('/box/getBoxes', {
+      params: {
+        status: 'pending changes',
+        pickup: false,
+      },
+    }).then(response => {
       const allBoxData = response.data.rows.map(boxData => {
         return (
           <RelocationBox
             key={boxData.box_id}
             boxID={boxData.box_id}
-            name={boxData.name}
-            email={boxData.email}
-            currentLocation={boxData.current_location}
+            boxHolderName={boxData.boxholder_name}
+            boxHolderEmail={boxData.boxholder_email}
+            zipCode={boxData.zip_code}
             picture={boxData.picture}
             generalLocation={boxData.general_location}
             message={boxData.message}
+            date={boxData.date}
           />
         );
       });
@@ -87,20 +104,24 @@ function BoxApproval() {
   // display pickup boxes evaluated
   const [pickupBoxesEvaluated, setPickupBoxesEvaluated] = useState([]);
   const fetchPickupBoxesEvaluated = () => {
-    utils.get('/pickupBoxes/evaluated').then(response => {
+    FYABackend.get('/box/getBoxes', {
+      params: {
+        status: 'evaluated',
+        pickup: true,
+      },
+    }).then(response => {
       const allBoxData = response.data.rows.map(boxData => {
         return (
           <PickupBox
             key={boxData.box_id}
             boxID={boxData.box_id}
-            name={boxData.name}
-            email={boxData.email}
-            currentLocation={boxData.current_location}
+            boxHolderName={boxData.boxholder_name}
+            boxHolderEmail={boxData.boxholder_email}
+            zipCode={boxData.zip_code}
             picture={boxData.picture}
           />
         );
       });
-      // console.log(allBoxData);
       setPickupBoxesEvaluated(allBoxData);
     });
   };
@@ -109,20 +130,25 @@ function BoxApproval() {
   // display pickup boxes under review
   const [pickupBoxesUnderReview, setPickupBoxesUnderReview] = useState([]);
   const fetchPickupBoxesUnderReview = () => {
-    utils.get('/pickupBoxes/underReview').then(response => {
+    FYABackend.get('/box/getBoxes', {
+      params: {
+        status: 'under review',
+        pickup: true,
+      },
+    }).then(response => {
       const allBoxData = response.data.rows.map(boxData => {
         return (
           <PickupBox
             key={boxData.box_id}
             boxID={boxData.box_id}
-            name={boxData.name}
-            email={boxData.email}
-            currentLocation={boxData.current_location}
+            boxHolderName={boxData.boxholder_name}
+            boxHolderEmail={boxData.boxholder_email}
+            zipCode={boxData.zip_code}
             picture={boxData.picture}
+            date={boxData.date}
           />
         );
       });
-      // console.log(allBoxData);
       setPickupBoxesUnderReview(allBoxData);
     });
   };
@@ -161,6 +187,6 @@ function BoxApproval() {
       </div>
     </ChakraProvider>
   );
-}
+};
 
 export default BoxApproval;
