@@ -1,0 +1,50 @@
+.nav-bar {
+  height: 100%;
+  border-radius: 5px solid black;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fya-logo {
+  margin-left: 10px;
+  height: 50px;
+  width: 50px;
+}
+
+.buttons-and-account {
+  margin-right: 10px;
+  gap: 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buttons {
+  font-size: 18px;
+}
+
+.account {
+  position: relative;
+  height: 50px;
+  width: 50px;
+}
+
+.account-name {
+  top: 12.5px;
+  left: 12.5px;
+  color: white;
+  position: absolute;
+  font-size: 20px;
+}
+
+.circle {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  background-color: #3182CE;
+  border-radius: 50%;
+  display: inline-block;
+}

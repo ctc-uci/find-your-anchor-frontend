@@ -1,8 +1,8 @@
 /* Required for displaying the map properly */
 .leaflet-container {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: inherit;
+  height: inherit;
 }
 /* Customization of leaflet popup */
 .leaflet-popup-content-wrapper {
