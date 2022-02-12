@@ -42,7 +42,7 @@ function ExportCSV() {
     if (value === '') {
       return false;
     }
-    if (value.includes(',')) {
+    if (value.includes(', ')) {
       const ranges = value.split(', ');
       for (let i = 0; i < ranges.length; i += 1) {
         if (ranges[i] === '') {
@@ -63,7 +63,20 @@ function ExportCSV() {
     if (value === '') {
       return false;
     }
-    return !isValidZip(value);
+    if (value.includes(', ')) {
+      const ranges = value.split(', ');
+      for (let i = 0; i < ranges.length; i += 1) {
+        if (ranges[i] === '') {
+          return true;
+        }
+        if (!isValidZip(ranges[i])) {
+          return true;
+        }
+      }
+    } else if (!isValidZip(value)) {
+      return true;
+    }
+    return false;
   }
 
   return (
@@ -182,8 +195,6 @@ function ExportCSV() {
                 <p className="filter-names">Launch Type</p>
                 <div className="drop-option">
                   <Select
-                    // fontSize='20px'
-                    // width='300px'
                     className="filter-options-select"
                     value={launchOption}
                     onChange={e => setLaunchOption(e.target.value)}
