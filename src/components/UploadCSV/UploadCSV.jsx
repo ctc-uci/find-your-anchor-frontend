@@ -34,7 +34,7 @@ const UploadCSV = ({ closePopup }) => {
         // if box number already exists
         if (err.response.status === 400) {
           console.log('err: ', err.response.data.message);
-          setUploadErrors([...uploadErrors, err.response.data.message]);
+          setUploadErrors(prevState => [...prevState, err.response.data.message]);
         }
       }
       setIsLoading(false);
@@ -63,7 +63,6 @@ const UploadCSV = ({ closePopup }) => {
           // TODO: validate zipCodeCSV (wait until common/utils is updated)
           // TODO: check if any cells are empty
           // TODO: validate date?
-          // TODO: check if duplicate box number
           setFormData({
             boxNumber: boxNumberCSV,
             date: dateCSV,

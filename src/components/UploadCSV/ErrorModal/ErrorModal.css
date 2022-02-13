@@ -1,4 +1,4 @@
-.success-modal-icon {
+.error-modal-icon {
   width: 80px;
   height: 80px;
   background: url(../../../assets/error.png) no-repeat center center; 
@@ -8,25 +8,38 @@
   padding-top: 30px;
 }
 
-.success-modal-text {
+.error-modal-text {
   font-weight: 700;
   font-size: 1.5rem;
 }
 
-.success-modal-buttons {
+.error-modal-buttons {
   display: flex;
   gap: 30px;
 }
 
-.success-modal-container {
+.error-modal-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
   position: absolute;
-  top: 25%;
+  top: 15%;
 }
 
-.success-modal-file-name {
+.error-modal-file-name {
   color: rgb(0, 183, 255);
+}
+
+.error-modal-message {
+  color: rgb(206, 0, 0); 
+  font-weight: 600;
+  font-style: italic;
+}
+
+.error-modal-errors {
+  height: 100px;
+  overflow: scroll;
+  overflow-x: hidden;
+  padding: 0 20px;
 }
