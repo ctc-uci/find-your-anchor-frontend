@@ -13,6 +13,7 @@ import {
 
 import './PickupBox.css';
 import PropTypes from 'prop-types';
+// import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import ApproveBoxIcon from '../BoxIcons/ApproveBoxIcon.svg';
 import RejectBoxIcon from '../BoxIcons/RejectBoxIcon.svg';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
@@ -120,6 +121,7 @@ function PickupBox({
                       type="button"
                       onClick={() => {
                         updateBoxStatus(boxID, 'evaluated');
+                        // <RejectBoxPopup />;
                       }}
                     >
                       <img src={RejectBoxIcon} alt="" />

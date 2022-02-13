@@ -1,7 +1,6 @@
-import { React } from 'react';
+import React from 'react';
 import {
   ChakraProvider,
-  Textarea,
   Button,
   AlertDialog,
   AlertDialogBody,
@@ -9,43 +8,50 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
+  AlertDialogCloseButton,
+  Textarea,
 } from '@chakra-ui/react';
-
 import './RejectBoxPopup.css';
-// const RejectBoxPopup = (isOpen, setIsOpen, cancelRef, onClose) => {
-const RejectBoxPopup = () => {
+
+function RejectBoxPopup() {
   const [isOpen, setIsOpen] = React.useState(false);
-  const cancelRef = React.useRef();
+
   const onClose = () => setIsOpen(false);
+  const cancelRef = React.useRef();
 
   return (
     <ChakraProvider>
-      <Button colorScheme="red" onClick={() => setIsOpen(true)}>
-        Delete Customer
-      </Button>
-      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Reject Box Submission
-            </AlertDialogHeader>
+      <div className="rejectBoxPopup">
+        <Button colorScheme="red" onClick={() => setIsOpen(true)} className="rejectButton">
+          Reject Box
+        </Button>
 
-            <AlertDialogBody>
-              Let the messenger know your reason for rejection
-              <Textarea />
-            </AlertDialogBody>
+        <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
+          <AlertDialogOverlay>
+            <AlertDialogContent>
+              <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                Reject Box Submission
+              </AlertDialogHeader>
+              <AlertDialogCloseButton />
+              <AlertDialogBody>
+                Let the messenger know your reason for rejection
+                <Textarea className="textArea" />
+              </AlertDialogBody>
 
-            <AlertDialogFooter>
-              <Button ref={cancelRef}>Cancel</Button>
-              <Button colorScheme="red" ml={3}>
-                Reject Box
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+              <AlertDialogFooter>
+                <Button ref={cancelRef} onClick={onClose}>
+                  Cancel
+                </Button>
+                <Button colorScheme="red" onClick={onClose} ml={3}>
+                  Reject Box
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialogOverlay>
+        </AlertDialog>
+      </div>
     </ChakraProvider>
   );
-};
+}
 
 export default RejectBoxPopup;

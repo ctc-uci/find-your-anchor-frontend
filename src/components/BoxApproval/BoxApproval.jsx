@@ -1,11 +1,11 @@
 import { React, useEffect, useState } from 'react';
 import { ChakraProvider, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import PickupBox from '../PickupBox/PickupBox';
-
 import RelocationBox from '../RelocationBox/RelocationBox';
 import './BoxApproval.css';
 import FYABackend from '../../common/utils';
-
+import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
+import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 // Box ID: int
 // isApproved: boolean
 // message: String
@@ -190,6 +190,8 @@ const BoxApproval = () => {
                       fetchBoxes={fetchBoxes}
                     />
                   ))}
+                  <RejectBoxPopup />
+                  <RequestChangesPopup />
                 </div>
               </TabPanel>
             </TabPanels>
