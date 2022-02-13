@@ -17,8 +17,8 @@ const UploadCSV = ({ closePopup }) => {
   const [CSVFilename, setCSVFilename] = useState('');
   const [uploadErrors, setUploadErrors] = useState([]);
   const [formData, setFormData] = useState();
-  const [isUploadSuccess, setIsUploadSuccess] = useState(false);
   const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(async () => {
     if (formData) {
@@ -37,8 +37,16 @@ const UploadCSV = ({ closePopup }) => {
           setUploadErrors([...uploadErrors, err.response.data.message]);
         }
       }
+      setIsLoading(false);
     }
   }, [formData]);
+
+  useEffect(() => {
+    if (isUploadingNewFile) {
+      setUploadErrors([]);
+      setIsLoading(true);
+    }
+  }, [isUploadingNewFile]);
 
   const readCSV = () => {
     readRemoteFile(CSVFile, {
@@ -71,7 +79,6 @@ const UploadCSV = ({ closePopup }) => {
         setIsUploadingNewFile(false);
         setCSVFile();
         setFormData();
-        setIsUploadSuccess(uploadErrors.length === 0);
       },
     });
   };
@@ -93,12 +100,14 @@ const UploadCSV = ({ closePopup }) => {
           if (isUploadingNewFile) {
             return <UploadModal setCSVFile={setCSVFile} onSubmit={onSubmit} />;
           }
-          if (isUploadSuccess) {
+          if (isLoading) {
+            return <div>Uploading...</div>;
+          }
+          if (uploadErrors.length === 0) {
             return (
               <SuccessModal
                 CSVFileName={CSVFilename}
                 setIsUploadingNewFile={setIsUploadingNewFile}
-                setIsUploadSuccess={setIsUploadSuccess}
               />
             );
           }

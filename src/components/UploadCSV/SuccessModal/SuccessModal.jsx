@@ -3,16 +3,14 @@ import PropTypes from 'prop-types';
 import { Button } from '@chakra-ui/react';
 import './SuccessModal.css';
 
-const SuccessModal = ({ CSVFileName, setIsUploadingNewFile, setIsUploadSuccess }) => {
+const SuccessModal = ({ CSVFileName, setIsUploadingNewFile }) => {
   const uploadNewFile = () => {
     setIsUploadingNewFile(true);
-    setIsUploadSuccess(false);
     console.log('upload new file');
   };
 
   const viewFile = () => {
     setIsUploadingNewFile(false);
-    setIsUploadSuccess(false);
     console.log('edit/view file');
   };
 
@@ -37,7 +35,6 @@ const SuccessModal = ({ CSVFileName, setIsUploadingNewFile, setIsUploadSuccess }
 SuccessModal.propTypes = {
   CSVFileName: PropTypes.string.isRequired,
   setIsUploadingNewFile: PropTypes.func.isRequired,
-  setIsUploadSuccess: PropTypes.func.isRequired,
 };
 
 export default SuccessModal;

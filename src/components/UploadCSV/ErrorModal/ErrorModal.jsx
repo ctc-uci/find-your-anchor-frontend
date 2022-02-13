@@ -18,12 +18,11 @@ const ErrorModal = ({ CSVFileName, setIsUploadingNewFile, uploadErrors }) => {
     <div className="success-modal-container">
       {/* image */}
       <div className="success-modal-icon" />
-      <p className="success-modal-text">Oops!</p>
-      <p className="success-modal-text">There was an error with the uploaded file:</p>
+      <p className="success-modal-text">Oops! There was an error with the uploaded file:</p>
       <p className="success-modal-file-name">{CSVFileName}</p>
       <div className="success-modal-errors">
-        {/* {uploadErrors.map((error, i) => 
-          <p key={i}>{error}</p>
+        {/* {uploadErrors.map(error => 
+          <p className="error-modal-message">key={i}>*{error}*</p>
         )} */}
         {uploadErrors[0]}
       </div>
