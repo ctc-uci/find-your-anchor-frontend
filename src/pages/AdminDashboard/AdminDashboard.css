@@ -14,11 +14,34 @@
 }
 
 .side-bar {
+  position: relative;
+  display: none;
   height: 95vh;
   width: 20vw;
+  z-index: 400; /* since leaflet has a high z index */
+}
+
+.close-button {
+  position: absolute !important;
+  font-size: 18px;
+  color: #E53E3E;
+  right: 10px;
+  bottom: 10px;
+  z-index: 400; /* since leaflet has a high z index */
 }
 
 .map {
   height: 95vh;
-  width: 80vw;
+  width: 100vw;
+}
+
+.review-submission-button {
+  position: absolute !important;
+  left: 15px;
+  bottom: 15px;
+  z-index: 400; /* since leaflet has a high z index */
+}
+
+.review-submission-button:hover .side-bar {
+  display: block;
 }

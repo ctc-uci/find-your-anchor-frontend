@@ -26,3 +26,8 @@
   color: white;
   font-size: 15px;
 }
+
+.leaflet-control-geosearch form {
+  display: block;
+  min-width: 250px;
+}
