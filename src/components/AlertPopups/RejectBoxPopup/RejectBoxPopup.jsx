@@ -14,10 +14,16 @@ import {
 import './RejectBoxPopup.css';
 // const RejectBoxPopup = (isOpen, setIsOpen, cancelRef, onClose) => {
 const RejectBoxPopup = () => {
+  const [isOpen, setIsOpen] = React.useState(false);
   const cancelRef = React.useRef();
+  const onClose = () => setIsOpen(false);
+
   return (
     <ChakraProvider>
-      <AlertDialog isOpen leastDestructiveRef>
+      <Button colorScheme="red" onClick={() => setIsOpen(true)}>
+        Delete Customer
+      </Button>
+      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
