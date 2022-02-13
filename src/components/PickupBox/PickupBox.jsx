@@ -45,15 +45,13 @@ function PickupBox({
   const updateBoxStatus = (id, stat) => {
     utils
       .put('/box/updateStatus', {
-        params: {
-          boxID: id,
-          status: stat,
-        },
+        boxID: id,
+        status: stat,
       })
       .then(async () => {
         const pickupBoxesUnderReview = await fetchBoxes('under review', true);
         setPickupBoxesUnderReview(pickupBoxesUnderReview);
-        const pickupBoxesEvaluated = fetchBoxes('evaluated', true);
+        const pickupBoxesEvaluated = await fetchBoxes('evaluated', true);
         setPickupBoxesEvaluated(pickupBoxesEvaluated);
       });
   };
@@ -66,7 +64,7 @@ function PickupBox({
       .then(async () => {
         const pickupBoxesUnderReview = await fetchBoxes('under review', true);
         setPickupBoxesUnderReview(pickupBoxesUnderReview);
-        const pickupBoxesEvaluated = fetchBoxes('evaluated', true);
+        const pickupBoxesEvaluated = await fetchBoxes('evaluated', true);
         setPickupBoxesEvaluated(pickupBoxesEvaluated);
       });
   };
