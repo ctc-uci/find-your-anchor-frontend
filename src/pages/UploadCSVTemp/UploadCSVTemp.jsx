@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import UploadCSV from '../../components/UploadCSV/UploadCSV';
+import './UploadCSVTemp.css';
 
 function UploadCSVTemp() {
   const [showPopup, setShowPopup] = useState(false);
@@ -11,14 +12,13 @@ function UploadCSVTemp() {
 
   return (
     <ChakraProvider>
-      <div>
+      <div className={showPopup ? 'csv-container upload-csv-dim' : 'csv-container'}>
         <h1>Upload CSV Temporary Page</h1>
         <button type="button" href="#" onClick={togglePopup}>
           Upload CSV
         </button>
-        {showPopup && <UploadCSV closePopup={togglePopup} />}
-        {/* {showPopup ? <UploadCSV /> : null} */}
       </div>
+      {showPopup && <UploadCSV closePopup={togglePopup} className="csv-modal" />}
     </ChakraProvider>
   );
 }

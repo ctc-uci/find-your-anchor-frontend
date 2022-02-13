@@ -4,10 +4,11 @@
   position: absolute;
   left: 20%;
   right: 20%;
-  top: 20%;
+  top: 15%;
   margin: auto;
+  height: 70%;
   border-radius: 5px;
-  background: gray;
+  background: white;
   padding: 30px;
   z-index: 99999;
 }
@@ -16,8 +17,19 @@
   cursor: pointer;
   position: absolute;
   left: 97%;
-  top: 5%;
+  top: 2%;
   /* left: 20%;
   right: 20%;
   top: 20%; */
+}
+
+.upload-csv-title {
+  color: black;
+  font-weight: 800;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.upload-csv-button {
+  margin-top: 20px;
 }

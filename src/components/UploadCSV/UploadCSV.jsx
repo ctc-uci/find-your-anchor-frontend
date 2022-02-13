@@ -65,24 +65,18 @@ const UploadCSV = ({ closePopup }) => {
     <>
       <div className="popup-box">
         <CloseIcon onClick={closePopup} className="close-popup-icon" boxSize={3} />
-        <h1 className="title">UPLOAD CSV FILE:</h1>
-        <DropZone />
-        <Button type="submit" size="md" colorScheme="teal" onClick={e => onSubmit(e)}>
+        <h1 className="upload-csv-title">UPLOAD CSV FILE:</h1>
+        <DropZone setFile={setCSVFile} />
+        <Button
+          className="upload-csv-button"
+          type="submit"
+          size="md"
+          colorScheme="teal"
+          onClick={e => onSubmit(e)}
+        >
           Confirm Upload
         </Button>
       </div>
-      <form onSubmit={e => onSubmit(e)}>
-        {/* <input
-          type="file"
-          name="myFile"
-          accept=".csv"
-          onChange={e => setCSVFile(e.target.files[0])}
-        /> */}
-        <button type="submit" value="Submit">
-          Submit
-        </button>
-        <DropZone setFile={setCSVFile} />
-      </form>
     </>
   );
 };

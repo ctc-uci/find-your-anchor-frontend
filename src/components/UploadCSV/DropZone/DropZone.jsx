@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { CloseIcon } from '@chakra-ui/icons';
+import { CloseIcon, DownloadIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 import './DropZone.css';
 
@@ -46,6 +46,9 @@ function DropZone({ setFile }) {
       {!uploaded ? (
         <div className="dropzone-zone" {...getRootProps()}>
           <input {...getInputProps()} />
+          <div>
+            <DownloadIcon boxSize={10} />
+          </div>
           <button type="button" className="fileSelector" onClick={open}>
             Click
           </button>
