@@ -1,6 +1,6 @@
 import React from 'react';
-import './NavBar.css';
 
+import './NavBar.css';
 import FYALogo from '../../assets/fya-logo.png';
 
 function NavBar() {
@@ -10,13 +10,21 @@ function NavBar() {
         <img src={FYALogo} alt="Find Your Anchor Logo" />
       </div>
       <div className="buttons-and-account">
-        <p className="buttons">Add Box</p>
-        <p className="buttons">Upload CSV </p>
-        <p className="buttons">Export CSV</p>
-        <div className="account">
-          <span className="circle" />
-          <p className="account-name">SA</p>
-        </div>
+        <a className="buttons" href="../add-box-form">
+          Add Box
+        </a>
+        <a className="buttons" href="../upload-csv">
+          Upload CSV
+        </a>
+        <a className="buttons" href="../export-csv">
+          Export CSV
+        </a>
+        <a href="../profile">
+          <div className="account">
+            <span className="circle" />
+            <p className="account-name">SA</p>
+          </div>
+        </a>
       </div>
     </div>
   );
