@@ -19,8 +19,8 @@ function ExportCSV() {
   const [customZip, setCustomZip] = React.useState('');
 
   // Function to check valid range
-  function checkRange(value) {
-    function checkDash(data) {
+  const checkRange = value => {
+    const checkDash = data => {
       if (data.includes('-')) {
         const numbers = data.split('-');
         if (numbers[0] === '' || numbers[1] === '') {
@@ -37,7 +37,7 @@ function ExportCSV() {
         return true;
       }
       return false;
-    }
+    };
 
     if (value === '') {
       return false;
@@ -56,10 +56,10 @@ function ExportCSV() {
       return true;
     }
     return false;
-  }
+  };
 
   // Function to check valid zip code
-  function checkZip(value) {
+  const checkZip = value => {
     if (value === '') {
       return false;
     }
@@ -77,7 +77,7 @@ function ExportCSV() {
       return true;
     }
     return false;
-  }
+  };
 
   return (
     <ChakraProvider>
