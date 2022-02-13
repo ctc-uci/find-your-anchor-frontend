@@ -39,7 +39,7 @@
 
 .error-modal-errors {
   height: 100px;
-  overflow: scroll;
+  overflow: auto;
   overflow-x: hidden;
   padding: 0 20px;
 }
