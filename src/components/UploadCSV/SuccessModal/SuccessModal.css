@@ -1,0 +1,28 @@
+.success-modal-icon {
+  width: 100px;
+  height: 100px;
+  background: url(../../../assets/success.png) no-repeat center center; 
+  background-size: 100%;
+  text-align: center;
+  margin: 0 auto;
+  padding-top: 30px;
+}
+
+.success-modal-text {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.success-modal-buttons {
+  display: flex;
+  gap: 30px;
+}
+
+.success-modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  position: absolute;
+  top: 25%;
+}

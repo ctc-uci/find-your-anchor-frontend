@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from '@chakra-ui/react';
+// import { Button, ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 import './UploadCSV.css';
 import { usePapaParse } from 'react-papaparse';
 import PropTypes from 'prop-types';
 import FYABackend from '../../common/utils'; // TODO: fix this when common/utils is updated
-import DropZone from './DropZone/DropZone';
+
+import UploadModal from './UploadModal/UploadModal';
+import SuccessModal from './SuccessModal/SuccessModal';
 
 const UploadCSV = ({ closePopup }) => {
   const { readRemoteFile } = usePapaParse();
   const [CSVFile, setCSVFile] = useState();
-
   const [formData, setFormData] = useState();
+  const [isUploadSuccess, setIsUploadSuccess] = useState(false);
+  const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
+  // const isUploadNew = true;
 
   useEffect(async () => {
     if (formData) {
@@ -51,33 +56,43 @@ const UploadCSV = ({ closePopup }) => {
             launchedOrganically: launchedOrganicallyCSV,
           });
         }
+        setIsUploadSuccess(true);
+        setIsUploadingNewFile(false);
+        setCSVFile();
+        setFormData();
       },
     });
   };
 
   const onSubmit = e => {
     e.preventDefault();
-    console.log('submit');
-    readCSV(CSVFile);
+    if (CSVFile) {
+      console.log('submit');
+      readCSV();
+    }
   };
 
   return (
-    <>
-      <div className="popup-box">
+    <ChakraProvider>
+      <div className="upload-popup-box">
         <CloseIcon onClick={closePopup} className="close-popup-icon" boxSize={3} />
-        <h1 className="upload-csv-title">UPLOAD CSV FILE:</h1>
-        <DropZone setFile={setCSVFile} />
-        <Button
-          className="upload-csv-button"
-          type="submit"
-          size="md"
-          colorScheme="teal"
-          onClick={e => onSubmit(e)}
-        >
-          Confirm Upload
-        </Button>
+        {(() => {
+          if (isUploadingNewFile) {
+            return <UploadModal setCSVFile={setCSVFile} onSubmit={onSubmit} />;
+          }
+          if (isUploadSuccess) {
+            return (
+              <SuccessModal
+                CSVFileName={CSVFile ? CSVFile.name : 'patch1.csv'}
+                setIsUploadingNewFile={setIsUploadingNewFile}
+                setIsUploadSuccess={setIsUploadSuccess}
+              />
+            );
+          }
+          return <h2>There was no result!</h2>;
+        })()}
       </div>
-    </>
+    </ChakraProvider>
   );
 };
 
