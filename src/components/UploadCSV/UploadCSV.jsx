@@ -9,24 +9,34 @@ import FYABackend from '../../common/utils'; // TODO: fix this when common/utils
 
 import UploadModal from './UploadModal/UploadModal';
 import SuccessModal from './SuccessModal/SuccessModal';
+import ErrorModal from './ErrorModal/ErrorModal';
 
 const UploadCSV = ({ closePopup }) => {
   const { readRemoteFile } = usePapaParse();
   const [CSVFile, setCSVFile] = useState();
   const [CSVFilename, setCSVFilename] = useState('');
+  const [uploadErrors, setUploadErrors] = useState([]);
   const [formData, setFormData] = useState();
   const [isUploadSuccess, setIsUploadSuccess] = useState(false);
   const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
 
   useEffect(async () => {
     if (formData) {
-      console.log('FORMDATA:', formData);
-      // send formdata to server
-      await FYABackend.post('/boxForm', formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      try {
+        console.log('FORMDATA:', formData);
+        // send formdata to server
+        await FYABackend.post('/boxForm', formData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      } catch (err) {
+        // if box number already exists
+        if (err.response.status === 400) {
+          console.log('err: ', err.response.data.message);
+          setUploadErrors([...uploadErrors, err.response.data.message]);
+        }
+      }
     }
   }, [formData]);
 
@@ -45,6 +55,7 @@ const UploadCSV = ({ closePopup }) => {
           // TODO: validate zipCodeCSV (wait until common/utils is updated)
           // TODO: check if any cells are empty
           // TODO: validate date?
+          // TODO: check if duplicate box number
           setFormData({
             boxNumber: boxNumberCSV,
             date: dateCSV,
@@ -56,10 +67,11 @@ const UploadCSV = ({ closePopup }) => {
             launchedOrganically: launchedOrganicallyCSV,
           });
         }
-        setIsUploadSuccess(true);
+
         setIsUploadingNewFile(false);
         setCSVFile();
         setFormData();
+        setIsUploadSuccess(uploadErrors.length === 0);
       },
     });
   };
@@ -90,7 +102,13 @@ const UploadCSV = ({ closePopup }) => {
               />
             );
           }
-          return <h2>There was no result!</h2>;
+          return (
+            <ErrorModal
+              CSVFileName={CSVFilename}
+              setIsUploadingNewFile={setIsUploadingNewFile}
+              uploadErrors={uploadErrors}
+            />
+          );
         })()}
       </div>
     </ChakraProvider>
