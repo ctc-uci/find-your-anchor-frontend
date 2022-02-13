@@ -5,7 +5,7 @@
 }
 
 .admin-nav-bar {
-  height: 5vh;
+  height: 55px;
 }
 
 .side-bar-and-map-container {
@@ -16,7 +16,7 @@
 .side-bar {
   position: relative;
   display: none;
-  height: 95vh;
+  height: calc(100vh - 55px);
   width: 20vw;
   z-index: 400; /* since leaflet has a high z index */
 }
@@ -31,7 +31,7 @@
 }
 
 .map {
-  height: 95vh;
+  height: calc(100vh - 55px);
   width: 100vw;
 }
 
