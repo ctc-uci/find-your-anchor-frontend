@@ -62,10 +62,8 @@ const RelocationBox = ({
 
   const updateBoxStatus = async (id, stat) => {
     await utils.put('/box/updateStatus', {
-      params: {
-        boxID: id,
-        status: stat,
-      },
+      boxID: id,
+      status: stat,
     });
     const relocationBoxesUnderReview = await fetchBoxes('under review', false);
     setRelocationBoxesUnderReview(relocationBoxesUnderReview);
@@ -159,8 +157,8 @@ const RelocationBox = ({
                   <div className="arrowForwardIcon">
                     <button
                       type="button"
-                      onClick={() => {
-                        updateBoxStatus(boxID, 'pending changes');
+                      onClick={async () => {
+                        await updateBoxStatus(boxID, 'pending changes');
                       }}
                     >
                       <img src={RequestChangesIcon} alt="" />
