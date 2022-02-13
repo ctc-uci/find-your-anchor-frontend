@@ -13,10 +13,10 @@ import SuccessModal from './SuccessModal/SuccessModal';
 const UploadCSV = ({ closePopup }) => {
   const { readRemoteFile } = usePapaParse();
   const [CSVFile, setCSVFile] = useState();
+  const [CSVFilename, setCSVFilename] = useState('');
   const [formData, setFormData] = useState();
   const [isUploadSuccess, setIsUploadSuccess] = useState(false);
   const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
-  // const isUploadNew = true;
 
   useEffect(async () => {
     if (formData) {
@@ -68,6 +68,7 @@ const UploadCSV = ({ closePopup }) => {
     e.preventDefault();
     if (CSVFile) {
       console.log('submit');
+      setCSVFilename(CSVFile.name);
       readCSV();
     }
   };
@@ -83,7 +84,7 @@ const UploadCSV = ({ closePopup }) => {
           if (isUploadSuccess) {
             return (
               <SuccessModal
-                CSVFileName={CSVFile ? CSVFile.name : 'patch1.csv'}
+                CSVFileName={CSVFilename}
                 setIsUploadingNewFile={setIsUploadingNewFile}
                 setIsUploadSuccess={setIsUploadSuccess}
               />
