@@ -14,6 +14,10 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.25.0",
+<<<<<<< HEAD
+=======
+    "babel-loader": "8.1.0",
+>>>>>>> dev
     "eslint": "^7.2.0",
     "eslint-config-airbnb": "18.2.1",
     "eslint-config-airbnb-base": "14.2.1",
@@ -27,6 +31,7 @@
     "framer-motion": "4",
     "is-valid-zipcode": "^1.0.3",
     "leaflet": "^1.7.1",
+    "leaflet-color-number-markers": "^1.0.7",
     "leaflet-geosearch": "^3.6.0",
     "lint-staged": "^11.2.6",
     "prop-types": "^15.8.1",

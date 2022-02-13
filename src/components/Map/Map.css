@@ -1,5 +1,28 @@
 /* Required for displaying the map properly */
 .leaflet-container {
+  position: absolute;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+}
+/* Customization of leaflet popup */
+.leaflet-popup-content-wrapper {
+  width: 250px;
+  background-color: #171923;
+}
+
+.leaflet-popup-tip {
+  background: none;
+  box-shadow: none;
+}
+
+/* Customization of material in popup  */
+.marker-popup {
+  width: 100%;
+  text-align: center;
+}
+
+.popup-header {
+  margin: 0px;
+  color: white;
+  font-size: 15px;
 }
