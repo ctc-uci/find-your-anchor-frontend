@@ -1,5 +1,9 @@
 .adminDashboardDiv {
     width: 100%;
     min-height: 100%;
-    
+
+}
+
+.rejectBoxPopup {
+  float:right;
 }

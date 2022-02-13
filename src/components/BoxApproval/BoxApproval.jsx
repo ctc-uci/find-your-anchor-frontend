@@ -15,144 +15,71 @@ import FYABackend from '../../common/utils';
 const BoxApproval = () => {
   // display relocation boxes under review
   const [relocationBoxesUnderReview, setRelocationBoxesUnderReview] = useState([]);
-  const fetchRelocationBoxesUnderReview = () => {
-    FYABackend.get('/box/getBoxes', {
-      params: {
-        status: 'under review',
-        pickup: false,
-      },
-    }).then(response => {
-      const allBoxData = response.data.rows.map(boxData => {
-        return (
-          <RelocationBox
-            key={boxData.box_id}
-            boxID={boxData.box_id}
-            boxHolderName={boxData.boxholder_name}
-            boxHolderEmail={boxData.boxholder_email}
-            zipCode={boxData.zip_code}
-            picture={boxData.picture}
-            generalLocation={boxData.general_location}
-            message={boxData.message}
-            date={boxData.date}
-          />
-        );
-      });
-      setRelocationBoxesUnderReview(allBoxData);
-    });
-  };
-  useEffect(() => fetchRelocationBoxesUnderReview(), []);
-
   // display relocation boxes evaluated
   const [relocationBoxesEvaluated, setRelocationBoxesEvaluated] = useState([]);
-  const fetchRelocationBoxesEvaluated = () => {
-    FYABackend.get('/box/getBoxes', {
-      params: {
-        status: 'evaluated',
-        pickup: false,
-      },
-    }).then(response => {
-      const allBoxData = response.data.rows.map(boxData => {
-        return (
-          <RelocationBox
-            key={boxData.box_id}
-            boxID={boxData.box_id}
-            boxHolderName={boxData.boxholder_name}
-            boxHolderEmail={boxData.boxholder_email}
-            zipCode={boxData.zip_code}
-            picture={boxData.picture}
-            generalLocation={boxData.general_location}
-            message={boxData.message}
-            date={boxData.date}
-          />
-        );
-      });
-      setRelocationBoxesEvaluated(allBoxData);
-    });
-  };
-  useEffect(() => fetchRelocationBoxesEvaluated(), []);
-
-  // a pickup box will never be pending
   // display relocation boxes pending
   const [relocationBoxesPending, setRelocationBoxesPending] = useState([]);
-  const fetchRelocationBoxesPending = () => {
-    FYABackend.get('/box/getBoxes', {
-      params: {
-        status: 'pending changes',
-        pickup: false,
-      },
-    }).then(response => {
-      const allBoxData = response.data.rows.map(boxData => {
-        return (
-          <RelocationBox
-            key={boxData.box_id}
-            boxID={boxData.box_id}
-            boxHolderName={boxData.boxholder_name}
-            boxHolderEmail={boxData.boxholder_email}
-            zipCode={boxData.zip_code}
-            picture={boxData.picture}
-            generalLocation={boxData.general_location}
-            message={boxData.message}
-            date={boxData.date}
-          />
-        );
-      });
-      setRelocationBoxesPending(allBoxData);
-    });
-  };
-  useEffect(() => fetchRelocationBoxesPending(), []);
-
-  // display pickup boxes evaluated
-  const [pickupBoxesEvaluated, setPickupBoxesEvaluated] = useState([]);
-  const fetchPickupBoxesEvaluated = () => {
-    FYABackend.get('/box/getBoxes', {
-      params: {
-        status: 'evaluated',
-        pickup: true,
-      },
-    }).then(response => {
-      const allBoxData = response.data.rows.map(boxData => {
-        return (
-          <PickupBox
-            key={boxData.box_id}
-            boxID={boxData.box_id}
-            boxHolderName={boxData.boxholder_name}
-            boxHolderEmail={boxData.boxholder_email}
-            zipCode={boxData.zip_code}
-            picture={boxData.picture}
-          />
-        );
-      });
-      setPickupBoxesEvaluated(allBoxData);
-    });
-  };
-  useEffect(() => fetchPickupBoxesEvaluated(), []);
-
   // display pickup boxes under review
   const [pickupBoxesUnderReview, setPickupBoxesUnderReview] = useState([]);
-  const fetchPickupBoxesUnderReview = () => {
-    FYABackend.get('/box/getBoxes', {
+  // display pickup boxes evaluated
+  const [pickupBoxesEvaluated, setPickupBoxesEvaluated] = useState([]);
+
+  /**
+   * Gets all Relocation/Pickup boxes according to status
+   */
+  const fetchBoxes = async (status, pickup) => {
+    const response = await FYABackend.get('/box/getBoxes', {
       params: {
-        status: 'under review',
-        pickup: true,
+        status,
+        pickup,
       },
-    }).then(response => {
-      const allBoxData = response.data.rows.map(boxData => {
-        return (
-          <PickupBox
-            key={boxData.box_id}
-            boxID={boxData.box_id}
-            boxHolderName={boxData.boxholder_name}
-            boxHolderEmail={boxData.boxholder_email}
-            zipCode={boxData.zip_code}
-            picture={boxData.picture}
-            date={boxData.date}
-          />
-        );
-      });
-      setPickupBoxesUnderReview(allBoxData);
+    });
+    return response.data.rows;
+  };
+
+  // Gets relocation boxes under review
+  const populateRelocationBoxesUnderReview = () => {
+    fetchBoxes('under review', false).then(response => {
+      setRelocationBoxesUnderReview(response);
     });
   };
-  useEffect(() => fetchPickupBoxesUnderReview(), []);
+
+  // Gets relocation boxes that have been evaluated
+  const populateRelocationBoxesEvaluated = () => {
+    fetchBoxes('evaluated', false).then(response => {
+      setRelocationBoxesEvaluated(response);
+    });
+  };
+
+  // aGets relocation boxes that are pending changes
+  const populateRelocationBoxesPending = () => {
+    fetchBoxes('pending changes', false).then(response => {
+      setRelocationBoxesPending(response);
+    });
+  };
+
+  // Gets pickup boxes that have been evaluated
+  const populatePickupBoxesEvaluated = () => {
+    fetchBoxes('evaluated', true).then(response => {
+      setPickupBoxesEvaluated(response);
+    });
+  };
+
+  // Gets pickup boxes under review
+  const populatePickupBoxesUnderReview = () => {
+    fetchBoxes('under review', true).then(response => {
+      setPickupBoxesUnderReview(response);
+    });
+  };
+
+  // Gets all boxes on page load
+  useEffect(() => {
+    populateRelocationBoxesUnderReview();
+    populateRelocationBoxesEvaluated();
+    populateRelocationBoxesPending();
+    populatePickupBoxesEvaluated();
+    populatePickupBoxesUnderReview();
+  }, []);
 
   return (
     <ChakraProvider>
@@ -169,17 +96,101 @@ const BoxApproval = () => {
             <TabPanels>
               {/* 'Under Review' section */}
               <TabPanel>
-                <div>{relocationBoxesUnderReview}</div>
-                <div>{pickupBoxesUnderReview}</div>
+                <div>
+                  {relocationBoxesUnderReview.map(boxData => (
+                    <RelocationBox
+                      key={boxData.box_id}
+                      boxID={boxData.box_id}
+                      boxHolderName={boxData.boxholder_name}
+                      boxHolderEmail={boxData.boxholder_email}
+                      zipCode={boxData.zip_code}
+                      picture={boxData.picture}
+                      generalLocation={boxData.general_location}
+                      message={boxData.message}
+                      date={boxData.date}
+                      setRelocationBoxesUnderReview={setRelocationBoxesUnderReview}
+                      setRelocationBoxesEvaluated={setRelocationBoxesEvaluated}
+                      setRelocationBoxesPending={setRelocationBoxesPending}
+                      fetchBoxes={fetchBoxes}
+                    />
+                  ))}
+                </div>
+                <div>
+                  {pickupBoxesUnderReview.map(boxData => (
+                    <PickupBox
+                      key={boxData.box_id}
+                      boxID={boxData.box_id}
+                      boxHolderName={boxData.boxholder_name}
+                      boxHolderEmail={boxData.boxholder_email}
+                      zipCode={boxData.zip_code}
+                      picture={boxData.picture}
+                      date={boxData.date}
+                      setPickupBoxesEvaluated={setPickupBoxesEvaluated}
+                      setPickupBoxesUnderReview={setPickupBoxesUnderReview}
+                      fetchBoxes={fetchBoxes}
+                    />
+                  ))}
+                </div>
               </TabPanel>
               {/* 'Pending Changes' section */}
               <TabPanel>
-                <div>{relocationBoxesPending}</div>
+                <div>
+                  {relocationBoxesPending.map(boxData => (
+                    <RelocationBox
+                      key={boxData.box_id}
+                      boxID={boxData.box_id}
+                      boxHolderName={boxData.boxholder_name}
+                      boxHolderEmail={boxData.boxholder_email}
+                      zipCode={boxData.zip_code}
+                      picture={boxData.picture}
+                      generalLocation={boxData.general_location}
+                      message={boxData.message}
+                      date={boxData.date}
+                      setRelocationBoxesUnderReview={setRelocationBoxesUnderReview}
+                      setRelocationBoxesEvaluated={setRelocationBoxesEvaluated}
+                      setRelocationBoxesPending={setRelocationBoxesPending}
+                      fetchBoxes={fetchBoxes}
+                    />
+                  ))}
+                </div>
               </TabPanel>
               {/* 'Evaluated' section */}
               <TabPanel>
-                <div>{relocationBoxesEvaluated}</div>
-                <div>{pickupBoxesEvaluated}</div>
+                <div>
+                  {relocationBoxesEvaluated.map(boxData => (
+                    <RelocationBox
+                      key={boxData.box_id}
+                      boxID={boxData.box_id}
+                      boxHolderName={boxData.boxholder_name}
+                      boxHolderEmail={boxData.boxholder_email}
+                      zipCode={boxData.zip_code}
+                      picture={boxData.picture}
+                      generalLocation={boxData.general_location}
+                      message={boxData.message}
+                      date={boxData.date}
+                      setRelocationBoxesUnderReview={setRelocationBoxesUnderReview}
+                      setRelocationBoxesEvaluated={setRelocationBoxesEvaluated}
+                      setRelocationBoxesPending={setRelocationBoxesPending}
+                      fetchBoxes={fetchBoxes}
+                    />
+                  ))}
+                </div>
+                <div>
+                  {pickupBoxesEvaluated.map(boxData => (
+                    <PickupBox
+                      key={boxData.box_id}
+                      boxID={boxData.box_id}
+                      boxHolderName={boxData.boxholder_name}
+                      boxHolderEmail={boxData.boxholder_email}
+                      zipCode={boxData.zip_code}
+                      picture={boxData.picture}
+                      date={boxData.date}
+                      setPickupBoxesEvaluated={setPickupBoxesEvaluated}
+                      setPickupBoxesUnderReview={setPickupBoxesUnderReview}
+                      fetchBoxes={fetchBoxes}
+                    />
+                  ))}
+                </div>
               </TabPanel>
             </TabPanels>
           </div>

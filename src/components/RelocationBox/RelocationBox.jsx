@@ -21,10 +21,20 @@ import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 import utils from '../../common/utils';
 
-function RelocationBox(props) {
-  const { boxID, boxHolderName, boxHolderEmail, zipCode, picture, generalLocation, message, date } =
-    props;
-
+const RelocationBox = ({
+  boxID,
+  boxHolderName,
+  boxHolderEmail,
+  zipCode,
+  picture,
+  generalLocation,
+  message,
+  date,
+  setRelocationBoxesUnderReview,
+  setRelocationBoxesEvaluated,
+  setRelocationBoxesPending,
+  fetchBoxes,
+}) => {
   // key={boxData.box_id}
   //             box_id={boxData.box_id}
   //             boxholder_name={boxData.boxholder_name}
@@ -44,31 +54,38 @@ function RelocationBox(props) {
     generalLocation: PropTypes.string.isRequired,
     message: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
+    setRelocationBoxesUnderReview: PropTypes.func.isRequired,
+    setRelocationBoxesEvaluated: PropTypes.func.isRequired,
+    setRelocationBoxesPending: PropTypes.func.isRequired,
+    fetchBoxes: PropTypes.func.isRequired,
   };
 
-  const updateBoxStatus = (id, stat) => {
-    utils.put('/box/updateStatus', {
+  const updateBoxStatus = async (id, stat) => {
+    await utils.put('/box/updateStatus', {
       params: {
         boxID: id,
         status: stat,
       },
     });
+    const relocationBoxesUnderReview = await fetchBoxes('under review', false);
+    setRelocationBoxesUnderReview(relocationBoxesUnderReview);
+    const relocationBoxesEvaluated = await fetchBoxes('evaluated', false);
+    setRelocationBoxesEvaluated(relocationBoxesEvaluated);
+    const relocationBoxesPending = await fetchBoxes('pending changes', false);
+    setRelocationBoxesPending(relocationBoxesPending);
   };
 
-  const approveRelocationBoxFromUR = id => {
-    utils.put('/box/approveBox', {
+  const approveRelocationBoxFromUR = async id => {
+    await utils.put('/box/approveBox', {
       boxID: id,
     });
+    const relocationBoxesUnderReview = await fetchBoxes('under review', false);
+    setRelocationBoxesUnderReview(relocationBoxesUnderReview);
+    const relocationBoxesEvaluated = await fetchBoxes('evaluated', false);
+    setRelocationBoxesEvaluated(relocationBoxesEvaluated);
+    const relocationBoxesPending = await fetchBoxes('pending changes', false);
+    setRelocationBoxesPending(relocationBoxesPending);
   };
-
-  // const rejectRelocationBoxFromUR = id => {
-  //   utils.put('/box/updateStatus', {
-  //     params: {
-  //       box_id: id,
-  //       status: 'approved',
-  //     },
-  //   });
-  // };
 
   return (
     <ChakraProvider>
@@ -133,7 +150,7 @@ function RelocationBox(props) {
                     <button
                       type="button"
                       onClick={() => {
-                        updateBoxStatus(boxID, 'rejected');
+                        updateBoxStatus(boxID, 'evaluated');
                       }}
                     >
                       <img src={RejectBoxIcon} alt="" />
@@ -152,8 +169,8 @@ function RelocationBox(props) {
                   <div className="checkIcon">
                     <button
                       type="button"
-                      onClick={() => {
-                        approveRelocationBoxFromUR(boxID);
+                      onClick={async () => {
+                        await approveRelocationBoxFromUR(boxID);
                       }}
                     >
                       <img src={ApproveBoxIcon} alt="" />
@@ -167,5 +184,5 @@ function RelocationBox(props) {
       </div>
     </ChakraProvider>
   );
-}
+};
 export default RelocationBox;

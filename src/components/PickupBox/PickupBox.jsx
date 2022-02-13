@@ -19,8 +19,17 @@ import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 import utils from '../../common/utils';
 // import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 
-function PickupBox(props) {
-  const { boxID, boxHolderName, boxHolderEmail, zipCode, picture, date } = props;
+function PickupBox({
+  boxID,
+  boxHolderName,
+  boxHolderEmail,
+  zipCode,
+  picture,
+  date,
+  fetchBoxes,
+  setPickupBoxesUnderReview,
+  setPickupBoxesEvaluated,
+}) {
   PickupBox.propTypes = {
     boxID: PropTypes.number.isRequired,
     boxHolderName: PropTypes.string.isRequired,
@@ -28,21 +37,38 @@ function PickupBox(props) {
     zipCode: PropTypes.number.isRequired,
     picture: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
+    fetchBoxes: PropTypes.func.isRequired,
+    setPickupBoxesUnderReview: PropTypes.func.isRequired,
+    setPickupBoxesEvaluated: PropTypes.func.isRequired,
   };
 
   const updateBoxStatus = (id, stat) => {
-    utils.put('/box/updateStatus', {
-      params: {
-        boxID: id,
-        status: stat,
-      },
-    });
+    utils
+      .put('/box/updateStatus', {
+        params: {
+          boxID: id,
+          status: stat,
+        },
+      })
+      .then(async () => {
+        const pickupBoxesUnderReview = await fetchBoxes('under review', true);
+        setPickupBoxesUnderReview(pickupBoxesUnderReview);
+        const pickupBoxesEvaluated = fetchBoxes('evaluated', true);
+        setPickupBoxesEvaluated(pickupBoxesEvaluated);
+      });
   };
 
   const approvePickupBoxFromUR = id => {
-    utils.put('/pickupBoxes/approved', {
-      boxID: id,
-    });
+    utils
+      .put('/box/approveBox', {
+        boxID: id,
+      })
+      .then(async () => {
+        const pickupBoxesUnderReview = await fetchBoxes('under review', true);
+        setPickupBoxesUnderReview(pickupBoxesUnderReview);
+        const pickupBoxesEvaluated = fetchBoxes('evaluated', true);
+        setPickupBoxesEvaluated(pickupBoxesEvaluated);
+      });
   };
 
   // const rejectPickupBoxFromUR = id => {
