@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from 'react';
-// import { Button } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
+import { CloseIcon } from '@chakra-ui/icons';
 import './UploadCSV.css';
 import { usePapaParse } from 'react-papaparse';
+import PropTypes from 'prop-types';
 import FYABackend from '../../common/utils'; // TODO: fix this when common/utils is updated
+import DropZone from './DropZone/DropZone';
 
-const UploadCSV = () => {
+const UploadCSV = ({ closePopup }) => {
   const { readRemoteFile } = usePapaParse();
   const [CSVFile, setCSVFile] = useState();
 
-  const [formData, setFormData] = useState({
-    boxNumber: '',
-    date: '',
-    zipCode: '',
-    boxLocation: '',
-    message: '',
-    picture: '',
-    comments: '',
-    launchedOrganically: false,
-  });
+  const [formData, setFormData] = useState();
 
   useEffect(async () => {
     if (formData) {
@@ -44,6 +38,8 @@ const UploadCSV = () => {
           const zipCodeCSV = results.data[i][2];
           const launchedOrganicallyCSV = results.data[i][3].toLowerCase() === 'yes';
           // TODO: validate zipCodeCSV (wait until common/utils is updated)
+          // TODO: check if any cells are empty
+          // TODO: validate date?
           setFormData({
             boxNumber: boxNumberCSV,
             date: dateCSV,
@@ -66,18 +62,33 @@ const UploadCSV = () => {
   };
 
   return (
-    <form onSubmit={e => onSubmit(e)}>
-      <input
-        type="file"
-        name="myFile"
-        accept=".csv"
-        onChange={e => setCSVFile(e.target.files[0])}
-      />
-      <button type="submit" value="Submit">
-        Submit
-      </button>
-    </form>
+    <>
+      <div className="popup-box">
+        <CloseIcon onClick={closePopup} className="close-popup-icon" boxSize={3} />
+        <h1 className="title">UPLOAD CSV FILE:</h1>
+        <DropZone />
+        <Button type="submit" size="md" colorScheme="teal" onClick={e => onSubmit(e)}>
+          Confirm Upload
+        </Button>
+      </div>
+      <form onSubmit={e => onSubmit(e)}>
+        {/* <input
+          type="file"
+          name="myFile"
+          accept=".csv"
+          onChange={e => setCSVFile(e.target.files[0])}
+        /> */}
+        <button type="submit" value="Submit">
+          Submit
+        </button>
+        <DropZone setFile={setCSVFile} />
+      </form>
+    </>
   );
+};
+
+UploadCSV.propTypes = {
+  closePopup: PropTypes.func.isRequired,
 };
 
 export default UploadCSV;
