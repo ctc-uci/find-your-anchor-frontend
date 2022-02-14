@@ -6,12 +6,10 @@ import './SuccessModal.css';
 const SuccessModal = ({ CSVFileName, setIsUploadingNewFile }) => {
   const uploadNewFile = () => {
     setIsUploadingNewFile(true);
-    console.log('upload new file');
   };
 
   const viewFile = () => {
     setIsUploadingNewFile(false);
-    console.log('edit/view file');
   };
 
   return (

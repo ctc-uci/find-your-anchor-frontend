@@ -7,17 +7,14 @@ import './ErrorModal.css';
 const ErrorModal = ({ CSVFileName, setIsUploadingNewFile, uploadErrors }) => {
   const uploadNewFile = () => {
     setIsUploadingNewFile(true);
-    console.log('upload new file');
   };
 
   const viewFile = () => {
     setIsUploadingNewFile(false);
-    console.log('edit/view file');
   };
 
   return (
     <div className="error-modal-container">
-      {/* image */}
       <div className="modal-icon error-modal-icon" />
       <p className="error-modal-text">Oops!</p>
       <p className="error-modal-text">There was an error with the uploaded file:</p>

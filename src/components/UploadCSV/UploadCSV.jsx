@@ -32,7 +32,6 @@ const UploadCSV = ({ closePopup }) => {
       } catch (err) {
         // if box number already exists
         if (err.response.status === 400) {
-          console.log('err: ', err.response.data.message);
           setUploadErrors(prevState => [...prevState, err.response.data.message]);
         }
       }
@@ -70,8 +69,6 @@ const UploadCSV = ({ closePopup }) => {
   const readCSV = () => {
     readRemoteFile(CSVFile, {
       complete: results => {
-        console.log(results);
-
         // parse each line in csv file and upload each to the backend
         for (let i = 1; i < results.data.length; i += 1) {
           const dateCSV = results.data[i][0];
@@ -82,6 +79,7 @@ const UploadCSV = ({ closePopup }) => {
           checkEmptyCells(i, dateCSV, boxNumberCSV, zipCodeCSV, launchedOrganicallyCSV);
           // TODO: validate zipCodeCSV (wait until common/utils is updated)
           // TODO: validate date?
+          // TODO: validate box number is type integer
           setFormData({
             boxNumber: boxNumberCSV,
             date: dateCSV,
@@ -104,7 +102,6 @@ const UploadCSV = ({ closePopup }) => {
   const onSubmit = e => {
     e.preventDefault();
     if (CSVFile) {
-      console.log('submit');
       setCSVFilename(CSVFile.name);
       readCSV();
     }
