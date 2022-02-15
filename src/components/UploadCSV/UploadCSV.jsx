@@ -63,7 +63,7 @@ const UploadCSV = ({ closePopup }) => {
     emptyCells.map(cell =>
       setUploadErrors(prevState => [...prevState, `missing ${cell} in line ${line}`]),
     );
-    if (emptyCells) setIsLoading(false);
+    if (emptyCells.length > 0) setIsLoading(false);
   };
 
   const readCSV = () => {
