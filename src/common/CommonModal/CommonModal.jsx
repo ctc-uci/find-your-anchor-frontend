@@ -3,27 +3,21 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Button,
   ChakraProvider,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
+import './CommonModal.css';
 
-const CommonModal = ({ isOpen, setIsOpen, onSubmit, children }) => {
+const CommonModal = ({ isOpen, setIsOpen, children }) => {
   return (
     <ChakraProvider>
-      <Modal isOpen={isOpen} onClose={setIsOpen}>
+      <Modal isOpen={isOpen} onClose={setIsOpen} className="modal">
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent maxW="56rem">
           <ModalCloseButton />
-          <ModalHeader>Modal Title</ModalHeader>
-          <ModalBody className="text">{children}</ModalBody>
-          <ModalFooter className="modal-button">
-            <Button onClick={onSubmit}>Button Text</Button>
-          </ModalFooter>
+          <ModalBody>{children}</ModalBody>
         </ModalContent>
       </Modal>
     </ChakraProvider>
@@ -33,7 +27,7 @@ const CommonModal = ({ isOpen, setIsOpen, onSubmit, children }) => {
 CommonModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  // onSubmit: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 };
 
