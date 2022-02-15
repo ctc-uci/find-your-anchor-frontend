@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChakraProvider, Button, useDisclosure } from '@chakra-ui/react';
 
-import DeleteAccountModal from './DeleteAccountModal';
+import DeleteAccountModal from './DeleteAccountModal/DeleteAccountModal';
 
 const AdminProfilePage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
