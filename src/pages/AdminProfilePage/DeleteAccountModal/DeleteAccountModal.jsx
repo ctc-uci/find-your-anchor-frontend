@@ -1,19 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  ChakraProvider,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  ModalCloseButton,
-} from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton } from '@chakra-ui/react';
 
 import DeleteAccountModalContent from './DeleteAccountModalContent';
 
 // TODO:
 // - Replace ChakraUI Modal with common component once created
-// - Remove ChakraProvider once provider is moved to index.js
 // - Implement deleteAccount
 
 const deleteAccount = () => {
@@ -30,25 +22,23 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <ChakraProvider>
-      <Modal isOpen={isOpen} onClose={closeModal}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalCloseButton />
-          <ModalBody>
-            <div>
-              <p>Modal Content</p>
-              <DeleteAccountModalContent
-                modalStep={modalStep}
-                setModalStep={setModalStep}
-                closeModal={closeModal}
-                deleteAccount={deleteAccount}
-              />
-            </div>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </ChakraProvider>
+    <Modal isOpen={isOpen} onClose={closeModal}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalCloseButton />
+        <ModalBody>
+          <div>
+            <p>Modal Content</p>
+            <DeleteAccountModalContent
+              modalStep={modalStep}
+              setModalStep={setModalStep}
+              closeModal={closeModal}
+              deleteAccount={deleteAccount}
+            />
+          </div>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   );
 };
 
