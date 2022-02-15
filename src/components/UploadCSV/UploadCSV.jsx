@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // import { Button, ChakraProvider } from '@chakra-ui/react';
 import { ChakraProvider } from '@chakra-ui/react';
-import { CloseIcon } from '@chakra-ui/icons';
+// import { CloseIcon } from '@chakra-ui/icons';
 import './UploadCSV.css';
 import { usePapaParse } from 'react-papaparse';
 import PropTypes from 'prop-types';
@@ -10,8 +10,9 @@ import FYABackend from '../../common/utils'; // TODO: fix this when common/utils
 import UploadModal from './UploadModal/UploadModal';
 import SuccessModal from './SuccessModal/SuccessModal';
 import ErrorModal from './ErrorModal/ErrorModal';
+import CommonModal from '../../common/CommonModal/CommonModal';
 
-const UploadCSV = ({ closePopup }) => {
+const UploadCSV = ({ isOpen, setIsOpen }) => {
   const { readRemoteFile } = usePapaParse();
   const [CSVFile, setCSVFile] = useState();
   const [CSVFilename, setCSVFilename] = useState('');
@@ -109,8 +110,7 @@ const UploadCSV = ({ closePopup }) => {
 
   return (
     <ChakraProvider>
-      <div className="upload-popup-box">
-        <CloseIcon onClick={closePopup} className="close-popup-icon" boxSize={3} />
+      <CommonModal isOpen={isOpen} setIsOpen={setIsOpen} onSubmit={onSubmit}>
         {(() => {
           if (isUploadingNewFile) {
             return <UploadModal setCSVFile={setCSVFile} onSubmit={onSubmit} />;
@@ -134,13 +134,14 @@ const UploadCSV = ({ closePopup }) => {
             />
           );
         })()}
-      </div>
+      </CommonModal>
     </ChakraProvider>
   );
 };
 
 UploadCSV.propTypes = {
-  closePopup: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
 };
 
 export default UploadCSV;

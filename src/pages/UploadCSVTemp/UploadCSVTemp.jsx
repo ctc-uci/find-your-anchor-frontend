@@ -17,7 +17,7 @@ function UploadCSVTemp() {
           Upload CSV
         </button>
       </div>
-      {showPopup && <UploadCSV closePopup={togglePopup} className="csv-modal" />}
+      {showPopup && <UploadCSV isOpen={showPopup} setIsOpen={togglePopup} className="csv-modal" />}
     </div>
   );
 }
