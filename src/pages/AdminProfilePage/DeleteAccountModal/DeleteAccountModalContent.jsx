@@ -5,6 +5,7 @@ import './DeleteAccountModal.css';
 
 // TODO:
 // - Button colors should be added to ChakraProvider using extendTheme
+//   This should fix the button highlight color, which is currently white
 // - Implement "Return to Login page" button
 
 const ModalStepOne = ({ incrementStep, closeModal, deleteAccount }) => {
