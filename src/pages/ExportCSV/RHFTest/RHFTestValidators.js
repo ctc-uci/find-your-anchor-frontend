@@ -37,4 +37,25 @@ function isZip(message) {
   });
 }
 
-export { isPalindrome, isZip };
+function isValidRange(message) {
+  return this.test('isValidRange', message, function rangeCheck(value) {
+    const { path, createError } = this;
+
+    // Regex pattern to test if range starts
+    // and ends with a digit, and only contains
+    // digits and dashes
+    const re = /(?=^(\d|-)+$)(?=^\d(.*\d)?$)/;
+
+    // Split string on commas, remove whitespace
+    const ranges = value.split(',').map(e => e.replace(/\s+/g, ''));
+
+    // Return true if every range matches
+    if (ranges.every(e => re.test(e))) {
+      return true;
+    }
+
+    return createError({ path, message: message ?? 'Not a range' });
+  });
+}
+
+export { isPalindrome, isZip, isValidRange };

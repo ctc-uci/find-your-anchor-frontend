@@ -6,11 +6,12 @@ import * as yup from 'yup';
 import { ChakraProvider, Text, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 import '../ExportCSV.css';
 
-import { isPalindrome, isZip } from './RHFTestValidators';
+import { isPalindrome, isZip, isValidRange } from './RHFTestValidators';
 
 // Adds custom validators
 yup.addMethod(yup.mixed, 'isPalindrome', isPalindrome);
 yup.addMethod(yup.mixed, 'isZip', isZip);
+yup.addMethod(yup.mixed, 'isValidRange', isValidRange);
 const schema = yup
   .object({
     requiredText: yup.mixed().required(),
@@ -22,6 +23,7 @@ const schema = yup
       .required(),
     palindrome: yup.mixed().isPalindrome(),
     zipcode: yup.mixed().isZip(),
+    range: yup.mixed().isValidRange(),
   })
   .required();
 
@@ -63,6 +65,12 @@ const RHFTest = () => {
             <FormLabel htmlFor="zipcode">Enter a zipcode list</FormLabel>
             <Input id="zipcode" placeholder="e.g. 96152, 91007" {...register('zipcode')} />
             <p className="error-message">{errors.zipcode?.message}</p>
+          </FormControl>
+
+          <FormControl isInvalid={errors?.range}>
+            <FormLabel htmlFor="range">Enter a range of numbers</FormLabel>
+            <Input id="range" placeholder="e.g. 1-9, 6, 12" {...register('range')} />
+            <p className="error-message">{errors.range?.message}</p>
           </FormControl>
 
           <Button type="submit">Submit</Button>
