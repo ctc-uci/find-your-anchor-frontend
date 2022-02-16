@@ -34,7 +34,7 @@
 
 .account-name {
   position: absolute;
-  top: 10px;
+  top: 9px;
   left: 12px;
   color: white;
   font-size: 20px;
@@ -42,6 +42,7 @@
 
 .circle {
   position: absolute;
+  left: 0px;
   height: 48px;
   width: 48px;
   background-color: #3182CE;

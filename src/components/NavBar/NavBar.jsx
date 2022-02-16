@@ -1,30 +1,33 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import './NavBar.css';
 import FYALogo from '../../assets/fya-logo.png';
 
 function NavBar() {
+  const navigate = useNavigate();
+
   return (
     <div className="nav-bar">
       <div className="fya-logo">
         <img src={FYALogo} alt="Find Your Anchor Logo" />
       </div>
       <div className="buttons-and-account">
-        <a className="buttons" href="../add-box-form">
+        <button type="button" className="buttons" onClick={() => navigate('../add-box-form')}>
           Add Box
-        </a>
-        <a className="buttons" href="../upload-csv">
+        </button>
+        <button type="button" className="buttons" onClick={() => navigate('../upload-csv')}>
           Upload CSV
-        </a>
-        <a className="buttons" href="../export-csv">
+        </button>
+        <button type="button" className="buttons" onClick={() => navigate('../export-csv')}>
           Export CSV
-        </a>
-        <a href="../profile">
+        </button>
+        <button type="button" onClick={() => navigate('../profile')}>
           <div className="account">
             <span className="circle" />
             <p className="account-name">SA</p>
           </div>
-        </a>
+        </button>
       </div>
     </div>
   );
