@@ -3,7 +3,7 @@ import { ChakraProvider, Select, Button, Input, FormLabel } from '@chakra-ui/rea
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import './ExportCSV.css';
+import './ExportCSVOld.css';
 import { isValidZip } from '../../common/utils';
 
 function ExportCSVOld() {
