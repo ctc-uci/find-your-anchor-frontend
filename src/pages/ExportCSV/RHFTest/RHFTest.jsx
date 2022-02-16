@@ -34,6 +34,7 @@ const RHFTest = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+    delayError: 750,
   });
 
   const onSubmit = data => alert(JSON.stringify(data, null, 2));
