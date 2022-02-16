@@ -5,23 +5,10 @@ import * as yup from 'yup';
 
 import { ChakraProvider, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 
-import './ExportCSV.css';
+import '../ExportCSV.css';
 
-function isPalindrome(message) {
-  return this.test('isPalindrome', message, function palindromeCheck(value) {
-    const { path, createError } = this;
+import { isPalindrome } from './RHFTestValidators';
 
-    const re = /[\W_]/g;
-    const lowRegStr = value.toLowerCase().replace(re, '');
-    const reverseStr = lowRegStr.split('').reverse().join('');
-
-    if (reverseStr === lowRegStr) {
-      return true;
-    }
-
-    return createError({ path, message: message ?? 'Not a palindrome' });
-  });
-}
 yup.addMethod(yup.mixed, 'isPalindrome', isPalindrome);
 
 const schema = yup
