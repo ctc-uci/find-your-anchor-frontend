@@ -7,6 +7,7 @@ import './DeleteAccountModal.css';
 import FYALogo from '../../../assets/fya-logo-large.svg';
 
 // TODO:
+// - Move this component to src/components
 // - Replace ChakraUI Modal with common component once created
 // - Replace FYALogo with a less blurry svg
 // - Implement deleteAccount
