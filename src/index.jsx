@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import ExportCSV from './pages/ExportCSV/ExportCSV';
+import ExportCSVOld from './pages/ExportCSV/ExportCSVOld';
 import RHFTest from './pages/ExportCSV/RHFTest/RHFTest';
 
 import Map from './components/Map/Map';
@@ -19,6 +20,7 @@ ReactDOM.render(
         <Route path="/dropoff-form" element={<App />} />
         <Route path="/pickup-form" element={<App />} />
         <Route path="/export-csv" element={<ExportCSV />} />
+        <Route path="/export-csv-old" element={<ExportCSVOld />} />
         <Route path="/rhf" element={<RHFTest />} />
       </Routes>
     </Router>
