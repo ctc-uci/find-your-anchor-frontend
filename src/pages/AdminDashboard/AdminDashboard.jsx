@@ -7,30 +7,21 @@ import NavBar from '../../components/NavBar/NavBar';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
-  // const [reviewSubmission, setReviewSubmission] = useState(false);
-  // const [closeButton, setCloseButton] = useState(false);
+  const sideBarComponent = document.getElementsByClassName('side-bar')[0];
+  const mapComponent = document.getElementsByClassName('map')[0];
+  const reviewSubmissionComponent = document.getElementsByClassName('review-submission-button')[0];
 
-  function setReviewSubmission() {
-    const sideBarComponent = document.getElementsByClassName('side-bar')[0];
-    const mapComponent = document.getElementsByClassName('map')[0];
-    const reviewSubmissionComponent = document.getElementsByClassName(
-      'review-submission-button',
-    )[0];
+  const setReviewSubmission = () => {
     sideBarComponent.style.display = 'block';
     mapComponent.style.width = '80vw';
     reviewSubmissionComponent.style.display = 'none';
-  }
+  };
 
-  function setCloseButton() {
-    const sideBarComponent = document.getElementsByClassName('side-bar')[0];
-    const mapComponent = document.getElementsByClassName('map')[0];
-    const reviewSubmissionComponent = document.getElementsByClassName(
-      'review-submission-button',
-    )[0];
+  const setCloseButton = () => {
     sideBarComponent.style.display = 'none';
     mapComponent.style.width = '100vw';
     reviewSubmissionComponent.style.display = 'block';
-  }
+  };
 
   return (
     <div className="admin-dashboard-container">
