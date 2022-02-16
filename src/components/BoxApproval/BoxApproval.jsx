@@ -34,51 +34,67 @@ const BoxApproval = () => {
         pickup,
       },
     });
-    return response.data.rows;
+    if (status === 'under review' && !pickup) {
+      setRelocationBoxesUnderReview(response.data.rows);
+    } else if (status === 'evaluated' && !pickup) {
+      setRelocationBoxesEvaluated(response.data.rows);
+    } else if (status === 'pending changes' && !pickup) {
+      setRelocationBoxesPending(response.data.rows);
+    } else if (status === 'under review' && pickup) {
+      setPickupBoxesUnderReview(response.data.rows);
+    } else {
+      setPickupBoxesEvaluated(response.data.rows);
+    }
   };
 
   // Gets relocation boxes under review
-  const populateRelocationBoxesUnderReview = () => {
-    fetchBoxes('under review', false).then(response => {
-      setRelocationBoxesUnderReview(response);
-    });
-  };
+  // const populateRelocationBoxesUnderReview = () => {
+  //   fetchBoxes('under review', false).then(response => {
+  //     setRelocationBoxesUnderReview(response);
+  //   });
+  // };
 
-  // Gets relocation boxes that have been evaluated
-  const populateRelocationBoxesEvaluated = () => {
-    fetchBoxes('evaluated', false).then(response => {
-      setRelocationBoxesEvaluated(response);
-    });
-  };
+  // // Gets relocation boxes that have been evaluated
+  // const populateRelocationBoxesEvaluated = () => {
+  //   fetchBoxes('evaluated', false).then(response => {
+  //     setRelocationBoxesEvaluated(response);
+  //   });
+  // };
 
-  // aGets relocation boxes that are pending changes
-  const populateRelocationBoxesPending = () => {
-    fetchBoxes('pending changes', false).then(response => {
-      setRelocationBoxesPending(response);
-    });
-  };
+  // // aGets relocation boxes that are pending changes
+  // const populateRelocationBoxesPending = () => {
+  //   fetchBoxes('pending changes', false).then(response => {
+  //     setRelocationBoxesPending(response);
+  //   });
+  // };
 
-  // Gets pickup boxes that have been evaluated
-  const populatePickupBoxesEvaluated = () => {
-    fetchBoxes('evaluated', true).then(response => {
-      setPickupBoxesEvaluated(response);
-    });
-  };
+  // // Gets pickup boxes that have been evaluated
+  // const populatePickupBoxesEvaluated = () => {
+  //   fetchBoxes('evaluated', true).then(response => {
+  //     setPickupBoxesEvaluated(response);
+  //   });
+  // };
 
-  // Gets pickup boxes under review
-  const populatePickupBoxesUnderReview = () => {
-    fetchBoxes('under review', true).then(response => {
-      setPickupBoxesUnderReview(response);
-    });
+  // // Gets pickup boxes under review
+  // const populatePickupBoxesUnderReview = () => {
+  //   fetchBoxes('under review', true).then(response => {
+  //     setPickupBoxesUnderReview(response);
+  //   });
+  // };
+
+  const loadBoxesUnderStatus = async status => {
+    const requests = [fetchBoxes(status, false), fetchBoxes(status, true)];
+    await Promise.all(requests);
   };
 
   // Gets all boxes on page load
   useEffect(() => {
-    populateRelocationBoxesUnderReview();
-    populateRelocationBoxesEvaluated();
-    populateRelocationBoxesPending();
-    populatePickupBoxesEvaluated();
-    populatePickupBoxesUnderReview();
+    // populateRelocationBoxesUnderReview();
+    // populateRelocationBoxesEvaluated();
+    // populateRelocationBoxesPending();
+    // populatePickupBoxesEvaluated();
+    // populatePickupBoxesUnderReview();
+    loadBoxesUnderStatus('under review');
   }, []);
 
   return (
@@ -87,9 +103,9 @@ const BoxApproval = () => {
         <Tabs align="center" variant="line">
           <div>
             <TabList>
-              <Tab>Under Review</Tab>
-              <Tab>Pending Changes</Tab>
-              <Tab>Evaluated</Tab>
+              <Tab onClick={() => loadBoxesUnderStatus('under review')}>Under Review</Tab>
+              <Tab onClick={() => loadBoxesUnderStatus('pending changes')}>Pending Changes</Tab>
+              <Tab onClick={() => loadBoxesUnderStatus('evaluated')}>Evaluated</Tab>
             </TabList>
           </div>
           <div className="boxList">
@@ -108,9 +124,8 @@ const BoxApproval = () => {
                       generalLocation={boxData.general_location}
                       message={boxData.message}
                       date={boxData.date}
-                      setRelocationBoxesUnderReview={setRelocationBoxesUnderReview}
-                      setRelocationBoxesEvaluated={setRelocationBoxesEvaluated}
-                      setRelocationBoxesPending={setRelocationBoxesPending}
+                      status={boxData.status}
+                      approved={boxData.approved}
                       fetchBoxes={fetchBoxes}
                     />
                   ))}
@@ -125,8 +140,8 @@ const BoxApproval = () => {
                       zipCode={boxData.zip_code}
                       picture={boxData.picture}
                       date={boxData.date}
-                      setPickupBoxesEvaluated={setPickupBoxesEvaluated}
-                      setPickupBoxesUnderReview={setPickupBoxesUnderReview}
+                      status={boxData.status}
+                      approved={boxData.approved}
                       fetchBoxes={fetchBoxes}
                     />
                   ))}
@@ -146,9 +161,8 @@ const BoxApproval = () => {
                       generalLocation={boxData.general_location}
                       message={boxData.message}
                       date={boxData.date}
-                      setRelocationBoxesUnderReview={setRelocationBoxesUnderReview}
-                      setRelocationBoxesEvaluated={setRelocationBoxesEvaluated}
-                      setRelocationBoxesPending={setRelocationBoxesPending}
+                      status={boxData.status}
+                      approved={boxData.approved}
                       fetchBoxes={fetchBoxes}
                     />
                   ))}
@@ -168,9 +182,8 @@ const BoxApproval = () => {
                       generalLocation={boxData.general_location}
                       message={boxData.message}
                       date={boxData.date}
-                      setRelocationBoxesUnderReview={setRelocationBoxesUnderReview}
-                      setRelocationBoxesEvaluated={setRelocationBoxesEvaluated}
-                      setRelocationBoxesPending={setRelocationBoxesPending}
+                      status={boxData.status}
+                      approved={boxData.approved}
                       fetchBoxes={fetchBoxes}
                     />
                   ))}
@@ -185,8 +198,8 @@ const BoxApproval = () => {
                       zipCode={boxData.zip_code}
                       picture={boxData.picture}
                       date={boxData.date}
-                      setPickupBoxesEvaluated={setPickupBoxesEvaluated}
-                      setPickupBoxesUnderReview={setPickupBoxesUnderReview}
+                      status={boxData.status}
+                      approved={boxData.approved}
                       fetchBoxes={fetchBoxes}
                     />
                   ))}

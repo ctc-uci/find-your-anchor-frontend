@@ -21,52 +21,58 @@ import utils from '../../common/utils';
 // import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 
 function PickupBox({
+  approved,
   boxID,
   boxHolderName,
   boxHolderEmail,
   zipCode,
   picture,
   date,
+  status,
   fetchBoxes,
-  setPickupBoxesUnderReview,
-  setPickupBoxesEvaluated,
+  // setPickupBoxesUnderReview,
+  // setPickupBoxesEvaluated,
 }) {
   PickupBox.propTypes = {
+    approved: PropTypes.bool.isRequired,
     boxID: PropTypes.number.isRequired,
     boxHolderName: PropTypes.string.isRequired,
     boxHolderEmail: PropTypes.string.isRequired,
     zipCode: PropTypes.number.isRequired,
     picture: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
     fetchBoxes: PropTypes.func.isRequired,
-    setPickupBoxesUnderReview: PropTypes.func.isRequired,
-    setPickupBoxesEvaluated: PropTypes.func.isRequired,
+    // setPickupBoxesUnderReview: PropTypes.func.isRequired,
+    // setPickupBoxesEvaluated: PropTypes.func.isRequired,
   };
 
-  const updateBoxStatus = (id, stat) => {
+  const updateBoxStatus = async (id, stat) => {
     utils
       .put('/box/updateStatus', {
         boxID: id,
         status: stat,
       })
       .then(async () => {
-        const pickupBoxesUnderReview = await fetchBoxes('under review', true);
-        setPickupBoxesUnderReview(pickupBoxesUnderReview);
-        const pickupBoxesEvaluated = await fetchBoxes('evaluated', true);
-        setPickupBoxesEvaluated(pickupBoxesEvaluated);
+        await fetchBoxes('under review', true);
+        // const pickupBoxesUnderReview = await fetchBoxes('under review', true);
+        // setPickupBoxesUnderReview(pickupBoxesUnderReview);
+        // const pickupBoxesEvaluated = await fetchBoxes('evaluated', true);
+        // setPickupBoxesEvaluated(pickupBoxesEvaluated);
       });
   };
 
-  const approvePickupBoxFromUR = id => {
+  const approvePickupBoxFromUR = async id => {
     utils
       .put('/box/approveBox', {
         boxID: id,
       })
       .then(async () => {
-        const pickupBoxesUnderReview = await fetchBoxes('under review', true);
-        setPickupBoxesUnderReview(pickupBoxesUnderReview);
-        const pickupBoxesEvaluated = await fetchBoxes('evaluated', true);
-        setPickupBoxesEvaluated(pickupBoxesEvaluated);
+        await fetchBoxes('under review', true);
+        // const pickupBoxesUnderReview = await fetchBoxes('under review', true);
+        // setPickupBoxesUnderReview(pickupBoxesUnderReview);
+        // const pickupBoxesEvaluated = await fetchBoxes('evaluated', true);
+        // setPickupBoxesEvaluated(pickupBoxesEvaluated);
       });
   };
 
@@ -78,7 +84,10 @@ function PickupBox({
 
   return (
     <ChakraProvider>
-      <div className="box">
+      <div
+        className={`box ${status === 'evaluated' && approved === true ? 'box-approved' : ''}
+        ${status === 'evaluated' && approved === false ? 'box-rejected' : ''}`}
+      >
         <Accordion allowToggle>
           <AccordionItem>
             <h3>
@@ -113,29 +122,31 @@ function PickupBox({
                   </FormLabel>
                   <Input isReadOnly id="zipCode" type="zipCode" placeholder={zipCode} />
                 </FormControl>
-                <div className="iconRow">
-                  <div className="closeIcon">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        updateBoxStatus(boxID, 'evaluated');
-                        // <RejectBoxPopup />;
-                      }}
-                    >
-                      <img src={RejectBoxIcon} alt="" />
-                    </button>
+                {status !== 'evaluated' && (
+                  <div className="iconRow">
+                    <div className="closeIcon">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          updateBoxStatus(boxID, 'evaluated');
+                          // <RejectBoxPopup />;
+                        }}
+                      >
+                        <img src={RejectBoxIcon} alt="" />
+                      </button>
+                    </div>
+                    <div className="checkIcon">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          approvePickupBoxFromUR(boxID);
+                        }}
+                      >
+                        <img src={ApproveBoxIcon} alt="" />
+                      </button>
+                    </div>
                   </div>
-                  <div className="checkIcon">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        approvePickupBoxFromUR(boxID);
-                      }}
-                    >
-                      <img src={ApproveBoxIcon} alt="" />
-                    </button>
-                  </div>
-                </div>
+                )}
               </div>
             </AccordionPanel>
           </AccordionItem>

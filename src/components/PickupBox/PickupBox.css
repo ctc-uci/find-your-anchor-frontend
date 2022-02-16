@@ -4,6 +4,19 @@
   border-radius: 10px;
   background-color: white;
 }
+
+.box-approved {
+  background-color: #C6F6D5;
+}
+
+.box-rejected {
+  background-color: #FED7D7;
+}
+
+.box-pending {
+  background-color: #BEE3F8;
+}
+
 .arrowButton {
   float: right;
 }
