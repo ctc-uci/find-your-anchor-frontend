@@ -46,15 +46,24 @@ function isValidRange(message) {
     // digits and dashes
     const re = /(?=^(\d|-)+$)(?=^\d(.*\d)?$)/;
 
-    // Split string on commas, remove whitespace
+    // Split string on commas, remove whitespaces
     const ranges = value.split(',').map(e => e.replace(/\s+/g, ''));
 
-    // Return true if every range matches
-    if (ranges.every(e => re.test(e))) {
+    // Helper functions to check if every range
+    // matches regex, and range is increasing
+    const validChars = e => re.test(e);
+    const increasingRange = e => {
+      if (e.includes('-')) {
+        const v = e.split('-').map(n => Number(n));
+        return v[0] < v[1];
+      }
       return true;
-    }
+    };
 
-    return createError({ path, message: message ?? 'Not a range' });
+    // Call helper functions on every array element
+    return ranges.every(e => validChars(e) && increasingRange(e))
+      ? true
+      : createError({ path, message: message ?? 'Not a range' });
   });
 }
 
