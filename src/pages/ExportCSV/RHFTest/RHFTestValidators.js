@@ -20,20 +20,12 @@ function isZip(message) {
   return this.test('isZip', message, function zipCheck(value) {
     const { path, createError } = this;
 
-    if (value.includes(', ')) {
-      const ranges = value.split(', ');
-      for (let i = 0; i < ranges.length; i += 1) {
-        if (ranges[i] === '') {
-          return true;
-        }
-        if (!isValidZip(ranges[i])) {
-          return true;
-        }
-      }
-    } else if (!isValidZip(value)) {
-      return true;
-    }
-    return createError({ path, message: message ?? 'Not a valid Zip' });
+    // Split string on commas, remove whitespaces
+    const zips = value.split(',').map(e => e.replace(/\s+/g, ''));
+
+    return zips.every(e => isValidZip(e))
+      ? true
+      : createError({ path, message: message ?? 'Not a valid zip code' });
   });
 }
 

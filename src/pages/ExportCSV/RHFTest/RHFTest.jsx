@@ -62,7 +62,7 @@ const RHFTest = () => {
             <p className="error-message">{errors.palindrome?.message}</p>
           </FormControl>
 
-          <FormControl isInvalid={errors?.zip}>
+          <FormControl isInvalid={errors?.zipcode}>
             <FormLabel htmlFor="zipcode">Enter a zipcode list</FormLabel>
             <Input id="zipcode" placeholder="e.g. 96152, 91007" {...register('zipcode')} />
             <p className="error-message">{errors.zipcode?.message}</p>
