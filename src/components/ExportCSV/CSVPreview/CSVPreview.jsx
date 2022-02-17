@@ -12,16 +12,22 @@ const CSVPreview = ({ data }) => {
   );
 };
 
+// CSVPreview.propTypes = {
+//   data: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       date: PropTypes.string,
+//       boxNum: PropTypes.number,
+//       zipCode: PropTypes.string,
+//       organicLaunch: PropTypes.bool,
+//       imgUrl: PropTypes.string,
+//     }),
+//   ).isRequired,
+// };
+
 CSVPreview.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      date: PropTypes.string,
-      boxNum: PropTypes.number,
-      zipCode: PropTypes.string,
-      organicLaunch: PropTypes.bool,
-      imgUrl: PropTypes.string,
-    }),
-  ).isRequired,
+  data: PropTypes.shape({
+    temp: PropTypes.string,
+  }).isRequired,
 };
 
 export default CSVPreview;

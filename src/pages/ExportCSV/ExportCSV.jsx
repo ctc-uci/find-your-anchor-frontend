@@ -9,7 +9,7 @@ const ExportCSV = () => {
   // Used to connect submit button outside form
   const formID = 'export-csv-form';
 
-  const [formValues, setFormValues] = useState([]);
+  const [formValues, setFormValues] = useState({});
 
   return (
     <ChakraProvider>
