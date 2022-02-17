@@ -7,59 +7,40 @@ import NavBar from '../../components/NavBar/NavBar';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
-  const setReviewSubmission = () => {
-    const sideBarComponent = document.getElementsByClassName('side-bar')[0];
-    const mapComponent = document.getElementsByClassName('map')[0];
-    const reviewSubmissionComponent = document.getElementsByClassName(
-      'review-submission-button',
-    )[0];
-    sideBarComponent.style.display = 'block';
-    mapComponent.style.width = '80vw';
-    reviewSubmissionComponent.style.display = 'none';
-  };
-
-  const setCloseButton = () => {
-    const sideBarComponent = document.getElementsByClassName('side-bar')[0];
-    const mapComponent = document.getElementsByClassName('map')[0];
-    const reviewSubmissionComponent = document.getElementsByClassName(
-      'review-submission-button',
-    )[0];
-    sideBarComponent.style.display = 'none';
-    mapComponent.style.width = '100vw';
-    reviewSubmissionComponent.style.display = 'block';
-  };
+  const [showReview, setShowReview] = React.useState();
 
   return (
-    <div className="admin-dashboard-container">
-      <div className="admin-nav-bar">
-        <NavBar />
-      </div>
-      <div className="side-bar-and-map-container">
-        <div className="side-bar">
-          <BoxApproval />
-          <Button
-            variant="link"
-            colorScheme="white"
-            className="close-button"
-            onClick={() => setCloseButton()}
-          >
-            Close
-          </Button>
+    <ChakraProvider>
+      <div className="admin-dashboard-container">
+        <div className="admin-nav-bar">
+          <NavBar />
         </div>
-        <div className="map">
-          <Map />
-        </div>
-        <ChakraProvider>
+        <div className="side-bar-and-map-container">
+          <div className={`side-bar ${showReview ? 'show-review' : ''}`}>
+            <BoxApproval />
+            <Button
+              variant="link"
+              colorScheme="white"
+              className="close-button"
+              onClick={() => setShowReview(false)}
+            >
+              Close
+            </Button>
+          </div>
+          <div className={`map ${showReview ? 'show-review' : ''}`}>
+            <Map />
+          </div>
+
           <Button
             colorScheme="blue"
-            className="review-submission-button"
-            onClick={() => setReviewSubmission()}
+            className={`review-submission-button ${showReview ? 'show-review' : ''}`}
+            onClick={() => setShowReview(true)}
           >
             Review Submission
           </Button>
-        </ChakraProvider>
+        </div>
       </div>
-    </div>
+    </ChakraProvider>
   );
 }
 

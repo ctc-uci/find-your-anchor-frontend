@@ -13,7 +13,7 @@
   width: 50px;
 }
 
-.buttons-and-account {
+.navbar-buttons-and-account {
   margin-right: 10px;
   gap: 20px;
 
@@ -22,17 +22,17 @@
   align-items: center;
 }
 
-.buttons {
+.navbar-buttons {
   font-size: 18px;
 }
 
-.account {
+.navbar-account {
   position: relative;
   height: 50px;
   width: 50px;
 }
 
-.account-name {
+.navbar-account-name {
   position: absolute;
   top: 9px;
   left: 12px;
@@ -40,7 +40,7 @@
   font-size: 20px;
 }
 
-.circle {
+.navbar-account-circle {
   position: absolute;
   left: 0px;
   height: 48px;
