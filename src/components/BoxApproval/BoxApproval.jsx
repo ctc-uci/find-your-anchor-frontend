@@ -6,6 +6,9 @@ import './BoxApproval.css';
 import FYABackend from '../../common/utils';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
+import RequestChangesMiniIcon from '../BoxIcons/RequestChangesMiniIcon.svg';
+import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
+import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 // Box ID: int
 // isApproved: boolean
 // message: String
@@ -47,41 +50,6 @@ const BoxApproval = () => {
     }
   };
 
-  // Gets relocation boxes under review
-  // const populateRelocationBoxesUnderReview = () => {
-  //   fetchBoxes('under review', false).then(response => {
-  //     setRelocationBoxesUnderReview(response);
-  //   });
-  // };
-
-  // // Gets relocation boxes that have been evaluated
-  // const populateRelocationBoxesEvaluated = () => {
-  //   fetchBoxes('evaluated', false).then(response => {
-  //     setRelocationBoxesEvaluated(response);
-  //   });
-  // };
-
-  // // aGets relocation boxes that are pending changes
-  // const populateRelocationBoxesPending = () => {
-  //   fetchBoxes('pending changes', false).then(response => {
-  //     setRelocationBoxesPending(response);
-  //   });
-  // };
-
-  // // Gets pickup boxes that have been evaluated
-  // const populatePickupBoxesEvaluated = () => {
-  //   fetchBoxes('evaluated', true).then(response => {
-  //     setPickupBoxesEvaluated(response);
-  //   });
-  // };
-
-  // // Gets pickup boxes under review
-  // const populatePickupBoxesUnderReview = () => {
-  //   fetchBoxes('under review', true).then(response => {
-  //     setPickupBoxesUnderReview(response);
-  //   });
-  // };
-
   const loadBoxesUnderStatus = async status => {
     const requests = [fetchBoxes(status, false), fetchBoxes(status, true)];
     await Promise.all(requests);
@@ -89,11 +57,6 @@ const BoxApproval = () => {
 
   // Gets all boxes on page load
   useEffect(() => {
-    // populateRelocationBoxesUnderReview();
-    // populateRelocationBoxesEvaluated();
-    // populateRelocationBoxesPending();
-    // populatePickupBoxesEvaluated();
-    // populatePickupBoxesUnderReview();
     loadBoxesUnderStatus('under review');
   }, []);
 
@@ -126,6 +89,9 @@ const BoxApproval = () => {
                       date={boxData.date}
                       status={boxData.status}
                       approved={boxData.approved}
+                      changesRequested={boxData.changes_requested}
+                      rejectionReason={boxData.rejection_reason}
+                      messageStatus={boxData.message_status}
                       fetchBoxes={fetchBoxes}
                     />
                   ))}
@@ -163,6 +129,9 @@ const BoxApproval = () => {
                       date={boxData.date}
                       status={boxData.status}
                       approved={boxData.approved}
+                      changesRequested={boxData.changes_requested}
+                      rejectionReason={boxData.rejection_reason}
+                      messageStatus={boxData.message_status}
                       fetchBoxes={fetchBoxes}
                     />
                   ))}
@@ -184,6 +153,9 @@ const BoxApproval = () => {
                       date={boxData.date}
                       status={boxData.status}
                       approved={boxData.approved}
+                      changesRequested={boxData.changes_requested}
+                      rejectionReason={boxData.rejection_reason}
+                      messageStatus={boxData.message_status}
                       fetchBoxes={fetchBoxes}
                     />
                   ))}
@@ -200,6 +172,7 @@ const BoxApproval = () => {
                       date={boxData.date}
                       status={boxData.status}
                       approved={boxData.approved}
+                      rejectionReason={boxData.rejection_reason}
                       fetchBoxes={fetchBoxes}
                     />
                   ))}
@@ -208,6 +181,20 @@ const BoxApproval = () => {
                 </div>
               </TabPanel>
             </TabPanels>
+          </div>
+          <div className="legend">
+            <div className="request-changes-row">
+              <img className="request-changes-icon" src={RequestChangesMiniIcon} alt="" />
+              <p className="request-changes-text">Request Changes</p>
+            </div>
+            <div className="relocate-box-row">
+              <img className="relocate-box-icon" src={RelocateBoxIcon} alt="" />
+              <p className="relocate-box-text">Relocated</p>
+            </div>
+            <div className="pickup-box-row">
+              <img className="pickup-box-icon" src={PickupBoxIcon} alt="" />
+              <p className="pickup-box-text">Picked Up</p>
+            </div>
           </div>
         </Tabs>
       </div>

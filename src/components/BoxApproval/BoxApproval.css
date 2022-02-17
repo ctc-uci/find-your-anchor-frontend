@@ -4,12 +4,64 @@
   height: 100vh;
   overflow: hidden;
   background-color: #e5e5e5;
-  
+  position: relative;
+
 }
 
 .boxList {
   overflow-x: hidden;
   overflow-y: auto;
-  
-  height: 95vh;
+
+  height: 80vh;
+}
+
+.legend {
+  position: absolute;
+    bottom: 0;
+    width :100%;
+    margin: 5%;
+    height:20vh;
+}
+
+.request-changes-row {
+  width :100%;
+  margin: 1% 1% 1% 1%;
+}
+
+.relocate-box-row {
+  width :100%;
+  margin: 1% 1% 1% 1%;
+}
+
+.pickup-box-row {
+  width :100%;
+  margin: 1% 1% 1% 1%;
+}
+
+.request-changes-icon {
+  float:left;
+  margin-right:4%;
+}
+
+.relocate-box-icon {
+  float:left;
+  margin-right:4%;
+}
+
+.pickup-box-icon {
+  float:left;
+  margin-right:4%;
+}
+
+.request-changes-text {
+  text-align: left;
+
+}
+
+.relocate-box-text {
+  text-align: left;
+}
+
+.pickup-box-text {
+  text-align: left;
 }

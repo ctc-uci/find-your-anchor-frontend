@@ -19,41 +19,37 @@ const RequestChangesPopup = ({
   isOpen,
   setIsOpen,
   boxID,
-  boxHolderNameState,
-  boxHolderEmailState,
-  zipCodeState,
-  generalLocationState,
-  messageState,
+  boxHolderName,
+  boxHolderEmail,
+  zipCode,
+  generalLocation,
+  message,
+  messageStatus,
   fetchBoxes,
 }) => {
   const cancelRef = React.useRef();
   const [changesRequested, setChangesRequested] = useState('');
-  const updateBoxStatus = async (id, stat) => {
+
+  const handleRequestChangesClicked = async () => {
     await FYABackend.put('/box/relocationBoxes/update', {
-      boxID: id,
-      status: stat,
-      boxHolderNameState,
-      boxHolderEmailState,
-      zipCodeState,
-      generalLocationState,
-      messageState,
+      boxID,
+      status: 'pending changes',
+      boxHolderName,
+      boxHolderEmail,
+      zipCode,
+      generalLocation,
+      message,
+      messageStatus,
+      changesRequested,
     });
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
     await Promise.all(requests);
-  };
-
-  const handleRequestChangesClicked = async () => {
-    await updateBoxStatus(boxID, 'pending changes');
     setIsOpen(false);
   };
 
   return (
     <ChakraProvider>
       <div className="requestChangesPopup">
-        {/* <Button colorScheme="red" onClick={() => setIsOpen(true)} className="requestChangesButton">
-          Request Changes
-        </Button> */}
-
         <AlertDialog
           isOpen={isOpen}
           leastDestructiveRef={cancelRef}
@@ -99,11 +95,12 @@ RequestChangesPopup.propTypes = {
   boxID: PropTypes.number.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
-  boxHolderNameState: PropTypes.string.isRequired,
-  boxHolderEmailState: PropTypes.string.isRequired,
-  zipCodeState: PropTypes.number.isRequired,
-  generalLocationState: PropTypes.string.isRequired,
-  messageState: PropTypes.string.isRequired,
+  boxHolderName: PropTypes.string.isRequired,
+  boxHolderEmail: PropTypes.string.isRequired,
+  zipCode: PropTypes.number.isRequired,
+  generalLocation: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+  messageStatus: PropTypes.string.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
 };
 

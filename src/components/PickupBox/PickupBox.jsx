@@ -1,4 +1,4 @@
-import { React } from 'react';
+import { React, useState } from 'react';
 import {
   Accordion,
   AccordionItem,
@@ -9,15 +9,16 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Textarea,
 } from '@chakra-ui/react';
 
 import './PickupBox.css';
 import PropTypes from 'prop-types';
-// import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
+import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import ApproveBoxIcon from '../BoxIcons/ApproveBoxIcon.svg';
 import RejectBoxIcon from '../BoxIcons/RejectBoxIcon.svg';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
-import utils from '../../common/utils';
+import FYABackend from '../../common/utils';
 // import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 
 function PickupBox({
@@ -29,58 +30,20 @@ function PickupBox({
   picture,
   date,
   status,
+  rejectionReason,
   fetchBoxes,
   // setPickupBoxesUnderReview,
   // setPickupBoxesEvaluated,
 }) {
-  PickupBox.propTypes = {
-    approved: PropTypes.bool.isRequired,
-    boxID: PropTypes.number.isRequired,
-    boxHolderName: PropTypes.string.isRequired,
-    boxHolderEmail: PropTypes.string.isRequired,
-    zipCode: PropTypes.number.isRequired,
-    picture: PropTypes.string.isRequired,
-    date: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired,
-    fetchBoxes: PropTypes.func.isRequired,
-    // setPickupBoxesUnderReview: PropTypes.func.isRequired,
-    // setPickupBoxesEvaluated: PropTypes.func.isRequired,
-  };
-
-  const updateBoxStatus = async (id, stat) => {
-    utils
-      .put('/box/updateStatus', {
-        boxID: id,
-        status: stat,
-      })
-      .then(async () => {
-        await fetchBoxes('under review', true);
-        // const pickupBoxesUnderReview = await fetchBoxes('under review', true);
-        // setPickupBoxesUnderReview(pickupBoxesUnderReview);
-        // const pickupBoxesEvaluated = await fetchBoxes('evaluated', true);
-        // setPickupBoxesEvaluated(pickupBoxesEvaluated);
-      });
-  };
+  const [rejectBoxPopupIsOpen, setRejectBoxPopupIsOpen] = useState(false);
 
   const approvePickupBoxFromUR = async id => {
-    utils
-      .put('/box/approveBox', {
-        boxID: id,
-      })
-      .then(async () => {
-        await fetchBoxes('under review', true);
-        // const pickupBoxesUnderReview = await fetchBoxes('under review', true);
-        // setPickupBoxesUnderReview(pickupBoxesUnderReview);
-        // const pickupBoxesEvaluated = await fetchBoxes('evaluated', true);
-        // setPickupBoxesEvaluated(pickupBoxesEvaluated);
-      });
+    FYABackend.put('/box/approveBox', {
+      boxID: id,
+    }).then(async () => {
+      await fetchBoxes('under review', true);
+    });
   };
-
-  // const rejectPickupBoxFromUR = id => {
-  //   utils.put('/pickupBoxes/rejected', {
-  //     boxID: id,
-  //   });
-  // };
 
   return (
     <ChakraProvider>
@@ -121,6 +84,14 @@ function PickupBox({
                     Zip Code
                   </FormLabel>
                   <Input isReadOnly id="zipCode" type="zipCode" placeholder={zipCode} />
+                  {status === 'evaluated' && !approved && (
+                    <>
+                      <FormLabel htmlFor="rejectionReason" marginTop="5%">
+                        Rejection Reason
+                      </FormLabel>
+                      <Textarea isReadOnly value={rejectionReason} resize="vertical" />
+                    </>
+                  )}
                 </FormControl>
                 {status !== 'evaluated' && (
                   <div className="iconRow">
@@ -128,8 +99,7 @@ function PickupBox({
                       <button
                         type="button"
                         onClick={() => {
-                          updateBoxStatus(boxID, 'evaluated');
-                          // <RejectBoxPopup />;
+                          setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen);
                         }}
                       >
                         <img src={RejectBoxIcon} alt="" />
@@ -145,6 +115,15 @@ function PickupBox({
                         <img src={ApproveBoxIcon} alt="" />
                       </button>
                     </div>
+                    <RejectBoxPopup
+                      isOpen={rejectBoxPopupIsOpen}
+                      setIsOpen={setRejectBoxPopupIsOpen}
+                      boxID={boxID}
+                      boxHolderName={boxHolderName}
+                      boxHolderEmail={boxHolderEmail}
+                      zipCode={zipCode}
+                      fetchBoxes={fetchBoxes}
+                    />
                   </div>
                 )}
               </div>
@@ -155,4 +134,18 @@ function PickupBox({
     </ChakraProvider>
   );
 }
+
+PickupBox.propTypes = {
+  approved: PropTypes.bool.isRequired,
+  boxID: PropTypes.number.isRequired,
+  boxHolderName: PropTypes.string.isRequired,
+  boxHolderEmail: PropTypes.string.isRequired,
+  zipCode: PropTypes.number.isRequired,
+  picture: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
+  rejectionReason: PropTypes.string.isRequired,
+  fetchBoxes: PropTypes.func.isRequired,
+};
+
 export default PickupBox;

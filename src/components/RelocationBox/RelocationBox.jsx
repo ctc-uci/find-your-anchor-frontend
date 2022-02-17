@@ -22,6 +22,9 @@ import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 import SaveChangesIcon from '../BoxIcons/SaveChangesIcon.svg';
 import utils from '../../common/utils';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
+import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
+import MessageApprovedIcon from '../BoxIcons/MessageApprovedIcon.svg';
+import MessageRejectedIcon from '../BoxIcons/MessageRejectedIcon.svg';
 
 const RelocationBox = ({
   approved,
@@ -34,60 +37,52 @@ const RelocationBox = ({
   message,
   date,
   status,
-  // setRelocationBoxesUnderReview,
-  // setRelocationBoxesEvaluated,
-  // setRelocationBoxesPending,
+  changesRequested,
+  rejectionReason,
+  messageStatus,
   fetchBoxes,
 }) => {
-  // key={boxData.box_id}
-  //             box_id={boxData.box_id}
-  //             boxholder_name={boxData.boxholder_name}
-  //             boxholder_email={boxData.boxholder_email}
-  //             zip_code={boxData.zip_code}
-  //             picture={boxData.picture}
-  //             genera_location={boxData.general_location}
-  //             message={boxData.message}
-  //             date={boxData.date}
+  const [rejectBoxPopupIsOpen, setRejectBoxPopupIsOpen] = useState(false);
   const [requestChangesPopupIsOpen, setRequestChangesPopupIsOpen] = useState(false);
   const [boxHolderNameState, setBoxHolderNameState] = useState(boxHolderName);
   const [boxHolderEmailState, setBoxHolderEmailState] = useState(boxHolderEmail);
   const [zipCodeState, setZipCodeState] = useState(zipCode);
   const [generalLocationState, setGeneralLocationState] = useState(generalLocation);
   const [messageState, setMessageState] = useState(message);
+  const [messageStatusState, setMessageStatusState] = useState(messageStatus);
 
-  const updateBoxStatus = async (id, stat) => {
+  const updateBoxStatus = async stat => {
     await utils.put('/box/relocationBoxes/update', {
-      boxID: id,
+      boxID,
       status: stat,
-      boxHolderNameState,
-      boxHolderEmailState,
-      zipCodeState,
-      generalLocationState,
-      messageState,
+      boxHolderName: boxHolderNameState,
+      boxHolderEmail: boxHolderEmailState,
+      zipCode: zipCodeState,
+      generalLocation: generalLocationState,
+      message: messageState,
+      messageStatus: messageStatusState,
     });
-    // const requests = [fetchBoxes('under review', false)];
+
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
     await Promise.all(requests);
-    // const relocationBoxesUnderReview = await fetchBoxes('under review', false);
-    // setRelocationBoxesUnderReview(relocationBoxesUnderReview);
-    // const relocationBoxesEvaluated = await fetchBoxes('evaluated', false);
-    // setRelocationBoxesEvaluated(relocationBoxesEvaluated);
-    // const relocationBoxesPending = await fetchBoxes('pending changes', false);
-    // setRelocationBoxesPending(relocationBoxesPending);
   };
 
   const approveRelocationBoxFromUR = async id => {
+    await utils.put('/box/relocationBoxes/update', {
+      boxID,
+      status,
+      boxHolderName: boxHolderNameState,
+      boxHolderEmail: boxHolderEmailState,
+      zipCode: zipCodeState,
+      generalLocation: generalLocationState,
+      message: messageStatusState === 'rejected' ? '' : messageState,
+      messageStatus: messageStatusState,
+    });
     await utils.put('/box/approveBox', {
       boxID: id,
     });
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
     await Promise.all(requests);
-    // const relocationBoxesUnderReview = await fetchBoxes('under review', false);
-    // setRelocationBoxesUnderReview(relocationBoxesUnderReview);
-    // const relocationBoxesEvaluated = await fetchBoxes('evaluated', false);
-    // setRelocationBoxesEvaluated(relocationBoxesEvaluated);
-    // const relocationBoxesPending = await fetchBoxes('pending changes', false);
-    // setRelocationBoxesPending(relocationBoxesPending);
   };
 
   return (
@@ -101,23 +96,23 @@ const RelocationBox = ({
           <AccordionItem>
             <h3>
               <AccordionButton>
-                <div className="pictureDiv">
+                <div className="picture-div">
                   <img src={RelocateBoxIcon} alt=" " />
                 </div>
-                <div className="titleDiv">
+                <div className="title-div">
                   <p className="title">
-                    <p className="boxNumber">Box #{boxID}</p>
+                    <p className="box-number">Box #{boxID}</p>
                     {date}
                   </p>
                 </div>
-                <div className="arrowButton">
+                <div className="arrow-button">
                   <AccordionIcon />
                 </div>
               </AccordionButton>
             </h3>
-            <AccordionPanel pb={4}>
-              <div className="boxDetails">
-                <img src={picture} alt=" " className="imageCorners" />
+            <AccordionPanel pb={4} className="accordion-panel">
+              <div className="box-details">
+                <img src={picture} alt=" " className="image-corners" />
                 <FormControl>
                   <FormLabel htmlFor="name" marginTop="5%">
                     Name
@@ -125,8 +120,8 @@ const RelocationBox = ({
                   <Input
                     isReadOnly={status !== 'pending changes'}
                     id="name"
-                    type="text"
-                    value={boxHolderName}
+                    // type="text"
+                    value={boxHolderNameState}
                     onChange={e => setBoxHolderNameState(e.target.value)}
                   />
                   <FormLabel htmlFor="email" marginTop="5%">
@@ -136,7 +131,7 @@ const RelocationBox = ({
                     isReadOnly={status !== 'pending changes'}
                     id="email"
                     type="text"
-                    value={boxHolderEmail}
+                    value={boxHolderEmailState}
                     onChange={e => setBoxHolderEmailState(e.target.value)}
                   />
                   <FormLabel htmlFor="zipCode" marginTop="5%">
@@ -170,40 +165,113 @@ const RelocationBox = ({
                     Message
                   </FormLabel>
                   <Textarea
+                    className={`${messageStatus === 'approved' ? 'message-approved' : ''}
+                    ${messageStatus === 'rejected' ? 'message-rejected' : ''}`}
                     isReadOnly={status !== 'pending changes'}
                     value={messageState}
                     onChange={e => setMessageState(e.target.value)}
                   />
+                  <div className="message-functionality">
+                    {messageStatus === 'approved' && (
+                      <>
+                        <button type="button" className="approval-button">
+                          <img src={MessageApprovedIcon} alt="" />
+                        </button>
+                        <p className="approval-message">Message Approved</p>
+                      </>
+                    )}
+                    {messageStatus === 'rejected' && (
+                      <>
+                        <button type="button" className="rejection-button">
+                          <img src={MessageRejectedIcon} alt="" />
+                        </button>
+                        <p className="rejection-message">Message Denied</p>
+                      </>
+                    )}
+                    {status !== 'evaluated' && (
+                      <>
+                        <button
+                          type="button"
+                          className="message-approved"
+                          onClick={async () => {
+                            setMessageStatusState('approved');
+                            await utils.put('/box/relocationBoxes/update', {
+                              boxID,
+                              status,
+                              boxHolderNameState,
+                              boxHolderEmailState,
+                              zipCodeState,
+                              generalLocationState,
+                              messageState,
+                              messageStatus: 'approved',
+                            });
+                            await fetchBoxes(status, false);
+                          }}
+                        >
+                          <img src={MessageApprovedIcon} alt="" />
+                        </button>
+                        <button
+                          type="button"
+                          className="message-rejected"
+                          onClick={async () => {
+                            setMessageStatusState('rejected');
+                            await utils.put('/box/relocationBoxes/update', {
+                              boxID,
+                              status,
+                              boxHolderNameState,
+                              boxHolderEmailState,
+                              zipCodeState,
+                              generalLocationState,
+                              messageState,
+                              messageStatus: 'rejected',
+                            });
+                            await fetchBoxes(status, false);
+                          }}
+                        >
+                          <img src={MessageRejectedIcon} alt="" />
+                        </button>
+                      </>
+                    )}
+                  </div>
                   {status === 'pending changes' && (
-                    <>
+                    <div>
                       <FormLabel htmlFor="changesRequested" marginTop="5%">
                         Changes Requested
                       </FormLabel>
-                      <Textarea value={message} resize="vertical" />
+                      <Textarea isReadOnly value={changesRequested} resize="vertical" />
+                    </div>
+                  )}
+                  {status === 'evaluated' && !approved && (
+                    <>
+                      <FormLabel htmlFor="rejectionReason" marginTop="5%">
+                        Rejection Reason
+                      </FormLabel>
+                      <Textarea isReadOnly value={rejectionReason} resize="vertical" />
                     </>
                   )}
                 </FormControl>
 
                 {status !== 'evaluated' && (
-                  <div className="iconRow">
-                    <div className="closeIcon">
+                  <div className="icon-row">
+                    <div className="close-icon">
                       <button
                         type="button"
-                        onClick={() => {
-                          updateBoxStatus(boxID, 'evaluated');
+                        onClick={async () => {
+                          setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen);
                         }}
                       >
                         <img src={RejectBoxIcon} alt="" />
                       </button>
                     </div>
-                    <div className="arrowForwardIcon">
+                    <div className="arrow-forward-icon">
                       <button
                         type="button"
                         onClick={async () => {
                           if (status === 'under review') {
                             setRequestChangesPopupIsOpen(!requestChangesPopupIsOpen);
+                          } else {
+                            await updateBoxStatus('pending changes');
                           }
-                          // await updateBoxStatus(boxID, 'pending changes');
                         }}
                       >
                         <img
@@ -212,7 +280,7 @@ const RelocationBox = ({
                         />
                       </button>
                     </div>
-                    <div className="checkIcon">
+                    <div className="check-icon">
                       <button
                         type="button"
                         onClick={async () => {
@@ -225,12 +293,25 @@ const RelocationBox = ({
                     <RequestChangesPopup
                       isOpen={requestChangesPopupIsOpen}
                       setIsOpen={setRequestChangesPopupIsOpen}
-                      boxHolderNameState
-                      boxHolderEmailState
-                      zipCodeState
-                      generalLocationState
-                      messageState
-                      fetchBoxes
+                      boxID={boxID}
+                      boxHolderName={boxHolderNameState}
+                      boxHolderEmail={boxHolderEmailState}
+                      zipCode={zipCodeState}
+                      generalLocation={generalLocationState}
+                      message={messageState}
+                      messageStatus={messageStatusState}
+                      fetchBoxes={fetchBoxes}
+                    />
+                    <RejectBoxPopup
+                      isOpen={rejectBoxPopupIsOpen}
+                      setIsOpen={setRejectBoxPopupIsOpen}
+                      boxID={boxID}
+                      boxHolderName={boxHolderNameState}
+                      boxHolderEmail={boxHolderEmailState}
+                      zipCode={zipCodeState}
+                      generalLocation={generalLocationState}
+                      message={messageState}
+                      fetchBoxes={fetchBoxes}
                     />
                   </div>
                 )}
@@ -254,6 +335,9 @@ RelocationBox.propTypes = {
   message: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
+  changesRequested: PropTypes.string.isRequired,
+  rejectionReason: PropTypes.string.isRequired,
+  messageStatus: PropTypes.string.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
 };
 
