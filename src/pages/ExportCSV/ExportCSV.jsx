@@ -6,6 +6,9 @@ import CSVPreview from '../../components/ExportCSV/CSVPreview/CSVPreview';
 import './ExportCSV.css';
 
 const ExportCSV = () => {
+  // Used to connect submit button outside form
+  const formID = 'export-csv-form';
+
   const [formValues, setFormValues] = useState([]);
 
   return (
@@ -22,14 +25,14 @@ const ExportCSV = () => {
             <Button className="header-button" colorScheme="white" color="black" variant="outline">
               Cancel
             </Button>
-            <Button className="header-button" colorScheme="teal">
+            <Button form={formID} type="submit" className="header-button" colorScheme="teal">
               Export
             </Button>
           </div>
         </div>
         <div className="export-csv-content">
           <CSVPreview data={formValues} />
-          <ExportCSVForm setFormValues={setFormValues} />
+          <ExportCSVForm formID={formID} setFormValues={setFormValues} />
         </div>
       </div>
     </ChakraProvider>

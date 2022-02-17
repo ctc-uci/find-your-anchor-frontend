@@ -1,6 +1,6 @@
 .csv-preview-wrapper {
-  border: 1px solid green;
+  border: 2px solid #718096;
   flex: 1;
   width: 100%;
-  margin: 1.4em 2.4em 1.4em 0em;
+  margin: 1.4em 2em 1.4em 0em;
 }
