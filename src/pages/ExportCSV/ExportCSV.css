@@ -1,5 +1,33 @@
-.button-section {
+.export-csv-wrapper .export-csv-header {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+
+  padding: 40px;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.export-csv-wrapper .export-csv-header .header-text {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.export-csv-wrapper .export-csv-header .header-title {
+  margin-right: 25px;
+}
+
+.export-csv-wrapper .export-csv-header .box-count {
+  color: red;
+}
+
+.export-csv-wrapper .button-section {
   display: flex;
   justify-content: flex-end;
   gap: 15px;
+}
+
+.export-csv-wrapper .button-section .header-button {
+  font-size: 18px !important;
 }

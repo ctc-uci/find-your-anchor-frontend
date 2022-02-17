@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChakraProvider, Button } from '@chakra-ui/react';
+import { ChakraProvider, Button, Text } from '@chakra-ui/react';
 import ExportCSVForm from '../../components/ExportCSV/ExportCSVForm/ExportCSVForm';
 import CSVPreview from '../../components/ExportCSV/CSVPreview/CSVPreview';
 
@@ -10,19 +10,27 @@ const ExportCSV = () => {
 
   return (
     <ChakraProvider>
-      <div className="">
-        <p>Export CSV</p>
-        <p>30 boxes</p>
-        <div className="button-section">
-          <Button className="buttons">Cancel</Button>
-          <Button className="buttons" colorScheme="teal">
-            Export
-          </Button>
+      <div className="export-csv-wrapper">
+        <div className="export-csv-header">
+          <div className="header-text">
+            <Text fontSize="3xl" className="header-title">
+              Export CSV
+            </Text>
+            <Text fontSize="md">30 boxes</Text>
+          </div>
+          <div className="button-section">
+            <Button className="header-button" colorScheme="white" color="black" variant="outline">
+              Cancel
+            </Button>
+            <Button className="header-button" colorScheme="teal">
+              Export
+            </Button>
+          </div>
         </div>
-      </div>
-      <div>
-        <CSVPreview data={formValues} />
-        <ExportCSVForm setFormValues={setFormValues} />
+        <div>
+          <CSVPreview data={formValues} />
+          <ExportCSVForm setFormValues={setFormValues} />
+        </div>
       </div>
     </ChakraProvider>
   );
