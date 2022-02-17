@@ -1,10 +1,14 @@
+.export-csv-wrapper {
+  margin: 3em 5em 1em;
+}
+
 .export-csv-wrapper .export-csv-header {
   display: flex;
   flex-direction: row;
   align-items: baseline;
   justify-content: space-between;
 
-  padding: 40px;
+  padding: 0.5em 0em 1em;
   border-bottom: 1px solid #E2E8F0;
 }
 
@@ -14,20 +18,23 @@
   align-items: baseline;
 }
 
-.export-csv-wrapper .export-csv-header .header-title {
-  margin-right: 25px;
-}
-
-.export-csv-wrapper .export-csv-header .box-count {
-  color: red;
+.export-csv-wrapper .export-csv-header .header-text {
+  gap: 1em;
 }
 
 .export-csv-wrapper .button-section {
   display: flex;
   justify-content: flex-end;
-  gap: 15px;
+  gap: 0.6em;
 }
 
 .export-csv-wrapper .button-section .header-button {
   font-size: 18px !important;
+}
+
+.export-csv-wrapper .export-csv-content {
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: row;
+  flex: 1;
 }

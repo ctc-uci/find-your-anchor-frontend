@@ -16,7 +16,7 @@ const ExportCSV = () => {
             <Text fontSize="3xl" className="header-title">
               Export CSV
             </Text>
-            <Text fontSize="md">30 boxes</Text>
+            <Text fontSize="lg">30 boxes</Text>
           </div>
           <div className="button-section">
             <Button className="header-button" colorScheme="white" color="black" variant="outline">
@@ -27,7 +27,7 @@ const ExportCSV = () => {
             </Button>
           </div>
         </div>
-        <div>
+        <div className="export-csv-content">
           <CSVPreview data={formValues} />
           <ExportCSVForm setFormValues={setFormValues} />
         </div>
