@@ -31,8 +31,8 @@ const ExportCSV = () => {
           </div>
         </div>
         <div className="export-csv-content">
-          <CSVPreview data={formValues} />
           <ExportCSVForm formID={formID} setFormValues={setFormValues} />
+          <CSVPreview data={formValues} />
         </div>
       </div>
     </ChakraProvider>

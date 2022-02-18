@@ -3,3 +3,60 @@
   width: 100%;
   margin: 1.4em 0em 1.4em;
 }
+
+.csv-form-wrapper #export-csv-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.csv-form-wrapper .section-wrapper {
+  width: 400px;
+}
+
+.section-wrapper.filter-label-select {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.csv-form-wrapper .filter-section-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.section-wrapper.filter-label-select .chakra-select__wrapper {
+  width: 170px;
+}
+
+.filter-section-wrapper .filter-option-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filter-option-wrapper .filter-choices {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.section-wrapper .box-detail-checkboxes {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 100px;
+}
+
+.section-wrapper .box-detail-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.csv-form-wrapper .csv-form-labels {
+  font-size: 20px;
+  font-weight: 500;
+}
