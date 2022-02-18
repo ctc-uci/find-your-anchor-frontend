@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
+import DatePicker from 'react-datepicker';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
 import {
   FormErrorMessage,
-  Textarea,
+  // Textarea,
   FormControl,
   FormLabel,
   Input,
@@ -9,46 +15,41 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
-import axios from 'axios';
-import DatePicker from 'react-datepicker';
-import { FYABackend, isValidZip } from '../../common/utils';
+
+import { FYABackend } from '../../common/utils';
 import DropZone from './DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
 import './BoxForm.css';
 import './DatePicker.css';
 
+const schema = yup
+  .object({
+    boxNumber: yup.number().required().typeError('Invalid box number'),
+    date: yup
+      .date()
+      .required('Invalid date, please enter a date')
+      .typeError('Invalid date, please enter a date'),
+    zipCode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),
+    boxLocation: yup.string(),
+    message: yup.string(),
+    comments: yup.string(),
+    launchedOrganically: yup.bool().default(false),
+    picture: yup.string().url(),
+  })
+  .required();
+
 const BoxForm = () => {
-  const [submit, setSubmit] = useState(false);
-  const [files, setFiles] = useState([]);
-  const [formData, setFormData] = useState({
-    boxNumber: '',
-    date: '',
-    zipCode: '',
-    boxLocation: '',
-    message: '',
-    picture: '',
-    comments: '',
-    launchedOrganically: false,
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    delayError: 750,
   });
 
-  const [zipCodeError, setZipCodeError] = useState(false);
-  const [dateError, setDateError] = useState(false);
-  const [boxNumberError, setBoxNumberError] = useState(false);
-
-  // useEffect ensures that the most recently updated formData is reflected
-  useEffect(async () => {
-    if (submit) {
-      // send formdata to server
-      await FYABackend.post('/boxForm', formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      setSubmit(false);
-    }
-  }, [submit]);
-
-  const { boxNumber, date, zipCode, boxLocation, message, comments } = formData;
+  const [files, setFiles] = useState([]);
 
   const uploadBoxPhoto = async file => {
     // get S3 upload url from server
@@ -66,87 +67,55 @@ const BoxForm = () => {
     return imageUrl;
   };
 
-  const checkZipValid = zip => {
-    return isValidZip(zip);
-  };
+  const onSubmit = async data => {
+    const formData = data;
+    formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
 
-  const onChange = e => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    alert(JSON.stringify(formData, null, 2));
 
-  const setDate = selectedDate => {
-    setFormData({ ...formData, date: selectedDate });
-  };
-
-  const handleCheckBox = e => {
-    setFormData({ ...formData, launchedOrganically: e.target.checked });
-  };
-
-  const submitForm = async () => {
-    if (files.length > 0) {
-      const imageUrl = await uploadBoxPhoto(files[0]);
-      setFormData({ ...formData, picture: imageUrl });
-    }
-    setSubmit(true);
-  };
-
-  const onSubmit = e => {
-    e.preventDefault();
-
-    const isBoxNumberValid = boxNumber === '';
-    const isZipValid = zipCode === '' || !checkZipValid(zipCode);
-    const isDateValid = date === '' || date === null;
-
-    setBoxNumberError(isBoxNumberValid);
-    setZipCodeError(isZipValid);
-    setDateError(isDateValid);
-
-    if (!(isBoxNumberValid || isZipValid || isDateValid)) {
-      submitForm();
-    }
+    // // send formdata to server
+    // await FYABackend.post('/boxForm', formData, {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // });
   };
 
   return (
-    <form className="box-form" onSubmit={e => onSubmit(e)}>
+    <form className="box-form" onSubmit={handleSubmit(onSubmit)}>
       <div className="box-info-section">
         <div className="box-info">
-          <FormControl isInvalid={dateError}>
+          <FormControl isInvalid={errors?.date}>
             <FormLabel htmlFor="date">Date *</FormLabel>
-            <DatePicker
-              placeholderText="MM/DD/YYYY"
-              className={dateError ? 'date-picker date-picker-error' : 'date-picker'}
-              type="date"
-              selected={date}
+            <Controller
+              control={control}
               name="date"
-              onChange={selectedDate => setDate(selectedDate)}
+              // eslint-disable-next-line no-unused-vars
+              render={({ field: { onChange, value, ref } }) => (
+                <DatePicker
+                  placeholderText="MM/DD/YYYY"
+                  className={errors?.date ? 'date-picker date-picker-error' : 'date-picker'}
+                  type="date"
+                  selected={value}
+                  onChange={onChange}
+                />
+              )}
             />
-            {dateError && <FormErrorMessage>Invalid date, please enter a date</FormErrorMessage>}
+            <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
           </FormControl>
-          <FormControl isInvalid={boxNumberError}>
+
+          <FormControl isInvalid={errors?.boxNumber}>
             <FormLabel htmlFor="boxNumber">Box Number *</FormLabel>
-            <Input
-              id="boxNumber"
-              placeholder="12345"
-              name="boxNumber"
-              value={boxNumber}
-              onChange={e => onChange(e)}
-            />
-            {boxNumberError && <FormErrorMessage>Invalid box number</FormErrorMessage>}
+            <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
+            <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
           </FormControl>
-          <FormControl isInvalid={zipCodeError}>
+
+          <FormControl isInvalid={errors?.zipCode}>
             <FormLabel htmlFor="zipCode">Zip Code *</FormLabel>
-            <Input
-              id="zipCode"
-              placeholder="e.g. 90210"
-              name="zipCode"
-              value={zipCode}
-              onChange={e => onChange(e)}
-            />
-            {zipCodeError && (
-              <FormErrorMessage>Invalid zipcode, please enter a valid zipcode</FormErrorMessage>
-            )}
+            <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
+            <FormErrorMessage>{errors.zipCode?.message}</FormErrorMessage>
           </FormControl>
-          <FormControl>
+          {/* <FormControl>
             <FormLabel htmlFor="location">Box Location</FormLabel>
             <Input
               id="location"
@@ -155,10 +124,10 @@ const BoxForm = () => {
               value={boxLocation}
               onChange={e => onChange(e)}
             />
-          </FormControl>
+          </FormControl> */}
         </div>
       </div>
-      <div className="box-message-section">
+      {/* <div className="box-message-section">
         <FormControl>
           <FormLabel htmlFor="message">Message:</FormLabel>
           <Textarea
@@ -185,7 +154,7 @@ const BoxForm = () => {
             onChange={e => onChange(e)}
           />
         </FormControl>
-      </div>
+      </div> */}
       <div className="box-photo-section">
         <FormControl>
           <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
@@ -203,7 +172,7 @@ const BoxForm = () => {
             <Checkbox
               className="checkbox"
               name="launchedOrganically"
-              onChange={e => handleCheckBox(e)}
+              // onChange={e => handleCheckBox(e)}
             />
             <FormLabel htmlFor="isLaunched">Launched Organically?</FormLabel>
             <div className="info-icon">
