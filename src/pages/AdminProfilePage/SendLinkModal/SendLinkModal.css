@@ -1,0 +1,13 @@
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 36px;
+}
+
+.checkmark {
+  height: 125px;
+  width: 125px;
+  margin-bottom: 20px;
+}
