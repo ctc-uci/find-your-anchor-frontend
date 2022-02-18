@@ -17,7 +17,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './BoxForm.css';
 import './DatePicker.css';
 
-function Box() {
+const BoxForm = () => {
   const [submit, setSubmit] = useState(false);
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
@@ -228,5 +228,6 @@ function Box() {
       </div>
     </form>
   );
-}
-export default Box;
+};
+
+export default BoxForm;

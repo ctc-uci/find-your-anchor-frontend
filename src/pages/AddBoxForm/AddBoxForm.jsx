@@ -3,7 +3,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import BoxForm from '../../components/BoxForm/BoxForm';
 import './AddBoxForm.css';
 
-function AddBoxForm() {
+const AddBoxForm = () => {
   return (
     <ChakraProvider>
       <div className="add-box-form">
@@ -12,6 +12,6 @@ function AddBoxForm() {
       </div>
     </ChakraProvider>
   );
-}
+};
 
 export default AddBoxForm;

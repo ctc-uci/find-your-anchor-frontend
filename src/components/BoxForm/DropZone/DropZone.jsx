@@ -6,7 +6,7 @@ import { CloseIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 import './DropZone.css';
 
-function DropZone({ setFiles }) {
+const DropZone = ({ setFiles }) => {
   const { getRootProps, getInputProps, isDragAccept, isDragReject, acceptedFiles, open } =
     useDropzone({
       noClick: true,
@@ -68,7 +68,7 @@ function DropZone({ setFiles }) {
       )}
     </>
   );
-}
+};
 
 DropZone.propTypes = {
   setFiles: PropTypes.func.isRequired,
