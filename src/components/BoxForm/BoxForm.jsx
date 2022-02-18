@@ -16,16 +16,22 @@ import {
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
 
-import { FYABackend } from '../../common/utils';
+import { FYABackend, isValidZip } from '../../common/utils';
 import DropZone from './DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
 import './BoxForm.css';
 import './DatePicker.css';
 
-// TODO:
-// - Validate Zipcode
-// - Make sure date format is correct
+// TODO: Make sure date format is correct
 
+function validateZip() {
+  return this.test('isZip', function zipCheck(value) {
+    const { path, createError } = this;
+    return isValidZip(value) ? true : createError({ path, message: 'Not a valid zip code' });
+  });
+}
+
+yup.addMethod(yup.string, 'isZip', validateZip);
 const schema = yup
   .object({
     boxNumber: yup.number().required().typeError('Invalid box number'),
@@ -33,7 +39,7 @@ const schema = yup
       .date()
       .required('Invalid date, please enter a date')
       .typeError('Invalid date, please enter a date'),
-    zipCode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),
+    zipCode: yup.string().isZip().required('Invalid zipcode, please enter a valid zipcode'),
     boxLocation: yup.string(),
     message: yup.string(),
     comments: yup.string(),
