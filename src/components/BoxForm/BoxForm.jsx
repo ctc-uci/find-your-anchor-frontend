@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -16,20 +15,14 @@ import {
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
 
-import { FYABackend, isValidZip } from '../../common/utils';
+import { FYABackend } from '../../common/utils';
+import { uploadBoxPhoto, validateZip } from './BoxFormUtils';
 import DropZone from './DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
 import './BoxForm.css';
 import './DatePicker.css';
 
 // TODO: Make sure date format is correct
-
-function validateZip() {
-  return this.test('isZip', function zipCheck(value) {
-    const { path, createError } = this;
-    return isValidZip(value) ? true : createError({ path, message: 'Not a valid zip code' });
-  });
-}
 
 yup.addMethod(yup.string, 'isZip', validateZip);
 const schema = yup
@@ -60,22 +53,6 @@ const BoxForm = () => {
   });
 
   const [files, setFiles] = useState([]);
-
-  const uploadBoxPhoto = async file => {
-    // get S3 upload url from server
-    const { data: uploadUrl } = await FYABackend.get('/s3Upload');
-
-    // upload image directly to S3 bucket
-    await axios.put(uploadUrl, file, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-
-    // return box image url
-    const imageUrl = uploadUrl.split('?')[0];
-    return imageUrl;
-  };
 
   const onSubmit = async data => {
     const formData = data;
