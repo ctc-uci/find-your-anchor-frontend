@@ -11,6 +11,7 @@
     "@chakra-ui/react": "^1.8.1",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@hookform/resolvers": "^2.8.8",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -36,12 +37,14 @@
     "react-datepicker": "^4.6.0",
     "react-dom": "^17.0.2",
     "react-dropzone": "^11.5.1",
+    "react-hook-form": "^7.27.0",
     "react-leaflet": "^3.1.0",
     "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
     "testing-library": "0.0.2",
     "web-vitals": "^1.0.1",
-    "webpack": "4.44.2"
+    "webpack": "4.44.2",
+    "yup": "^0.32.11"
   },
   "optionalDependencies": {
     "babel-loader": "8.1.0"

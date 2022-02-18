@@ -45,12 +45,12 @@
   left: 0px;
   height: 48px;
   width: 48px;
-  background-color: #3182CE;
+  background-color: #3182ce;
   border-radius: 50%;
   display: inline-block;
 }
 
 a {
   color: black;
-  text-decoration:none;
+  text-decoration: none;
 }

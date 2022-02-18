@@ -118,7 +118,7 @@
 
 .error-message {
   font-size: 13px;
-  color: #E53E3E;
+  color: #e53e3e;
 }
 
 .date-label {
@@ -126,7 +126,7 @@
   margin: 0px !important;
 }
 
-div[className=checkboxes] label {
+div[className='checkboxes'] label {
   font-size: 100px;
 }
 
@@ -138,8 +138,8 @@ label input {
   margin-right: 10px;
 }
 
-input[type=checkbox] {
-  transform: scale(1.25)
+input[type='checkbox'] {
+  transform: scale(1.25);
 }
 
 .button-section {
@@ -148,6 +148,6 @@ input[type=checkbox] {
   gap: 15px;
 }
 
-select{
+select {
   font-size: 20px;
 }
