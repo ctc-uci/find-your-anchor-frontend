@@ -7,7 +7,7 @@ import * as yup from 'yup';
 
 import {
   FormErrorMessage,
-  // Textarea,
+  Textarea,
   FormControl,
   FormLabel,
   Input,
@@ -115,19 +115,18 @@ const BoxForm = () => {
             <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
             <FormErrorMessage>{errors.zipCode?.message}</FormErrorMessage>
           </FormControl>
-          {/* <FormControl>
+          <FormControl>
             <FormLabel htmlFor="location">Box Location</FormLabel>
             <Input
               id="location"
               placeholder="e.g. University Park Library"
               name="boxLocation"
-              value={boxLocation}
-              onChange={e => onChange(e)}
+              {...register('boxLocation')}
             />
-          </FormControl> */}
+          </FormControl>
         </div>
       </div>
-      {/* <div className="box-message-section">
+      <div className="box-message-section">
         <FormControl>
           <FormLabel htmlFor="message">Message:</FormLabel>
           <Textarea
@@ -136,8 +135,7 @@ const BoxForm = () => {
             maxLength="200"
             rows="6"
             name="message"
-            value={message}
-            onChange={e => onChange(e)}
+            {...register('message')}
           />
         </FormControl>
       </div>
@@ -150,11 +148,10 @@ const BoxForm = () => {
             maxLength="200"
             rows="6"
             name="comments"
-            value={comments}
-            onChange={e => onChange(e)}
+            {...register('comments')}
           />
         </FormControl>
-      </div> */}
+      </div>
       <div className="box-photo-section">
         <FormControl>
           <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
@@ -172,7 +169,7 @@ const BoxForm = () => {
             <Checkbox
               className="checkbox"
               name="launchedOrganically"
-              // onChange={e => handleCheckBox(e)}
+              {...register('launchedOrganically')}
             />
             <FormLabel htmlFor="isLaunched">Launched Organically?</FormLabel>
             <div className="info-icon">
