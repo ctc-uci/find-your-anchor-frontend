@@ -8,6 +8,10 @@ function validateZip() {
   });
 }
 
+const formatDate = value => {
+  return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+};
+
 const uploadBoxPhoto = async file => {
   // get S3 upload url from server
   const { data: uploadUrl } = await FYABackend.get('/s3Upload');
@@ -24,4 +28,4 @@ const uploadBoxPhoto = async file => {
   return imageUrl;
 };
 
-export { validateZip, uploadBoxPhoto };
+export { validateZip, formatDate, uploadBoxPhoto };

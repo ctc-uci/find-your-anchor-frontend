@@ -16,7 +16,7 @@ import {
 import { InfoIcon } from '@chakra-ui/icons';
 
 import { FYABackend } from '../../common/utils';
-import { uploadBoxPhoto, validateZip } from './BoxFormUtils';
+import { uploadBoxPhoto, validateZip, formatDate } from './BoxFormUtils';
 import DropZone from './DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
 import './BoxForm.css';
@@ -54,6 +54,7 @@ const BoxForm = () => {
 
   const onSubmit = async data => {
     const formData = data;
+    formData.date = formatDate(data.date);
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
 
     // send form data to server
