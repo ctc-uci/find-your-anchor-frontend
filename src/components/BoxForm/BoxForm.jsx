@@ -22,8 +22,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './BoxForm.css';
 import './DatePicker.css';
 
-// TODO: Make sure date format is correct
-
 yup.addMethod(yup.string, 'isZip', validateZip);
 const schema = yup
   .object({
