@@ -22,6 +22,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './BoxForm.css';
 import './DatePicker.css';
 
+// TODO:
+// - Validate Zipcode
+// - Make sure date format is correct
+
 const schema = yup
   .object({
     boxNumber: yup.number().required().typeError('Invalid box number'),
@@ -71,14 +75,12 @@ const BoxForm = () => {
     const formData = data;
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
 
-    alert(JSON.stringify(formData, null, 2));
-
-    // // send formdata to server
-    // await FYABackend.post('/boxForm', formData, {
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // });
+    // send form data to server
+    await FYABackend.post('/boxForm', formData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   };
 
   return (
