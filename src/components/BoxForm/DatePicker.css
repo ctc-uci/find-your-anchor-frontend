@@ -1,0 +1,12 @@
+.date-picker {
+  font-size: 15px;
+  height: 2.5rem;
+  width: 100%;
+  border: 1px solid rgb(226, 232, 240);
+  border-radius: 0.375rem;
+  padding-left: 1rem;
+}
+
+.date-picker-error {
+  border: 2.5px solid #ea6565;
+}
