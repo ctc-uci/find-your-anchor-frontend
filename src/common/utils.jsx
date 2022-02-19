@@ -9,6 +9,13 @@ export const FYABackend = axios.create({
   withCredentials: true,
 });
 
+FYABackend.interceptors.response.use(
+  response => response,
+  error => {
+    console.error(`[Axios] FYABackend error: ${JSON.stringify(error.toJSON(), null, 2)}`);
+  },
+);
+
 export const isValidZip = zip => {
   const countries = [
     'US',
