@@ -9,6 +9,14 @@ export const FYABackend = axios.create({
   withCredentials: true,
 });
 
+FYABackend.interceptors.response.use(
+  response => response,
+  error => {
+    // eslint-disable-next-line no-console
+    console.error(`[Axios] FYABackend error: ${JSON.stringify(error.toJSON(), null, 2)}`);
+  },
+);
+
 export const isValidZip = zip => {
   const countries = [
     'US',
@@ -37,4 +45,9 @@ export const isValidZip = zip => {
     'GB',
   ];
   return countries.filter(country => isValidZipcode(zip, country)).length > 0;
+};
+
+// Converts JS Date object into string, formatted MM/DD/YYYY
+export const formatDate = value => {
+  return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
 };

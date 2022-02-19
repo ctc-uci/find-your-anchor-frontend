@@ -7,7 +7,7 @@ import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import ExportCSV from './pages/ExportCSV/ExportCSV';
 
 import Map from './components/Map/Map';
-import AddBoxForm from './pages/AddBoxForm/AddBoxForm';
+import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -19,7 +19,7 @@ ReactDOM.render(
         <Route path="/dropoff-form" element={<App />} />
         <Route path="/pickup-form" element={<App />} />
         <Route path="/export-csv" element={<ExportCSV />} />
-        <Route path="/add-box-form" element={<AddBoxForm />} />
+        <Route path="/add-box-form" element={<AddBoxFormPage />} />
       </Routes>
     </Router>
   </React.StrictMode>,
