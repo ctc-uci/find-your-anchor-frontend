@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import './UploadCSVView.css';
 
 const UploadCSVView = () => {
-  const errors = [
+  const formDatas = [
     {
       date: '09/28/2022',
       boxNumber: '123',
@@ -12,24 +12,24 @@ const UploadCSVView = () => {
       launchedOrganically: 'yes',
     },
     {
-      date: '07/17/2022',
-      boxNumber: '2188',
-      zipCode: '23847',
-      launchedOrganically: 'no',
+      date: '09/28/2022',
+      boxNumber: '123',
+      zipCode: '13252',
+      launchedOrganically: 'yes',
     },
   ];
 
   return (
     <ChakraProvider>
       <div>
-        {errors.map(error => {
+        {formDatas.map(formData => {
           const id = uuidv4();
           return (
             <div key={id} className="csv-row">
-              <p>{error.date}</p>
-              <p>{error.boxNumber}</p>
-              <p>{error.zipCode}</p>
-              <p>{error.launchedOrganically}</p>
+              <p>{formData.date}</p>
+              <p>{formData.boxNumber}</p>
+              <p>{formData.zipCode}</p>
+              <p>{formData.launchedOrganically}</p>
             </div>
           );
         })}

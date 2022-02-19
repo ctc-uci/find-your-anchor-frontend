@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import UploadCSVTemp from './pages/UploadCSVTemp/UploadCSVTemp';
+import UploadCSVView from './pages/UploadCSVView/UploadCSVView';
 import Map from './components/Map/Map';
 
 ReactDOM.render(
@@ -17,6 +18,7 @@ ReactDOM.render(
         <Route path="/dropoff-form" element={<App />} />
         <Route path="/pickup-form" element={<App />} />
         <Route path="/upload-csv" element={<UploadCSVTemp />} />
+        <Route path="/upload-csv-view" element={<UploadCSVView />} />
       </Routes>
     </Router>
   </React.StrictMode>,

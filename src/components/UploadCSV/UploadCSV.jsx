@@ -61,18 +61,19 @@ const UploadCSV = ({ isOpen, onClose }) => {
     emptyCells.map(cell =>
       setUploadErrors(prevState => [...prevState, `missing ${cell} in line ${line}`]),
     );
-    if (emptyCells) setIsLoading(false);
+    if (emptyCells.length > 0) setIsLoading(false);
   };
 
   const readCSV = () => {
     readRemoteFile(CSVFile, {
       complete: results => {
         // parse each line in csv file and upload each to the backend
+        console.log(results.data);
         for (let i = 1; i < results.data.length; i += 1) {
           const dateCSV = results.data[i][0];
           const boxNumberCSV = results.data[i][1];
           const zipCodeCSV = results.data[i][2];
-          const launchedOrganicallyCSV = results.data[i][3].toLowerCase() === 'yes';
+          const launchedOrganicallyCSV = results.data[i][3];
           // TODO: check if any cells are empty
           checkEmptyCells(i, dateCSV, boxNumberCSV, zipCodeCSV, launchedOrganicallyCSV);
           // TODO: validate zipCodeCSV (wait until common/utils is updated)
@@ -86,7 +87,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
             message: '',
             picture: '',
             comments: '',
-            launchedOrganically: launchedOrganicallyCSV,
+            launchedOrganically: launchedOrganicallyCSV.toLowerCase() === 'yes',
           });
         }
 
