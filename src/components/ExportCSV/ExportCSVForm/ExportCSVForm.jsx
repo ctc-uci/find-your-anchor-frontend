@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import DatePicker from 'react-datepicker';
 import * as yup from 'yup';
 
 import {
@@ -15,10 +16,15 @@ import {
   Button,
 } from '@chakra-ui/react';
 import './ExportCSVForm.css';
+import { isValidRange, isZip } from './ExportCSVFormValidators';
 
+yup.addMethod(yup.mixed, 'isZip', isZip);
+yup.addMethod(yup.mixed, 'isValidRange', isValidRange);
 const schema = yup
   .object({
     sortBy: yup.string().required(),
+    zipCode: yup.mixed().isZip(),
+    boxRange: yup.mixed().isValidRange(),
   })
   .required();
 
@@ -36,6 +42,10 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
     alert(JSON.stringify(data, null, 2));
     setFormValues(data);
   };
+
+  const [boxesOption, setBoxesOption] = React.useState('all');
+  const [dateOption, setDateOption] = React.useState('all');
+  const [zipOption, setZipOption] = React.useState('all');
 
   return (
     <div className="csv-form-wrapper">
@@ -67,14 +77,27 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
               <FormControl
                 className="section-wrapper filter-label-select"
                 isInvalid={errors?.sortBy}
+                {...register('boxRange')}
               >
                 <FormLabel htmlFor="boxes">Boxes</FormLabel>
-                <Select id="boxes" className="select-filter-options" {...register('sortBy')}>
-                  <option value="ascend-box-num">All</option>
-                  <option value="descend-box-num">Custom</option>
-                </Select>
+                <div className="input-drop-down">
+                  <Select
+                    id="boxes"
+                    className="select-filter-options"
+                    value={boxesOption}
+                    onChange={e => setBoxesOption(e.target.value)}
+                  >
+                    <option value="boxes-all">All</option>
+                    <option value="boxes-custom">Custom</option>
+                  </Select>
+                  <Input
+                    isInvalid={errors?.boxRange}
+                    placeholder="e.g. 1-9, 6, 12"
+                    className={`custom-input ${boxesOption === 'boxes-custom' ? 'active' : ''}`}
+                  />
+                  <p className="error-message">{errors.boxRange?.message}</p>
+                </div>
               </FormControl>
-              <p className="error-message">{errors.sortBy?.message}</p>
             </div>
             <div className="filter-choices">
               <FormControl
@@ -82,13 +105,26 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                 isInvalid={errors?.sortBy}
               >
                 <FormLabel htmlFor="date">Date</FormLabel>
-                <Select id="date" className="select-filter-options" {...register('sortBy')}>
-                  <option value="ascend-box-num">All</option>
-                  <option value="descend-box-num">Single Day</option>
-                  <option value="descend-box-num">Range</option>
-                </Select>
+                <div className="input-drop-down">
+                  <Select
+                    id="date"
+                    className="select-filter-options"
+                    value={dateOption}
+                    onChange={e => setDateOption(e.target.value)}
+                  >
+                    <option value="ascend-box-num">All</option>
+                    <option value="descend-box-num">Single Day</option>
+                    <option value="descend-box-num">Range</option>
+                  </Select>
+                  <DatePicker
+                    className="date-picker"
+                    placeholderText="MM/DD/YY"
+                    // selected={customDate}
+                    // onChange={date => setCustomDate(date)}
+                  />
+                  <p className="error-message">{errors.sortBy?.message}</p>
+                </div>
               </FormControl>
-              <p className="error-message">{errors.sortBy?.message}</p>
             </div>
             <div className="filter-choices">
               <FormControl
@@ -96,12 +132,25 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                 isInvalid={errors?.sortBy}
               >
                 <FormLabel htmlFor="zip">Zip Code</FormLabel>
-                <Select id="zip" className="select-filter-options" {...register('sortBy')}>
-                  <option value="ascend-box-num">All</option>
-                  <option value="descend-box-num">Custom</option>
-                </Select>
+                <div className="input-drop-down">
+                  <Select
+                    id="zip"
+                    className="select-filter-options"
+                    value={zipOption}
+                    onChange={e => setZipOption(e.target.value)}
+                  >
+                    <option value="zip-code-all">All</option>
+                    <option value="zip-code-custom">Custom</option>
+                  </Select>
+                  <Input
+                    isInvalid={errors?.zipCode}
+                    placeholder="e.g. 96162, 91007"
+                    className={`custom-input ${zipOption === 'zip-code-custom' ? 'active' : ''}`}
+                    {...register('zipCode')}
+                  />
+                  <p className="error-message">{errors.zipCode?.message}</p>
+                </div>
               </FormControl>
-              <p className="error-message">{errors.sortBy?.message}</p>
             </div>
             <div className="filter-choices">
               <FormControl

@@ -18,7 +18,24 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
+}
+
+.filter-label-select .input-drop-down {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 170px;
+  gap: 5px;
+}
+
+.input-drop-down .date-picker {
+  font-size: 20px;
+  height: 2.5rem;
+  width: 170px;
+  border: 1px solid rgb(226, 232, 240);
+  border-radius: 0.375rem;
+  padding-left: 1rem;
 }
 
 .csv-form-wrapper .filter-section-wrapper {
@@ -27,9 +44,9 @@
   justify-content: space-between;
 }
 
-.section-wrapper.filter-label-select .chakra-select__wrapper {
+/* .section-wrapper.filter-label-select .chakra-select__wrapper {
   width: 170px;
-}
+} */
 
 .filter-section-wrapper .filter-option-wrapper {
   display: flex;
@@ -41,6 +58,14 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.filter-choices .custom-input {
+  display: none;
+}
+
+.filter-choices .custom-input.active {
+  display: block;
 }
 
 .section-wrapper .box-detail-checkboxes {
