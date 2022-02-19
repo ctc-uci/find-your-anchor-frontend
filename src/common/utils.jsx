@@ -12,6 +12,7 @@ export const FYABackend = axios.create({
 FYABackend.interceptors.response.use(
   response => response,
   error => {
+    // eslint-disable-next-line no-console
     console.error(`[Axios] FYABackend error: ${JSON.stringify(error.toJSON(), null, 2)}`);
   },
 );
