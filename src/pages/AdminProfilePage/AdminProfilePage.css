@@ -1,0 +1,85 @@
+.navigation-bar-container {
+  height: 65px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.22);
+}
+
+.sub-header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  top: 25px;
+}
+
+.share-registration-box {
+  position:relative;
+  left: 34px;
+}
+
+.logout-button {
+  position: relative;
+  right: 53px;
+}
+
+.welcome-header {
+  position:relative;
+  display: flex;
+  left: -50px;
+  top: -10px;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Bebas Neue';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 55px;
+  line-height: 66px;
+  color: #173848;
+}
+
+.fya-logo-large {
+  position: relative;
+  display: flex;
+  top: 22px;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-name {
+  display: flex;
+  justify-content: space-between;
+}
+
+.email-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.background-box {
+  position: relative;
+  top: 43px;
+  background-color: #EAEAEA;
+  border-radius: 12px !important;
+  width: 1027px;
+  height: 498px;
+  margin-left: auto;
+  margin-right: auto;
+  }
+
+.delete-account-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  height: 354px;
+}
+
+.text-input-container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pen-image {
+  position: relative;
+  left: 16px;
+}
