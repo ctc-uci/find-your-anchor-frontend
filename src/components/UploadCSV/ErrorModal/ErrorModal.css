@@ -1,11 +1,15 @@
+.error-modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 36px 20px;
+}
+
 .error-modal-icon {
   width: 80px;
   height: 80px;
-  background: url(../../../assets/error.png) no-repeat center center; 
-  background-size: 100%;
-  text-align: center;
-  margin: 0 auto;
-  padding-top: 30px;
+  margin-bottom: 20px;
 }
 
 .error-modal-text {
@@ -16,6 +20,7 @@
 .error-modal-buttons {
   display: flex;
   gap: 30px;
+  margin-top: 30px;
 }
 
 .error-modal-container {
@@ -42,4 +47,5 @@
   overflow: auto;
   overflow-x: hidden;
   padding: 0 20px;
+  margin-top: 20px;
 }
