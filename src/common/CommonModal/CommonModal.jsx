@@ -12,9 +12,9 @@ import PropTypes from 'prop-types';
 const CommonModal = ({ isOpen, onClose, children }) => {
   return (
     <ChakraProvider>
-      <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent minHeight="500px" minWidth="700px">
           <ModalCloseButton />
           <ModalBody>{children}</ModalBody>
         </ModalContent>
