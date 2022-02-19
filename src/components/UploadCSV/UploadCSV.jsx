@@ -106,7 +106,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
   };
 
   return (
-    <CommonModal isOpen={isOpen} onClose={onClose}>
+    <CommonModal isOpen={isOpen} onClose={onClose} className="common-modal">
       {(() => {
         if (isUploadingNewFile) {
           return <UploadModal setCSVFile={setCSVFile} onSubmit={onSubmit} />;

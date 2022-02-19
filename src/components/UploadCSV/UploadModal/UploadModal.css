@@ -1,3 +1,11 @@
+.upload-modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 36px;
+}
+
 .upload-modal-title {
   color: black;
   font-weight: 800;

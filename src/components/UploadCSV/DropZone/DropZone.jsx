@@ -4,6 +4,7 @@ import { useDropzone } from 'react-dropzone';
 import { CloseIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 import './DropZone.css';
+import DropZoneIcon from '../../../assets/upload.png';
 
 function DropZone({ setFile }) {
   const { getRootProps, getInputProps, acceptedFiles, open } = useDropzone({
@@ -44,9 +45,10 @@ function DropZone({ setFile }) {
   return (
     <>
       {!uploaded ? (
-        <div className="dropzone-zone" {...getRootProps()}>
+        <div className="dropzone-content dropzone-zone" {...getRootProps()}>
           <input {...getInputProps()} />
           <div className="upload-icon" />
+          <img src={DropZoneIcon} alt="Icon" className="dropzone-icon" />
           <div>
             <button type="button" className="fileSelector" onClick={open}>
               Click
@@ -55,7 +57,7 @@ function DropZone({ setFile }) {
           </div>
         </div>
       ) : (
-        <div>
+        <div className="dropzone-content">
           <ul className="files-list">{acceptedFileItems}</ul>
         </div>
       )}

@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@chakra-ui/react';
+import { Button, Text } from '@chakra-ui/react';
 import DropZone from '../DropZone/DropZone';
 import './UploadModal.css';
 
 const UploadModal = ({ setCSVFile, onSubmit }) => {
   return (
-    <>
-      <h1 className="upload-modal-title">UPLOAD CSV FILE:</h1>
+    <div className="upload-modal-content">
+      <Text className="upload-modal-title">UPLOAD CSV FILE:</Text>
       <DropZone setFile={setCSVFile} />
       <Button
         className="upload-modal-button"
@@ -18,7 +18,7 @@ const UploadModal = ({ setCSVFile, onSubmit }) => {
       >
         Confirm Upload
       </Button>
-    </>
+    </div>
   );
 };
 

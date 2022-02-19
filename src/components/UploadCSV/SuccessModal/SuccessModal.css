@@ -3,7 +3,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 36px;
+  position: absolute;
+  top: 25%; 
+  left: 25%;
 }
 
 .success-modal-icon {
