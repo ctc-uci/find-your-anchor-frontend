@@ -113,7 +113,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
           return <UploadModal setCSVFile={setCSVFile} onSubmit={onSubmit} />;
         }
         if (isLoading) {
-          return <div>Uploading...</div>;
+          return <div className="loading-text">Uploading...</div>;
         }
         if (uploadErrors.length === 0) {
           return (
