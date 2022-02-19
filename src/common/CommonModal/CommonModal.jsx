@@ -8,7 +8,6 @@ import {
   ChakraProvider,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import './CommonModal.css';
 
 const CommonModal = ({ isOpen, onClose, children }) => {
   return (
