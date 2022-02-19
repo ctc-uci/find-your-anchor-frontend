@@ -16,10 +16,10 @@ import {
 import { InfoIcon } from '@chakra-ui/icons';
 
 import { FYABackend, formatDate } from '../../common/utils';
-import { uploadBoxPhoto, validateZip } from './BoxFormUtils';
+import { uploadBoxPhoto, validateZip } from './AddBoxFormUtils';
 import DropZone from './DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
-import './BoxForm.css';
+import './AddBoxForm.css';
 import './DatePicker.css';
 
 yup.addMethod(yup.string, 'isZip', validateZip);

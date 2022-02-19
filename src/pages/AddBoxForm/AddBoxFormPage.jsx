@@ -1,9 +1,9 @@
 import React from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
-import BoxForm from '../../components/BoxForm/BoxForm';
+import BoxForm from '../../components/AddBoxForm/AddBoxForm';
 import './AddBoxForm.css';
 
-const AddBoxForm = () => {
+const AddBoxFormPage = () => {
   return (
     <ChakraProvider>
       <div className="add-box-form">
@@ -14,4 +14,4 @@ const AddBoxForm = () => {
   );
 };
 
-export default AddBoxForm;
+export default AddBoxFormPage;
