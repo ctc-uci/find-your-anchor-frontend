@@ -28,8 +28,8 @@ const schema = yup
     boxNumber: yup.number().required().typeError('Invalid box number'),
     date: yup
       .date()
-      .required('Invalid date, please enter a date')
-      .typeError('Invalid date, please enter a date'),
+      .required('Invalid date, please enter a valid date')
+      .typeError('Invalid date, please enter a valid date'),
     zipCode: yup.string().isZip().required('Invalid zipcode, please enter a valid zipcode'),
     boxLocation: yup.string(),
     message: yup.string(),
