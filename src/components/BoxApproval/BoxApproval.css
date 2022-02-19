@@ -20,7 +20,7 @@
     bottom: 0;
     width :100%;
     margin: 5%;
-    height:20vh;
+    /* height:20vh; */
 }
 
 .request-changes-row {
@@ -36,6 +36,8 @@
 .pickup-box-row {
   width :100%;
   margin: 1% 1% 1% 1%;
+  /* position: absolute;
+    bottom: 0; */
 }
 
 .request-changes-icon {

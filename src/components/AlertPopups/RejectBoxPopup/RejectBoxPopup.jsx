@@ -15,17 +15,7 @@ import {
 import FYABackend from '../../../common/utils';
 import './RejectBoxPopup.css';
 
-const RejectBoxPopup = ({
-  isOpen,
-  setIsOpen,
-  boxID,
-  boxHolderName,
-  boxHolderEmail,
-  zipCode,
-  generalLocation,
-  message,
-  fetchBoxes,
-}) => {
+const RejectBoxPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes }) => {
   const cancelRef = React.useRef();
   const [rejectionReason, setRejectionReason] = useState('');
 
@@ -33,11 +23,6 @@ const RejectBoxPopup = ({
     await FYABackend.put('/box/relocationBoxes/update', {
       boxID,
       status: 'evaluated',
-      boxHolderName,
-      boxHolderEmail,
-      zipCode,
-      generalLocation,
-      message,
       rejectionReason,
     });
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
@@ -48,10 +33,6 @@ const RejectBoxPopup = ({
   return (
     <ChakraProvider>
       <div className="rejectBoxPopup">
-        {/* <Button colorScheme="red" onClick={() => setIsOpen(true)} className="rejectButton">
-          Reject Box
-        </Button> */}
-
         <AlertDialog
           isOpen={isOpen}
           leastDestructiveRef={cancelRef}
@@ -98,11 +79,6 @@ RejectBoxPopup.propTypes = {
   boxID: PropTypes.number.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
-  boxHolderName: PropTypes.string.isRequired,
-  boxHolderEmail: PropTypes.string.isRequired,
-  zipCode: PropTypes.number.isRequired,
-  generalLocation: PropTypes.string.isRequired,
-  message: PropTypes.string.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
 };
 

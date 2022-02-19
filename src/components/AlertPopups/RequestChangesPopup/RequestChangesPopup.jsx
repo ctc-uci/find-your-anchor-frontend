@@ -15,18 +15,7 @@ import {
 import './RequestChangesPopup.css';
 import FYABackend from '../../../common/utils';
 
-const RequestChangesPopup = ({
-  isOpen,
-  setIsOpen,
-  boxID,
-  boxHolderName,
-  boxHolderEmail,
-  zipCode,
-  generalLocation,
-  message,
-  messageStatus,
-  fetchBoxes,
-}) => {
+const RequestChangesPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes }) => {
   const cancelRef = React.useRef();
   const [changesRequested, setChangesRequested] = useState('');
 
@@ -34,13 +23,6 @@ const RequestChangesPopup = ({
     await FYABackend.put('/box/relocationBoxes/update', {
       boxID,
       status: 'pending changes',
-      boxHolderName,
-      boxHolderEmail,
-      zipCode,
-      generalLocation,
-      message,
-      messageStatus,
-      changesRequested,
     });
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
     await Promise.all(requests);
@@ -95,12 +77,6 @@ RequestChangesPopup.propTypes = {
   boxID: PropTypes.number.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
-  boxHolderName: PropTypes.string.isRequired,
-  boxHolderEmail: PropTypes.string.isRequired,
-  zipCode: PropTypes.number.isRequired,
-  generalLocation: PropTypes.string.isRequired,
-  message: PropTypes.string.isRequired,
-  messageStatus: PropTypes.string.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
 };
 

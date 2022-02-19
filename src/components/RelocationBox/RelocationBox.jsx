@@ -25,6 +25,7 @@ import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChang
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import MessageApprovedIcon from '../BoxIcons/MessageApprovedIcon.svg';
 import MessageRejectedIcon from '../BoxIcons/MessageRejectedIcon.svg';
+import ImageVector from '../BoxIcons/ImageVector.svg';
 
 const RelocationBox = ({
   approved,
@@ -41,6 +42,7 @@ const RelocationBox = ({
   rejectionReason,
   messageStatus,
   fetchBoxes,
+  dropOffMethod,
 }) => {
   const [rejectBoxPopupIsOpen, setRejectBoxPopupIsOpen] = useState(false);
   const [requestChangesPopupIsOpen, setRequestChangesPopupIsOpen] = useState(false);
@@ -50,8 +52,13 @@ const RelocationBox = ({
   const [generalLocationState, setGeneralLocationState] = useState(generalLocation);
   const [messageState, setMessageState] = useState(message);
   const [messageStatusState, setMessageStatusState] = useState(messageStatus);
+  const [dropOffMethodState, setDropOffMethodState] = useState(dropOffMethod);
+  if (boxID === '32804783294') {
+    setDropOffMethodState(dropOffMethod);
+  }
+  // console.log(boxID, dropOffMethodState);
 
-  const updateBoxStatus = async stat => {
+  const updateBoxInfo = async stat => {
     await utils.put('/box/relocationBoxes/update', {
       boxID,
       status: stat,
@@ -61,6 +68,7 @@ const RelocationBox = ({
       generalLocation: generalLocationState,
       message: messageState,
       messageStatus: messageStatusState,
+      dropOffMethod: dropOffMethodState,
     });
 
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
@@ -77,6 +85,7 @@ const RelocationBox = ({
       generalLocation: generalLocationState,
       message: messageStatusState === 'rejected' ? '' : messageState,
       messageStatus: messageStatusState,
+      dropOffMethod: dropOffMethodState,
     });
     await utils.put('/box/approveBox', {
       boxID: id,
@@ -112,7 +121,12 @@ const RelocationBox = ({
             </h3>
             <AccordionPanel pb={4} className="accordion-panel">
               <div className="box-details">
-                <img src={picture} alt=" " className="image-corners" />
+                {picture !== null && <img src={picture} alt="" className="image-corners" />}
+                {picture === null && (
+                  <div className="image-box">
+                    <img className="image-vector" src={ImageVector} alt="" />
+                  </div>
+                )}
                 <FormControl>
                   <FormLabel htmlFor="name" marginTop="5%">
                     Name
@@ -134,6 +148,7 @@ const RelocationBox = ({
                     value={boxHolderEmailState}
                     onChange={e => setBoxHolderEmailState(e.target.value)}
                   />
+                  {/* ***************************ZIP CODE ************************************ */}
                   <FormLabel htmlFor="zipCode" marginTop="5%">
                     Zip Code
                   </FormLabel>
@@ -157,9 +172,14 @@ const RelocationBox = ({
                   <FormLabel htmlFor="dropOffMethod" marginTop="5%">
                     Drop Off Method
                   </FormLabel>
-                  <Select id="generalLocation" placeholder="Select Method">
-                    <option> Given to Someone</option>
-                    <option> Left at Location</option>
+                  {/* value={dropOffMethodState} */}
+                  <Select
+                    disabled={status !== 'pending changes'}
+                    defaultValue={dropOffMethodState}
+                    onChange={e => setDropOffMethodState(e.target.value)}
+                  >
+                    <option value="Given to Someone">Given to Someone</option>
+                    <option value="Left at Location">Left at Location</option>
                   </Select>
                   <FormLabel htmlFor="Message" marginTop="5%">
                     Message
@@ -197,12 +217,6 @@ const RelocationBox = ({
                             setMessageStatusState('approved');
                             await utils.put('/box/relocationBoxes/update', {
                               boxID,
-                              status,
-                              boxHolderNameState,
-                              boxHolderEmailState,
-                              zipCodeState,
-                              generalLocationState,
-                              messageState,
                               messageStatus: 'approved',
                             });
                             await fetchBoxes(status, false);
@@ -217,12 +231,6 @@ const RelocationBox = ({
                             setMessageStatusState('rejected');
                             await utils.put('/box/relocationBoxes/update', {
                               boxID,
-                              status,
-                              boxHolderNameState,
-                              boxHolderEmailState,
-                              zipCodeState,
-                              generalLocationState,
-                              messageState,
                               messageStatus: 'rejected',
                             });
                             await fetchBoxes(status, false);
@@ -270,7 +278,7 @@ const RelocationBox = ({
                           if (status === 'under review') {
                             setRequestChangesPopupIsOpen(!requestChangesPopupIsOpen);
                           } else {
-                            await updateBoxStatus('pending changes');
+                            await updateBoxInfo('pending changes');
                           }
                         }}
                       >
@@ -294,23 +302,12 @@ const RelocationBox = ({
                       isOpen={requestChangesPopupIsOpen}
                       setIsOpen={setRequestChangesPopupIsOpen}
                       boxID={boxID}
-                      boxHolderName={boxHolderNameState}
-                      boxHolderEmail={boxHolderEmailState}
-                      zipCode={zipCodeState}
-                      generalLocation={generalLocationState}
-                      message={messageState}
-                      messageStatus={messageStatusState}
                       fetchBoxes={fetchBoxes}
                     />
                     <RejectBoxPopup
                       isOpen={rejectBoxPopupIsOpen}
                       setIsOpen={setRejectBoxPopupIsOpen}
                       boxID={boxID}
-                      boxHolderName={boxHolderNameState}
-                      boxHolderEmail={boxHolderEmailState}
-                      zipCode={zipCodeState}
-                      generalLocation={generalLocationState}
-                      message={messageState}
                       fetchBoxes={fetchBoxes}
                     />
                   </div>
@@ -339,6 +336,7 @@ RelocationBox.propTypes = {
   rejectionReason: PropTypes.string.isRequired,
   messageStatus: PropTypes.string.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
+  dropOffMethod: PropTypes.string.isRequired,
 };
 
 export default RelocationBox;

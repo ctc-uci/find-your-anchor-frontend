@@ -9,11 +9,6 @@ import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import RequestChangesMiniIcon from '../BoxIcons/RequestChangesMiniIcon.svg';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
-// Box ID: int
-// isApproved: boolean
-// message: String
-// currentLocation: (String, int) - (Irvine, 92627)
-// pickup: boolean - (true == pickup box, false == relocation box)
 
 const BoxApproval = () => {
   // display relocation boxes under review
@@ -38,15 +33,15 @@ const BoxApproval = () => {
       },
     });
     if (status === 'under review' && !pickup) {
-      setRelocationBoxesUnderReview(response.data.rows);
+      setRelocationBoxesUnderReview(response.data);
     } else if (status === 'evaluated' && !pickup) {
-      setRelocationBoxesEvaluated(response.data.rows);
+      setRelocationBoxesEvaluated(response.data);
     } else if (status === 'pending changes' && !pickup) {
-      setRelocationBoxesPending(response.data.rows);
+      setRelocationBoxesPending(response.data);
     } else if (status === 'under review' && pickup) {
-      setPickupBoxesUnderReview(response.data.rows);
+      setPickupBoxesUnderReview(response.data);
     } else {
-      setPickupBoxesEvaluated(response.data.rows);
+      setPickupBoxesEvaluated(response.data);
     }
   };
 
@@ -93,6 +88,7 @@ const BoxApproval = () => {
                       rejectionReason={boxData.rejection_reason}
                       messageStatus={boxData.message_status}
                       fetchBoxes={fetchBoxes}
+                      dropOffMethod={boxData.drop_off_method}
                     />
                   ))}
                 </div>
@@ -133,6 +129,7 @@ const BoxApproval = () => {
                       rejectionReason={boxData.rejection_reason}
                       messageStatus={boxData.message_status}
                       fetchBoxes={fetchBoxes}
+                      dropOffMethod={boxData.drop_off_method}
                     />
                   ))}
                 </div>
@@ -157,6 +154,7 @@ const BoxApproval = () => {
                       rejectionReason={boxData.rejection_reason}
                       messageStatus={boxData.message_status}
                       fetchBoxes={fetchBoxes}
+                      dropOffMethod={boxData.drop_off_method}
                     />
                   ))}
                 </div>
@@ -182,21 +180,21 @@ const BoxApproval = () => {
               </TabPanel>
             </TabPanels>
           </div>
-          <div className="legend">
-            <div className="request-changes-row">
-              <img className="request-changes-icon" src={RequestChangesMiniIcon} alt="" />
-              <p className="request-changes-text">Request Changes</p>
-            </div>
-            <div className="relocate-box-row">
-              <img className="relocate-box-icon" src={RelocateBoxIcon} alt="" />
-              <p className="relocate-box-text">Relocated</p>
-            </div>
-            <div className="pickup-box-row">
-              <img className="pickup-box-icon" src={PickupBoxIcon} alt="" />
-              <p className="pickup-box-text">Picked Up</p>
-            </div>
-          </div>
         </Tabs>
+        <div className="legend">
+          <div className="request-changes-row">
+            <img className="request-changes-icon" src={RequestChangesMiniIcon} alt="" />
+            <p className="request-changes-text">Request Changes</p>
+          </div>
+          <div className="relocate-box-row">
+            <img className="relocate-box-icon" src={RelocateBoxIcon} alt="" />
+            <p className="relocate-box-text">Relocated</p>
+          </div>
+          <div className="pickup-box-row">
+            <img className="pickup-box-icon" src={PickupBoxIcon} alt="" />
+            <p className="pickup-box-text">Picked Up</p>
+          </div>
+        </div>
       </div>
     </ChakraProvider>
   );

@@ -18,6 +18,7 @@ import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import ApproveBoxIcon from '../BoxIcons/ApproveBoxIcon.svg';
 import RejectBoxIcon from '../BoxIcons/RejectBoxIcon.svg';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
+import ImageVector from '../BoxIcons/ImageVector.svg';
 import FYABackend from '../../common/utils';
 // import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 
@@ -56,20 +57,25 @@ function PickupBox({
             <h3>
               <AccordionButton>
                 <img src={PickupBoxIcon} alt="" />
-                <div className="titleDiv">
+                <div className="title-div">
                   <p className="title">
-                    <p className="boxNumber">Box #{boxID}</p>
+                    <p className="box-number">Box #{boxID}</p>
                     {date}
                   </p>
                 </div>
-                <div className="arrowButton">
+                <div className="arrow-button">
                   <AccordionIcon />
                 </div>
               </AccordionButton>
             </h3>
-            <AccordionPanel pb={4}>
-              <div className="boxDetails">
-                <img src={picture} alt="" className="pickUpImageCorners" />
+            <AccordionPanel className="accordion-panel" pb={4}>
+              <div className="box-details">
+                {picture !== null && <img src={picture} alt="" className="pickup-image-corners" />}
+                {picture === null && (
+                  <div className="image-box">
+                    <img className="image-vector" src={ImageVector} alt="" />
+                  </div>
+                )}
                 <FormControl>
                   <FormLabel htmlFor="name" marginTop="5%">
                     Name
@@ -94,8 +100,8 @@ function PickupBox({
                   )}
                 </FormControl>
                 {status !== 'evaluated' && (
-                  <div className="iconRow">
-                    <div className="closeIcon">
+                  <div className="icon-row">
+                    <div className="close-icon">
                       <button
                         type="button"
                         onClick={() => {
@@ -105,7 +111,7 @@ function PickupBox({
                         <img src={RejectBoxIcon} alt="" />
                       </button>
                     </div>
-                    <div className="checkIcon">
+                    <div className="check-icon">
                       <button
                         type="button"
                         onClick={() => {
