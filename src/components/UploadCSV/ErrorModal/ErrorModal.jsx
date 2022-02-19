@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import { Button } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+
 import './ErrorModal.css';
 
 const ErrorModal = ({ CSVFileName, setIsUploadingNewFile, uploadErrors }) => {
@@ -34,7 +36,7 @@ const ErrorModal = ({ CSVFileName, setIsUploadingNewFile, uploadErrors }) => {
           Upload New File
         </Button>
         <Button size="md" colorScheme="teal" onClick={e => viewFile(e)}>
-          Edit/View File
+          <Link to="/upload-csv-view">Edit/View File</Link>
         </Button>
       </div>
     </div>
