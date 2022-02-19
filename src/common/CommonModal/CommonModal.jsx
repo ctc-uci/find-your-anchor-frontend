@@ -10,12 +10,12 @@ import {
 import PropTypes from 'prop-types';
 import './CommonModal.css';
 
-const CommonModal = ({ isOpen, setIsOpen, children }) => {
+const CommonModal = ({ isOpen, onClose, children }) => {
   return (
     <ChakraProvider>
-      <Modal isOpen={isOpen} onClose={setIsOpen} className="modal">
+      <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent maxW="56rem">
+        <ModalContent>
           <ModalCloseButton />
           <ModalBody>{children}</ModalBody>
         </ModalContent>
@@ -26,8 +26,7 @@ const CommonModal = ({ isOpen, setIsOpen, children }) => {
 
 CommonModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  setIsOpen: PropTypes.func.isRequired,
-  // onSubmit: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 };
 

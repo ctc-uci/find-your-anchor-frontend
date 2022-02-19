@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import { Button, ChakraProvider } from '@chakra-ui/react';
-import { ChakraProvider } from '@chakra-ui/react';
-// import { CloseIcon } from '@chakra-ui/icons';
 import './UploadCSV.css';
 import { usePapaParse } from 'react-papaparse';
 import PropTypes from 'prop-types';
@@ -12,7 +9,7 @@ import SuccessModal from './SuccessModal/SuccessModal';
 import ErrorModal from './ErrorModal/ErrorModal';
 import CommonModal from '../../common/CommonModal/CommonModal';
 
-const UploadCSV = ({ isOpen, setIsOpen }) => {
+const UploadCSV = ({ isOpen, onClose }) => {
   const { readRemoteFile } = usePapaParse();
   const [CSVFile, setCSVFile] = useState();
   const [CSVFilename, setCSVFilename] = useState('');
@@ -109,39 +106,34 @@ const UploadCSV = ({ isOpen, setIsOpen }) => {
   };
 
   return (
-    <ChakraProvider>
-      <CommonModal isOpen={isOpen} setIsOpen={setIsOpen} onSubmit={onSubmit}>
-        {(() => {
-          if (isUploadingNewFile) {
-            return <UploadModal setCSVFile={setCSVFile} onSubmit={onSubmit} />;
-          }
-          if (isLoading) {
-            return <div>Uploading...</div>;
-          }
-          if (uploadErrors.length === 0) {
-            return (
-              <SuccessModal
-                CSVFileName={CSVFilename}
-                setIsUploadingNewFile={setIsUploadingNewFile}
-              />
-            );
-          }
+    <CommonModal isOpen={isOpen} onClose={onClose}>
+      {(() => {
+        if (isUploadingNewFile) {
+          return <UploadModal setCSVFile={setCSVFile} onSubmit={onSubmit} />;
+        }
+        if (isLoading) {
+          return <div>Uploading...</div>;
+        }
+        if (uploadErrors.length === 0) {
           return (
-            <ErrorModal
-              CSVFileName={CSVFilename}
-              setIsUploadingNewFile={setIsUploadingNewFile}
-              uploadErrors={uploadErrors}
-            />
+            <SuccessModal CSVFileName={CSVFilename} setIsUploadingNewFile={setIsUploadingNewFile} />
           );
-        })()}
-      </CommonModal>
-    </ChakraProvider>
+        }
+        return (
+          <ErrorModal
+            CSVFileName={CSVFilename}
+            setIsUploadingNewFile={setIsUploadingNewFile}
+            uploadErrors={uploadErrors}
+          />
+        );
+      })()}
+    </CommonModal>
   );
 };
 
 UploadCSV.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  setIsOpen: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default UploadCSV;
