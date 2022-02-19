@@ -15,8 +15,8 @@ import {
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
 
-import { FYABackend } from '../../common/utils';
-import { uploadBoxPhoto, validateZip, formatDate } from './BoxFormUtils';
+import { FYABackend, formatDate } from '../../common/utils';
+import { uploadBoxPhoto, validateZip } from './BoxFormUtils';
 import DropZone from './DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
 import './BoxForm.css';
