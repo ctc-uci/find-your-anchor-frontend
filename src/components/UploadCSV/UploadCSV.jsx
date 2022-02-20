@@ -18,25 +18,6 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
-  // useEffect(async () => {
-  //   if (formData) {
-  //     try {
-  //       console.log('FORMDATA:', formData);
-  //       await FYABackend.post('/boxForm', formData, {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //       });
-  //     } catch (err) {
-  //       // if box number already exists
-  //       if (err.response.status === 400) {
-  //         setUploadErrors(prevState => [...prevState, err.response.data.message]);
-  //       }
-  //     }
-  //     setIsLoading(false);
-  //   }
-  // }, [formData]);
-
   useEffect(() => {
     if (isUploadingNewFile) {
       setUploadErrors([]);
@@ -58,7 +39,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
     if (!boxNumberCSV) {
       emptyCells.push('box number');
     } else {
-      const res = await FYABackend.get('/boxForm/exists', boxNumberCSV);
+      const res = await FYABackend.get(`/boxForm/exists/${boxNumberCSV}`);
       console.log(res.data);
       if (res.data) {
         console.log('BOX NUMBER EXISTS');
