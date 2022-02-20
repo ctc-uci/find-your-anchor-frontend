@@ -4,17 +4,16 @@ import { Button, Text } from '@chakra-ui/react';
 import DropZone from '../DropZone/DropZone';
 import './UploadModal.css';
 
-const UploadModal = ({ setCSVFile, onSubmit }) => {
+const UploadModal = ({ setCSVFile, onUpload }) => {
   return (
     <div className="upload-modal-content">
       <Text className="upload-modal-title">UPLOAD CSV FILE:</Text>
       <DropZone setFile={setCSVFile} />
       <Button
         className="upload-modal-button"
-        type="submit"
         size="md"
         colorScheme="teal"
-        onClick={e => onSubmit(e)}
+        onClick={e => onUpload(e)}
       >
         Confirm Upload
       </Button>
@@ -24,7 +23,7 @@ const UploadModal = ({ setCSVFile, onSubmit }) => {
 
 UploadModal.propTypes = {
   setCSVFile: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  onUpload: PropTypes.func.isRequired,
 };
 
 export default UploadModal;

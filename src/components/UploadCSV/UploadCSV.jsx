@@ -14,28 +14,28 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const [CSVFile, setCSVFile] = useState();
   const [CSVFilename, setCSVFilename] = useState('');
   const [uploadErrors, setUploadErrors] = useState([]);
-  const [formData, setFormData] = useState();
+  const [formDatas, setFormDatas] = useState([]);
   const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(async () => {
-    if (formData) {
-      try {
-        console.log('FORMDATA:', formData);
-        await FYABackend.post('/boxForm', formData, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-      } catch (err) {
-        // if box number already exists
-        if (err.response.status === 400) {
-          setUploadErrors(prevState => [...prevState, err.response.data.message]);
-        }
-      }
-      setIsLoading(false);
-    }
-  }, [formData]);
+  // useEffect(async () => {
+  //   if (formData) {
+  //     try {
+  //       console.log('FORMDATA:', formData);
+  //       await FYABackend.post('/boxForm', formData, {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //       });
+  //     } catch (err) {
+  //       // if box number already exists
+  //       if (err.response.status === 400) {
+  //         setUploadErrors(prevState => [...prevState, err.response.data.message]);
+  //       }
+  //     }
+  //     setIsLoading(false);
+  //   }
+  // }, [formData]);
 
   useEffect(() => {
     if (isUploadingNewFile) {
@@ -44,13 +44,26 @@ const UploadCSV = ({ isOpen, onClose }) => {
     }
   }, [isUploadingNewFile]);
 
-  const checkEmptyCells = (line, dateCSV, boxNumberCSV, zipCodeCSV, launchedOrganicallyCSV) => {
+  const checkEmptyCells = async (
+    line,
+    dateCSV,
+    boxNumberCSV,
+    zipCodeCSV,
+    launchedOrganicallyCSV,
+  ) => {
     const emptyCells = [];
     if (!dateCSV) {
       emptyCells.push('date');
     }
     if (!boxNumberCSV) {
       emptyCells.push('box number');
+    } else {
+      const res = await FYABackend.get('/boxForm/exists', boxNumberCSV);
+      console.log(res.data);
+      if (res.data) {
+        console.log('BOX NUMBER EXISTS');
+        setUploadErrors(prevState => [...prevState, `box number ${boxNumberCSV} already exists`]);
+      }
     }
     if (!zipCodeCSV) {
       emptyCells.push('zip code');
@@ -61,7 +74,8 @@ const UploadCSV = ({ isOpen, onClose }) => {
     emptyCells.map(cell =>
       setUploadErrors(prevState => [...prevState, `missing ${cell} in line ${line}`]),
     );
-    if (emptyCells.length > 0) setIsLoading(false);
+    // if (emptyCells.length > 0) setIsLoading(false);
+    setIsLoading(false);
   };
 
   const readCSV = () => {
@@ -76,29 +90,33 @@ const UploadCSV = ({ isOpen, onClose }) => {
           const launchedOrganicallyCSV = results.data[i][3];
           // TODO: check if any cells are empty
           checkEmptyCells(i, dateCSV, boxNumberCSV, zipCodeCSV, launchedOrganicallyCSV);
+          // checkErrors(results.data[i], i);
           // TODO: validate zipCodeCSV (wait until common/utils is updated)
           // TODO: validate date?
           // TODO: validate box number is type integer
-          setFormData({
-            boxNumber: boxNumberCSV,
-            date: dateCSV,
-            zipCode: zipCodeCSV,
-            boxLocation: '',
-            message: '',
-            picture: '',
-            comments: '',
-            launchedOrganically: launchedOrganicallyCSV.toLowerCase() === 'yes',
-          });
+          setFormDatas(prevState => [
+            ...prevState,
+            {
+              boxNumber: boxNumberCSV,
+              date: dateCSV,
+              zipCode: zipCodeCSV,
+              boxLocation: '',
+              message: '',
+              picture: '',
+              comments: '',
+              launchedOrganically: launchedOrganicallyCSV.toLowerCase() === 'yes',
+            },
+          ]);
         }
 
         setIsUploadingNewFile(false);
         setCSVFile();
-        setFormData();
+        // setFormData();
       },
     });
   };
 
-  const onSubmit = e => {
+  const onUpload = e => {
     e.preventDefault();
     if (CSVFile) {
       setCSVFilename(CSVFile.name);
@@ -106,34 +124,54 @@ const UploadCSV = ({ isOpen, onClose }) => {
     }
   };
 
+  const addToMap = async e => {
+    e.preventDefault();
+    console.log('ADD TO MAP');
+    return Promise.all(
+      formDatas.map(async formData => {
+        console.log('FORMDATA: ', formData);
+        await FYABackend.post('/boxForm', formData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      }),
+    );
+  };
+
   return (
     <CommonModal isOpen={isOpen} onClose={onClose} className="common-modal">
-      {(() => {
-        if (isUploadingNewFile) {
-          return <UploadModal setCSVFile={setCSVFile} onSubmit={onSubmit} />;
-        }
-        if (isLoading) {
-          return <div className="loading-text">Uploading...</div>;
-        }
-        if (uploadErrors.length === 0) {
+      <form onSubmit={addToMap}>
+        {(() => {
+          if (isUploadingNewFile) {
+            return <UploadModal setCSVFile={setCSVFile} onUpload={onUpload} />;
+          }
+          if (isLoading) {
+            return <div className="loading-text">Uploading...</div>;
+          }
+          if (uploadErrors.length === 0) {
+            return (
+              <SuccessModal
+                CSVFileName={CSVFilename}
+                setIsUploadingNewFile={setIsUploadingNewFile}
+              />
+            );
+          }
           return (
-            <SuccessModal CSVFileName={CSVFilename} setIsUploadingNewFile={setIsUploadingNewFile} />
+            <ErrorModal
+              CSVFileName={CSVFilename}
+              setIsUploadingNewFile={setIsUploadingNewFile}
+              uploadErrors={uploadErrors}
+            />
           );
-        }
-        return (
-          <ErrorModal
-            CSVFileName={CSVFilename}
-            setIsUploadingNewFile={setIsUploadingNewFile}
-            uploadErrors={uploadErrors}
-          />
-        );
-      })()}
+        })()}
+      </form>
     </CommonModal>
   );
 };
 
 UploadCSV.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
+  isOpen: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 

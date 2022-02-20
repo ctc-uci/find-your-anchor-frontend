@@ -88,7 +88,7 @@ const UploadCSVView = () => {
   return (
     <ChakraProvider>
       <div className="app-container">
-        <form onSubmit={handleEditFormSubmit}>
+        <form onSubmit={handleEditFormSubmit} className="upload-csv-view-form">
           <table className="csv-table">
             <thead>
               <tr>

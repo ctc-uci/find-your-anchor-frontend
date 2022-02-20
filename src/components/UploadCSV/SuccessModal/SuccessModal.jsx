@@ -22,7 +22,7 @@ const SuccessModal = ({ CSVFileName, setIsUploadingNewFile }) => {
         <Button size="md" colorScheme="blackAlpha" onClick={uploadNewFile}>
           Upload New File
         </Button>
-        <Button size="md" colorScheme="blue" onClick={e => viewFile(e)}>
+        <Button type="submit" size="md" colorScheme="blue" onClick={e => viewFile(e)}>
           Add to Map
         </Button>
         <Button size="md" colorScheme="teal" onClick={e => viewFile(e)}>
