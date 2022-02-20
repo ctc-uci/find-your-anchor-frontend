@@ -1,0 +1,9 @@
+.checkbox {
+  background-color: white;
+  transform: scale(1.5);
+}
+
+.edit-row input {
+  width: 200px;
+  background-color: white;
+}
