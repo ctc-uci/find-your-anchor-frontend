@@ -33,6 +33,7 @@ function PickupBox({
   status,
   rejectionReason,
   fetchBoxes,
+  pickup,
   // setPickupBoxesUnderReview,
   // setPickupBoxesEvaluated,
 }) {
@@ -128,6 +129,7 @@ function PickupBox({
                       boxHolderName={boxHolderName}
                       boxHolderEmail={boxHolderEmail}
                       zipCode={zipCode}
+                      pickup={pickup}
                       fetchBoxes={fetchBoxes}
                     />
                   </div>
@@ -151,6 +153,7 @@ PickupBox.propTypes = {
   date: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
   rejectionReason: PropTypes.string.isRequired,
+  pickup: PropTypes.bool.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
 };
 

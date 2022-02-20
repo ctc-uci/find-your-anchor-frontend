@@ -23,6 +23,7 @@ const RequestChangesPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes }) => {
     await FYABackend.put('/box/relocationBoxes/update', {
       boxID,
       status: 'pending changes',
+      changesRequested,
     });
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
     await Promise.all(requests);

@@ -15,7 +15,7 @@ import {
 import FYABackend from '../../../common/utils';
 import './RejectBoxPopup.css';
 
-const RejectBoxPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes }) => {
+const RejectBoxPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes, pickup }) => {
   const cancelRef = React.useRef();
   const [rejectionReason, setRejectionReason] = useState('');
 
@@ -25,7 +25,11 @@ const RejectBoxPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes }) => {
       status: 'evaluated',
       rejectionReason,
     });
-    const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
+    const requests = [
+      fetchBoxes('under review', pickup),
+      fetchBoxes('pending changes', pickup),
+      fetchBoxes('evaluated', pickup),
+    ];
     await Promise.all(requests);
     setIsOpen(false);
   };
@@ -79,6 +83,7 @@ RejectBoxPopup.propTypes = {
   boxID: PropTypes.number.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
+  pickup: PropTypes.bool.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
 };
 

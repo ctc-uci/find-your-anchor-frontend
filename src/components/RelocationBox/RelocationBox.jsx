@@ -42,6 +42,7 @@ const RelocationBox = ({
   rejectionReason,
   messageStatus,
   fetchBoxes,
+  pickup,
   dropOffMethod,
 }) => {
   const [rejectBoxPopupIsOpen, setRejectBoxPopupIsOpen] = useState(false);
@@ -83,14 +84,18 @@ const RelocationBox = ({
       boxHolderEmail: boxHolderEmailState,
       zipCode: zipCodeState,
       generalLocation: generalLocationState,
-      message: messageStatusState === 'rejected' ? '' : messageState,
+      message: messageState,
       messageStatus: messageStatusState,
       dropOffMethod: dropOffMethodState,
     });
     await utils.put('/box/approveBox', {
       boxID: id,
     });
-    const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
+    const requests = [
+      fetchBoxes('under review', false),
+      fetchBoxes('pending changes', false),
+      fetchBoxes('evaluated', false),
+    ];
     await Promise.all(requests);
   };
 
@@ -172,7 +177,6 @@ const RelocationBox = ({
                   <FormLabel htmlFor="dropOffMethod" marginTop="5%">
                     Drop Off Method
                   </FormLabel>
-                  {/* value={dropOffMethodState} */}
                   <Select
                     disabled={status !== 'pending changes'}
                     defaultValue={dropOffMethodState}
@@ -181,66 +185,70 @@ const RelocationBox = ({
                     <option value="Given to Someone">Given to Someone</option>
                     <option value="Left at Location">Left at Location</option>
                   </Select>
-                  <FormLabel htmlFor="Message" marginTop="5%">
-                    Message
-                  </FormLabel>
-                  <Textarea
-                    className={`${messageStatus === 'approved' ? 'message-approved' : ''}
-                    ${messageStatus === 'rejected' ? 'message-rejected' : ''}`}
-                    isReadOnly={status !== 'pending changes'}
-                    value={messageState}
-                    onChange={e => setMessageState(e.target.value)}
-                  />
-                  <div className="message-functionality">
-                    {messageStatus === 'approved' && (
-                      <>
-                        <button type="button" className="approval-button">
-                          <img src={MessageApprovedIcon} alt="" />
-                        </button>
-                        <p className="approval-message">Message Approved</p>
-                      </>
-                    )}
-                    {messageStatus === 'rejected' && (
-                      <>
-                        <button type="button" className="rejection-button">
-                          <img src={MessageRejectedIcon} alt="" />
-                        </button>
-                        <p className="rejection-message">Message Denied</p>
-                      </>
-                    )}
-                    {status !== 'evaluated' && (
-                      <>
-                        <button
-                          type="button"
-                          className="message-approved"
-                          onClick={async () => {
-                            setMessageStatusState('approved');
-                            await utils.put('/box/relocationBoxes/update', {
-                              boxID,
-                              messageStatus: 'approved',
-                            });
-                            await fetchBoxes(status, false);
-                          }}
-                        >
-                          <img src={MessageApprovedIcon} alt="" />
-                        </button>
-                        <button
-                          type="button"
-                          className="message-rejected"
-                          onClick={async () => {
-                            setMessageStatusState('rejected');
-                            await utils.put('/box/relocationBoxes/update', {
-                              boxID,
-                              messageStatus: 'rejected',
-                            });
-                            await fetchBoxes(status, false);
-                          }}
-                        >
-                          <img src={MessageRejectedIcon} alt="" />
-                        </button>
-                      </>
-                    )}
-                  </div>
+                  {!(status === 'evaluated' && messageStatus === 'rejected') && (
+                    <>
+                      <FormLabel htmlFor="Message" marginTop="5%">
+                        Message
+                      </FormLabel>
+                      <Textarea
+                        className={`${messageStatus === 'approved' ? 'message-approved' : ''}
+                        ${messageStatus === 'rejected' ? 'message-rejected' : ''}`}
+                        isReadOnly={status !== 'pending changes'}
+                        value={messageState}
+                        onChange={e => setMessageState(e.target.value)}
+                      />
+                      <div className="message-functionality">
+                        {messageStatus === 'approved' && (
+                          <>
+                            <button type="button" className="approval-button">
+                              <img src={MessageApprovedIcon} alt="" />
+                            </button>
+                            <p className="approval-message">Message Approved</p>
+                          </>
+                        )}
+                        {messageStatus === 'rejected' && (
+                          <>
+                            <button type="button" className="rejection-button">
+                              <img src={MessageRejectedIcon} alt="" />
+                            </button>
+                            <p className="rejection-message">Message Denied</p>
+                          </>
+                        )}
+                        {status !== 'evaluated' && (
+                          <>
+                            <button
+                              type="button"
+                              className="message-approved"
+                              onClick={async () => {
+                                setMessageStatusState('approved');
+                                await utils.put('/box/relocationBoxes/update', {
+                                  boxID,
+                                  messageStatus: 'approved',
+                                });
+                                await fetchBoxes(status, false);
+                              }}
+                            >
+                              <img src={MessageApprovedIcon} alt="" />
+                            </button>
+                            <button
+                              type="button"
+                              className="message-rejected"
+                              onClick={async () => {
+                                setMessageStatusState('rejected');
+                                await utils.put('/box/relocationBoxes/update', {
+                                  boxID,
+                                  messageStatus: 'rejected',
+                                });
+                                await fetchBoxes(status, false);
+                              }}
+                            >
+                              <img src={MessageRejectedIcon} alt="" />
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </>
+                  )}
                   {status === 'pending changes' && (
                     <div>
                       <FormLabel htmlFor="changesRequested" marginTop="5%">
@@ -302,12 +310,14 @@ const RelocationBox = ({
                       isOpen={requestChangesPopupIsOpen}
                       setIsOpen={setRequestChangesPopupIsOpen}
                       boxID={boxID}
+                      pickup={pickup}
                       fetchBoxes={fetchBoxes}
                     />
                     <RejectBoxPopup
                       isOpen={rejectBoxPopupIsOpen}
                       setIsOpen={setRejectBoxPopupIsOpen}
                       boxID={boxID}
+                      pickup={pickup}
                       fetchBoxes={fetchBoxes}
                     />
                   </div>
@@ -336,6 +346,7 @@ RelocationBox.propTypes = {
   rejectionReason: PropTypes.string.isRequired,
   messageStatus: PropTypes.string.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
+  pickup: PropTypes.bool.isRequired,
   dropOffMethod: PropTypes.string.isRequired,
 };
 

@@ -88,6 +88,7 @@ const BoxApproval = () => {
                       rejectionReason={boxData.rejection_reason}
                       messageStatus={boxData.message_status}
                       fetchBoxes={fetchBoxes}
+                      pickup={boxData.pickup}
                       dropOffMethod={boxData.drop_off_method}
                     />
                   ))}
@@ -104,6 +105,7 @@ const BoxApproval = () => {
                       date={boxData.date}
                       status={boxData.status}
                       approved={boxData.approved}
+                      pickup={boxData.pickup}
                       fetchBoxes={fetchBoxes}
                     />
                   ))}
@@ -129,6 +131,7 @@ const BoxApproval = () => {
                       rejectionReason={boxData.rejection_reason}
                       messageStatus={boxData.message_status}
                       fetchBoxes={fetchBoxes}
+                      pickup={boxData.pickup}
                       dropOffMethod={boxData.drop_off_method}
                     />
                   ))}
@@ -154,6 +157,7 @@ const BoxApproval = () => {
                       rejectionReason={boxData.rejection_reason}
                       messageStatus={boxData.message_status}
                       fetchBoxes={fetchBoxes}
+                      pickup={boxData.pickup}
                       dropOffMethod={boxData.drop_off_method}
                     />
                   ))}
@@ -170,6 +174,7 @@ const BoxApproval = () => {
                       date={boxData.date}
                       status={boxData.status}
                       approved={boxData.approved}
+                      pickup={boxData.pickup}
                       rejectionReason={boxData.rejection_reason}
                       fetchBoxes={fetchBoxes}
                     />
