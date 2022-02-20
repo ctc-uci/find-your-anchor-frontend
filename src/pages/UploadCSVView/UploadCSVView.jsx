@@ -1,12 +1,7 @@
 /* eslint-disable prefer-object-spread */
-
 import { ChakraProvider } from '@chakra-ui/react';
-// import { CheckIcon } from '@chakra-ui/icons';
 import React, { useState } from 'react';
-// import React from 'react';
-// import { v4 as uuidv4 } from 'uuid';
 import './UploadCSVView.css';
-// import EditIcon from '../../assets/edit.png';
 import ReadOnlyRow from '../../components/UploadCSVView/ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../../components/UploadCSVView/EditableRow/EditableRow';
 
