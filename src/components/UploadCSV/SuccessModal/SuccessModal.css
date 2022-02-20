@@ -5,7 +5,7 @@
   align-items: center;
   position: absolute;
   top: 25%; 
-  left: 25%;
+  left: 15%;
 }
 
 .success-modal-icon {
@@ -23,15 +23,6 @@
   display: flex;
   gap: 30px;
   margin-top: 30px;
-}
-
-.success-modal-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  position: absolute;
-  top: 25%;
 }
 
 .success-modal-file-name {
