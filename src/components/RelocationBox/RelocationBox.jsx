@@ -214,39 +214,39 @@ const RelocationBox = ({
                             <p className="rejection-message">Message Denied</p>
                           </>
                         )}
-                        {status !== 'evaluated' && (
-                          <>
-                            <button
-                              type="button"
-                              className="message-approved"
-                              onClick={async () => {
-                                setMessageStatusState('approved');
-                                await utils.put('/box/relocationBoxes/update', {
-                                  boxID,
-                                  messageStatus: 'approved',
-                                });
-                                await fetchBoxes(status, false);
-                              }}
-                            >
-                              <img src={MessageApprovedIcon} alt="" />
-                            </button>
-                            <button
-                              type="button"
-                              className="message-rejected"
-                              onClick={async () => {
-                                setMessageStatusState('rejected');
-                                await utils.put('/box/relocationBoxes/update', {
-                                  boxID,
-                                  messageStatus: 'rejected',
-                                });
-                                await fetchBoxes(status, false);
-                              }}
-                            >
-                              <img src={MessageRejectedIcon} alt="" />
-                            </button>
-                          </>
-                        )}
                       </div>
+                    </>
+                  )}
+                  {status !== 'evaluated' && (
+                    <>
+                      <button
+                        type="button"
+                        className="message-approved"
+                        onClick={async () => {
+                          setMessageStatusState('approved');
+                          await utils.put('/box/relocationBoxes/update', {
+                            boxID,
+                            messageStatus: 'approved',
+                          });
+                          await fetchBoxes(status, false);
+                        }}
+                      >
+                        <img src={MessageApprovedIcon} alt="" />
+                      </button>
+                      <button
+                        type="button"
+                        className="message-rejected"
+                        onClick={async () => {
+                          setMessageStatusState('rejected');
+                          await utils.put('/box/relocationBoxes/update', {
+                            boxID,
+                            messageStatus: 'rejected',
+                          });
+                          await fetchBoxes(status, false);
+                        }}
+                      >
+                        <img src={MessageRejectedIcon} alt="" />
+                      </button>
                     </>
                   )}
                   {status === 'pending changes' && (
