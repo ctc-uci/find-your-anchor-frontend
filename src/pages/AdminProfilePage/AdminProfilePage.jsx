@@ -2,8 +2,8 @@ import React from 'react';
 import { ChakraProvider, Button, useDisclosure, Input, Image } from '@chakra-ui/react';
 
 import './AdminProfilePage.css';
-import DeleteAccountModal from './DeleteAccountModal/DeleteAccountModal';
-import SendLinkModal from './SendLinkModal/SendLinkModal';
+import DeleteAccountModal from '../../components/AdminProfilePage/DeleteAccountModal/DeleteAccountModal';
+import SendLinkModal from '../../components/AdminProfilePage/SendLinkModal/SendLinkModal';
 import NavBar from '../../components/NavBar/NavBar';
 import FYALogoLarge from '../../assets/fya-logo-large.svg';
 import PenImage from '../../assets/Vector.png';
