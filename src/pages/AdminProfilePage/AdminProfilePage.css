@@ -11,7 +11,7 @@
 }
 
 .share-registration-box {
-  position:relative;
+  position: relative;
   left: 34px;
 }
 
@@ -21,9 +21,9 @@
 }
 
 .welcome-header {
-  position:relative;
+  position: relative;
   display: flex;
-  left: -50px;
+  left: -40px;
   top: -10px;
   justify-content: center;
   align-items: center;
@@ -48,38 +48,82 @@
   justify-content: space-between;
 }
 
-.email-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .background-box {
   position: relative;
-  top: 43px;
-  background-color: #EAEAEA;
-  border-radius: 12px !important;
   width: 1027px;
   height: 498px;
-  margin-left: auto;
-  margin-right: auto;
-  }
-
-.delete-account-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: left;
-  height: 354px;
+  top: 43px;
+  background-color: #eaeaea;
+  border-radius: 12px !important;
+  margin-left: 262px;
+  margin-right: 191px;
+  margin-bottom: 113px;
 }
 
-.text-input-container {
+.pen-image {
+  position: absolute;
+  top: 17px;
+}
+
+.first-name-container {
+  margin-top: 34px;
+  margin-left: 22px;
+  font-weight: bold;
+  font-size: 27px;
+}
+
+.first-input-container {
   position: relative;
   display: flex;
   justify-content: space-between;
+  left: 50px;
+}
+
+.last-name-container {
+  position: absolute;
+  right: 262px;
+  margin-top: 36px;
+  margin-right: 58px;
+  font-weight: bold;
+  font-size: 27px;
+}
+
+.last-input-container {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  left: 5px;
+}
+
+.email-container {
+  position: absolute;
+  display: flex;
+  left: 58px;
+  top: 198px;
+  font-weight: bold;
+  font-size: 27px;
+}
+
+.email-input-container {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  left: 40px;
+  top: 44px;
 }
 
 .pen-image {
   position: relative;
   left: 16px;
+}
+
+.delete-account-button {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  left: 419px;
+  right: 418px;
+  top: 358px;
 }
