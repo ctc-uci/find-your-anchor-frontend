@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import './ReadOnlyRow.css';
 import EditIcon from '../../../assets/edit.png';
 import DeleteIcon from '../../../assets/delete.png';
+import GreenCheckIcon from '../../../assets/green-check.png';
+import RedCrossIcon from '../../../assets/red-x.png';
 
 const ReadOnlyRow = ({ data, editRow, handleDeleteClick }) => {
   return (
@@ -10,7 +12,13 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteClick }) => {
       <td>{data.date}</td>
       <td>{data.boxNumber}</td>
       <td>{data.zipCode}</td>
-      <td>{data.launchedOrganically}</td>
+      <td>
+        {data.launchedOrganically ? (
+          <img src={GreenCheckIcon} alt="Green Check Icon" className="green-check-icon" />
+        ) : (
+          <img src={RedCrossIcon} alt="Red Cross Icon" className="red-cross-icon" />
+        )}
+      </td>
       <td>
         <button type="button" onClick={() => handleDeleteClick(data.boxNumber)}>
           <img src={DeleteIcon} alt="Edit Icon" className="delete-icon" />
@@ -25,7 +33,7 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteClick }) => {
 
 ReadOnlyRow.propTypes = {
   data: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string,
     date: PropTypes.string,
     boxNumber: PropTypes.string,
     zipCode: PropTypes.string,

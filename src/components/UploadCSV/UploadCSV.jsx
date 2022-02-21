@@ -56,7 +56,6 @@ const UploadCSV = ({ isOpen, onClose }) => {
     emptyCells.map(cell =>
       setUploadErrors(prevState => [...prevState, `missing ${cell} in line ${line}`]),
     );
-    // if (emptyCells.length > 0) setIsLoading(false);
     setIsLoading(false);
   };
 

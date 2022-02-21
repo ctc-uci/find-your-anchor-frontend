@@ -78,7 +78,6 @@ const UploadCSVView = () => {
             </thead>
             <tbody>
               {formDatas.map(data => {
-                console.log(data);
                 return (
                   <Fragment key={data.id}>
                     {editId === data.id ? (

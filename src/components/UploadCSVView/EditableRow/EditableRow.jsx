@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Input, Checkbox } from '@chakra-ui/react';
 import './EditableRow.css';
+import CheckIcon from '../../../assets/check.png';
 
 const EditableRow = ({ editFormData, handleEditFormChange }) => {
   return (
@@ -41,7 +42,9 @@ const EditableRow = ({ editFormData, handleEditFormChange }) => {
         />
       </td>
       <td>
-        <button type="submit">Save</button>
+        <button type="submit">
+          <img src={CheckIcon} alt="Check Icon" className="check-icon" />
+        </button>
       </td>
     </tr>
   );
