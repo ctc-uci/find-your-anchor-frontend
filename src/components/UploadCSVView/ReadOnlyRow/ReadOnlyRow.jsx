@@ -1,12 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useDisclosure } from '@chakra-ui/react';
 import './ReadOnlyRow.css';
 import EditIcon from '../../../assets/edit.png';
 import DeleteIcon from '../../../assets/delete.png';
 import GreenCheckIcon from '../../../assets/green-check.png';
 import RedCrossIcon from '../../../assets/red-x.png';
+import DeleteBoxModal from '../DeleteBoxModal/DeleteBoxModal';
 
-const ReadOnlyRow = ({ data, editRow, handleDeleteClick }) => {
+const ReadOnlyRow = ({ data, editRow, handleDeleteRow }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const onDelete = () => {
+    handleDeleteRow(data.id);
+    onClose();
+  };
+
   return (
     <tr key={data.id}>
       <td>{data.date}</td>
@@ -20,7 +28,8 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteClick }) => {
         )}
       </td>
       <td>
-        <button type="button" onClick={() => handleDeleteClick(data.id)}>
+        <DeleteBoxModal isOpen={isOpen} onClose={onClose} onDelete={onDelete} />
+        <button type="button" onClick={onOpen}>
           <img src={DeleteIcon} alt="Edit Icon" className="delete-icon" />
         </button>
         <button type="button" onClick={e => editRow(e, data)}>
@@ -40,7 +49,7 @@ ReadOnlyRow.propTypes = {
     launchedOrganically: PropTypes.bool,
   }).isRequired,
   editRow: PropTypes.func.isRequired,
-  handleDeleteClick: PropTypes.func.isRequired,
+  handleDeleteRow: PropTypes.func.isRequired,
 };
 
 export default ReadOnlyRow;

@@ -47,7 +47,7 @@ const CSVViewTable = ({ rows }) => {
     setFormData(newFormData);
   };
 
-  const handleDeleteClick = rowId => {
+  const handleDeleteRow = rowId => {
     const newFormData = [...formDatas];
     const index = formDatas.findIndex(data => data.id === rowId);
     newFormData.splice(index, 1);
@@ -77,11 +77,7 @@ const CSVViewTable = ({ rows }) => {
                       handleEditFormSubmit={handleEditFormSubmit}
                     />
                   ) : (
-                    <ReadOnlyRow
-                      data={data}
-                      editRow={editRow}
-                      handleDeleteClick={handleDeleteClick}
-                    />
+                    <ReadOnlyRow data={data} editRow={editRow} handleDeleteRow={handleDeleteRow} />
                   )}
                 </Fragment>
               );
