@@ -21,15 +21,16 @@ import BoxSchema from './UploadCSVUtils';
 const UploadCSV = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const { readRemoteFile } = usePapaParse();
-  const [CSVFile, setCSVFile] = useState();
+  const [CSVFile, setCSVFile] = useState(null);
   const [CSVFilename, setCSVFilename] = useState('');
-  const [uploadErrors, setUploadErrors] = useState([]);
   const [formDatas, setFormDatas] = useState([]);
+  const [uploadErrors, setUploadErrors] = useState([]);
   const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (isUploadingNewFile) {
+      setFormDatas([]);
       setUploadErrors([]);
       setIsLoading(true);
     }
@@ -87,6 +88,11 @@ const UploadCSV = ({ isOpen, onClose }) => {
     navigate('/upload-csv-view', { state: formDatas });
   };
 
+  const onCloseModal = () => {
+    setIsUploadingNewFile(true);
+    onClose();
+  };
+
   const addToMap = async e => {
     e.preventDefault();
     return Promise.all(
@@ -101,7 +107,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
   };
 
   return (
-    <CommonModal isOpen={isOpen} onClose={onClose} className="common-modal">
+    <CommonModal isOpen={isOpen} onClose={onCloseModal} className="common-modal">
       <form onSubmit={addToMap}>
         {(() => {
           if (isUploadingNewFile) {
