@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton } from '@chakra-ui/react';
 
 import DeleteAccountModalContent from './DeleteAccountModalContent';
-import './DeleteAccountModal.css';
+import styles from './DeleteAccountModal.module.css';
 import FYALogo from '../../../assets/fya-logo-large.svg';
 
 // TODO:
@@ -31,8 +31,8 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
       <ModalContent>
         <ModalCloseButton />
         <ModalBody>
-          <div className="delete-modal-content">
-            <img src={FYALogo} alt="Logo" className="fya-logo" />
+          <div className={styles['delete-modal-content']}>
+            <img src={FYALogo} alt="Logo" className={styles['fya-logo']} />
             <DeleteAccountModalContent
               modalStep={modalStep}
               setModalStep={setModalStep}
