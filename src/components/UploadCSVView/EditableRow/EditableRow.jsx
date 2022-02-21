@@ -32,19 +32,19 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
       <td>
         <FormControl isInvalid={errors?.date}>
           <Input id="date" placeholder="MM/DD/YYYY" name="date" {...register('date')} />
-          <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
+          <FormErrorMessage marginTop="0px">{errors.date?.message}</FormErrorMessage>
         </FormControl>
       </td>
       <td>
         <FormControl isInvalid={errors?.boxNumber}>
           <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
-          <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
+          <FormErrorMessage marginTop="0px">{errors.boxNumber?.message}</FormErrorMessage>
         </FormControl>
       </td>
       <td>
         <FormControl isInvalid={errors?.zipCode}>
           <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
-          <FormErrorMessage>{errors.zipCode?.message}</FormErrorMessage>
+          <FormErrorMessage marginTop="0px">{errors.zipCode?.message}</FormErrorMessage>
         </FormControl>
       </td>
       <td>

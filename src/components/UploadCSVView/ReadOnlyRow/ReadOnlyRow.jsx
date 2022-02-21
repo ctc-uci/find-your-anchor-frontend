@@ -20,7 +20,7 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteClick }) => {
         )}
       </td>
       <td>
-        <button type="button" onClick={() => handleDeleteClick(data.boxNumber)}>
+        <button type="button" onClick={() => handleDeleteClick(data.id)}>
           <img src={DeleteIcon} alt="Edit Icon" className="delete-icon" />
         </button>
         <button type="button" onClick={e => editRow(e, data)}>

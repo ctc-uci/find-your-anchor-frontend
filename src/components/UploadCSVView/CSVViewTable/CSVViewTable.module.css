@@ -33,8 +33,9 @@
 }
 
 .csv-table td {
+  position: relative;
   padding: 8px;
-  height: 70px;
+  height: 80px;
   background-color: #efefef;
 }
 
