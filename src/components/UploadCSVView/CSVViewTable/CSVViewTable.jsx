@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../EditableRow/EditableRow';
+import { formatDate } from '../../../common/utils';
 
 const CSVViewTable = ({ rows }) => {
   const [formDatas, setFormData] = useState(rows);
   const [editId, setEditId] = useState(null);
-
   const [editFormData, setEditFormData] = useState({
     date: '',
     boxNumber: '',
@@ -20,6 +20,7 @@ const CSVViewTable = ({ rows }) => {
     e.preventDefault();
     setEditId(data.id);
 
+    // store current form values for row
     const formValues = {
       date: data.date,
       boxNumber: data.boxNumber,
@@ -30,19 +31,13 @@ const CSVViewTable = ({ rows }) => {
     setEditFormData(formValues);
   };
 
-  const handleEditFormChange = e => {
-    e.preventDefault();
-    setEditFormData(Object.assign({}, editFormData, { [e.target.name]: e.target.value }));
-  };
-
-  const handleEditFormSubmit = e => {
-    e.preventDefault();
+  const handleEditFormSubmit = editRowData => {
     const editedRow = {
       id: editId,
-      date: editFormData.date,
-      boxNumber: editFormData.boxNumber,
-      zipCode: editFormData.zipCode,
-      launchedOrganically: editFormData.launchedOrganically,
+      date: formatDate(editRowData.date),
+      boxNumber: editRowData.boxNumber,
+      zipCode: editRowData.zipCode,
+      launchedOrganically: editRowData.launchedOrganically,
     };
 
     const newFormData = [...formDatas];
@@ -79,7 +74,7 @@ const CSVViewTable = ({ rows }) => {
                   {editId === data.id ? (
                     <EditableRow
                       editFormData={editFormData}
-                      handleEditFormChange={handleEditFormChange}
+                      handleEditFormSubmit={handleEditFormSubmit}
                     />
                   ) : (
                     <ReadOnlyRow
