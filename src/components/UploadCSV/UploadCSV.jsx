@@ -4,12 +4,14 @@ import './UploadCSV.css';
 import { v4 as uuidv4 } from 'uuid';
 import { usePapaParse } from 'react-papaparse';
 import PropTypes from 'prop-types';
-import FYABackend from '../../common/utils'; // TODO: fix this when common/utils is updated
+import { FYABackend } from '../../common/utils'; // TODO: fix this when common/utils is updated
 
 import UploadModal from './UploadModal/UploadModal';
 import SuccessModal from './SuccessModal/SuccessModal';
 import ErrorModal from './ErrorModal/ErrorModal';
 import CommonModal from '../../common/CommonModal/CommonModal';
+
+import BoxSchema from './UploadCSVUtils';
 
 // TODO: validate zipCodeCSV (wait until common/utils is updated)
 // TODO: validate date?
@@ -32,27 +34,35 @@ const UploadCSV = ({ isOpen, onClose }) => {
     }
   }, [isUploadingNewFile]);
 
-  const checkErrors = async (line, dateCSV, boxNumberCSV, zipCodeCSV) => {
-    const emptyCells = [];
-    if (!dateCSV) {
-      emptyCells.push('date');
+  // const checkErrors = async (line, dateCSV, boxNumberCSV, zipCodeCSV) => {
+  //   const emptyCells = [];
+  //   if (!dateCSV) {
+  //     emptyCells.push('date');
+  //   }
+  //   if (!boxNumberCSV) {
+  //     emptyCells.push('box number');
+  //   } else {
+  //     const res = await FYABackend.get(`/boxForm/exists/${boxNumberCSV}`);
+  //     console.log(res.data);
+  //     if (res.data) {
+  //       setUploadErrors(prevState => [...prevState, `box number ${boxNumberCSV} already exists`]);
+  //     }
+  //   }
+  //   if (!zipCodeCSV) {
+  //     emptyCells.push('zip code');
+  //   }
+  //   emptyCells.map(cell =>
+  //     setUploadErrors(prevState => [...prevState, `missing ${cell} in line ${line}`]),
+  //   );
+  //   setIsLoading(false);
+  // };
+
+  const checkErrors = async newFormData => {
+    try {
+      await BoxSchema.validate(newFormData);
+    } catch (err) {
+      console.log(err.errors);
     }
-    if (!boxNumberCSV) {
-      emptyCells.push('box number');
-    } else {
-      const res = await FYABackend.get(`/boxForm/exists/${boxNumberCSV}`);
-      console.log(res.data);
-      if (res.data) {
-        setUploadErrors(prevState => [...prevState, `box number ${boxNumberCSV} already exists`]);
-      }
-    }
-    if (!zipCodeCSV) {
-      emptyCells.push('zip code');
-    }
-    emptyCells.map(cell =>
-      setUploadErrors(prevState => [...prevState, `missing ${cell} in line ${line}`]),
-    );
-    setIsLoading(false);
   };
 
   const readCSV = () => {
@@ -65,22 +75,21 @@ const UploadCSV = ({ isOpen, onClose }) => {
           const boxNumberCSV = results.data[i][1];
           const zipCodeCSV = results.data[i][2];
           const launchedOrganicallyCSV = results.data[i][3];
-          checkErrors(i, dateCSV, boxNumberCSV, zipCodeCSV);
+          // checkErrors(i, dateCSV, boxNumberCSV, zipCodeCSV);
           const uid = uuidv4();
-          setFormDatas(prevState => [
-            ...prevState,
-            {
-              id: uid,
-              boxNumber: boxNumberCSV,
-              date: dateCSV,
-              zipCode: zipCodeCSV,
-              boxLocation: '',
-              message: '',
-              picture: '',
-              comments: '',
-              launchedOrganically: launchedOrganicallyCSV.toLowerCase() === 'yes',
-            },
-          ]);
+          const newFormData = {
+            id: uid,
+            boxNumber: boxNumberCSV,
+            date: dateCSV,
+            zipCode: zipCodeCSV,
+            boxLocation: '',
+            message: '',
+            picture: '',
+            comments: '',
+            launchedOrganically: launchedOrganicallyCSV.toLowerCase() === 'yes',
+          };
+          checkErrors(newFormData);
+          setFormDatas(prevState => [...prevState, newFormData]);
         }
 
         setIsUploadingNewFile(false);
