@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, Button, ButtonGroup } from '@chakra-ui/react';
-import './DeleteAccountModal.css';
+import styles from './DeleteAccountModal.module.css';
 
 // TODO:
 // - Button colors should be added to ChakraProvider using extendTheme
@@ -14,11 +14,11 @@ const ModalStepOne = ({ incrementStep, closeModal, deleteAccount }) => {
     deleteAccount();
   };
   return (
-    <div className="step-content">
-      <Text fontSize="2xl" fontWeight="bold" className="step-text">
+    <div className={styles['step-content']}>
+      <Text fontSize="2xl" fontWeight="bold" className={styles['step-text']}>
         Are you sure you want to delete this account?
       </Text>
-      <ButtonGroup size="lg" className="step-button-group">
+      <ButtonGroup size="lg" className={styles['step-button-group']}>
         <Button onClick={closeModal} color="white" bg="#173848">
           Cancel
         </Button>
@@ -31,8 +31,8 @@ const ModalStepOne = ({ incrementStep, closeModal, deleteAccount }) => {
 };
 
 const ModalStepTwo = () => (
-  <div className="step-content">
-    <Text fontSize="2xl" fontWeight="bold" className="step-text">
+  <div className={styles['step-content']}>
+    <Text fontSize="2xl" fontWeight="bold" className={styles['step-text']}>
       Account has been successfully deleted!
     </Text>
     <Button size="lg" color="white" bg="#173848">
