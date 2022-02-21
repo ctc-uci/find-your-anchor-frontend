@@ -6,7 +6,7 @@ import styles from './DeleteBoxModal.module.css';
 
 const DeleteBoxModal = ({ isOpen, onClose, onDelete }) => {
   return (
-    <CommonModal isOpen={isOpen} onClose={onClose} width="500px" height="150px">
+    <CommonModal isOpen={isOpen} onClose={onClose} width={500} height={150}>
       <div className={styles['delete-modal-container']}>
         <Text fontSize="xl" fontWeight="bold" className={styles['delete-modal-text']}>
           Delete Box

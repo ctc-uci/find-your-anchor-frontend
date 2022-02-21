@@ -19,13 +19,13 @@ const SuccessModal = ({ CSVFileName, setIsUploadingNewFile }) => {
       <p className="success-modal-text">File Uploaded!</p>
       <p className="success-modal-file-name">{CSVFileName}</p>
       <ButtonGroup className="success-modal-buttons">
-        <Button size="md" colorScheme="blackAlpha" onClick={uploadNewFile}>
+        <Button color="white" bg="#1F2F38" onClick={uploadNewFile}>
           Upload New File
         </Button>
-        <Button type="submit" size="md" colorScheme="blue" onClick={e => viewFile(e)}>
+        <Button type="submit" colorScheme="teal" onClick={e => viewFile(e)}>
           Add to Map
         </Button>
-        <Button size="md" colorScheme="teal" onClick={e => viewFile(e)}>
+        <Button color="white" bg="#345E80" onClick={e => viewFile(e)}>
           Edit/View File
         </Button>
       </ButtonGroup>

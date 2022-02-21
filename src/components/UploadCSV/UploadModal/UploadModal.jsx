@@ -12,7 +12,8 @@ const UploadModal = ({ setCSVFile, onUpload }) => {
       <Button
         className="upload-modal-button"
         size="md"
-        colorScheme="teal"
+        color="white"
+        bg="#345E80"
         onClick={e => onUpload(e)}
       >
         Confirm Upload

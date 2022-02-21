@@ -26,14 +26,14 @@ const CommonModal = ({ isOpen, onClose, width, height, children }) => {
 CommonModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  width: PropTypes.string,
-  height: PropTypes.string,
+  width: PropTypes.number,
+  height: PropTypes.number,
   children: PropTypes.node.isRequired,
 };
 
 CommonModal.defaultProps = {
-  width: '500px',
-  height: '700px',
+  width: 700,
+  height: 500,
 };
 
 export default CommonModal;
