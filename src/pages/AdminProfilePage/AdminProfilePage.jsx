@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChakraProvider, Button, useDisclosure, Input, Image } from '@chakra-ui/react';
 
-import './AdminProfilePage.css';
+import styles from './AdminProfilePage.module.css';
 import DeleteAccountModal from '../../components/AdminProfilePage/DeleteAccountModal/DeleteAccountModal';
 import SendLinkModal from '../../components/AdminProfilePage/SendLinkModal/SendLinkModal';
 import FYALogoLarge from '../../assets/fya-logo-large.svg';
@@ -21,11 +21,11 @@ const AdminProfilePage = () => {
 
   return (
     <ChakraProvider>
-      <div className="sub-header">
+      <div className={styles['sub-header']}>
         <Button
           onClick={onOpen}
           color="white"
-          className="share-registration-box"
+          className={styles['share-registration-box']}
           borderRadius="15px"
           bg="#1F2F38"
           fontSize="20px"
@@ -36,11 +36,11 @@ const AdminProfilePage = () => {
         </Button>
         <SendLinkModal isOpen={isOpen} onClose={onClose} />
 
-        <div className="welcome-header" colorScheme="blue">
+        <div className={styles['welcome-header']} colorScheme="blue">
           <h1>WELCOME!</h1>
         </div>
 
-        <div className="logout-button">
+        <div className={styles['logout-button']}>
           <Button
             onClick={null}
             colorScheme="teal"
@@ -55,51 +55,67 @@ const AdminProfilePage = () => {
         </div>
       </div>
 
-      <div className="fya-logo-large">
+      <div className={styles['fya-logo-large']}>
         <img boxSize="100px" src={FYALogoLarge} alt="Find Your Anchor Logo" />
       </div>
 
-      <div className="background-box">
-        <div className="profile-name">
-          <div className="first-name-container">
+      <div className={styles['background-box']}>
+        <div className={styles['profile-name']}>
+          <div className={styles['first-name-container']}>
             <h1>First Name:</h1>
-            <div className="name-input-container">
+            <div className={styles['name-input-container']}>
               <Input
                 bg="#FFFFFF"
-                className="first-name-input"
+                className={styles['first-name-input']}
                 size="lg"
                 htmlSize={35}
                 width="auto"
                 top="5px"
               />
-              <Image boxSize="27.75" className="pen-image" src={PenImage} alt="text input" />
+              <Image
+                boxSize="27.75"
+                className={styles['pen-image']}
+                src={PenImage}
+                alt="text input"
+              />
             </div>
           </div>
 
-          <div className="last-name-container">
+          <div className={styles['last-name-container']}>
             <h1>Last Name:</h1>
-            <div className="name-input-container">
+            <div className={styles['name-input-container']}>
               <Input
                 bg="#FFFFFF"
-                className="last-name-input"
+                className={styles['last-name-input']}
                 size="lg"
                 htmlSize={35}
                 width="auto"
                 top="5px"
               />
-              <Image boxSize="27.75" className="pen-image" src={PenImage} alt="text input" />
+              <Image
+                boxSize="27.75"
+                className={styles['pen-image']}
+                src={PenImage}
+                alt="text input"
+              />
             </div>
           </div>
         </div>
 
-        <div className="email-container">
+        <div className={styles['email-container']}>
           <h1>Email Address:</h1>
-          <div className="email-input-container">
-            <Input bg="#FFFFFF" className="email-input" size="lg" htmlSize={95} width="auto" />
+          <div className={styles['email-input-container']}>
+            <Input
+              bg="#FFFFFF"
+              className={styles['email-input']}
+              size="lg"
+              htmlSize={95}
+              width="auto"
+            />
           </div>
         </div>
 
-        <div className="delete-account-button">
+        <div className={styles['delete-account-button']}>
           <Button colorScheme="red" onClick={onOpenDeleteModal} size="lg" borderRadius="15px">
             Delete Account
           </Button>
