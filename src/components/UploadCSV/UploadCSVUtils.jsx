@@ -11,8 +11,8 @@ function validateZip() {
 function validateBoxNumber() {
   return this.test('boxNotExists', async function boxCheck(value) {
     const { path, createError } = this;
-    const boxExists = await FYABackend.get(`/boxForm/exists/${value}`);
-    return !boxExists.data
+    const box = await FYABackend.get(`/boxForm/${value}`);
+    return box.data.length === 0
       ? true
       : createError({ path, message: `Box no. ${value} already exists` });
   });

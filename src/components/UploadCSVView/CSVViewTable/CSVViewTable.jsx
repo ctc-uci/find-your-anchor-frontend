@@ -5,7 +5,7 @@ import { Button, Stack } from '@chakra-ui/react';
 import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../EditableRow/EditableRow';
-import { formatDate } from '../../../common/utils';
+import { FYABackend, formatDate } from '../../../common/utils';
 
 const CSVViewTable = ({ rows }) => {
   const [formDatas, setFormData] = useState(rows);
@@ -55,9 +55,11 @@ const CSVViewTable = ({ rows }) => {
     setFormData(newFormData);
   };
 
-  const addToMap = e => {
+  const addToMap = async e => {
     e.preventDefault();
     console.log('ADD TO MAP');
+    console.log(formDatas);
+    await FYABackend.post('/boxForm/boxes', formDatas);
   };
 
   return (

@@ -36,7 +36,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
       await BoxSchema.validate(CSVRow, { abortEarly: false });
     } catch (err) {
       err.inner.forEach(e => {
-        setUploadErrors(prevState => [...prevState, `${e.message} on line ${i}`]);
+        setUploadErrors(prevState => [...prevState, `${e.message} (line ${i})`]);
       });
     }
     setIsLoading(false);
@@ -89,15 +89,11 @@ const UploadCSV = ({ isOpen, onClose }) => {
 
   const addToMap = async e => {
     e.preventDefault();
-    return Promise.all(
-      formDatas.map(async formData => {
-        await FYABackend.post('/boxForm', formData, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-      }),
-    );
+    await FYABackend.post('/boxForm/boxes', formDatas, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   };
 
   return (
