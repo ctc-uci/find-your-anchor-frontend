@@ -12,11 +12,11 @@ import {
   Button,
 } from '@chakra-ui/react';
 import Checkmark from '../../../assets/Check.png';
-import './SendLinkModal.css';
+import styles from './SendLinkModal.module.css';
 
 const ModalOne = ({ count, setCount }) => {
   return (
-    <div className="modal-content">
+    <div className={styles['modal-content']}>
       <Text fontSize="2xl" fontWeight="bold" textAlign="center">
         Send registration link via email:
       </Text>
@@ -29,8 +29,8 @@ const ModalOne = ({ count, setCount }) => {
 };
 
 const ModalTwo = () => (
-  <div className="modal-content">
-    <img src={Checkmark} alt="Green Checkmark" className="checkmark" />
+  <div className={styles['modal-content']}>
+    <img src={Checkmark} alt="Green Checkmark" className={styles.checkmark} />
     <Text fontSize="2xl" fontWeight="bold" textAlign="center">
       LINK SENT!
     </Text>
