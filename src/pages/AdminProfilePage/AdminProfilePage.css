@@ -1,23 +1,15 @@
-.navigation-bar-container {
-  height: 65px;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.22);
-}
-
 .sub-header {
   position: relative;
   display: flex;
   justify-content: space-between;
   top: 25px;
+  margin: 0em 2em;
 }
 
 .share-registration-box {
-  position: relative;
-  left: 34px;
 }
 
 .logout-button {
-  position: relative;
-  right: 53px;
 }
 
 .welcome-header {
@@ -45,85 +37,61 @@
 
 .profile-name {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 5em;
+  margin: 1.75em 0em;
 }
 
 .background-box {
-  position: relative;
   width: 1027px;
   height: 498px;
-  top: 43px;
   background-color: #eaeaea;
   border-radius: 12px !important;
-  margin-left: 262px;
-  margin-right: 191px;
-  margin-bottom: 113px;
-}
-
-.pen-image {
-  position: absolute;
-  top: 17px;
+  margin: 3em auto 5em auto;
+  padding: 0em 4em;
+  display: flex;
+  flex-direction: column;
 }
 
 .first-name-container {
-  margin-top: 34px;
-  margin-left: 22px;
   font-weight: bold;
   font-size: 27px;
 }
 
-.first-input-container {
-  position: relative;
+.name-input-container {
+  gap: 0.65em;
   display: flex;
   justify-content: space-between;
-  left: 50px;
+  align-items: center;
 }
 
 .last-name-container {
-  position: absolute;
-  right: 262px;
-  margin-top: 36px;
-  margin-right: 58px;
   font-weight: bold;
   font-size: 27px;
-}
-
-.last-input-container {
-  position: absolute;
-  display: flex;
-  justify-content: space-between;
-  left: 5px;
 }
 
 .email-container {
-  position: absolute;
   display: flex;
-  left: 58px;
-  top: 198px;
   font-weight: bold;
   font-size: 27px;
+  flex-direction: column;
+  margin: 1.75em 0em;
+  gap: 0em;
 }
 
 .email-input-container {
-  position: absolute;
   display: flex;
-  justify-content: space-between;
-  left: 40px;
-  top: 44px;
+  justify-content: flex-start;
 }
 
 .pen-image {
-  position: relative;
   left: 16px;
 }
 
 .delete-account-button {
-  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: left;
-  left: 419px;
-  right: 418px;
-  top: 358px;
+  margin-top: 2em;
 }
