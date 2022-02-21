@@ -1,4 +1,4 @@
-import { Button, ChakraProvider, Flex, Stack, Text } from '@chakra-ui/react';
+import { ChakraProvider, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 // import styles from './UploadCSVView.module.css';
@@ -14,9 +14,6 @@ const UploadCSVView = () => {
           {state.filename}
         </Text>
         <CSVViewTable rows={state.rows} />
-        <Stack direction="row" justify="right" marginTop="25px">
-          <Button colorScheme="teal">Add to Map</Button>
-        </Stack>
       </Flex>
     </ChakraProvider>
   );

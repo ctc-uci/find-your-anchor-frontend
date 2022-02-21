@@ -1,6 +1,7 @@
 /* eslint-disable prefer-object-spread */
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { Button, Stack } from '@chakra-ui/react';
 import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../EditableRow/EditableRow';
@@ -54,9 +55,14 @@ const CSVViewTable = ({ rows }) => {
     setFormData(newFormData);
   };
 
+  const addToMap = e => {
+    e.preventDefault();
+    console.log('ADD TO MAP');
+  };
+
   return (
-    <div className={`${styles['csv-table-container']} ${styles['scrollable-div']}`}>
-      <form onSubmit={handleEditFormSubmit} className={styles['csv-table-form']}>
+    <form onSubmit={addToMap} className={styles['csv-table-form']}>
+      <div className={`${styles['csv-table-container']} ${styles['scrollable-div']}`}>
         <table className={styles['csv-table']}>
           <thead>
             <tr>
@@ -84,8 +90,13 @@ const CSVViewTable = ({ rows }) => {
             })}
           </tbody>
         </table>
-      </form>
-    </div>
+      </div>
+      <Stack direction="row" justify="right" marginTop="25px">
+        <Button type="submit" colorScheme="teal">
+          Add to Map
+        </Button>
+      </Stack>
+    </form>
   );
 };
 

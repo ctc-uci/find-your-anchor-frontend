@@ -47,7 +47,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
       complete: results => {
         // parse each row in csv file
         for (let i = 1; i < results.data.length; i += 1) {
-          const uid = uuidv4();
+          const uid = uuidv4(); // used to uniquely identify each row
           const CSVRow = {
             id: uid,
             boxNumber: results.data[i][1],
