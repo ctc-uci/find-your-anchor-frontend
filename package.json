@@ -26,6 +26,7 @@
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^1.7.0",
     "framer-motion": "4",
+    "is-valid-zipcode": "^1.0.3",
     "leaflet": "^1.7.1",
     "leaflet-color-number-markers": "^1.0.7",
     "leaflet-geosearch": "^3.6.0",
@@ -43,7 +44,8 @@
     "testing-library": "0.0.2",
     "uuid": "^8.3.2",
     "web-vitals": "^1.0.1",
-    "webpack": "4.44.2"
+    "webpack": "4.44.2",
+    "yup": "^0.32.11"
   },
   "optionalDependencies": {
     "babel-loader": "8.1.0"
