@@ -16,6 +16,7 @@ import BoxSchema from './UploadCSVUtils';
 // TODO: validate zipCodeCSV (wait until common/utils is updated)
 // TODO: validate date?
 // TODO: validate box number is type integer
+// TODO: when modal is closed, reset states and formDatas
 
 const UploadCSV = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
@@ -34,62 +35,36 @@ const UploadCSV = ({ isOpen, onClose }) => {
     }
   }, [isUploadingNewFile]);
 
-  // const checkErrors = async (line, dateCSV, boxNumberCSV, zipCodeCSV) => {
-  //   const emptyCells = [];
-  //   if (!dateCSV) {
-  //     emptyCells.push('date');
-  //   }
-  //   if (!boxNumberCSV) {
-  //     emptyCells.push('box number');
-  //   } else {
-  //     const res = await FYABackend.get(`/boxForm/exists/${boxNumberCSV}`);
-  //     console.log(res.data);
-  //     if (res.data) {
-  //       setUploadErrors(prevState => [...prevState, `box number ${boxNumberCSV} already exists`]);
-  //     }
-  //   }
-  //   if (!zipCodeCSV) {
-  //     emptyCells.push('zip code');
-  //   }
-  //   emptyCells.map(cell =>
-  //     setUploadErrors(prevState => [...prevState, `missing ${cell} in line ${line}`]),
-  //   );
-  //   setIsLoading(false);
-  // };
-
-  const checkErrors = async newFormData => {
+  const checkErrors = async (CSVRow, i) => {
     try {
-      await BoxSchema.validate(newFormData);
+      await BoxSchema.validate(CSVRow, { abortEarly: false });
     } catch (err) {
-      console.log(err.errors);
+      err.inner.forEach(e => {
+        setUploadErrors(prevState => [...prevState, `${e.message} on line ${i}`]);
+      });
     }
+    setIsLoading(false);
   };
 
   const readCSV = () => {
     readRemoteFile(CSVFile, {
       complete: results => {
         // parse each line in csv file and upload each to the backend
-        console.log(results.data);
         for (let i = 1; i < results.data.length; i += 1) {
-          const dateCSV = results.data[i][0];
-          const boxNumberCSV = results.data[i][1];
-          const zipCodeCSV = results.data[i][2];
-          const launchedOrganicallyCSV = results.data[i][3];
-          // checkErrors(i, dateCSV, boxNumberCSV, zipCodeCSV);
           const uid = uuidv4();
-          const newFormData = {
+          const CSVRow = {
             id: uid,
-            boxNumber: boxNumberCSV,
-            date: dateCSV,
-            zipCode: zipCodeCSV,
+            boxNumber: results.data[i][1],
+            date: results.data[i][0],
+            zipCode: results.data[i][2],
             boxLocation: '',
             message: '',
             picture: '',
             comments: '',
-            launchedOrganically: launchedOrganicallyCSV.toLowerCase() === 'yes',
+            launchedOrganically: results.data[i][3].toLowerCase() === 'yes',
           };
-          checkErrors(newFormData);
-          setFormDatas(prevState => [...prevState, newFormData]);
+          checkErrors(CSVRow, i);
+          setFormDatas(prevState => [...prevState, CSVRow]);
         }
 
         setIsUploadingNewFile(false);
