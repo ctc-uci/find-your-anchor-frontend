@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './UploadCSV.css';
+import { v4 as uuidv4 } from 'uuid';
 import { usePapaParse } from 'react-papaparse';
 import PropTypes from 'prop-types';
 import FYABackend from '../../common/utils'; // TODO: fix this when common/utils is updated
@@ -9,7 +11,12 @@ import SuccessModal from './SuccessModal/SuccessModal';
 import ErrorModal from './ErrorModal/ErrorModal';
 import CommonModal from '../../common/CommonModal/CommonModal';
 
+// TODO: validate zipCodeCSV (wait until common/utils is updated)
+// TODO: validate date?
+// TODO: validate box number is type integer
+
 const UploadCSV = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
   const { readRemoteFile } = usePapaParse();
   const [CSVFile, setCSVFile] = useState();
   const [CSVFilename, setCSVFilename] = useState('');
@@ -25,13 +32,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
     }
   }, [isUploadingNewFile]);
 
-  const checkEmptyCells = async (
-    line,
-    dateCSV,
-    boxNumberCSV,
-    zipCodeCSV,
-    launchedOrganicallyCSV,
-  ) => {
+  const checkErrors = async (line, dateCSV, boxNumberCSV, zipCodeCSV, launchedOrganicallyCSV) => {
     const emptyCells = [];
     if (!dateCSV) {
       emptyCells.push('date');
@@ -69,15 +70,12 @@ const UploadCSV = ({ isOpen, onClose }) => {
           const boxNumberCSV = results.data[i][1];
           const zipCodeCSV = results.data[i][2];
           const launchedOrganicallyCSV = results.data[i][3];
-          // TODO: check if any cells are empty
-          checkEmptyCells(i, dateCSV, boxNumberCSV, zipCodeCSV, launchedOrganicallyCSV);
-          // checkErrors(results.data[i], i);
-          // TODO: validate zipCodeCSV (wait until common/utils is updated)
-          // TODO: validate date?
-          // TODO: validate box number is type integer
+          checkErrors(i, dateCSV, boxNumberCSV, zipCodeCSV, launchedOrganicallyCSV);
+          const uid = uuidv4();
           setFormDatas(prevState => [
             ...prevState,
             {
+              id: uid,
               boxNumber: boxNumberCSV,
               date: dateCSV,
               zipCode: zipCodeCSV,
@@ -105,12 +103,15 @@ const UploadCSV = ({ isOpen, onClose }) => {
     }
   };
 
+  const onEditViewFile = e => {
+    e.preventDefault();
+    navigate('/upload-csv-view', { state: formDatas });
+  };
+
   const addToMap = async e => {
     e.preventDefault();
-    console.log('ADD TO MAP');
     return Promise.all(
       formDatas.map(async formData => {
-        console.log('FORMDATA: ', formData);
         await FYABackend.post('/boxForm', formData, {
           headers: {
             'Content-Type': 'application/json',
@@ -143,6 +144,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
               CSVFileName={CSVFilename}
               setIsUploadingNewFile={setIsUploadingNewFile}
               uploadErrors={uploadErrors}
+              onEditViewFile={onEditViewFile}
             />
           );
         })()}
@@ -152,7 +154,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
 };
 
 UploadCSV.propTypes = {
-  isOpen: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 

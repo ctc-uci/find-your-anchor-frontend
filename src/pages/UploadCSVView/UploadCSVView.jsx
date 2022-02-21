@@ -1,37 +1,15 @@
 /* eslint-disable prefer-object-spread */
 import { ChakraProvider } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
+import { useLocation } from 'react-router-dom';
 import './UploadCSVView.css';
 import ReadOnlyRow from '../../components/UploadCSVView/ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../../components/UploadCSVView/EditableRow/EditableRow';
 
 const UploadCSVView = () => {
-  const rows = [
-    {
-      id: 1,
-      date: '09/28/2022',
-      boxNumber: '123',
-      zipCode: '13252',
-      launchedOrganically: 'yes',
-    },
-    {
-      id: 2,
-      date: '09/28/2022',
-      boxNumber: '123',
-      zipCode: '13252',
-      launchedOrganically: 'yes',
-    },
-    {
-      id: 3,
-      date: '09/28/2022',
-      boxNumber: '123',
-      zipCode: '13252',
-      launchedOrganically: 'yes',
-    },
-  ];
+  const { state } = useLocation();
 
-  // const [edit, setEdit] = useState(true);
-  const [formDatas, setFormData] = useState(rows);
+  const [formDatas, setFormData] = useState(state);
   const [editId, setEditId] = useState(null);
 
   const [editFormData, setEditFormData] = useState({
@@ -40,7 +18,6 @@ const UploadCSVView = () => {
     zipCode: '',
     launchedOrganically: '',
   });
-  // const [contacts, setContacts] = useState(formData);
 
   const editRow = (e, data) => {
     e.preventDefault();
@@ -101,8 +78,9 @@ const UploadCSVView = () => {
             </thead>
             <tbody>
               {formDatas.map(data => {
+                console.log(data);
                 return (
-                  <>
+                  <Fragment key={data.id}>
                     {editId === data.id ? (
                       <EditableRow
                         editFormData={editFormData}
@@ -115,7 +93,7 @@ const UploadCSVView = () => {
                         handleDeleteClick={handleDeleteClick}
                       />
                     )}
-                  </>
+                  </Fragment>
                 );
               })}
             </tbody>

@@ -6,13 +6,13 @@ import DeleteIcon from '../../../assets/delete.png';
 
 const ReadOnlyRow = ({ data, editRow, handleDeleteClick }) => {
   return (
-    <tr>
+    <tr key={data.id}>
       <td>{data.date}</td>
       <td>{data.boxNumber}</td>
       <td>{data.zipCode}</td>
       <td>{data.launchedOrganically}</td>
       <td>
-        <button type="button" onClick={() => handleDeleteClick(data.id)}>
+        <button type="button" onClick={() => handleDeleteClick(data.boxNumber)}>
           <img src={DeleteIcon} alt="Edit Icon" className="delete-icon" />
         </button>
         <button type="button" onClick={e => editRow(e, data)}>
@@ -24,7 +24,13 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteClick }) => {
 };
 
 ReadOnlyRow.propTypes = {
-  data: PropTypes.objectOf(PropTypes.object).isRequired,
+  data: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    date: PropTypes.string,
+    boxNumber: PropTypes.string,
+    zipCode: PropTypes.string,
+    launchedOrganically: PropTypes.string,
+  }).isRequired,
   editRow: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired,
 };

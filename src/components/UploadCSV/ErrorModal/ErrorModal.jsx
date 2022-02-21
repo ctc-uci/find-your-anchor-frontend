@@ -2,18 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import { Button, ButtonGroup, Text } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
 
 import './ErrorModal.css';
 import ErrorIcon from '../../../assets/error.png';
 
-const ErrorModal = ({ CSVFileName, setIsUploadingNewFile, uploadErrors }) => {
+const ErrorModal = ({ CSVFileName, setIsUploadingNewFile, uploadErrors, onEditViewFile }) => {
   const uploadNewFile = () => {
     setIsUploadingNewFile(true);
   };
 
-  const viewFile = () => {
+  const viewFile = e => {
     setIsUploadingNewFile(false);
+    onEditViewFile(e);
   };
 
   return (
@@ -37,7 +37,7 @@ const ErrorModal = ({ CSVFileName, setIsUploadingNewFile, uploadErrors }) => {
           Upload New File
         </Button>
         <Button size="md" colorScheme="teal" onClick={e => viewFile(e)}>
-          <Link to="/upload-csv-view">Edit/View File</Link>
+          Edit/View File
         </Button>
       </ButtonGroup>
     </div>
@@ -48,6 +48,7 @@ ErrorModal.propTypes = {
   CSVFileName: PropTypes.string.isRequired,
   setIsUploadingNewFile: PropTypes.func.isRequired,
   uploadErrors: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
+  onEditViewFile: PropTypes.func.isRequired,
 };
 
 export default ErrorModal;
