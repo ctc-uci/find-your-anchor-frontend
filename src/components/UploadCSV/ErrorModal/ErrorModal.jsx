@@ -36,7 +36,7 @@ const ErrorModal = ({ CSVFileName, setIsUploadingNewFile, uploadErrors, onEditVi
         <Button size="md" color="white" bg="#1F2F38" onClick={uploadNewFile}>
           Upload New File
         </Button>
-        <Button size="md" color="white" bg="#345E80" onClick={e => viewFile(e)}>
+        <Button size="md" color="white" bg="#345E80" onClick={viewFile}>
           Edit/View File
         </Button>
       </ButtonGroup>

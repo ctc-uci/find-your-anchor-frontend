@@ -4,13 +4,14 @@ import { Button, ButtonGroup } from '@chakra-ui/react';
 import './SuccessModal.css';
 import SuccessIcon from '../../../assets/success.png';
 
-const SuccessModal = ({ CSVFileName, setIsUploadingNewFile }) => {
+const SuccessModal = ({ CSVFileName, setIsUploadingNewFile, onEditViewFile }) => {
   const uploadNewFile = () => {
     setIsUploadingNewFile(true);
   };
 
-  const viewFile = () => {
+  const viewFile = e => {
     setIsUploadingNewFile(false);
+    onEditViewFile(e);
   };
 
   return (
@@ -22,10 +23,10 @@ const SuccessModal = ({ CSVFileName, setIsUploadingNewFile }) => {
         <Button color="white" bg="#1F2F38" onClick={uploadNewFile}>
           Upload New File
         </Button>
-        <Button type="submit" colorScheme="teal" onClick={e => viewFile(e)}>
+        <Button type="submit" colorScheme="teal">
           Add to Map
         </Button>
-        <Button color="white" bg="#345E80" onClick={e => viewFile(e)}>
+        <Button color="white" bg="#345E80" onClick={viewFile}>
           Edit/View File
         </Button>
       </ButtonGroup>
@@ -36,6 +37,7 @@ const SuccessModal = ({ CSVFileName, setIsUploadingNewFile }) => {
 SuccessModal.propTypes = {
   CSVFileName: PropTypes.string.isRequired,
   setIsUploadingNewFile: PropTypes.func.isRequired,
+  onEditViewFile: PropTypes.func.isRequired,
 };
 
 export default SuccessModal;

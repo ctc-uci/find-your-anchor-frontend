@@ -1,5 +1,6 @@
 /* eslint-disable prefer-object-spread */
 import React, { useState, Fragment } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button, Stack } from '@chakra-ui/react';
 import styles from './CSVViewTable.module.css';
@@ -8,6 +9,7 @@ import EditableRow from '../EditableRow/EditableRow';
 import { FYABackend, formatDate } from '../../../common/utils';
 
 const CSVViewTable = ({ rows }) => {
+  const navigate = useNavigate();
   const [formDatas, setFormData] = useState(rows);
   const [editId, setEditId] = useState(null);
   const [editFormData, setEditFormData] = useState({
@@ -60,6 +62,7 @@ const CSVViewTable = ({ rows }) => {
     console.log('ADD TO MAP');
     console.log(formDatas);
     await FYABackend.post('/boxForm/boxes', formDatas);
+    navigate('/');
   };
 
   return (

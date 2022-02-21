@@ -94,6 +94,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
         'Content-Type': 'application/json',
       },
     });
+    onCloseModal();
   };
 
   return (
@@ -111,6 +112,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
               <SuccessModal
                 CSVFileName={CSVFilename}
                 setIsUploadingNewFile={setIsUploadingNewFile}
+                onEditViewFile={onEditViewFile}
               />
             );
           }
