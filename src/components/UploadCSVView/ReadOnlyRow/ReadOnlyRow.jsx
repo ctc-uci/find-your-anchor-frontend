@@ -37,7 +37,7 @@ ReadOnlyRow.propTypes = {
     date: PropTypes.string,
     boxNumber: PropTypes.string,
     zipCode: PropTypes.string,
-    launchedOrganically: PropTypes.string,
+    launchedOrganically: PropTypes.bool,
   }).isRequired,
   editRow: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired,

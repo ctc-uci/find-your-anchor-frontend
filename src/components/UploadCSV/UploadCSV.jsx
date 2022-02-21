@@ -32,7 +32,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
     }
   }, [isUploadingNewFile]);
 
-  const checkErrors = async (line, dateCSV, boxNumberCSV, zipCodeCSV, launchedOrganicallyCSV) => {
+  const checkErrors = async (line, dateCSV, boxNumberCSV, zipCodeCSV) => {
     const emptyCells = [];
     if (!dateCSV) {
       emptyCells.push('date');
@@ -43,15 +43,11 @@ const UploadCSV = ({ isOpen, onClose }) => {
       const res = await FYABackend.get(`/boxForm/exists/${boxNumberCSV}`);
       console.log(res.data);
       if (res.data) {
-        console.log('BOX NUMBER EXISTS');
         setUploadErrors(prevState => [...prevState, `box number ${boxNumberCSV} already exists`]);
       }
     }
     if (!zipCodeCSV) {
       emptyCells.push('zip code');
-    }
-    if (!launchedOrganicallyCSV) {
-      emptyCells.push('launched organically');
     }
     emptyCells.map(cell =>
       setUploadErrors(prevState => [...prevState, `missing ${cell} in line ${line}`]),
@@ -69,7 +65,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
           const boxNumberCSV = results.data[i][1];
           const zipCodeCSV = results.data[i][2];
           const launchedOrganicallyCSV = results.data[i][3];
-          checkErrors(i, dateCSV, boxNumberCSV, zipCodeCSV, launchedOrganicallyCSV);
+          checkErrors(i, dateCSV, boxNumberCSV, zipCodeCSV);
           const uid = uuidv4();
           setFormDatas(prevState => [
             ...prevState,

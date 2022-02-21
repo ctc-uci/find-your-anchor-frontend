@@ -16,7 +16,7 @@ const UploadCSVView = () => {
     date: '',
     boxNumber: '',
     zipCode: '',
-    launchedOrganically: '',
+    launchedOrganically: false,
   });
 
   const editRow = (e, data) => {
