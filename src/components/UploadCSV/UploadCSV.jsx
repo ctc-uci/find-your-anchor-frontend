@@ -4,7 +4,7 @@ import './UploadCSV.css';
 import { v4 as uuidv4 } from 'uuid';
 import { usePapaParse } from 'react-papaparse';
 import PropTypes from 'prop-types';
-import { FYABackend } from '../../common/utils'; // TODO: fix this when common/utils is updated
+import { FYABackend } from '../../common/utils';
 
 import UploadModal from './UploadModal/UploadModal';
 import SuccessModal from './SuccessModal/SuccessModal';
@@ -12,11 +12,6 @@ import ErrorModal from './ErrorModal/ErrorModal';
 import CommonModal from '../../common/CommonModal/CommonModal';
 
 import BoxSchema from './UploadCSVUtils';
-
-// TODO: validate zipCodeCSV (wait until common/utils is updated)
-// TODO: validate date?
-// TODO: validate box number is type integer
-// TODO: when modal is closed, reset states and formDatas
 
 const UploadCSV = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
@@ -50,7 +45,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const readCSV = () => {
     readRemoteFile(CSVFile, {
       complete: results => {
-        // parse each line in csv file and upload each to the backend
+        // parse each row in csv file
         for (let i = 1; i < results.data.length; i += 1) {
           const uid = uuidv4();
           const CSVRow = {
@@ -70,7 +65,6 @@ const UploadCSV = ({ isOpen, onClose }) => {
 
         setIsUploadingNewFile(false);
         setCSVFile();
-        // setFormData();
       },
     });
   };
@@ -85,7 +79,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
 
   const onEditViewFile = e => {
     e.preventDefault();
-    navigate('/upload-csv-view', { state: formDatas });
+    navigate('/upload-csv-view', { state: { rows: formDatas, filename: CSVFilename } });
   };
 
   const onCloseModal = () => {
