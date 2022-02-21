@@ -60,7 +60,7 @@ const CSVViewTable = ({ rows }) => {
   };
 
   return (
-    <div className={styles['csv-table-container']}>
+    <div className={`${styles['csv-table-container']} ${styles['scrollable-div']}`}>
       <form onSubmit={handleEditFormSubmit} className={styles['csv-table-form']}>
         <table className={styles['csv-table']}>
           <thead>

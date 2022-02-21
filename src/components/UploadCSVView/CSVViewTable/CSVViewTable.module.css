@@ -1,9 +1,22 @@
+.scrollable-div {
+  overflow-y: overlay;
+  max-height: 50%;
+}
+.scrollable-div::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+.scrollable-div::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(78, 73, 73, 0.5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
 .csv-table-container {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 0px 20px;
-  margin: auto 20px;
+  max-height: 80vh;
 }
 
 .csv-table {
