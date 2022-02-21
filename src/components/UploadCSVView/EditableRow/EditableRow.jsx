@@ -65,10 +65,10 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
 
 EditableRow.propTypes = {
   editFormData: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     date: PropTypes.string,
-    boxNumber: PropTypes.string,
-    zipCode: PropTypes.string,
+    boxNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    zipCode: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     launchedOrganically: PropTypes.bool,
   }).isRequired,
   handleEditFormSubmit: PropTypes.func.isRequired,

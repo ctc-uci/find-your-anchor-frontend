@@ -42,10 +42,10 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow }) => {
 
 ReadOnlyRow.propTypes = {
   data: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     date: PropTypes.string,
-    boxNumber: PropTypes.string,
-    zipCode: PropTypes.string,
+    boxNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    zipCode: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     launchedOrganically: PropTypes.bool,
   }).isRequired,
   editRow: PropTypes.func.isRequired,
