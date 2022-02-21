@@ -46,8 +46,7 @@ const Map = () => {
 
     const searchControl = new GeoSearchControl({
       provider: new OpenStreetMapProvider(),
-      style: 'button',
-      showMarker: true,
+      searchLabel: 'Search city, zipcode, or box number',
     });
     useEffect(() => {
       map.addControl(searchControl);
@@ -70,7 +69,7 @@ const Map = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
-      <ZoomControl position="topright" />
+      <ZoomControl position="bottomright" />
       {/* Map the marker data into <Marker /> components */}
       {markerData.map(markerObject => (
         <Marker

@@ -1,0 +1,55 @@
+:root {
+  --dropzone-color: #fafafa;
+}
+.dropzone-zone {
+  text-align: center;
+  padding: 55px;
+  border-radius: 5px;
+  border-width: 2px;
+  border-style: dashed;
+  border-color: #b9b9b9;
+  background-color: var(--dropzone-color);
+  color: #b9b9b9;
+}
+
+.dropzone-accept {
+  border-color: #00e676;
+}
+
+.dropzone-reject {
+  border-color: #ff1744;
+}
+
+.dropzone-text {
+  color: black;
+}
+.dropzone-support-text {
+  font-size: 0.8rem;
+}
+
+.fileSelector {
+  border: none;
+  background-color: transparent;
+  color: black;
+  text-decoration: underline;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.files-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.file-item-button {
+  border: 1px solid #a0aec0;
+  border-radius: 2px;
+  height: 30px;
+  width: 30px;
+  margin-right: 10px;
+  padding-bottom: 2px;
+}
+
+.file-item-span {
+  color: var(--text-gray-color);
+}
