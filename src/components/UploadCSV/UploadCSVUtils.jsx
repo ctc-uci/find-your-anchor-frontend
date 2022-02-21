@@ -25,10 +25,6 @@ export default yup
     boxNumber: yup.number().boxNotExists().required().typeError('Missing/invalid box number'),
     date: yup.date().required().typeError('Missing/invalid date'),
     zipCode: yup.string().isZip().required('Missing zip code'),
-    boxLocation: yup.string(),
-    message: yup.string(),
-    picture: yup.string(),
-    comments: yup.string(),
     launchedOrganically: yup.bool().default(false),
   })
   .required();

@@ -53,10 +53,6 @@ const UploadCSV = ({ isOpen, onClose }) => {
             boxNumber: results.data[i][1],
             date: results.data[i][0],
             zipCode: results.data[i][2],
-            boxLocation: '',
-            message: '',
-            picture: '',
-            comments: '',
             launchedOrganically: results.data[i][3].toLowerCase() === 'yes',
           };
           checkErrors(CSVRow, i);

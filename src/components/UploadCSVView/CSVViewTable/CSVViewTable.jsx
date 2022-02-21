@@ -7,9 +7,11 @@ import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../EditableRow/EditableRow';
 import { FYABackend, formatDate } from '../../../common/utils';
+import BoxSchema from '../../UploadCSV/UploadCSVUtils';
 
 const CSVViewTable = ({ rows }) => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [formDatas, setFormData] = useState(rows);
   const [editId, setEditId] = useState(null);
   const [editFormData, setEditFormData] = useState({
@@ -21,8 +23,6 @@ const CSVViewTable = ({ rows }) => {
 
   const editRow = (e, data) => {
     e.preventDefault();
-    setEditId(data.id);
-
     // store current form values for row
     const formValues = {
       date: data.date,
@@ -30,8 +30,8 @@ const CSVViewTable = ({ rows }) => {
       zipCode: data.zipCode,
       launchedOrganically: data.launchedOrganically,
     };
-
     setEditFormData(formValues);
+    setEditId(data.id);
   };
 
   const handleEditFormSubmit = editRowData => {
@@ -46,8 +46,8 @@ const CSVViewTable = ({ rows }) => {
     const newFormData = [...formDatas];
     const index = formDatas.findIndex(data => data.id === editId); // get index of the row that we are editing
     newFormData[index] = editedRow; // update the array at index
-    setEditId(null);
     setFormData(newFormData);
+    setEditId(null);
   };
 
   const handleDeleteRow = rowId => {
@@ -57,12 +57,31 @@ const CSVViewTable = ({ rows }) => {
     setFormData(newFormData);
   };
 
+  const checkErrors = async CSVRows => {
+    return Promise.all(
+      CSVRows.map(async CSVRow => {
+        try {
+          await BoxSchema.validate(CSVRow);
+          return 'success';
+        } catch (err) {
+          return CSVRow;
+        }
+      }),
+    );
+  };
+
   const addToMap = async e => {
     e.preventDefault();
-    console.log('ADD TO MAP');
-    console.log(formDatas);
-    await FYABackend.post('/boxForm/boxes', formDatas);
-    navigate('/');
+    setIsLoading(true);
+    const errors = await checkErrors(formDatas);
+    const nextError = errors.find(error => error !== 'success');
+    setIsLoading(false);
+    if (nextError) {
+      editRow(e, nextError);
+    } else {
+      await FYABackend.post('/boxForm/boxes', formDatas);
+      navigate('/');
+    }
   };
 
   return (
@@ -97,7 +116,7 @@ const CSVViewTable = ({ rows }) => {
         </table>
       </div>
       <Stack direction="row" justify="right" marginTop="25px">
-        <Button type="submit" colorScheme="teal">
+        <Button isLoading={isLoading} type="submit" colorScheme="teal">
           Add to Map
         </Button>
       </Stack>
