@@ -14,6 +14,7 @@ import FYALogo from '../../../assets/fya-logo-large.svg';
 
 const deleteAccount = () => {
   // Make request to delete account here
+  // eslint-disable-next-line no-console
   console.log('account deleted');
 };
 
