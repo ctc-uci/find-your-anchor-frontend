@@ -20,7 +20,7 @@ const RejectBoxPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes, pickup }) => {
   const [rejectionReason, setRejectionReason] = useState('');
 
   const handleRejectButtonClicked = async () => {
-    await FYABackend.put('/box/relocationBoxes/update', {
+    await FYABackend.put('/boxHistory/update', {
       boxID,
       status: 'evaluated',
       rejectionReason,

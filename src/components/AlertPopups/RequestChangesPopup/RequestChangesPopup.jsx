@@ -20,7 +20,7 @@ const RequestChangesPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes }) => {
   const [changesRequested, setChangesRequested] = useState('');
 
   const handleRequestChangesClicked = async () => {
-    await FYABackend.put('/box/relocationBoxes/update', {
+    await FYABackend.put('/boxHistory/update', {
       boxID,
       status: 'pending changes',
       changesRequested,

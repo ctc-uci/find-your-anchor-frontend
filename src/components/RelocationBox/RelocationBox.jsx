@@ -54,13 +54,9 @@ const RelocationBox = ({
   const [messageState, setMessageState] = useState(message);
   const [messageStatusState, setMessageStatusState] = useState(messageStatus);
   const [dropOffMethodState, setDropOffMethodState] = useState(dropOffMethod);
-  if (boxID === '32804783294') {
-    setDropOffMethodState(dropOffMethod);
-  }
-  // console.log(boxID, dropOffMethodState);
 
   const updateBoxInfo = async stat => {
-    await utils.put('/box/relocationBoxes/update', {
+    await utils.put('/boxHistory/update', {
       boxID,
       status: stat,
       boxHolderName: boxHolderNameState,
@@ -77,7 +73,7 @@ const RelocationBox = ({
   };
 
   const approveRelocationBoxFromUR = async id => {
-    await utils.put('/box/relocationBoxes/update', {
+    await utils.put('/boxHistory/update', {
       boxID,
       status,
       boxHolderName: boxHolderNameState,
@@ -88,7 +84,7 @@ const RelocationBox = ({
       messageStatus: messageStatusState,
       dropOffMethod: dropOffMethodState,
     });
-    await utils.put('/box/approveBox', {
+    await utils.put('/boxHistory/approveBox', {
       boxID: id,
     });
     const requests = [
@@ -224,7 +220,7 @@ const RelocationBox = ({
                         className="message-approved"
                         onClick={async () => {
                           setMessageStatusState('approved');
-                          await utils.put('/box/relocationBoxes/update', {
+                          await utils.put('/boxHistory/update', {
                             boxID,
                             messageStatus: 'approved',
                           });
@@ -238,7 +234,7 @@ const RelocationBox = ({
                         className="message-rejected"
                         onClick={async () => {
                           setMessageStatusState('rejected');
-                          await utils.put('/box/relocationBoxes/update', {
+                          await utils.put('/boxHistory/update', {
                             boxID,
                             messageStatus: 'rejected',
                           });

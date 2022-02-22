@@ -26,7 +26,7 @@ const BoxApproval = () => {
    * Gets all Relocation/Pickup boxes according to status
    */
   const fetchBoxes = async (status, pickup) => {
-    const response = await FYABackend.get('/box/getBoxes', {
+    const response = await FYABackend.get('/boxHistory/getBoxes', {
       params: {
         status,
         pickup,

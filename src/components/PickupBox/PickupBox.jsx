@@ -40,7 +40,7 @@ function PickupBox({
   const [rejectBoxPopupIsOpen, setRejectBoxPopupIsOpen] = useState(false);
 
   const approvePickupBoxFromUR = async id => {
-    FYABackend.put('/box/approveBox', {
+    FYABackend.put('/boxHistory/update', {
       boxID: id,
     }).then(async () => {
       await fetchBoxes('under review', true);
