@@ -1,8 +1,8 @@
 /* Required for displaying the map properly */
 .leaflet-container {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: inherit;
+  height: inherit;
 }
 /* Customization of leaflet popup */
 .leaflet-popup-content-wrapper {
@@ -25,4 +25,22 @@
   margin: 0px;
   color: white;
   font-size: 15px;
+}
+
+.leaflet-control-geosearch form {
+  display: block;
+  min-width: 250px;
+  left: 30.2px;
+}
+
+.leaflet-touch .leaflet-bar a:last-child {
+  border-radius: 2px 0px 0px 2px;
+}
+
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+  border-left: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 2px 0px 0px 2px;
+  border-top: 2px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
 }
