@@ -1,0 +1,12 @@
+.login-form-container {
+  width: 80%;
+}
+
+.login-form {
+  width: 100%;
+}
+
+.login-button {
+  background-color: #345e80 !important;
+  color: white;
+}

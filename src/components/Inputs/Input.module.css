@@ -1,0 +1,34 @@
+.password-show-hide-button {
+  background-color: white !important;
+  border: none;
+  outline: none;
+}
+
+.form-control {
+  padding: 4% 0%;
+}
+
+.form-title {
+  font-weight: bold !important;
+}
+
+.password-tools {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 1%;
+}
+
+.form-error-wrapper,
+.forgot-password-wrapper {
+  flex: 1;
+}
+
+.forgot-password-wrapper {
+  display: flex;
+  justify-content: right;
+}
+
+.forgot-password {
+  color: #3182ce;
+}
