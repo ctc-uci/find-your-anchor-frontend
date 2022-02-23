@@ -2,14 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Input, Checkbox, FormControl, FormErrorMessage } from '@chakra-ui/react';
 import './EditableRow.css';
-import { useForm } from 'react-hook-form';
+import 'react-datepicker/dist/react-datepicker.css';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import DatePicker from 'react-datepicker';
 import BoxSchema from '../../UploadCSV/UploadCSVUtils';
+// import { formatDate } from '../../../common/utils';
 import CheckIcon from '../../../assets/check.png';
 
 const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -31,7 +35,24 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
     <tr className="edit-row" key={editFormData.id}>
       <td>
         <FormControl isInvalid={errors?.date}>
-          <Input id="date" placeholder="MM/DD/YYYY" name="date" {...register('date')} />
+          <Controller
+            control={control}
+            name="date"
+            // eslint-disable-next-line no-unused-vars
+            render={({ field: { onChange, value, ref } }) => {
+              const date = new Date(value);
+              return (
+                <DatePicker
+                  placeholderText="MM/DD/YYYY"
+                  className={errors?.date ? 'date-picker date-picker-error' : 'date-picker'}
+                  type="date"
+                  selected={Number.isNaN(Date.parse(date)) ? undefined : date}
+                  onChange={onChange}
+                />
+              );
+            }}
+          />
+          {/* <Input id="date" placeholder="MM/DD/YYYY" name="date" {...register('date')} /> */}
           <FormErrorMessage marginTop="0px">{errors.date?.message}</FormErrorMessage>
         </FormControl>
       </td>
