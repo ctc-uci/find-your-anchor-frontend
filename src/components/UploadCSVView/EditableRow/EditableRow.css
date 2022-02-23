@@ -9,6 +9,13 @@
   background-color: white;
 }
 
+.edit-row .input-right-warning {
+  color: red;
+  position: absolute;
+  top: -3px;
+  right: 25px;
+}
+
 .check-icon {
   width: 20px;
   height: 15px;

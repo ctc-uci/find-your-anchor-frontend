@@ -1,6 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Checkbox, FormControl, FormErrorMessage } from '@chakra-ui/react';
+import {
+  Input,
+  InputGroup,
+  InputRightElement,
+  Checkbox,
+  FormControl,
+  FormErrorMessage,
+} from '@chakra-ui/react';
+import { WarningIcon } from '@chakra-ui/icons';
 import './EditableRow.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useForm, Controller } from 'react-hook-form';
@@ -58,13 +66,29 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
       </td>
       <td>
         <FormControl isInvalid={errors?.boxNumber}>
-          <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
+          <InputGroup>
+            <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
+            {errors?.boxNumber && (
+              <InputRightElement className="input-right-warning">
+                <WarningIcon />
+              </InputRightElement>
+            )}
+            ;
+          </InputGroup>
           <FormErrorMessage marginTop="0px">{errors.boxNumber?.message}</FormErrorMessage>
         </FormControl>
       </td>
       <td>
         <FormControl isInvalid={errors?.zipCode}>
-          <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
+          <InputGroup>
+            <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
+            {errors?.zipCode && (
+              <InputRightElement className="input-right-warning">
+                <WarningIcon />
+              </InputRightElement>
+            )}
+            ;
+          </InputGroup>
           <FormErrorMessage marginTop="0px">{errors.zipCode?.message}</FormErrorMessage>
         </FormControl>
       </td>
