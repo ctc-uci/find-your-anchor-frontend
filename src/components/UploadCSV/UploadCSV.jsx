@@ -91,6 +91,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
       },
     });
     onCloseModal();
+    navigate('/');
   };
 
   return (
