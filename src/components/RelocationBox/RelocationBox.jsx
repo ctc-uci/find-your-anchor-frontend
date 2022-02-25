@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 
 import PropTypes from 'prop-types';
-import styles from './RelocationBox.module.css';
+import styles from './RelocationBox2.module.css';
 import ApproveBoxIcon from '../BoxIcons/ApproveBoxIcon.svg';
 import RejectBoxIcon from '../BoxIcons/RejectBoxIcon.svg';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
@@ -230,9 +230,9 @@ const RelocationBox = ({
                       <div className={styles['message-functionality']}>
                         {messageStatus === 'approved' && (
                           <>
-                            <button type="button" className={styles['approval-button']}>
-                              <img src={MessageApprovedIcon} alt="" />
-                            </button>
+                            {/* <button type="button" className={styles['approval-button']}> */}
+                            <img src={MessageApprovedIcon} alt="" />
+                            {/* </button> */}
                             <p className={styles['approval-message']}>Message Approved</p>
                           </>
                         )}

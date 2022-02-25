@@ -1,5 +1,5 @@
 .box-approval {
-  /* min-width: 400px; */
+  /* min-width: 300px; */
   width: 100%;
   padding: 1%;
   height: 95vh;
@@ -12,16 +12,16 @@
 .box-list {
   overflow-x: hidden;
   overflow-y: auto;
-  height: 60vh;
+  height: 75vh;
 }
 
 .legend {
-  position: absolute;
-  bottom: 0;
+  /* position: absolute; */
+  /* bottom: 0; */
   width :100%;
   margin: 2%;
   margin-bottom: 10%;
-  /* height: 10vh; */
+  height: 20vh;
   /* margin-bottom: 50%; */
   /* height: 10vh; */
 }
