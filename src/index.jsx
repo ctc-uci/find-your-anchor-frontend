@@ -5,9 +5,9 @@ import './index.css';
 import App from './App';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import ExportCSV from './pages/ExportCSV/ExportCSV';
-
 import Map from './components/Map/Map';
 import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
+import PickupBoxFormPage from './pages/PickupBoxForm/PickupBoxFormPage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,6 +20,7 @@ ReactDOM.render(
         <Route path="/pickup-form" element={<App />} />
         <Route path="/export-csv" element={<ExportCSV />} />
         <Route path="/add-box-form" element={<AddBoxFormPage />} />
+        <Route path="/pickup-box-form" element={<PickupBoxFormPage />} />
       </Routes>
     </Router>
   </React.StrictMode>,

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FYABackend, isValidZip } from '../../common/utils';
+import { FYABackend, isValidZip } from '../utils';
 
 function validateZip() {
   return this.test('isZip', function zipCheck(value) {
