@@ -13,7 +13,7 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import './RequestChangesPopup.css';
-import FYABackend from '../../../common/utils';
+import { FYABackend } from '../../../common/utils';
 
 const RequestChangesPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes }) => {
   const cancelRef = React.useRef();

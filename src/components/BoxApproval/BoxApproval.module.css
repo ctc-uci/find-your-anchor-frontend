@@ -1,8 +1,8 @@
 .box-approval {
-  min-width: 530px;
-  width: 28%;
+  /* min-width: 400px; */
+  width: 100%;
   padding: 1%;
-  height: 100vh;
+  height: 95vh;
   overflow: hidden;
   background-color: #e5e5e5;
   position: relative;
@@ -12,16 +12,18 @@
 .box-list {
   overflow-x: hidden;
   overflow-y: auto;
-
-  height: 70vh;
+  height: 60vh;
 }
 
 .legend {
   position: absolute;
-    bottom: 0;
-    width :100%;
-    margin: 2%;
-    /* height: 10vh; */
+  bottom: 0;
+  width :100%;
+  margin: 2%;
+  margin-bottom: 10%;
+  /* height: 10vh; */
+  /* margin-bottom: 50%; */
+  /* height: 10vh; */
 }
 
 .request-changes-row {
@@ -37,8 +39,6 @@
 .pickup-box-row {
   width :100%;
   margin: 1% 1% 1% 1%;
-  /* position: absolute;
-    bottom: 0; */
 }
 
 .request-changes-icon {

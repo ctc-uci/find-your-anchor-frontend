@@ -20,7 +20,7 @@ import RejectBoxIcon from '../BoxIcons/RejectBoxIcon.svg';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 import SaveChangesIcon from '../BoxIcons/SaveChangesIcon.svg';
-import utils from '../../common/utils';
+import { FYABackend } from '../../common/utils';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import MessageApprovedIcon from '../BoxIcons/MessageApprovedIcon.svg';
@@ -76,7 +76,7 @@ const RelocationBox = ({
   // A function that updates box information in the backend and refetches all boxes that are under review or pending changes (message status can be updated in 'under review')
   // This method is called when the save button is clicked under pending changes
   const updateBoxInfo = async stat => {
-    await utils.put('/boxHistory/update', {
+    await FYABackend.put('/boxHistory/update', {
       boxID,
       status: stat,
       boxHolderName: boxHolderNameState,
@@ -94,7 +94,7 @@ const RelocationBox = ({
 
   // A function that approves a relocation box submission and updates the backend state accordingly and then refetches all boxes (boxes can be approved from any tab)
   const approveRelocationBoxFromUR = async id => {
-    await utils.put('/boxHistory/update', {
+    await FYABackend.put('/boxHistory/update', {
       boxID,
       status,
       boxHolderName: boxHolderNameState,
@@ -105,7 +105,7 @@ const RelocationBox = ({
       messageStatus: messageStatusState,
       launchedOrganically: launchedOrganicallyState,
     });
-    await utils.put('/boxHistory/approveBox', {
+    await FYABackend.put('/boxHistory/approveBox', {
       boxID: id,
     });
     const requests = [
@@ -257,7 +257,7 @@ const RelocationBox = ({
                         className={styles['message-approved']}
                         onClick={async () => {
                           setMessageStatusState('approved');
-                          await utils.put('/boxHistory/update', {
+                          await FYABackend.put('/boxHistory/update', {
                             boxID,
                             messageStatus: 'approved',
                           });
@@ -272,7 +272,7 @@ const RelocationBox = ({
                         className={styles['message-rejected']}
                         onClick={async () => {
                           setMessageStatusState('rejected');
-                          await utils.put('/boxHistory/update', {
+                          await FYABackend.put('/boxHistory/update', {
                             boxID,
                             messageStatus: 'rejected',
                           });

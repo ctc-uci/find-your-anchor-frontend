@@ -12,7 +12,7 @@ import {
   AlertDialogCloseButton,
   Textarea,
 } from '@chakra-ui/react';
-import FYABackend from '../../../common/utils';
+import { FYABackend } from '../../../common/utils';
 import './RejectBoxPopup.css';
 
 const RejectBoxPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes, pickup }) => {

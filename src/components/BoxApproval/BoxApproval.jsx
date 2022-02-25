@@ -3,7 +3,7 @@ import { ChakraProvider, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra
 import PickupBox from '../PickupBox/PickupBox';
 import RelocationBox from '../RelocationBox/RelocationBox';
 import styles from './BoxApproval.module.css';
-import FYABackend from '../../common/utils';
+import { FYABackend } from '../../common/utils';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import RequestChangesMiniIcon from '../BoxIcons/RequestChangesMiniIcon.svg';

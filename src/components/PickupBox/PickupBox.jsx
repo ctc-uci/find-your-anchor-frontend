@@ -19,7 +19,7 @@ import ApproveBoxIcon from '../BoxIcons/ApproveBoxIcon.svg';
 import RejectBoxIcon from '../BoxIcons/RejectBoxIcon.svg';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 import ImageVector from '../BoxIcons/ImageVector.svg';
-import FYABackend from '../../common/utils';
+import { FYABackend } from '../../common/utils';
 
 function PickupBox({
   approved,
