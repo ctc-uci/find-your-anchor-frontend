@@ -13,8 +13,8 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 
-import './RelocationBox.css';
 import PropTypes from 'prop-types';
+import styles from './RelocationBox.module.css';
 import ApproveBoxIcon from '../BoxIcons/ApproveBoxIcon.svg';
 import RejectBoxIcon from '../BoxIcons/RejectBoxIcon.svg';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
@@ -43,18 +43,38 @@ const RelocationBox = ({
   messageStatus,
   fetchBoxes,
   pickup,
-  dropOffMethod,
+  launchedOrganically,
 }) => {
+  // A state for determining whether or not the rejectBoxPopup is open
+  // This state is set true when the reject button is clicked
   const [rejectBoxPopupIsOpen, setRejectBoxPopupIsOpen] = useState(false);
+  // A state for determining whether or not the requestChangesPopup is open
+  // This state is set true when the pending changes button is clicked
   const [requestChangesPopupIsOpen, setRequestChangesPopupIsOpen] = useState(false);
+  // A state for the box's boxHolderName
+  // This state is updated when the user edits the box holder name under pending changes
   const [boxHolderNameState, setBoxHolderNameState] = useState(boxHolderName);
+  // A state for the box's boxHolderEmail
+  // This state is updated when the user edits the box holder email under pending changes
   const [boxHolderEmailState, setBoxHolderEmailState] = useState(boxHolderEmail);
+  // A state for the box's zip code
+  // This state is updated when the user edits the zip code under pending changes
   const [zipCodeState, setZipCodeState] = useState(zipCode);
+  // A state for the box's general location
+  // This state is updated when the user edits the general location under pending changes
   const [generalLocationState, setGeneralLocationState] = useState(generalLocation);
+  // A state for the box's message
+  // This state is updated when the user edits the message under pending changes
   const [messageState, setMessageState] = useState(message);
+  // A state for the box's message status
+  // This state is updated when the user approves or rejects the message under pending changes
   const [messageStatusState, setMessageStatusState] = useState(messageStatus);
-  const [dropOffMethodState, setDropOffMethodState] = useState(dropOffMethod);
+  // A state for the box's launched organically state
+  // This state is updated when the user edits the launched organically field under pending changes
+  const [launchedOrganicallyState, setLaunchedOrganicallyState] = useState(launchedOrganically);
 
+  // A function that updates box information in the backend and refetches all boxes that are under review or pending changes (message status can be updated in 'under review')
+  // This method is called when the save button is clicked under pending changes
   const updateBoxInfo = async stat => {
     await utils.put('/boxHistory/update', {
       boxID,
@@ -65,13 +85,14 @@ const RelocationBox = ({
       generalLocation: generalLocationState,
       message: messageState,
       messageStatus: messageStatusState,
-      dropOffMethod: dropOffMethodState,
+      launchedOrganically: launchedOrganicallyState,
     });
 
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
     await Promise.all(requests);
   };
 
+  // A function that approves a relocation box submission and updates the backend state accordingly and then refetches all boxes (boxes can be approved from any tab)
   const approveRelocationBoxFromUR = async id => {
     await utils.put('/boxHistory/update', {
       boxID,
@@ -82,7 +103,7 @@ const RelocationBox = ({
       generalLocation: generalLocationState,
       message: messageState,
       messageStatus: messageStatusState,
-      dropOffMethod: dropOffMethodState,
+      launchedOrganically: launchedOrganicallyState,
     });
     await utils.put('/boxHistory/approveBox', {
       boxID: id,
@@ -98,36 +119,43 @@ const RelocationBox = ({
   return (
     <ChakraProvider>
       <div
-        className={`box ${status === 'evaluated' && approved ? 'box-approved' : ''}
-        ${status === 'evaluated' && approved === false ? 'box-rejected' : ''}
-        ${status === 'pending changes' ? 'box-pending' : ''}`}
+        // Conditional classes for approved/pending changes/rejected boxes to determine background coloring
+        className={`${styles.box}
+        ${status === 'evaluated' && approved ? styles['box-approved'] : ''}
+        ${status === 'evaluated' && approved === false ? styles['box-rejected'] : ''}
+        ${status === 'pending changes' ? styles['box-pending'] : ''}`}
       >
         <Accordion allowToggle>
           <AccordionItem>
             <h3>
-              <AccordionButton>
-                <div className="picture-div">
+              <AccordionButton className={styles['accordian-button']}>
+                {/* Relocation box icon */}
+                <div className={styles['picture-div']}>
                   <img src={RelocateBoxIcon} alt=" " />
                 </div>
-                <div className="title-div">
-                  <p className="title">
-                    <p className="box-number">Box #{boxID}</p>
+                {/* Box Number & date */}
+                <div className={styles['title-div']}>
+                  <p className={styles.title}>
+                    <p className={styles['box-number']}>Box #{boxID}</p>
                     {date}
                   </p>
                 </div>
-                <div className="arrow-button">
+                <div className={styles['arrow-button']}>
                   <AccordionIcon />
                 </div>
               </AccordionButton>
             </h3>
-            <AccordionPanel pb={4} className="accordion-panel">
-              <div className="box-details">
-                {picture !== null && <img src={picture} alt="" className="image-corners" />}
-                {picture === null && (
-                  <div className="image-box">
-                    <img className="image-vector" src={ImageVector} alt="" />
+            {/* Box picture */}
+            <AccordionPanel pb={4} className={styles['accordion-panel']}>
+              <div className={styles['box-details']}>
+                {picture === null ? (
+                  <div className={styles['image-wrapper']}>
+                    <img className={styles['image-box']} src={ImageVector} alt="" />
                   </div>
+                ) : (
+                  <img src={picture} alt="" className={styles['image-corners']} />
                 )}
+                {/* Box Name */}
                 <FormControl>
                   <FormLabel htmlFor="name" marginTop="5%">
                     Name
@@ -139,6 +167,7 @@ const RelocationBox = ({
                     value={boxHolderNameState}
                     onChange={e => setBoxHolderNameState(e.target.value)}
                   />
+                  {/* Box Email */}
                   <FormLabel htmlFor="email" marginTop="5%">
                     Email
                   </FormLabel>
@@ -149,7 +178,7 @@ const RelocationBox = ({
                     value={boxHolderEmailState}
                     onChange={e => setBoxHolderEmailState(e.target.value)}
                   />
-                  {/* ***************************ZIP CODE ************************************ */}
+                  {/* Box Zip Code */}
                   <FormLabel htmlFor="zipCode" marginTop="5%">
                     Zip Code
                   </FormLabel>
@@ -170,54 +199,62 @@ const RelocationBox = ({
                     value={generalLocationState}
                     onChange={e => setGeneralLocationState(e.target.value)}
                   />
-                  <FormLabel htmlFor="dropOffMethod" marginTop="5%">
-                    Drop Off Method
+                  {/* Box's Launched Organically field */}
+                  <FormLabel htmlFor="launchedOrganically" marginTop="5%">
+                    Launched Organically?
                   </FormLabel>
                   <Select
                     disabled={status !== 'pending changes'}
-                    defaultValue={dropOffMethodState}
-                    onChange={e => setDropOffMethodState(e.target.value)}
+                    defaultValue={launchedOrganicallyState}
+                    onChange={e => setLaunchedOrganicallyState(e.target.value)}
                   >
-                    <option value="Given to Someone">Given to Someone</option>
-                    <option value="Left at Location">Left at Location</option>
+                    <option value>Yes</option>
+                    <option value={false}>No</option>
                   </Select>
+                  {/* Box's message (only show if the box isn't evaluated or message isn't rejected) */}
                   {!(status === 'evaluated' && messageStatus === 'rejected') && (
                     <>
                       <FormLabel htmlFor="Message" marginTop="5%">
                         Message
                       </FormLabel>
                       <Textarea
-                        className={`${messageStatus === 'approved' ? 'message-approved' : ''}
-                        ${messageStatus === 'rejected' ? 'message-rejected' : ''}`}
+                        className={`${
+                          messageStatus === 'approved' ? `${styles['message-approved']}` : ''
+                        }
+                        ${messageStatus === 'rejected' ? `${styles['message-rejected']}` : ''}`}
                         isReadOnly={status !== 'pending changes'}
                         value={messageState}
                         onChange={e => setMessageState(e.target.value)}
                       />
-                      <div className="message-functionality">
+                      {/* Message approved indicator (only show if message is approved) */}
+                      <div className={styles['message-functionality']}>
                         {messageStatus === 'approved' && (
                           <>
-                            <button type="button" className="approval-button">
+                            <button type="button" className={styles['approval-button']}>
                               <img src={MessageApprovedIcon} alt="" />
                             </button>
-                            <p className="approval-message">Message Approved</p>
+                            <p className={styles['approval-message']}>Message Approved</p>
                           </>
                         )}
+                        {/* Message rejected indicator (only show if message is rejected) */}
                         {messageStatus === 'rejected' && (
                           <>
-                            <button type="button" className="rejection-button">
+                            <button type="button" className={styles['rejection-button']}>
                               <img src={MessageRejectedIcon} alt="" />
                             </button>
-                            <p className="rejection-message">Message Denied</p>
+                            <p className={styles['rejection-message']}>Message Denied</p>
                           </>
                         )}
                       </div>
                     </>
                   )}
+                  {/* Message button toolbar (Only show if box hasn't been evaluted yet) */}
                   {status !== 'evaluated' && (
                     <>
+                      {/* Approve message button */}
                       <button
                         type="button"
-                        className="message-approved"
+                        className={styles['message-approved']}
                         onClick={async () => {
                           setMessageStatusState('approved');
                           await utils.put('/boxHistory/update', {
@@ -229,9 +266,10 @@ const RelocationBox = ({
                       >
                         <img src={MessageApprovedIcon} alt="" />
                       </button>
+                      {/* Reject message button */}
                       <button
                         type="button"
-                        className="message-rejected"
+                        className={styles['message-rejected']}
                         onClick={async () => {
                           setMessageStatusState('rejected');
                           await utils.put('/boxHistory/update', {
@@ -245,6 +283,7 @@ const RelocationBox = ({
                       </button>
                     </>
                   )}
+                  {/* Changes requested text area (only show if box is under pending changes) */}
                   {status === 'pending changes' && (
                     <div>
                       <FormLabel htmlFor="changesRequested" marginTop="5%">
@@ -253,6 +292,7 @@ const RelocationBox = ({
                       <Textarea isReadOnly value={changesRequested} resize="vertical" />
                     </div>
                   )}
+                  {/* Rejection reason text area (only show if box has been evaluated and bxo was rejected) */}
                   {status === 'evaluated' && !approved && (
                     <>
                       <FormLabel htmlFor="rejectionReason" marginTop="5%">
@@ -262,10 +302,11 @@ const RelocationBox = ({
                     </>
                   )}
                 </FormControl>
-
+                {/* Button toolbar (only show if box hasn't been evaluated) */}
                 {status !== 'evaluated' && (
-                  <div className="icon-row">
-                    <div className="close-icon">
+                  <div className={styles['icon-row']}>
+                    {/* Reject box button */}
+                    <div className={styles['close-icon']}>
                       <button
                         type="button"
                         onClick={async () => {
@@ -275,7 +316,8 @@ const RelocationBox = ({
                         <img src={RejectBoxIcon} alt="" />
                       </button>
                     </div>
-                    <div className="arrow-forward-icon">
+                    {/* Pending changes (if the box is under review) or Save (if the box is under pending changes) button */}
+                    <div className={styles['arrow-forward-icon']}>
                       <button
                         type="button"
                         onClick={async () => {
@@ -292,7 +334,8 @@ const RelocationBox = ({
                         />
                       </button>
                     </div>
-                    <div className="check-icon">
+                    {/* Accept box button */}
+                    <div className={styles['check-icon']}>
                       <button
                         type="button"
                         onClick={async () => {
@@ -343,7 +386,7 @@ RelocationBox.propTypes = {
   messageStatus: PropTypes.string.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
   pickup: PropTypes.bool.isRequired,
-  dropOffMethod: PropTypes.string.isRequired,
+  launchedOrganically: PropTypes.bool.isRequired,
 };
 
 export default RelocationBox;

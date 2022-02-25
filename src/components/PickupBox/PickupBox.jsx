@@ -12,15 +12,14 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 
-import './PickupBox.css';
 import PropTypes from 'prop-types';
+import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import ApproveBoxIcon from '../BoxIcons/ApproveBoxIcon.svg';
 import RejectBoxIcon from '../BoxIcons/RejectBoxIcon.svg';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 import ImageVector from '../BoxIcons/ImageVector.svg';
 import FYABackend from '../../common/utils';
-// import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 
 function PickupBox({
   approved,
@@ -34,11 +33,13 @@ function PickupBox({
   rejectionReason,
   fetchBoxes,
   pickup,
-  // setPickupBoxesUnderReview,
-  // setPickupBoxesEvaluated,
 }) {
+  // A state for determining whether or not the rejectBoxPopup is open
+  // This state is set true when the reject button is clicked
   const [rejectBoxPopupIsOpen, setRejectBoxPopupIsOpen] = useState(false);
 
+  // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
+  // This method is called when the approve box icon is clicked
   const approvePickupBoxFromUR = async id => {
     FYABackend.put('/boxHistory/update', {
       boxID: id,
@@ -50,47 +51,55 @@ function PickupBox({
   return (
     <ChakraProvider>
       <div
-        className={`box ${status === 'evaluated' && approved === true ? 'box-approved' : ''}
-        ${status === 'evaluated' && approved === false ? 'box-rejected' : ''}`}
+        className={`box
+        ${status === 'evaluated' && approved === true ? styles['box-approved'] : ''}
+        ${status === 'evaluated' && approved === false ? styles['box-rejected'] : ''}`}
       >
         <Accordion allowToggle>
           <AccordionItem>
+            {/* Pickup box ID and date */}
             <h3>
               <AccordionButton>
                 <img src={PickupBoxIcon} alt="" />
-                <div className="title-div">
-                  <p className="title">
-                    <p className="box-number">Box #{boxID}</p>
+                <div className={styles['title-div']}>
+                  <p className={styles.title}>
+                    <p className={styles['box-number']}>Box #{boxID}</p>
                     {date}
                   </p>
                 </div>
-                <div className="arrow-button">
+                <div className={styles['arrow-button']}>
                   <AccordionIcon />
                 </div>
               </AccordionButton>
             </h3>
-            <AccordionPanel className="accordion-panel" pb={4}>
-              <div className="box-details">
-                {picture !== null && <img src={picture} alt="" className="pickup-image-corners" />}
+            {/* Box details */}
+            <AccordionPanel className={styles['accordion-panel']} pb={4}>
+              <div className={styles['box-details']}>
+                {picture !== null && (
+                  <img src={picture} alt="" className={styles['pickup-image-corners']} />
+                )}
                 {picture === null && (
-                  <div className="image-box">
-                    <img className="image-vector" src={ImageVector} alt="" />
+                  <div className={styles['image-box']}>
+                    <img className={styles['image-vector']} src={ImageVector} alt="" />
                   </div>
                 )}
                 <FormControl>
+                  {/* Box name */}
                   <FormLabel htmlFor="name" marginTop="5%">
                     Name
                   </FormLabel>
                   <Input isReadOnly id="name" type="name" placeholder={boxHolderName} />
-
+                  {/* Box email */}
                   <FormLabel isReadOnly htmlFor="email" marginTop="5%">
                     Email
                   </FormLabel>
                   <Input isReadOnly id="email" type="email" placeholder={boxHolderEmail} />
+                  {/* Box zip code */}
                   <FormLabel htmlFor="zipCode" marginTop="5%">
                     Zip Code
                   </FormLabel>
                   <Input isReadOnly id="zipCode" type="zipCode" placeholder={zipCode} />
+                  {/* Rejection reason text area (only show if box has been evaluated and bxo was rejected) */}
                   {status === 'evaluated' && !approved && (
                     <>
                       <FormLabel htmlFor="rejectionReason" marginTop="5%">
@@ -100,9 +109,11 @@ function PickupBox({
                     </>
                   )}
                 </FormControl>
+                {/* Button toolbar (only show if box hasn't been evaluated) */}
                 {status !== 'evaluated' && (
-                  <div className="icon-row">
-                    <div className="close-icon">
+                  <div className={styles['icon-row']}>
+                    {/* Reject box button */}
+                    <div className={styles['close-icon']}>
                       <button
                         type="button"
                         onClick={() => {
@@ -112,7 +123,8 @@ function PickupBox({
                         <img src={RejectBoxIcon} alt="" />
                       </button>
                     </div>
-                    <div className="check-icon">
+                    {/* Approve box button */}
+                    <div className={styles['check-icon']}>
                       <button
                         type="button"
                         onClick={() => {
