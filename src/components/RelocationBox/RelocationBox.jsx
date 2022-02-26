@@ -14,7 +14,6 @@ import {
 } from '@chakra-ui/react';
 
 import PropTypes from 'prop-types';
-import styles from './RelocationBox2.module.css';
 import ApproveBoxIcon from '../BoxIcons/ApproveBoxIcon.svg';
 import RejectBoxIcon from '../BoxIcons/RejectBoxIcon.svg';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
@@ -26,6 +25,8 @@ import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import MessageApprovedIcon from '../BoxIcons/MessageApprovedIcon.svg';
 import MessageRejectedIcon from '../BoxIcons/MessageRejectedIcon.svg';
 import ImageVector from '../BoxIcons/ImageVector.svg';
+
+import styles from './RelocationBox.module.css';
 
 const RelocationBox = ({
   approved,
