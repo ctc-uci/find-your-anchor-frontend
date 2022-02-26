@@ -20,7 +20,7 @@ import { uploadBoxPhoto, validateZip } from '../../common/FormUtils/boxFormUtils
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
 import './AddBoxForm.css';
-import './DatePicker.css';
+import '../../common/FormUtils/DatePicker.css';
 
 yup.addMethod(yup.string, 'isZip', validateZip);
 const schema = yup

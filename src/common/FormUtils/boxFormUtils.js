@@ -4,7 +4,9 @@ import { FYABackend, isValidZip } from '../utils';
 function validateZip() {
   return this.test('isZip', function zipCheck(value) {
     const { path, createError } = this;
-    return isValidZip(value) ? true : createError({ path, message: 'Not a valid zip code' });
+    return isValidZip(value)
+      ? true
+      : createError({ path, message: 'Invalid zipcode, please enter a valid zipcode' });
   });
 }
 

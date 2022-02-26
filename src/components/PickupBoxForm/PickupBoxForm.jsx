@@ -8,19 +8,25 @@ import { formatDate } from '../../common/utils';
 import { uploadBoxPhoto, validateZip } from '../../common/FormUtils/boxFormUtils';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
-import '../AddBoxForm/DatePicker.css';
+import '../../common/FormUtils/DatePicker.css';
 import './PickupBoxForm.css';
 
 yup.addMethod(yup.string, 'isZip', validateZip);
 const schema = yup
   .object({
     name: yup.string().typeError('Invalid name'),
-    boxNumber: yup.number().required().typeError('Invalid box number'),
+    boxNumber: yup
+      .number()
+      .required('Invalid box number, please enter a valid box number')
+      .typeError('Invalid box number, please enter a valid box number'),
     date: yup
       .date()
       .required('Invalid date, please enter a valid date')
       .typeError('Invalid date, please enter a valid date'),
-    email: yup.string().typeError('Invalid Email'),
+    email: yup
+      .string()
+      .required('Invalid email address, please enter a valid email address')
+      .typeError('Invalid email address, please enter a valid email address'),
     zipCode: yup.string().isZip().required('Invalid zipcode, please enter a valid zipcode'),
     picture: yup.string().url(),
   })
@@ -49,29 +55,17 @@ const BoxForm = () => {
 
   return (
     <form className="pickup-box-form" onSubmit={handleSubmit(onSubmit)}>
-      <div className="pickup-box-info-section">
+      <div className="pickup-box-info-section-left">
         <div>
           <FormControl isInvalid={errors?.name}>
             <FormLabel htmlFor="name">Name</FormLabel>
-            <Input
-              className="pickup-box-input"
-              id="name"
-              placeholder="John Adams"
-              name="name"
-              {...register('name')}
-            />
+            <Input id="name" placeholder="John Adams" name="name" {...register('name')} />
             <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
           </FormControl>
           <br />
           <FormControl isInvalid={errors?.boxNumber}>
             <FormLabel htmlFor="boxNumber">Box Number *</FormLabel>
-            <Input
-              className="pickup-box-input"
-              id="boxNumber"
-              placeholder="12345"
-              name="boxNumber"
-              {...register('boxNumber')}
-            />
+            <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
             <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
           </FormControl>
           <br />
@@ -96,27 +90,15 @@ const BoxForm = () => {
           <br />
           <FormControl isInvalid={errors?.zipCode}>
             <FormLabel htmlFor="zipCode">Zip Code *</FormLabel>
-            <Input
-              className="pickup-box-input"
-              id="zipCode"
-              placeholder="e.g. 90210"
-              name="zipCode"
-              {...register('zipCode')}
-            />
+            <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
             <FormErrorMessage>{errors.zipCode?.message}</FormErrorMessage>
           </FormControl>
         </div>
       </div>
-      <div>
+      <div className="pickup-box-info-section-right">
         <FormControl isInvalid={errors?.email}>
-          <FormLabel htmlFor="email">Email *</FormLabel>
-          <Input
-            className="pickup-box-input"
-            id="email"
-            placeholder="name@domain.com"
-            name="email"
-            {...register('email')}
-          />
+          <FormLabel htmlFor="email">Email Address *</FormLabel>
+          <Input id="email" placeholder="name@domain.com" name="email" {...register('email')} />
           <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
         </FormControl>
         <br />
@@ -127,7 +109,13 @@ const BoxForm = () => {
           </FormControl>
           <br />
         </div>
-        <div className="pickup-box-photo-preview-section">
+        <div
+          className={
+            files.length !== 0
+              ? 'pickup-box-photo-preview-section'
+              : 'pickup-box-photo-preview-section-hidden'
+          }
+        >
           <div className="box-image">
             {files.length !== 0 && <img src={URL.createObjectURL(files[0])} alt="" />}
           </div>

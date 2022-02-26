@@ -9,10 +9,7 @@
 .pickup-box-form {
   display: flex;
   justify-content: space-evenly;
-}
-
-.pickup-box-input {
-  width: 150%;
+  margin-top: 3%;
 }
 
 /* box image section */
@@ -30,6 +27,10 @@
   height: 100%;
 }
 
+.box-bottom {
+  margin-bottom: 5%;
+}
+
 .box-bottom small {
   color: var(--text-gray-color);
 }
@@ -39,11 +40,15 @@
   column-gap: 10px;
 }
 
-.pickup-box-info-section {
-  display: flex;
-  flex-direction: row;
+.pickup-box-photo-preview-section {
+  height: 50%;
 }
 
-.pickup-box-photo-preview-section {
-  height: 100%;
+.pickup-box-photo-preview-section-hidden {
+  display: none;
+}
+
+.pickup-box-info-section-left,
+.pickup-box-info-section-right {
+  width: 40%;
 }
