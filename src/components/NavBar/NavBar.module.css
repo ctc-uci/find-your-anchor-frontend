@@ -1,19 +1,13 @@
 .nav-bar {
   height: 100%;
-  border-radius: 5px solid black;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.22);
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.fya-logo {
-  margin-left: 10px;
-  height: 50px;
-  width: 50px;
+  padding: 0 0.75em;
 }
 
 .navbar-buttons-and-account {
-  margin-right: 10px;
   gap: 20px;
 
   display: flex;
@@ -23,30 +17,15 @@
 
 .navbar-buttons {
   font-size: 18px;
+  gap: 20px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.navbar-account {
-  position: relative;
-  height: 50px;
-  width: 50px;
-}
-
-.navbar-account-name {
-  position: absolute;
-  top: 9px;
-  left: 12px;
-  color: white;
-  font-size: 20px;
-}
-
-.navbar-account-circle {
-  position: absolute;
-  left: 0px;
+.profile-picture {
   height: 48px;
   width: 48px;
-  background-color: #3182ce;
   border-radius: 50%;
-  display: inline-block;
 }
 
 a {

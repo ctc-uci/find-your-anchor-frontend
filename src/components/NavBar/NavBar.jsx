@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import styles from './NavBar.module.css';
 import FYALogo from '../../assets/fya-logo.png';
+import PlaceHolderPFP from '../../assets/placeholder_pfp.jpg';
 
 function NavBar() {
   return (
@@ -11,19 +12,14 @@ function NavBar() {
         <img src={FYALogo} alt="Find Your Anchor Logo" />
       </div>
       <div className={styles['navbar-buttons-and-account']}>
-        <Link className={styles['navbar-buttons']} to="/add-box-form">
-          Add Box
-        </Link>
-        <Link className={styles['navbar-buttons']} to="/upload-csv">
-          Upload CSV
-        </Link>
-        <Link className={styles['navbar-buttons']} to="/export-csv">
-          Export CSV
-        </Link>
+        <div className={styles['navbar-buttons']}>
+          <Link to="/add-box-form">Add Box</Link>
+          <Link to="/upload-csv">Upload CSV</Link>
+          <Link to="/export-csv">Export CSV</Link>
+        </div>
         <Link to="/profile">
           <div className={styles['navbar-account']}>
-            <span className={styles['navbar-account-circle']} />
-            <p className={styles['navbar-account-name']}>SA</p>
+            <img className={styles['profile-picture']} src={PlaceHolderPFP} alt="Profile" />
           </div>
         </Link>
       </div>
