@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import Layout from './components/Layout/Layout';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import ExportCSV from './pages/ExportCSV/ExportCSV';
 
@@ -13,13 +14,15 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Routes>
-        <Route exact path="/" element={<Map />} />
-        <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/login" element={<App />} />
-        <Route path="/dropoff-form" element={<App />} />
-        <Route path="/pickup-form" element={<App />} />
-        <Route path="/export-csv" element={<ExportCSV />} />
-        <Route path="/add-box-form" element={<AddBoxFormPage />} />
+        <Layout>
+          <Route exact path="/" element={<Map />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/dropoff-form" element={<App />} />
+          <Route path="/pickup-form" element={<App />} />
+          <Route path="/export-csv" element={<ExportCSV />} />
+          <Route path="/add-box-form" element={<AddBoxFormPage />} />
+        </Layout>
       </Routes>
     </Router>
   </React.StrictMode>,
