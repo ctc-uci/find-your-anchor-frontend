@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import DatePicker from 'react-datepicker';
 import * as yup from 'yup';
@@ -12,7 +12,9 @@ import {
   Select,
   Text,
   Radio,
+  RadioGroup,
   Checkbox,
+  CheckboxGroup,
   Button,
 } from '@chakra-ui/react';
 import './ExportCSVForm.css';
@@ -22,7 +24,6 @@ yup.addMethod(yup.mixed, 'isZip', isZip);
 yup.addMethod(yup.mixed, 'isValidRange', isValidRange);
 const schema = yup
   .object({
-    sortBy: yup.string().required(),
     zipCode: yup.mixed().isZip(),
     boxRange: yup.mixed().isValidRange(),
   })
@@ -30,32 +31,47 @@ const schema = yup
 
 const ExportCSVForm = ({ formID, setFormValues }) => {
   const {
+    control,
     register,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm({
+    defaultValues: {
+      sortBy: 'ascend-box-num',
+      boxOption: 'boxes-all',
+      boxRange: '000',
+      dateOption: 'date-all',
+      singleDate: new Date(),
+      startDate: new Date(),
+      endDate: new Date(),
+      zipOption: 'zip-code-all',
+      zipCode: '92617',
+      launchOrg: 'yes',
+      boxDetails: [],
+    },
     resolver: yupResolver(schema),
     delayError: 750,
   });
 
   const onSubmit = data => {
-    alert(JSON.stringify(data, null, 2));
     setFormValues(data);
   };
 
-  const [boxesOption, setBoxesOption] = React.useState('all');
-  const [dateOption, setDateOption] = React.useState('all');
-  const [zipOption, setZipOption] = React.useState('all');
+  const [boxOption, dateOption, startDate, endDate, zipOption, boxDetails] = watch([
+    'boxOption',
+    'dateOption',
+    'startDate',
+    'endDate',
+    'zipOption',
+    'boxDetails',
+  ]);
+
+  console.log(boxDetails);
 
   return (
     <div className="csv-form-wrapper">
       <form id={formID} onSubmit={handleSubmit(onSubmit)}>
-        {/* <FormControl isInvalid={errors?.temp}>
-          <FormLabel htmlFor="temp">Temp Field</FormLabel>
-          <Input id="temp" placeholder="Enter Text" {...register('temp')} />
-          <p className="error-message">{errors.temp?.message}</p>
-        </FormControl> */}
-
         <FormControl className="section-wrapper" isInvalid={errors?.sortBy}>
           <FormLabel htmlFor="sort-by" className="csv-form-labels">
             Sort By
@@ -77,25 +93,19 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
               <FormControl
                 className="section-wrapper filter-label-select"
                 isInvalid={errors?.sortBy}
-                {...register('boxRange')}
               >
                 <FormLabel htmlFor="boxes">Boxes</FormLabel>
                 <div className="input-drop-down">
-                  <Select
-                    id="boxes"
-                    className="select-filter-options"
-                    value={boxesOption}
-                    onChange={e => setBoxesOption(e.target.value)}
-                  >
+                  <Select id="boxes" className="select-filter-options" {...register('boxOption')}>
                     <option value="boxes-all">All</option>
                     <option value="boxes-custom">Custom</option>
                   </Select>
                   <Input
                     isInvalid={errors?.boxRange}
                     placeholder="e.g. 1-9, 6, 12"
-                    className={`custom-input ${boxesOption === 'boxes-custom' ? 'active' : ''}`}
+                    {...register('boxRange')}
+                    className={`custom-input ${boxOption === 'boxes-custom' ? 'active' : ''}`}
                   />
-                  <p className="error-message">{errors.boxRange?.message}</p>
                 </div>
               </FormControl>
             </div>
@@ -106,23 +116,76 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
               >
                 <FormLabel htmlFor="date">Date</FormLabel>
                 <div className="input-drop-down">
-                  <Select
-                    id="date"
-                    className="select-filter-options"
-                    value={dateOption}
-                    onChange={e => setDateOption(e.target.value)}
-                  >
-                    <option value="ascend-box-num">All</option>
-                    <option value="descend-box-num">Single Day</option>
-                    <option value="descend-box-num">Range</option>
+                  <Select id="date" className="select-filter-options" {...register('dateOption')}>
+                    <option value="date-all">All</option>
+                    <option value="date-single">Single Day</option>
+                    <option value="date-range">Range</option>
                   </Select>
-                  <DatePicker
-                    className="date-picker"
-                    placeholderText="MM/DD/YY"
-                    // selected={customDate}
-                    // onChange={date => setCustomDate(date)}
-                  />
-                  <p className="error-message">{errors.sortBy?.message}</p>
+                  {dateOption === 'date-single' && (
+                    <Controller
+                      name="singleDate"
+                      control={control}
+                      // eslint-disable-next-line no-unused-vars
+                      render={({ field: { onChange, value, ref } }) => (
+                        <DatePicker
+                          className="date-picker"
+                          placeholderText="MM/DD/YYYY"
+                          type="date"
+                          selected={value}
+                          onChange={onChange}
+                        />
+                      )}
+                    />
+                  )}
+                  {dateOption === 'date-range' && (
+                    <div className="date-range">
+                      <FormControl>
+                        <FormLabel className="date-range-label" htmlFor="start-date">
+                          Start Date
+                        </FormLabel>
+                        <Controller
+                          name="startDate"
+                          control={control}
+                          // eslint-disable-next-line no-unused-vars
+                          render={({ field: { onChange, value, ref } }) => (
+                            <DatePicker
+                              className="date-picker"
+                              placeholderText="MM/DD/YYYY"
+                              type="date"
+                              selected={value}
+                              onChange={onChange}
+                              selectsStart
+                              startDate={startDate}
+                              endDate={endDate}
+                            />
+                          )}
+                        />
+                      </FormControl>
+                      <FormControl>
+                        <FormLabel className="date-range-label" htmlFor="end-date">
+                          End Date
+                        </FormLabel>
+                        <Controller
+                          name="endDate"
+                          control={control}
+                          // eslint-disable-next-line no-unused-vars
+                          render={({ field: { onChange, value, ref } }) => (
+                            <DatePicker
+                              className="date-picker"
+                              placeholderText="MM/DD/YYYY"
+                              type="date"
+                              selected={value}
+                              onChange={onChange}
+                              selectsEnd
+                              startDate={startDate}
+                              endDate={endDate}
+                              minDate={startDate}
+                            />
+                          )}
+                        />
+                      </FormControl>
+                    </div>
+                  )}
                 </div>
               </FormControl>
             </div>
@@ -133,12 +196,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
               >
                 <FormLabel htmlFor="zip">Zip Code</FormLabel>
                 <div className="input-drop-down">
-                  <Select
-                    id="zip"
-                    className="select-filter-options"
-                    value={zipOption}
-                    onChange={e => setZipOption(e.target.value)}
-                  >
+                  <Select id="zip" className="select-filter-options" {...register('zipOption')}>
                     <option value="zip-code-all">All</option>
                     <option value="zip-code-custom">Custom</option>
                   </Select>
@@ -157,27 +215,50 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                 className="section-wrapper filter-label-select"
                 isInvalid={errors?.sortBy}
               >
-                <Text>Launch Organically?</Text>
-                <Radio>Yes</Radio>
-                <Radio>No</Radio>
+                <FormLabel htmlFor="launch-organic">Launch Organically?</FormLabel>
+                <Controller
+                  id="launch-organic"
+                  name="launchOrg"
+                  control={control}
+                  // eslint-disable-next-line no-unused-vars
+                  render={({ field: { onChange, value, ref } }) => (
+                    <RadioGroup
+                      className="organically-radio-group"
+                      defaultValue="yes"
+                      value={value}
+                      onChange={onChange}
+                    >
+                      <Radio value="yes">Yes</Radio>
+                      <Radio value="no">No</Radio>
+                    </RadioGroup>
+                  )}
+                />
               </FormControl>
-              <p className="error-message">{errors.sortBy?.message}</p>
             </div>
           </div>
-          <FormControl className="section-wrapper" isInvalid={errors?.sortBy}>
+          <FormControl className="section-wrapper">
             <div className="box-detail-header">
               <Text className="csv-form-labels">Box Details</Text>
               <Button variant="link">Unselect All</Button>
             </div>
-            <div className="box-detail-checkboxes">
-              <Checkbox>Date</Checkbox>
-              <Checkbox>Box Number</Checkbox>
-              <Checkbox>Zip Code</Checkbox>
-              <Checkbox>Image</Checkbox>
-              <Checkbox>Landmarks</Checkbox>
-              <Checkbox>Launch Type</Checkbox>
-              <Checkbox>Messages</Checkbox>
-            </div>
+            <Controller
+              name="boxDetails"
+              control={control}
+              // eslint-disable-next-line no-unused-vars
+              render={({ field: { onChange, value, ref } }) => (
+                <div className="box-detail-checkboxes">
+                  <CheckboxGroup value={value} onChange={onChange}>
+                    <Checkbox value="date">Date</Checkbox>
+                    <Checkbox value="box-num">Box Number</Checkbox>
+                    <Checkbox value="zip-code">Zip Code</Checkbox>
+                    <Checkbox value="image">Image</Checkbox>
+                    <Checkbox value="landmarks">Landmarks</Checkbox>
+                    <Checkbox value="launch-type">Launch Type</Checkbox>
+                    <Checkbox value="messages">Messages</Checkbox>
+                  </CheckboxGroup>
+                </div>
+              )}
+            />
           </FormControl>
         </div>
       </form>

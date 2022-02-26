@@ -29,8 +29,14 @@
   gap: 5px;
 }
 
+.filter-label-select .organically-radio-group {
+  width: 170px;
+  display: flex;
+  justify-content: space-between;
+}
+
 .input-drop-down .date-picker {
-  font-size: 20px;
+  font-size: var(--chakra-fontSizes-md);
   height: 2.5rem;
   width: 170px;
   border: 1px solid rgb(226, 232, 240);
@@ -38,15 +44,22 @@
   padding-left: 1rem;
 }
 
+.input-drop-down .date-range {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.date-range .date-range-label {
+  font-size: 14px;
+  color: #9C9C9C;
+}
+
 .csv-form-wrapper .filter-section-wrapper {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
-
-/* .section-wrapper.filter-label-select .chakra-select__wrapper {
-  width: 170px;
-} */
 
 .filter-section-wrapper .filter-option-wrapper {
   display: flex;
