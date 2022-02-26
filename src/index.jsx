@@ -15,14 +15,14 @@ ReactDOM.render(
     <Router>
       <Routes>
         <Route path="/login" element={<App />} />
-        <Layout>
+        <Route element={<Layout />}>
           <Route exact path="/" element={<Map />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/dropoff-form" element={<App />} />
           <Route path="/pickup-form" element={<App />} />
           <Route path="/export-csv" element={<ExportCSV />} />
           <Route path="/add-box-form" element={<AddBoxFormPage />} />
-        </Layout>
+        </Route>
       </Routes>
     </Router>
   </React.StrictMode>,
