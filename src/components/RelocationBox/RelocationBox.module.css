@@ -72,6 +72,11 @@
     margin: 2% 2% 0% 0%;
   }
 
+  .message-functionality-wrapper {
+    display: flex;
+    width: 100%;
+  }
+
 .message-approved {
   float:right;
   margin: 2% 0% 2% 2%;

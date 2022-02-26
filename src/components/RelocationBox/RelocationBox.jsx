@@ -202,15 +202,15 @@ const RelocationBox = ({
                   />
                   {/* Box's Launched Organically field */}
                   <FormLabel htmlFor="launchedOrganically" marginTop="5%">
-                    Launched Organically?
+                    Drop Off Method
                   </FormLabel>
                   <Select
                     disabled={status !== 'pending changes'}
                     defaultValue={launchedOrganicallyState}
                     onChange={e => setLaunchedOrganicallyState(e.target.value)}
                   >
-                    <option value>Yes</option>
-                    <option value={false}>No</option>
+                    <option value>Dropped at Location</option>
+                    <option value={false}>Given to Someone</option>
                   </Select>
                   {/* Box's message (only show if the box isn't evaluated or message isn't rejected) */}
                   {!(status === 'evaluated' && messageStatus === 'rejected') && (
@@ -227,6 +227,11 @@ const RelocationBox = ({
                         value={messageState}
                         onChange={e => setMessageState(e.target.value)}
                       />
+                    </>
+                  )}
+                  {/* Message button toolbar (Only show if box hasn't been evaluted yet) */}
+                  {status !== 'evaluated' && (
+                    <div className={styles['message-functionality-wrapper']}>
                       {/* Message approved indicator (only show if message is approved) */}
                       <div className={styles['message-functionality']}>
                         {messageStatus === 'approved' && (
@@ -247,11 +252,6 @@ const RelocationBox = ({
                           </>
                         )}
                       </div>
-                    </>
-                  )}
-                  {/* Message button toolbar (Only show if box hasn't been evaluted yet) */}
-                  {status !== 'evaluated' && (
-                    <>
                       {/* Approve message button */}
                       <button
                         type="button"
@@ -282,7 +282,7 @@ const RelocationBox = ({
                       >
                         <img src={MessageRejectedIcon} alt="" />
                       </button>
-                    </>
+                    </div>
                   )}
                   {/* Changes requested text area (only show if box is under pending changes) */}
                   {status === 'pending changes' && (

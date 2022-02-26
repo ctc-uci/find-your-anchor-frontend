@@ -21,7 +21,7 @@ import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 import ImageVector from '../BoxIcons/ImageVector.svg';
 import { FYABackend } from '../../common/utils';
 
-function PickupBox({
+const PickupBox = ({
   approved,
   boxID,
   boxHolderName,
@@ -33,7 +33,7 @@ function PickupBox({
   rejectionReason,
   fetchBoxes,
   pickup,
-}) {
+}) => {
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
   const [rejectBoxPopupIsOpen, setRejectBoxPopupIsOpen] = useState(false);
@@ -153,7 +153,7 @@ function PickupBox({
       </div>
     </ChakraProvider>
   );
-}
+};
 
 PickupBox.propTypes = {
   approved: PropTypes.bool.isRequired,
