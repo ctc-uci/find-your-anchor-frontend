@@ -1,7 +1,6 @@
 .nav-bar {
   height: 100%;
   border-radius: 5px solid black;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
