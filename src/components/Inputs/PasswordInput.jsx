@@ -9,6 +9,7 @@ import {
   Icon,
   FormErrorMessage,
   FormLabel,
+  FormHelperText,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import styles from './Input.module.css';
@@ -32,9 +33,12 @@ const PasswordInput = ({ error, register, showForgotPassword, title }) => {
           </Button>
         </InputRightElement>
       </InputGroup>
-      <div className={styles['password-tools']}>
+      <div className={styles['input-tools']}>
         <div className={styles['form-error-wrapper']}>
-          <FormErrorMessage>{error?.message}</FormErrorMessage>
+          {!error && <FormHelperText>&nbsp;</FormHelperText>}
+          <FormErrorMessage className={styles['form-error-message']}>
+            {error?.message}
+          </FormErrorMessage>
         </div>
         {showForgotPassword && (
           <div className={styles['forgot-password-wrapper']} align="right">

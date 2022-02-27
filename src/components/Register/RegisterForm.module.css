@@ -1,12 +1,12 @@
-.login-form-container {
+.register-form-container {
   width: 80%;
 }
 
-.login-form {
+.register-form {
   width: 100%;
 }
 
-.login-button {
+.register-button {
   background-color: #345e80 !important;
   color: white;
 }

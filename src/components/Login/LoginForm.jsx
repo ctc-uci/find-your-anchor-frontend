@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Heading } from '@chakra-ui/react';
 import styles from './LoginForm.module.css';
-import TextInput from '../Inputs/TextInputs';
+import TextInput from '../Inputs/TextInput';
 import PasswordInput from '../Inputs/PasswordInput';
 
 const schema = yup.object({
@@ -31,7 +31,7 @@ const LoginForm = () => {
 
   return (
     <div className={styles['login-form-container']}>
-      <Heading>LOGIN</Heading>
+      <Heading className={styles['form-heading']}>LOGIN</Heading>
       <form className={styles['login-form']} onSubmit={handleSubmit(onSubmit)}>
         <TextInput
           register={register('email')}
