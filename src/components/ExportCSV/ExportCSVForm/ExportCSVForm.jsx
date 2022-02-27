@@ -27,9 +27,9 @@ const schema = yup
   .object({
     zipCode: yup.mixed().isZip(),
     boxRange: yup.mixed().isValidRange(),
-    // singleDate: yup.mixed().isDate(),
-    // startDate: yup.mixed().isDate(),
-    // endDate: yup.mixed().isDate(),
+    singleDate: yup.mixed().isDate(),
+    startDate: yup.mixed().isDate(),
+    endDate: yup.mixed().isDate(),
   })
   .required();
 
@@ -71,6 +71,8 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
     'endDate',
     'zipOption',
   ]);
+
+  console.log(errors);
 
   return (
     <div className={styles['csv-form-wrapper']}>
@@ -135,8 +137,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                       // eslint-disable-next-line no-unused-vars
                       render={({ field: { onChange, value, ref } }) => (
                         <DatePicker
-                          isInvalid={errors?.singleDate}
-                          className={styles['date-picker']}
+                          className={styles[`date-picker${errors?.singleDate ? '-error' : ''}`]}
                           placeholderText="MM/DD/YYYY"
                           type="date"
                           selected={value}
@@ -145,6 +146,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                       )}
                     />
                   )}
+                  <p className={styles['error-message']}>{errors.singleDate?.message}</p>
                   {dateOption === 'date-range' && (
                     <div className={styles['date-range']}>
                       <FormControl>
@@ -157,7 +159,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                           // eslint-disable-next-line no-unused-vars
                           render={({ field: { onChange, value, ref } }) => (
                             <DatePicker
-                              className={styles['date-picker']}
+                              className={styles[`date-picker${errors?.startDate ? '-error' : ''}`]}
                               placeholderText="MM/DD/YYYY"
                               type="date"
                               selected={value}
@@ -169,6 +171,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                           )}
                         />
                       </FormControl>
+                      <p className={styles['error-message']}>{errors.startDate?.message}</p>
                       <FormControl>
                         <FormLabel className={styles['date-range-label']} htmlFor="end-date">
                           End Date
@@ -179,7 +182,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                           // eslint-disable-next-line no-unused-vars
                           render={({ field: { onChange, value, ref } }) => (
                             <DatePicker
-                              className={styles['date-picker']}
+                              className={styles[`date-picker${errors?.endDate ? '-error' : ''}`]}
                               placeholderText="MM/DD/YYYY"
                               type="date"
                               selected={value}
@@ -192,6 +195,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                           )}
                         />
                       </FormControl>
+                      <p className={styles['error-message']}>{errors.endDate?.message}</p>
                     </div>
                   )}
                 </div>
