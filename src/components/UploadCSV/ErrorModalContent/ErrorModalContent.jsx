@@ -1,12 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'; // this library is used to generate a uuid, universally unique identifier, which is used to create unique keys for array elements
 import { Button, ButtonGroup, Text } from '@chakra-ui/react';
 import { WarningIcon } from '@chakra-ui/icons';
 
-import './ErrorModal.css';
+import './ErrorModalContent.css';
 
-const ErrorModal = ({ CSVFileName, setIsUploadingNewFile, uploadErrors, onEditViewFile }) => {
+const ErrorModalContent = ({
+  CSVFileName,
+  setIsUploadingNewFile,
+  uploadErrors,
+  onEditViewFile,
+}) => {
   const uploadNewFile = () => {
     setIsUploadingNewFile(true);
   };
@@ -24,7 +29,7 @@ const ErrorModal = ({ CSVFileName, setIsUploadingNewFile, uploadErrors, onEditVi
       <p className="error-modal-file-name">{CSVFileName}</p>
       <div className="error-modal-errors">
         {uploadErrors.map(error => {
-          const id = uuidv4();
+          const id = uuidv4(); // use uuid here create unique keys for each p element
           return (
             <p className="error-modal-message" key={id}>
               *{error}*
@@ -44,11 +49,11 @@ const ErrorModal = ({ CSVFileName, setIsUploadingNewFile, uploadErrors, onEditVi
   );
 };
 
-ErrorModal.propTypes = {
+ErrorModalContent.propTypes = {
   CSVFileName: PropTypes.string.isRequired,
   setIsUploadingNewFile: PropTypes.func.isRequired,
   uploadErrors: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
   onEditViewFile: PropTypes.func.isRequired,
 };
 
-export default ErrorModal;
+export default ErrorModalContent;

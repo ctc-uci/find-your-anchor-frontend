@@ -6,9 +6,9 @@ import { usePapaParse } from 'react-papaparse';
 import PropTypes from 'prop-types';
 import { FYABackend } from '../../common/utils';
 
-import UploadModal from './UploadModal/UploadModal';
-import SuccessModal from './SuccessModal/SuccessModal';
-import ErrorModal from './ErrorModal/ErrorModal';
+import UploadModalContent from './UploadModalContent/UploadModalContent';
+import SuccessModal from './SuccessModalContent/SuccessModalContent';
+import ErrorModalContent from './ErrorModalContent/ErrorModalContent';
 import CommonModal from '../../common/CommonModal/CommonModal';
 
 import BoxSchema from './UploadCSVUtils';
@@ -99,7 +99,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
       <form onSubmit={addToMap}>
         {(() => {
           if (isUploadingNewFile) {
-            return <UploadModal setCSVFile={setCSVFile} onUpload={onUpload} />;
+            return <UploadModalContent setCSVFile={setCSVFile} onUpload={onUpload} />;
           }
           if (isLoading) {
             return <div className="loading-text">Uploading...</div>;
@@ -114,7 +114,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
             );
           }
           return (
-            <ErrorModal
+            <ErrorModalContent
               CSVFileName={CSVFilename}
               setIsUploadingNewFile={setIsUploadingNewFile}
               uploadErrors={uploadErrors}

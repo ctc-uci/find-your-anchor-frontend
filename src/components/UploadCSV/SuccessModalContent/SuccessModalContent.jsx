@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, ButtonGroup } from '@chakra-ui/react';
-import './SuccessModal.css';
+import './SuccessModalContent.css';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 
-const SuccessModal = ({ CSVFileName, setIsUploadingNewFile, onEditViewFile }) => {
+const SuccessModalContent = ({ CSVFileName, setIsUploadingNewFile, onEditViewFile }) => {
   const uploadNewFile = () => {
     setIsUploadingNewFile(true);
   };
@@ -34,10 +34,10 @@ const SuccessModal = ({ CSVFileName, setIsUploadingNewFile, onEditViewFile }) =>
   );
 };
 
-SuccessModal.propTypes = {
+SuccessModalContent.propTypes = {
   CSVFileName: PropTypes.string.isRequired,
   setIsUploadingNewFile: PropTypes.func.isRequired,
   onEditViewFile: PropTypes.func.isRequired,
 };
 
-export default SuccessModal;
+export default SuccessModalContent;
