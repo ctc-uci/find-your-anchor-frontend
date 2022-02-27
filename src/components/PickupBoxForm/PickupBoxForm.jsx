@@ -4,6 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { FormErrorMessage, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../common/utils';
 import { uploadBoxPhoto, validateZip } from '../../common/FormUtils/boxFormUtils';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
@@ -32,7 +33,7 @@ const schema = yup
   })
   .required();
 
-const BoxForm = () => {
+const PickupBoxForm = () => {
   const {
     register,
     control,
@@ -43,12 +44,15 @@ const BoxForm = () => {
     delayError: 750,
   });
 
+  const navigate = useNavigate();
+
   const [files, setFiles] = useState([]);
 
   const onSubmit = async data => {
     const formData = data;
     formData.date = formatDate(data.date);
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
+    navigate('/box-form-confirmation', { state: { pickup: true } });
 
     // TODO: Add call to post data to backend
   };
@@ -138,4 +142,4 @@ const BoxForm = () => {
   );
 };
 
-export default BoxForm;
+export default PickupBoxForm;

@@ -8,6 +8,7 @@ import ExportCSV from './pages/ExportCSV/ExportCSV';
 import Map from './components/Map/Map';
 import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
 import PickupBoxFormPage from './pages/PickupBoxForm/PickupBoxFormPage';
+import BoxFormConfirmation from './components/BoxFormConfirmation/BoxFormConfirmation';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -21,6 +22,7 @@ ReactDOM.render(
         <Route path="/export-csv" element={<ExportCSV />} />
         <Route path="/add-box-form" element={<AddBoxFormPage />} />
         <Route path="/pickup-box-form" element={<PickupBoxFormPage />} />
+        <Route path="/box-form-confirmation" element={<BoxFormConfirmation pickup />} />
       </Routes>
     </Router>
   </React.StrictMode>,
