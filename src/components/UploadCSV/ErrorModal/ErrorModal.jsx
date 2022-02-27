@@ -18,7 +18,7 @@ const ErrorModal = ({ CSVFileName, setIsUploadingNewFile, uploadErrors, onEditVi
 
   return (
     <div className="error-modal-content">
-      <WarningIcon alt="Icon" className="error-modal-icon" />
+      <WarningIcon alt="Icon" boxSize="70px" color="red" marginBottom="20px" />
       <Text className="error-modal-text">Oops!</Text>
       <p className="error-modal-text">There was an error with the uploaded file:</p>
       <p className="error-modal-file-name">{CSVFileName}</p>

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, ButtonGroup } from '@chakra-ui/react';
 import './SuccessModal.css';
-import SuccessIcon from '../../../assets/success.png';
+import { CheckCircleIcon } from '@chakra-ui/icons';
 
 const SuccessModal = ({ CSVFileName, setIsUploadingNewFile, onEditViewFile }) => {
   const uploadNewFile = () => {
@@ -16,7 +16,7 @@ const SuccessModal = ({ CSVFileName, setIsUploadingNewFile, onEditViewFile }) =>
 
   return (
     <div className="success-modal-content">
-      <img src={SuccessIcon} alt="Icon" className="success-modal-icon" />
+      <CheckCircleIcon alt="Check Icon" boxSize="70px" color="green.300" marginBottom="20px" />
       <p className="success-modal-text">File Uploaded!</p>
       <p className="success-modal-file-name">{CSVFileName}</p>
       <ButtonGroup className="success-modal-buttons">
