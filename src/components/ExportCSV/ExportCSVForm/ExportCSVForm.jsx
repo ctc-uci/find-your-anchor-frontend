@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -25,11 +25,34 @@ yup.addMethod(yup.mixed, 'isZip', isZip);
 yup.addMethod(yup.mixed, 'isValidRange', isValidRange);
 const schema = yup
   .object({
-    zipCode: yup.mixed().isZip(),
-    boxRange: yup.mixed().isValidRange(),
-    singleDate: yup.mixed().isDate(),
-    startDate: yup.mixed().isDate(),
-    endDate: yup.mixed().isDate(),
+    zipOption: yup.string(),
+    zipCode: yup.mixed().when('zipOption', {
+      is: 'zip-code-custom',
+      then: yup.mixed().isZip(),
+      otherwise: yup.mixed().nullable().notRequired(),
+    }),
+    boxOption: yup.string(),
+    boxRange: yup.mixed().when('boxOption', {
+      is: 'boxes-custom',
+      then: yup.mixed().isValidRange(),
+      otherwise: yup.mixed().nullable().notRequired(),
+    }),
+    dateOption: yup.string(),
+    singleDate: yup.mixed().when('dateOption', {
+      is: 'date-single',
+      then: yup.mixed().isDate(),
+      otherwise: yup.mixed().nullable().notRequired(),
+    }),
+    startDate: yup.mixed().when('dateOption', {
+      is: 'date-range',
+      then: yup.mixed().isDate(),
+      otherwise: yup.mixed().nullable().notRequired(),
+    }),
+    endDate: yup.mixed().when('dateOption', {
+      is: 'date-range',
+      then: yup.mixed().isDate(),
+      otherwise: yup.mixed().nullable().notRequired(),
+    }),
   })
   .required();
 
@@ -41,18 +64,20 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
     register,
     watch,
     handleSubmit,
+    setValue,
+    clearErrors,
     formState: { errors },
   } = useForm({
     defaultValues: {
       sortBy: 'ascend-box-num',
       boxOption: 'boxes-all',
-      boxRange: '0',
+      boxRange: '',
       dateOption: 'date-all',
-      singleDate: new Date(),
-      startDate: new Date(),
-      endDate: new Date(),
+      singleDate: '',
+      startDate: '',
+      endDate: '',
       zipOption: 'zip-code-all',
-      zipCode: '92617',
+      zipCode: '',
       launchOrg: 'yes',
       boxDetails: [],
     },
@@ -62,6 +87,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
 
   const onSubmit = data => {
     setFormValues(data);
+    reset();
   };
 
   const [boxOption, dateOption, startDate, endDate, zipOption] = watch([
@@ -72,7 +98,31 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
     'zipOption',
   ]);
 
-  console.log(errors);
+  useEffect(() => {
+    if (boxOption === 'boxes-all') {
+      setValue('boxRange', '');
+      clearErrors('boxRange');
+    }
+
+    if (zipOption === 'zip-code-all') {
+      setValue('zipCode', '');
+      clearErrors('zipCode');
+    }
+
+    if (dateOption === 'date-all') {
+      setValue('singleDate', '');
+      setValue('startDate', '');
+      setValue('endDate', '');
+      clearErrors(['singleDate', 'rangeDate']);
+    } else if (dateOption === 'date-single') {
+      setValue('startDate', '');
+      setValue('endDate', '');
+      clearErrors('rangeDate');
+    } else {
+      setValue('singleDate', '');
+      clearErrors('singleDate');
+    }
+  }, [boxOption, zipOption, dateOption]);
 
   return (
     <div className={styles['csv-form-wrapper']}>
