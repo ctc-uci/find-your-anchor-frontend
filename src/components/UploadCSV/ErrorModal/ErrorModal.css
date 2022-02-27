@@ -37,12 +37,13 @@
 }
 
 .error-modal-message {
-  color: rgb(206, 0, 0); 
+  color: rgb(206, 0, 0);
   font-weight: 600;
   font-style: italic;
 }
 
 .error-modal-errors {
+  color: red;
   height: 100px;
   overflow: auto;
   overflow-x: hidden;

@@ -8,15 +8,13 @@ import {
   FormControl,
   FormErrorMessage,
 } from '@chakra-ui/react';
-import { WarningIcon } from '@chakra-ui/icons';
+import { WarningIcon, CheckIcon } from '@chakra-ui/icons';
 import './EditableRow.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import DatePicker from 'react-datepicker';
 import BoxSchema from '../../UploadCSV/UploadCSVUtils';
-// import { formatDate } from '../../../common/utils';
-import CheckIcon from '../../../assets/check.png';
 
 const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
   const {
@@ -60,7 +58,6 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
               );
             }}
           />
-          {/* <Input id="date" placeholder="MM/DD/YYYY" name="date" {...register('date')} /> */}
           <FormErrorMessage marginTop="0px">{errors.date?.message}</FormErrorMessage>
         </FormControl>
       </td>
@@ -101,7 +98,7 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
       </td>
       <td>
         <button type="button" onClick={handleSubmit(onSave)}>
-          <img src={CheckIcon} alt="Check Icon" className="check-icon" />
+          <CheckIcon alt="Check Icon" className="check-icon" />
         </button>
       </td>
     </tr>

@@ -14,7 +14,7 @@ function validateBoxNumber() {
     const box = await FYABackend.get(`/boxForm/${value}`);
     return box.data.length === 0
       ? true
-      : createError({ path, message: `Box no. ${value} already exists` });
+      : createError({ path, message: `Box number ${value} already exists` });
   });
 }
 
@@ -22,9 +22,9 @@ yup.addMethod(yup.string, 'isZip', validateZip);
 yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
 export default yup
   .object({
-    boxNumber: yup.number().boxNotExists().required().typeError('Missing/invalid box number'),
-    date: yup.date().required().typeError('Missing/invalid date'),
-    zipCode: yup.string().isZip().required('Missing zip code'),
+    boxNumber: yup.number().boxNotExists().required().typeError('Missing or invalid box number'),
+    date: yup.date().required().typeError('Missing or invalid date'),
+    zipCode: yup.string().isZip().required('Missing or invalid zip code'),
     launchedOrganically: yup.bool().default(false),
   })
   .required();
