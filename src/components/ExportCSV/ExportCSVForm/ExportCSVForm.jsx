@@ -32,6 +32,8 @@ const schema = yup
 const ExportCSVForm = ({ formID, setFormValues }) => {
   const {
     control,
+    reset,
+    getValues,
     register,
     watch,
     handleSubmit,
@@ -58,19 +60,18 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
     setFormValues(data);
   };
 
-  const [boxOption, dateOption, startDate, endDate, zipOption, boxDetails] = watch([
+  const [boxOption, dateOption, startDate, endDate, zipOption] = watch([
     'boxOption',
     'dateOption',
     'startDate',
     'endDate',
     'zipOption',
-    'boxDetails',
   ]);
 
   return (
     <div className="csv-form-wrapper">
       <form id={formID} onSubmit={handleSubmit(onSubmit)}>
-        <FormControl className="section-wrapper" isInvalid={errors?.sortBy}>
+        <FormControl className="section-wrapper">
           <FormLabel htmlFor="sort-by" className="csv-form-labels">
             Sort By
           </FormLabel>
@@ -81,7 +82,6 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
             <option value="ascend-zip-code">Descending Zip Code</option>
             <option value="descend-zip-code">Descending Zip Code</option>
           </Select>
-          <p className="error-message">{errors.sortBy?.message}</p>
         </FormControl>
 
         <div className="filter-section-wrapper">
@@ -240,7 +240,10 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
               <Button
                 variant="link"
                 onClick={() => {
-                  boxDetails.splice(0, boxDetails.length);
+                  reset({
+                    ...getValues(),
+                    boxDetails: [],
+                  });
                 }}
               >
                 Unselect All
