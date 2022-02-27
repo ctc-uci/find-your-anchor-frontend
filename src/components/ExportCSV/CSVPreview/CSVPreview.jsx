@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './CSVPreview.css';
+import styles from './CSVPreview.module.css';
 
 const CSVPreview = ({ data }) => {
   return (
-    <div className="csv-preview-wrapper">
+    <div className={styles['csv-preview-wrapper']}>
       <p>CSV Preview</p>
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>

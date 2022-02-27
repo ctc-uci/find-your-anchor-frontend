@@ -1,5 +1,15 @@
 import { isValidZip } from '../../../common/utils';
 
+function isDate(message) {
+  return this.test('isDate', message, function dateCheck(value) {
+    const { path, createError } = this;
+
+    const re = /^\d{2}\/\d{2}\/\d{4}$/;
+
+    return re.test(value) ? true : createError({ path, message: message ?? 'Not a valid date' });
+  });
+}
+
 function isZip(message) {
   return this.test('isZip', message, function zipCheck(value) {
     const { path, createError } = this;
@@ -39,8 +49,8 @@ function isValidRange(message) {
     // Call helper functions on every array element
     return ranges.every(e => validChars(e) && increasingRange(e))
       ? true
-      : createError({ path, message: message ?? 'Not a range' });
+      : createError({ path, message: message ?? 'Invalid page range' });
   });
 }
 
-export { isZip, isValidRange };
+export { isDate, isZip, isValidRange };
