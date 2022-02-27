@@ -9,7 +9,7 @@ import { uploadBoxPhoto, validateZip } from '../../common/FormUtils/boxFormUtils
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../common/FormUtils/DatePicker.css';
-import './PickupBoxForm.css';
+import styles from './PickupBoxForm.module.css';
 
 yup.addMethod(yup.string, 'isZip', validateZip);
 const schema = yup
@@ -54,8 +54,8 @@ const BoxForm = () => {
   };
 
   return (
-    <form className="pickup-box-form" onSubmit={handleSubmit(onSubmit)}>
-      <div className="pickup-box-info-section-left">
+    <form className={styles['pickup-box-form']} onSubmit={handleSubmit(onSubmit)}>
+      <div className={styles['pickup-box-info-section-left']}>
         <div>
           <FormControl isInvalid={errors?.name}>
             <FormLabel htmlFor="name">Name</FormLabel>
@@ -95,7 +95,7 @@ const BoxForm = () => {
           </FormControl>
         </div>
       </div>
-      <div className="pickup-box-info-section-right">
+      <div className={styles['pickup-box-info-section-right']}>
         <FormControl isInvalid={errors?.email}>
           <FormLabel htmlFor="email">Email Address *</FormLabel>
           <Input id="email" placeholder="name@domain.com" name="email" {...register('email')} />
@@ -111,18 +111,20 @@ const BoxForm = () => {
         </div>
         <div
           className={
-            files.length !== 0
-              ? 'pickup-box-photo-preview-section'
-              : 'pickup-box-photo-preview-section-hidden'
+            styles[
+              files.length !== 0
+                ? 'pickup-box-photo-preview-section'
+                : 'pickup-box-photo-preview-section-hidden'
+            ]
           }
         >
-          <div className="box-image">
+          <div className={styles['box-image']}>
             {files.length !== 0 && <img src={URL.createObjectURL(files[0])} alt="" />}
           </div>
         </div>
         <br />
-        <div className="box-bottom">
-          <div className="box-buttons">
+        <div className={styles['box-bottom']}>
+          <div className={styles['box-buttons']}>
             <Button size="md" className="cancel-button">
               Cancel
             </Button>
