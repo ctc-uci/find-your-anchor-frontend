@@ -43,7 +43,6 @@
     "react-router": "5.2.0",
     "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
-    "react-table": "^7.7.0",
     "testing-library": "0.0.2",
     "uuid": "^8.3.2",
     "web-vitals": "^1.0.1",
