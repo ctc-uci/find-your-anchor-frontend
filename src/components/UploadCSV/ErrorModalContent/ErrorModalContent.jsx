@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { v4 as uuidv4 } from 'uuid'; // this library is used to generate a uuid, universally unique identifier, which is used to create unique keys for array elements
 import { Button, ButtonGroup, Text } from '@chakra-ui/react';
 import { WarningIcon } from '@chakra-ui/icons';
-
-import './ErrorModalContent.css';
+import styles from './ErrorModalContent.module.css';
 
 const ErrorModalContent = ({
   CSVFileName,
@@ -22,22 +20,20 @@ const ErrorModalContent = ({
   };
 
   return (
-    <div className="error-modal-content">
+    <div className={styles['error-modal-content']}>
       <WarningIcon alt="Icon" boxSize="70px" color="red" marginBottom="20px" />
       <Text className="error-modal-text">Oops!</Text>
-      <p className="error-modal-text">There was an error with the uploaded file:</p>
-      <p className="error-modal-file-name">{CSVFileName}</p>
-      <div className="error-modal-errors">
-        {uploadErrors.map(error => {
-          const id = uuidv4(); // use uuid here create unique keys for each p element
-          return (
-            <p className="error-modal-message" key={id}>
-              *{error}*
-            </p>
-          );
-        })}
+      <p className={styles['error-modal-text']}>There was an error with the uploaded file:</p>
+      <p className={styles['error-modal-file-name']}>{CSVFileName}</p>
+      <div className={styles['error-modal-errors']}>
+        {uploadErrors.map((error, index) => (
+          /* eslint-disable react/no-array-index-key */
+          <p className={styles['error-modal-message']} key={index}>
+            *{error}*
+          </p>
+        ))}
       </div>
-      <ButtonGroup className="error-modal-buttons">
+      <ButtonGroup className={styles['error-modal-buttons']}>
         <Button size="md" color="white" bg="#1F2F38" onClick={uploadNewFile}>
           Upload New File
         </Button>

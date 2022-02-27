@@ -11,12 +11,12 @@ import {
   Td,
 } from '@chakra-ui/react';
 import { WarningIcon, CheckIcon } from '@chakra-ui/icons';
-import './EditableRow.css';
-import 'react-datepicker/dist/react-datepicker.css';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import DatePicker from 'react-datepicker';
 import BoxSchema from '../../UploadCSV/UploadCSVUtils';
+import styles from './EditableRow.module.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
   const {
@@ -40,7 +40,7 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
   };
 
   return (
-    <Tr className="edit-row" key={editFormData.id}>
+    <Tr className={styles['edit-row']} key={editFormData.id}>
       <Td>
         <FormControl isInvalid={errors?.date}>
           <Controller
@@ -52,7 +52,11 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
               return (
                 <DatePicker
                   placeholderText="MM/DD/YYYY"
-                  className={errors?.date ? 'date-picker date-picker-error' : 'date-picker'}
+                  className={
+                    errors?.date
+                      ? `${styles['date-picker']} ${styles['date-picker-error']}`
+                      : styles['date-picker']
+                  }
                   type="date"
                   selected={Number.isNaN(Date.parse(date)) ? undefined : date}
                   onChange={onChange}
@@ -68,7 +72,7 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
           <InputGroup>
             <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
             {errors?.boxNumber && (
-              <InputRightElement className="input-right-warning">
+              <InputRightElement className={styles['input-right-warning']}>
                 <WarningIcon />
               </InputRightElement>
             )}
@@ -82,7 +86,7 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
           <InputGroup>
             <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
             {errors?.zipCode && (
-              <InputRightElement className="input-right-warning">
+              <InputRightElement className={styles['input-right-warning']}>
                 <WarningIcon />
               </InputRightElement>
             )}
@@ -100,7 +104,7 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
       </Td>
       <Td>
         <button type="button" onClick={handleSubmit(onSave)}>
-          <CheckIcon alt="Check Icon" className="check-icon" />
+          <CheckIcon alt="Check Icon" className={styles['check-icon']} />
         </button>
       </Td>
     </Tr>

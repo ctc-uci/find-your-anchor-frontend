@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './UploadCSV.css';
 import { v4 as uuidv4 } from 'uuid';
 import { usePapaParse } from 'react-papaparse';
 import PropTypes from 'prop-types';
@@ -12,6 +11,7 @@ import ErrorModalContent from './ErrorModalContent/ErrorModalContent';
 import CommonModal from '../../common/CommonModal/CommonModal';
 
 import BoxSchema from './UploadCSVUtils';
+import styles from './UploadCSV.module.css';
 
 const UploadCSV = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
@@ -95,14 +95,14 @@ const UploadCSV = ({ isOpen, onClose }) => {
   };
 
   return (
-    <CommonModal isOpen={isOpen} onClose={onCloseModal} className="common-modal">
+    <CommonModal isOpen={isOpen} onClose={onCloseModal} className={styles['common-modal']}>
       <form onSubmit={addToMap}>
         {(() => {
           if (isUploadingNewFile) {
             return <UploadModalContent setCSVFile={setCSVFile} onUpload={onUpload} />;
           }
           if (isLoading) {
-            return <div className="loading-text">Uploading...</div>;
+            return <div className={styles['loading-text']}>Uploading...</div>;
           }
           if (uploadErrors.length === 0) {
             return (

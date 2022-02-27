@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Text } from '@chakra-ui/react';
 import DropZone from '../DropZone/DropZone';
-import './UploadModalContent.css';
+import styles from './UploadModalContent.module.css';
 
 const UploadModalContent = ({ setCSVFile, onUpload }) => {
   return (
-    <div className="upload-modal-content">
-      <Text className="upload-modal-title">UPLOAD CSV FILE:</Text>
+    <div className={styles['upload-modal-content']}>
+      <Text className={styles['upload-modal-title']}>UPLOAD CSV FILE:</Text>
       <DropZone setFile={setCSVFile} />
       <Button
-        className="upload-modal-button"
+        className={styles['upload-modal-button']}
         size="md"
         color="white"
         bg="#345E80"

@@ -1,9 +1,8 @@
 /* eslint-disable prefer-object-spread */
-/* eslint-disable no-unused-vars */
 import React, { useState, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Button, Stack, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Button, Stack, Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
 import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../EditableRow/EditableRow';
