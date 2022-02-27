@@ -67,8 +67,6 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
     'boxDetails',
   ]);
 
-  console.log(boxDetails);
-
   return (
     <div className="csv-form-wrapper">
       <form id={formID} onSubmit={handleSubmit(onSubmit)}>
@@ -239,7 +237,14 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
           <FormControl className="section-wrapper">
             <div className="box-detail-header">
               <Text className="csv-form-labels">Box Details</Text>
-              <Button variant="link">Unselect All</Button>
+              <Button
+                variant="link"
+                onClick={() => {
+                  boxDetails.splice(0, boxDetails.length);
+                }}
+              >
+                Unselect All
+              </Button>
             </div>
             <Controller
               name="boxDetails"

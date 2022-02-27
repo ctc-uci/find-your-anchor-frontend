@@ -18,7 +18,6 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  /* align-items: center; */
 }
 
 .filter-label-select .input-drop-down {
