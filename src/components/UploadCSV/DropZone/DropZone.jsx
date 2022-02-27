@@ -50,7 +50,7 @@ function DropZone({ setFile }) {
           {...getRootProps()}
         >
           <input {...getInputProps()} />
-          <div className="upload-icon" />
+          <div className={styles['upload-icon']} />
           <img src={DropZoneIcon} alt="Icon" className={styles['dropzone-icon']} />
           <div>
             <button type="button" className={styles['file-selector']} onClick={open}>

@@ -97,7 +97,7 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
       </Td>
       <Td>
         <Checkbox
-          className="checkbox"
+          className={styles['check-box']}
           name="launchedOrganically"
           {...register('launchedOrganically')}
         />

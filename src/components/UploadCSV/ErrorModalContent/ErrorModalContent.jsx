@@ -22,7 +22,7 @@ const ErrorModalContent = ({
   return (
     <div className={styles['error-modal-content']}>
       <WarningIcon alt="Icon" boxSize="70px" color="red" marginBottom="20px" />
-      <Text className="error-modal-text">Oops!</Text>
+      <Text className={styles['error-modal-text']}>Oops!</Text>
       <p className={styles['error-modal-text']}>There was an error with the uploaded file:</p>
       <p className={styles['error-modal-file-name']}>{CSVFileName}</p>
       <div className={styles['error-modal-errors']}>
