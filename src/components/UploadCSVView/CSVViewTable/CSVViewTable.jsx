@@ -1,8 +1,9 @@
 /* eslint-disable prefer-object-spread */
+/* eslint-disable no-unused-vars */
 import React, { useState, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Button, Stack } from '@chakra-ui/react';
+import { Button, Stack, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../EditableRow/EditableRow';
@@ -87,17 +88,17 @@ const CSVViewTable = ({ rows }) => {
   return (
     <form onSubmit={addToMap} className={styles['csv-table-form']}>
       <div className={`${styles['csv-table-container']} ${styles['scrollable-div']}`}>
-        <table className={styles['csv-table']}>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Box Number</th>
-              <th>Zip Code</th>
-              <th>Launched Organically</th>
-              <th>&nbsp;</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table className={styles['csv-table']}>
+          <Thead>
+            <Tr>
+              <Th>Date</Th>
+              <Th>Box Number</Th>
+              <Th>Zip Code</Th>
+              <Th>Launched Organically</Th>
+              <Th>&nbsp;</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
             {formDatas.map(data => {
               return (
                 <Fragment key={data.id}>
@@ -112,8 +113,8 @@ const CSVViewTable = ({ rows }) => {
                 </Fragment>
               );
             })}
-          </tbody>
-        </table>
+          </Tbody>
+        </Table>
       </div>
       <Stack direction="row" justify="right" marginTop="25px">
         <Button isLoading={isLoading} type="submit" colorScheme="teal">

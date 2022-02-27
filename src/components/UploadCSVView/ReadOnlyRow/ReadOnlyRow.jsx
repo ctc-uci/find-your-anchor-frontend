@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useDisclosure } from '@chakra-ui/react';
+import { Td, Tr, useDisclosure } from '@chakra-ui/react';
 import './ReadOnlyRow.css';
 import { CheckIcon, CloseIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import DeleteBoxModal from '../DeleteBoxModal/DeleteBoxModal';
@@ -13,18 +13,18 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow }) => {
   };
 
   return (
-    <tr key={data.id}>
-      <td>{data.date}</td>
-      <td>{data.boxNumber}</td>
-      <td>{data.zipCode}</td>
-      <td>
+    <Tr key={data.id}>
+      <Td>{data.date}</Td>
+      <Td>{data.boxNumber}</Td>
+      <Td>{data.zipCode}</Td>
+      <Td>
         {data.launchedOrganically ? (
           <CheckIcon alt="Green Check Icon" className="green-check-icon" />
         ) : (
           <CloseIcon alt="Red Cross Icon" className="red-cross-icon" />
         )}
-      </td>
-      <td>
+      </Td>
+      <Td>
         <DeleteBoxModal isOpen={isOpen} onClose={onClose} onDelete={onDelete} />
         <button type="button" onClick={onOpen}>
           <DeleteIcon alt="Edit Icon" className="delete-icon" />
@@ -32,8 +32,8 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow }) => {
         <button type="button" onClick={e => editRow(e, data)}>
           <EditIcon alt="Edit Icon" className="edit-icon" />
         </button>
-      </td>
-    </tr>
+      </Td>
+    </Tr>
   );
 };
 

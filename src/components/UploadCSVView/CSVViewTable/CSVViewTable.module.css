@@ -17,12 +17,11 @@
 .csv-table-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
   height: 80vh;
 }
 
 .csv-table {
-  border-collapse: separate;
+  border-collapse: separate !important;
   width: 100%;
   border-spacing: 0px 20px;
 }
@@ -56,7 +55,11 @@
 
 .csv-table th {
   background-color: none;
-  font-weight: 500;
+  font-weight: 600;
+  border-bottom: none;
+  text-transform: none;
+  font-size: 1rem;
+  letter-spacing: 0;
 }
 
 .csv-table th:first-child {

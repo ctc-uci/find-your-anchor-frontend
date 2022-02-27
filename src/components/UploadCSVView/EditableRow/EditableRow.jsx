@@ -7,6 +7,8 @@ import {
   Checkbox,
   FormControl,
   FormErrorMessage,
+  Tr,
+  Td,
 } from '@chakra-ui/react';
 import { WarningIcon, CheckIcon } from '@chakra-ui/icons';
 import './EditableRow.css';
@@ -38,8 +40,8 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
   };
 
   return (
-    <tr className="edit-row" key={editFormData.id}>
-      <td>
+    <Tr className="edit-row" key={editFormData.id}>
+      <Td>
         <FormControl isInvalid={errors?.date}>
           <Controller
             control={control}
@@ -60,8 +62,8 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
           />
           <FormErrorMessage marginTop="0px">{errors.date?.message}</FormErrorMessage>
         </FormControl>
-      </td>
-      <td>
+      </Td>
+      <Td>
         <FormControl isInvalid={errors?.boxNumber}>
           <InputGroup>
             <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
@@ -74,8 +76,8 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
           </InputGroup>
           <FormErrorMessage marginTop="0px">{errors.boxNumber?.message}</FormErrorMessage>
         </FormControl>
-      </td>
-      <td>
+      </Td>
+      <Td>
         <FormControl isInvalid={errors?.zipCode}>
           <InputGroup>
             <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
@@ -88,20 +90,20 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
           </InputGroup>
           <FormErrorMessage marginTop="0px">{errors.zipCode?.message}</FormErrorMessage>
         </FormControl>
-      </td>
-      <td>
+      </Td>
+      <Td>
         <Checkbox
           className="checkbox"
           name="launchedOrganically"
           {...register('launchedOrganically')}
         />
-      </td>
-      <td>
+      </Td>
+      <Td>
         <button type="button" onClick={handleSubmit(onSave)}>
           <CheckIcon alt="Check Icon" className="check-icon" />
         </button>
-      </td>
-    </tr>
+      </Td>
+    </Tr>
   );
 };
 
