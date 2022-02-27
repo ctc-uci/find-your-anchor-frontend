@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
-import UploadCSVTemp from './pages/UploadCSVTemp/UploadCSVTemp';
 import UploadCSVView from './pages/UploadCSVView/UploadCSVView';
 import ExportCSV from './pages/ExportCSV/ExportCSV';
 
@@ -20,7 +19,6 @@ ReactDOM.render(
         <Route path="/login" element={<App />} />
         <Route path="/dropoff-form" element={<App />} />
         <Route path="/pickup-form" element={<App />} />
-        <Route path="/upload-csv" element={<UploadCSVTemp />} />
         <Route path="/upload-csv-view" element={<UploadCSVView />} />
         <Route path="/export-csv" element={<ExportCSV />} />
         <Route path="/add-box-form" element={<AddBoxFormPage />} />
