@@ -78,6 +78,7 @@ const BoxApproval = () => {
       date={boxData.date}
       status={boxData.status}
       approved={boxData.approved}
+      rejectionReason={boxData.rejection_reason}
       pickup={boxData.pickup}
       fetchBoxes={fetchBoxes}
     />
