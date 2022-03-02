@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { FYABackend } from '../../common/utils';
 
 import UploadModalContent from './UploadModalContent/UploadModalContent';
-import SuccessModal from './SuccessModalContent/SuccessModalContent';
+import SuccessModalContent from './SuccessModalContent/SuccessModalContent';
 import ErrorModalContent from './ErrorModalContent/ErrorModalContent';
 import CommonModal from '../../common/CommonModal/CommonModal';
 
@@ -106,7 +106,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
           }
           if (uploadErrors.length === 0) {
             return (
-              <SuccessModal
+              <SuccessModalContent
                 CSVFileName={CSVFilename}
                 setIsUploadingNewFile={setIsUploadingNewFile}
                 onEditViewFile={onEditViewFile}

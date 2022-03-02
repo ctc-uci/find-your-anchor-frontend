@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { CloseIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
-import styles from './DropZone.module.css';
+import styles from './CSVDropZone.module.css';
 import DropZoneIcon from '../../../assets/upload.png';
 
-function DropZone({ setFile }) {
+function CSVDropZone({ setFile }) {
   const { getRootProps, getInputProps, acceptedFiles, open } = useDropzone({
     noClick: true,
     noKeyboard: true,
@@ -68,8 +68,8 @@ function DropZone({ setFile }) {
   );
 }
 
-DropZone.propTypes = {
+CSVDropZone.propTypes = {
   setFile: PropTypes.func.isRequired,
 };
 
-export default DropZone;
+export default CSVDropZone;
