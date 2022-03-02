@@ -24,9 +24,11 @@ const UserLinks = () => (
 const NavBar = ({ isAdmin }) => {
   return (
     <div className={styles['nav-bar']}>
-      <div className={styles['fya-logo']}>
-        <img src={FYALogo} alt="Find Your Anchor Logo" />
-      </div>
+      <Link to="/">
+        <div className={styles['fya-logo']}>
+          <img src={FYALogo} alt="Find Your Anchor Logo" />
+        </div>
+      </Link>
       <div className={styles['navbar-buttons-and-account']}>
         <div className={styles['navbar-buttons']}>{isAdmin ? <AdminLinks /> : <UserLinks />}</div>
         <Link to="/profile">
