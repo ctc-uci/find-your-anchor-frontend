@@ -1,5 +1,5 @@
 /* eslint-disable prefer-object-spread */
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button, Stack, Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
@@ -11,6 +11,7 @@ import BoxSchema from '../../UploadCSV/UploadCSVUtils';
 
 const CSVViewTable = ({ rows }) => {
   const navigate = useNavigate();
+  const [csvErrors, setCsvErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [formDatas, setFormData] = useState(rows);
   const [editId, setEditId] = useState(null);
@@ -48,13 +49,11 @@ const CSVViewTable = ({ rows }) => {
     newFormData[index] = editedRow; // update the array at index
     setFormData(newFormData);
     setEditId(null);
+    setCsvErrors(csvErrors.filter(error => error !== editId)); // delete edited row from csvErrors array
   };
 
   const handleDeleteRow = rowId => {
-    const newFormData = [...formDatas];
-    const index = formDatas.findIndex(data => data.id === rowId);
-    newFormData.splice(index, 1);
-    setFormData(newFormData);
+    setFormData(formDatas.filter(data => data.id !== rowId));
   };
 
   const checkErrors = async CSVRows => {
@@ -70,10 +69,19 @@ const CSVViewTable = ({ rows }) => {
     );
   };
 
+  const addErrors = errors => {
+    errors.forEach(error => {
+      if (error !== 'success') {
+        setCsvErrors(prevState => [...prevState, error.id]);
+      }
+    });
+  };
+
   const addToMap = async e => {
     e.preventDefault();
     setIsLoading(true);
     const errors = await checkErrors(formDatas);
+    addErrors(errors);
     const nextError = errors.find(error => error !== 'success');
     setIsLoading(false);
     if (nextError) {
@@ -83,6 +91,12 @@ const CSVViewTable = ({ rows }) => {
       navigate('/');
     }
   };
+
+  // check if any rows have an error when page first loads
+  useEffect(async () => {
+    const errors = await checkErrors(formDatas);
+    addErrors(errors);
+  }, []);
 
   return (
     <form onSubmit={addToMap} className={styles['csv-table-form']}>
@@ -105,9 +119,15 @@ const CSVViewTable = ({ rows }) => {
                     <EditableRow
                       editFormData={editFormData}
                       handleEditFormSubmit={handleEditFormSubmit}
+                      isError={csvErrors.includes(data.id)}
                     />
                   ) : (
-                    <ReadOnlyRow data={data} editRow={editRow} handleDeleteRow={handleDeleteRow} />
+                    <ReadOnlyRow
+                      data={data}
+                      editRow={editRow}
+                      handleDeleteRow={handleDeleteRow}
+                      isError={csvErrors.includes(data.id)}
+                    />
                   )}
                 </Fragment>
               );

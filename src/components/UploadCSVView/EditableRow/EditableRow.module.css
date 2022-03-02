@@ -34,3 +34,16 @@
 .date-picker-error {
   border: 2.2px solid #ea6565;
 }
+
+.csv-error td {
+  border-top: 1px solid red;
+  border-bottom: 1px solid red;
+}
+
+.csv-error td:last-child {
+  border-right: 1px solid red;
+}
+
+.csv-error td:first-child {
+  border-left: 1px solid red;
+}

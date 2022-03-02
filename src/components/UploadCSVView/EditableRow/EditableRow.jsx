@@ -18,7 +18,7 @@ import BoxSchema from '../../UploadCSV/UploadCSVUtils';
 import styles from './EditableRow.module.css';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
+const EditableRow = ({ editFormData, handleEditFormSubmit, isError }) => {
   const {
     register,
     control,
@@ -40,7 +40,10 @@ const EditableRow = ({ editFormData, handleEditFormSubmit }) => {
   };
 
   return (
-    <Tr className={styles['edit-row']} key={editFormData.id}>
+    <Tr
+      className={isError ? `${styles['edit-row']} ${styles['csv-error']}` : styles['edit-row']}
+      key={editFormData.id}
+    >
       <Td>
         <FormControl isInvalid={errors?.date}>
           <Controller
@@ -120,6 +123,7 @@ EditableRow.propTypes = {
     launchedOrganically: PropTypes.bool,
   }).isRequired,
   handleEditFormSubmit: PropTypes.func.isRequired,
+  isError: PropTypes.bool.isRequired,
 };
 
 export default EditableRow;

@@ -5,7 +5,7 @@ import { CheckIcon, CloseIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import DeleteBoxModal from '../DeleteBoxModal/DeleteBoxModal';
 import styles from './ReadOnlyRow.module.css';
 
-const ReadOnlyRow = ({ data, editRow, handleDeleteRow }) => {
+const ReadOnlyRow = ({ data, editRow, handleDeleteRow, isError }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const onDelete = () => {
     handleDeleteRow(data.id);
@@ -13,7 +13,7 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow }) => {
   };
 
   return (
-    <Tr key={data.id}>
+    <Tr key={data.id} id={data.id} className={isError && styles['csv-error']}>
       <Td>{data.date}</Td>
       <Td>{data.boxNumber}</Td>
       <Td>{data.zipCode}</Td>
@@ -47,6 +47,7 @@ ReadOnlyRow.propTypes = {
   }).isRequired,
   editRow: PropTypes.func.isRequired,
   handleDeleteRow: PropTypes.func.isRequired,
+  isError: PropTypes.bool.isRequired,
 };
 
 export default ReadOnlyRow;
