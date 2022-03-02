@@ -1,91 +1,56 @@
-.sub-header {
-  position: relative;
+.profile-page-wrapper {
+  height: 100%;
   display: flex;
-  justify-content: space-between;
-  top: 25px;
-  margin: 0em 2em;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 30em;
+  margin: 0 auto;
 }
 
-.welcome-header {
-  position: relative;
+.top-buttons {
+  width: 100%;
   display: flex;
-  left: -40px;
-  top: -10px;
-  justify-content: center;
+  align-items: flex-start;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  font-family: 'Bebas Neue';
-  font-style: normal;
-  font-weight: normal;
-  font-size: 55px;
-  line-height: 66px;
-  color: #173848;
+  justify-content: center;
+  width: 100%;
+  margin: 2em 0;
+  padding: 2.75em;
+  border: 2px solid #E2E8F0;
+  border-radius: 22px;
 }
 
 .fya-logo-large {
-  position: relative;
   display: flex;
-  top: 22px;
   justify-content: center;
   align-items: center;
+  height: 145px;
+  width: 145px;
+  margin: 1.25em 0;
 }
 
-.profile-name {
-  display: flex;
-  justify-content: center;
-  gap: 5em;
-  margin: 1.75em 0em;
-}
-
-.background-box {
-  width: 1027px;
-  height: 498px;
-  background-color: #eaeaea;
-  border-radius: 12px !important;
-  margin: 3em auto 5em auto;
-  padding: 0em 4em;
-  display: flex;
-  flex-direction: column;
-}
-
-.first-name-container {
+.form-input {
+  width: 100%;
+  margin-top: 1.5em;
+  font-size: 18px;
   font-weight: bold;
-  font-size: 27px;
 }
 
-.name-input-container {
+.editable-input {
   gap: 0.65em;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
 }
 
-.last-name-container {
-  font-weight: bold;
-  font-size: 27px;
-}
-
-.email-container {
+.bottom-buttons {
+  width: 100%;
   display: flex;
-  font-weight: bold;
-  font-size: 27px;
-  flex-direction: column;
-  margin: 1.75em 0em;
-  gap: 0em;
-}
-
-.email-input-container {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.pen-image {
-  left: 16px;
-}
-
-.delete-account-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: left;
-  margin-top: 2em;
+  justify-content: flex-end;
+  gap: 2em;
 }
