@@ -6,8 +6,6 @@ import App from './App';
 import Layout from './components/Layout/Layout';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import ExportCSV from './pages/ExportCSV/ExportCSV';
-
-import Map from './components/Map/Map';
 import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
 
 ReactDOM.render(
@@ -15,8 +13,8 @@ ReactDOM.render(
     <Router>
       <Routes>
         <Route path="/login" element={<App />} />
+        <Route path="/" element={<App />} />
         <Route element={<Layout />}>
-          <Route exact path="/" element={<Map />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/dropoff-form" element={<App />} />
           <Route path="/pickup-form" element={<App />} />
