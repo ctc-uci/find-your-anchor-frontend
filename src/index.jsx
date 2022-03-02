@@ -13,6 +13,9 @@ import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
 import Login from './components/Login/Login';
 import Logout from './components/Login/Logout';
 import Register from './components/Register/Register';
+import ForgotPassword from './components/ForgotPassword/ForgotPassword';
+import AuthEmail from './components/AuthEmail/AuthEmail';
+import AdminInvite from './components/AuthEmail/AdminInvite';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -29,9 +32,14 @@ ReactDOM.render(
             element={<ProtectedRoute path="/logout" Component={Logout} redirectPath="/" />}
           />
           <Route path="/register" element={<Register />} />
-          <Route path="/forgotPassword" element={<App />} />
-          <Route path="/emailAction" element={<App />} />
-          <Route path="/adminInvite" element={<App />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/auth-email" element={<AuthEmail redirectPath="/" />} />
+          <Route
+            path="/admin-invite"
+            element={
+              <ProtectedRoute path="/admin-invite" Component={AdminInvite} redirectPath="/" />
+            }
+          />
 
           <Route path="/dropoff-form" element={<App />} />
           <Route path="/pickup-form" element={<App />} />

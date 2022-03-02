@@ -126,7 +126,7 @@ const createUserInDB = async (
  * @param {Cookies} cookies The user's cookies to populate
  * @returns A boolean indicating whether or not the user is new
  */
-const signInWithGoogle = async (newUserRedirectPath, defaultRedirectPath, navigate, cookies) => {
+const signInWithGoogle = async (defaultRedirectPath, navigate, cookies) => {
   const provider = new GoogleAuthProvider();
   const userCredential = await signInWithPopup(auth, provider);
   const user = getAdditionalUserInfo(userCredential);
@@ -139,10 +139,8 @@ const signInWithGoogle = async (newUserRedirectPath, defaultRedirectPath, naviga
       userCredential.user.uid,
       true,
     );
-    navigate(newUserRedirectPath);
-  } else {
-    navigate(defaultRedirectPath);
   }
+  navigate(defaultRedirectPath);
 };
 
 /**
@@ -182,7 +180,7 @@ const createUserInFirebase = async (email, password) => {
  * @returns A UserCredential object from firebase
  */
 const createUser = async (firstName, lastName, email, password) => {
-  const user = await createUserInFirebase(firstName, lastName, email, password);
+  const user = await createUserInFirebase(email, password);
   await createUserInDB(firstName, lastName, email, user.uid, false, password);
   sendEmailVerification(user);
 };

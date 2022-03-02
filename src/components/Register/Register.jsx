@@ -34,7 +34,7 @@ const Register = ({ cookies }) => {
   const handleGoogleSignIn = async e => {
     try {
       e.preventDefault();
-      await signInWithGoogle('/new-user', '/logout', navigate, cookies);
+      await signInWithGoogle('/logout', navigate, cookies);
     } catch (err) {
       setErrorMessage(err.message);
     }
