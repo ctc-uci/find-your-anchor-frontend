@@ -14,7 +14,7 @@ ReactDOM.render(
       <Routes>
         <Route path="/login" element={<App />} />
         <Route path="/" element={<App />} />
-        <Route element={<Layout />}>
+        <Route element={<Layout isAdmin />}>
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/dropoff-form" element={<App />} />
           <Route path="/pickup-form" element={<App />} />
