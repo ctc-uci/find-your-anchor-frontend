@@ -17,7 +17,7 @@ import styles from './SendLinkModal.module.css';
 const ModalOne = ({ count, setCount }) => {
   return (
     <div className={styles['modal-content']}>
-      <Text fontSize="2xl" fontWeight="bold" textAlign="center">
+      <Text fontSize="2xl" fontWeight="bold" textAlign="left">
         Send registration link via email:
       </Text>
       <Textarea placeholder="ex: jdoeFYA@gmail.com" />
