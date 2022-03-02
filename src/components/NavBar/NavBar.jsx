@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import styles from './NavBar.module.css';
 import FYALogo from '../../assets/fya-logo.png';
-import PlaceHolderPFP from '../../assets/placeholder_pfp.jpg';
+import PlaceHolderPFP from '../../assets/placeholder_pfp.svg';
 
 const AdminLinks = () => (
   <>
