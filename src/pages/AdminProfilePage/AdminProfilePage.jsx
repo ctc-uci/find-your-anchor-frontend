@@ -1,11 +1,11 @@
 import React from 'react';
-import { ChakraProvider, Button, useDisclosure, Input, Image } from '@chakra-ui/react';
+import { ChakraProvider, Button, useDisclosure, Input } from '@chakra-ui/react';
 
+import { RiPencilFill } from 'react-icons/ri';
 import styles from './AdminProfilePage.module.css';
 import DeleteAccountModal from '../../components/AdminProfilePage/DeleteAccountModal/DeleteAccountModal';
 import SendLinkModal from '../../components/AdminProfilePage/SendLinkModal/SendLinkModal';
 import FYALogoLarge from '../../assets/fya-logo-large.svg';
-import PenImage from '../../assets/Vector.png';
 
 // TODO:
 // - Remove ChakraProvider once provider is moved to index.js
@@ -72,12 +72,7 @@ const AdminProfilePage = () => {
                 width="auto"
                 top="5px"
               />
-              <Image
-                boxSize="27.75"
-                className={styles['pen-image']}
-                src={PenImage}
-                alt="text input"
-              />
+              <RiPencilFill color="#8E8E8E" />
             </div>
           </div>
 
@@ -92,12 +87,7 @@ const AdminProfilePage = () => {
                 width="auto"
                 top="5px"
               />
-              <Image
-                boxSize="27.75"
-                className={styles['pen-image']}
-                src={PenImage}
-                alt="text input"
-              />
+              <RiPencilFill color="#8E8E8E" />
             </div>
           </div>
         </div>
