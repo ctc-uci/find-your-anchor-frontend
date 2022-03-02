@@ -2,15 +2,12 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ChakraProvider, Button, useDisclosure, Input, Text } from '@chakra-ui/react';
 
-import { RiPencilFill } from 'react-icons/ri';
+import { RiPencilFill, RiCheckFill } from 'react-icons/ri';
 import { DiReact } from 'react-icons/di';
 import styles from './AdminProfilePage.module.css';
 import DeleteAccountModal from '../../components/AdminProfilePage/DeleteAccountModal/DeleteAccountModal';
 import SendLinkModal from '../../components/AdminProfilePage/SendLinkModal/SendLinkModal';
 import FYALogoLarge from '../../assets/fya-logo-large.svg';
-
-// TODO:
-// - Remove ChakraProvider once provider is moved to index.js
 
 const TextInput = ({ inputLabel, placeHolder, editable, editState, makeEditable }) => (
   <div className={styles['form-input']}>
@@ -18,7 +15,11 @@ const TextInput = ({ inputLabel, placeHolder, editable, editState, makeEditable 
     <div className={styles['editable-input']}>
       <Input top="5px" size="lg" width="100%" placeholder={placeHolder} isDisabled={!editState} />
       <button type="button" style={editable ? {} : { visibility: 'hidden' }} onClick={makeEditable}>
-        <RiPencilFill color="#8E8E8E" size={35} />
+        {editState ? (
+          <RiCheckFill color="#8E8E8E" size={35} />
+        ) : (
+          <RiPencilFill color="#8E8E8E" size={35} />
+        )}
       </button>
     </div>
   </div>
