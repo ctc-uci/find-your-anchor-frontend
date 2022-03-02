@@ -51,7 +51,7 @@ const PickupBox = ({
   return (
     <ChakraProvider>
       <div
-        className={`box
+        className={`${styles.box}
         ${status === 'evaluated' && approved === true ? styles['box-approved'] : ''}
         ${status === 'evaluated' && approved === false ? styles['box-rejected'] : ''}`}
       >
@@ -59,7 +59,7 @@ const PickupBox = ({
           <AccordionItem>
             {/* Pickup box ID and date */}
             <h3>
-              <AccordionButton>
+              <AccordionButton className={styles['accordion-button']}>
                 <img src={PickupBoxIcon} alt="" />
                 <div className={styles['title-div']}>
                   <p className={styles.title}>

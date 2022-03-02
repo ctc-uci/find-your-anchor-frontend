@@ -11,6 +11,11 @@
   width: 100%;
   height: 40%;
   outline-width: thin;
+  opacity: 0.4;
+}
+
+.accordian-button {
+  box-shadow: none !important;
 }
 
 .image-vector {

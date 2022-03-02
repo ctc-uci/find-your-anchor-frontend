@@ -16,14 +16,10 @@
 }
 
 .legend {
-  /* position: absolute; */
-  /* bottom: 0; */
   width :100%;
   margin: 2%;
   margin-bottom: 10%;
   height: 20vh;
-  /* margin-bottom: 50%; */
-  /* height: 10vh; */
 }
 
 .request-changes-row {
@@ -58,7 +54,6 @@
 
 .request-changes-text {
   text-align: left;
-
 }
 
 .relocate-box-text {

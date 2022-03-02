@@ -12,7 +12,7 @@ import {
   AlertDialogCloseButton,
   Textarea,
 } from '@chakra-ui/react';
-import './RequestChangesPopup.css';
+import styles from './RequestChangesPopup.module.css';
 import { FYABackend } from '../../../common/utils';
 
 const RequestChangesPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes }) => {
@@ -32,7 +32,7 @@ const RequestChangesPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes }) => {
 
   return (
     <ChakraProvider>
-      <div className="requestChangesPopup">
+      <div className={styles['request-changes-popup']}>
         <AlertDialog
           isOpen={isOpen}
           leastDestructiveRef={cancelRef}
@@ -50,7 +50,7 @@ const RequestChangesPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes }) => {
                 <Textarea
                   value={changesRequested}
                   onChange={e => setChangesRequested(e.target.value)}
-                  className="textArea"
+                  className={styles['text-area']}
                 />
               </AlertDialogBody>
 

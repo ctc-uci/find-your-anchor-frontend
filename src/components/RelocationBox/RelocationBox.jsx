@@ -129,7 +129,7 @@ const RelocationBox = ({
         <Accordion allowToggle>
           <AccordionItem>
             <h3>
-              <AccordionButton className={styles['accordian-button']}>
+              <AccordionButton className={styles['accordion-button']}>
                 {/* Relocation box icon */}
                 <div className={styles['picture-div']}>
                   <img src={RelocateBoxIcon} alt=" " />

@@ -13,7 +13,7 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { FYABackend } from '../../../common/utils';
-import './RejectBoxPopup.css';
+import styles from './RejectBoxPopup.module.css';
 
 const RejectBoxPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes, pickup }) => {
   const cancelRef = React.useRef();
@@ -36,7 +36,7 @@ const RejectBoxPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes, pickup }) => {
 
   return (
     <ChakraProvider>
-      <div className="rejectBoxPopup">
+      <div className={styles['reject-box-popup']}>
         <AlertDialog
           isOpen={isOpen}
           leastDestructiveRef={cancelRef}
@@ -51,7 +51,7 @@ const RejectBoxPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes, pickup }) => {
               <AlertDialogBody>
                 Let the messenger know your reason for rejection
                 <Textarea
-                  className="textArea"
+                  className={styles['text-area']}
                   value={rejectionReason}
                   onChange={e => setRejectionReason(e.target.value)}
                 />
