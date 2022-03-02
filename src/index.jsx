@@ -8,6 +8,7 @@ import ExportCSV from './pages/ExportCSV/ExportCSV';
 
 import Map from './components/Map/Map';
 import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
+import EmailForm from './components/Email/EmailForm';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,6 +21,7 @@ ReactDOM.render(
         <Route path="/pickup-form" element={<App />} />
         <Route path="/export-csv" element={<ExportCSV />} />
         <Route path="/add-box-form" element={<AddBoxFormPage />} />
+        <Route path="/email-form" element={<EmailForm />} />
       </Routes>
     </Router>
   </React.StrictMode>,
