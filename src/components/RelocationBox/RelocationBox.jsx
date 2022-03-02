@@ -13,19 +13,15 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 
+import { BsFillArrowRightCircleFill, BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
+
 import PropTypes from 'prop-types';
-import ApproveBoxIcon from '../BoxIcons/ApproveBoxIcon.svg';
-import RejectBoxIcon from '../BoxIcons/RejectBoxIcon.svg';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
-import RequestChangesIcon from '../BoxIcons/RequestChangesIcon.svg';
 import SaveChangesIcon from '../BoxIcons/SaveChangesIcon.svg';
 import { FYABackend } from '../../common/utils';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
-import MessageApprovedIcon from '../BoxIcons/MessageApprovedIcon.svg';
-import MessageRejectedIcon from '../BoxIcons/MessageRejectedIcon.svg';
 import ImageVector from '../BoxIcons/ImageVector.svg';
-
 import styles from './RelocationBox.module.css';
 
 const RelocationBox = ({
@@ -158,7 +154,7 @@ const RelocationBox = ({
                 )}
                 {/* Box Name */}
                 <FormControl>
-                  <FormLabel htmlFor="name" marginTop="5%">
+                  <FormLabel htmlFor="name" className={styles['form-label']}>
                     Name
                   </FormLabel>
                   <Input
@@ -169,7 +165,7 @@ const RelocationBox = ({
                     onChange={e => setBoxHolderNameState(e.target.value)}
                   />
                   {/* Box Email */}
-                  <FormLabel htmlFor="email" marginTop="5%">
+                  <FormLabel htmlFor="email" className={styles['form-label']}>
                     Email
                   </FormLabel>
                   <Input
@@ -180,17 +176,17 @@ const RelocationBox = ({
                     onChange={e => setBoxHolderEmailState(e.target.value)}
                   />
                   {/* Box Zip Code */}
-                  <FormLabel htmlFor="zipCode" marginTop="5%">
+                  <FormLabel htmlFor="zipCode" className={styles['form-label']}>
                     Zip Code
                   </FormLabel>
                   <Input
                     isReadOnly={status !== 'pending changes'}
                     id="zipCode"
-                    type="number"
+                    type="text"
                     value={zipCodeState}
                     onChange={e => setZipCodeState(e.target.value)}
                   />
-                  <FormLabel htmlFor="generalLocation" marginTop="5%">
+                  <FormLabel htmlFor="generalLocation" className={styles['form-label']}>
                     General Location
                   </FormLabel>
                   <Input
@@ -201,7 +197,7 @@ const RelocationBox = ({
                     onChange={e => setGeneralLocationState(e.target.value)}
                   />
                   {/* Box's Launched Organically field */}
-                  <FormLabel htmlFor="launchedOrganically" marginTop="5%">
+                  <FormLabel htmlFor="launchedOrganically" className={styles['form-label']}>
                     Drop Off Method
                   </FormLabel>
                   <Select
@@ -215,7 +211,7 @@ const RelocationBox = ({
                   {/* Box's message (only show if the box isn't evaluated or message isn't rejected) */}
                   {!(status === 'evaluated' && messageStatus === 'rejected') && (
                     <>
-                      <FormLabel htmlFor="Message" marginTop="5%">
+                      <FormLabel htmlFor="Message" className={styles['form-label']}>
                         Message
                       </FormLabel>
                       <Textarea
@@ -236,9 +232,9 @@ const RelocationBox = ({
                       <div className={styles['message-functionality']}>
                         {messageStatus === 'approved' && (
                           <>
-                            {/* <button type="button" className={styles['approval-button']}> */}
-                            <img src={MessageApprovedIcon} alt="" />
-                            {/* </button> */}
+                            <button type="button" className={styles['approval-button']}>
+                              <BsFillCheckCircleFill color="green" />
+                            </button>
                             <p className={styles['approval-message']}>Message Approved</p>
                           </>
                         )}
@@ -246,7 +242,7 @@ const RelocationBox = ({
                         {messageStatus === 'rejected' && (
                           <>
                             <button type="button" className={styles['rejection-button']}>
-                              <img src={MessageRejectedIcon} alt="" />
+                              <BsXCircleFill color="red" />
                             </button>
                             <p className={styles['rejection-message']}>Message Denied</p>
                           </>
@@ -265,7 +261,7 @@ const RelocationBox = ({
                           await fetchBoxes(status, false);
                         }}
                       >
-                        <img src={MessageApprovedIcon} alt="" />
+                        <BsFillCheckCircleFill color="green" />
                       </button>
                       {/* Reject message button */}
                       <button
@@ -280,14 +276,14 @@ const RelocationBox = ({
                           await fetchBoxes(status, false);
                         }}
                       >
-                        <img src={MessageRejectedIcon} alt="" />
+                        <BsXCircleFill color="red" />
                       </button>
                     </div>
                   )}
                   {/* Changes requested text area (only show if box is under pending changes) */}
                   {status === 'pending changes' && (
                     <div>
-                      <FormLabel htmlFor="changesRequested" marginTop="5%">
+                      <FormLabel htmlFor="changesRequested" className={styles['form-label']}>
                         Changes Requested
                       </FormLabel>
                       <Textarea isReadOnly value={changesRequested} resize="vertical" />
@@ -296,7 +292,7 @@ const RelocationBox = ({
                   {/* Rejection reason text area (only show if box has been evaluated and bxo was rejected) */}
                   {status === 'evaluated' && !approved && (
                     <>
-                      <FormLabel htmlFor="rejectionReason" marginTop="5%">
+                      <FormLabel htmlFor="rejectionReason" className={styles['form-label']}>
                         Rejection Reason
                       </FormLabel>
                       <Textarea isReadOnly value={rejectionReason} resize="vertical" />
@@ -314,7 +310,7 @@ const RelocationBox = ({
                           setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen);
                         }}
                       >
-                        <img src={RejectBoxIcon} alt="" />
+                        <BsXCircleFill color="red" size="30px" />
                       </button>
                     </div>
                     {/* Pending changes (if the box is under review) or Save (if the box is under pending changes) button */}
@@ -329,10 +325,11 @@ const RelocationBox = ({
                           }
                         }}
                       >
-                        <img
-                          src={status === 'under review' ? RequestChangesIcon : SaveChangesIcon}
-                          alt=""
-                        />
+                        {status === 'under review' ? (
+                          <BsFillArrowRightCircleFill color="yellow" size="30px" />
+                        ) : (
+                          <img src={SaveChangesIcon} alt="save" />
+                        )}
                       </button>
                     </div>
                     {/* Accept box button */}
@@ -343,25 +340,25 @@ const RelocationBox = ({
                           await approveRelocationBoxFromUR(boxID);
                         }}
                       >
-                        <img src={ApproveBoxIcon} alt="" />
+                        <BsFillCheckCircleFill color="green" size="30px" />
                       </button>
                     </div>
-                    <RequestChangesPopup
-                      isOpen={requestChangesPopupIsOpen}
-                      setIsOpen={setRequestChangesPopupIsOpen}
-                      boxID={boxID}
-                      pickup={pickup}
-                      fetchBoxes={fetchBoxes}
-                    />
-                    <RejectBoxPopup
-                      isOpen={rejectBoxPopupIsOpen}
-                      setIsOpen={setRejectBoxPopupIsOpen}
-                      boxID={boxID}
-                      pickup={pickup}
-                      fetchBoxes={fetchBoxes}
-                    />
                   </div>
                 )}
+                <RequestChangesPopup
+                  isOpen={requestChangesPopupIsOpen}
+                  setIsOpen={setRequestChangesPopupIsOpen}
+                  boxID={boxID}
+                  pickup={pickup}
+                  fetchBoxes={fetchBoxes}
+                />
+                <RejectBoxPopup
+                  isOpen={rejectBoxPopupIsOpen}
+                  setIsOpen={setRejectBoxPopupIsOpen}
+                  boxID={boxID}
+                  pickup={pickup}
+                  fetchBoxes={fetchBoxes}
+                />
               </div>
             </AccordionPanel>
           </AccordionItem>

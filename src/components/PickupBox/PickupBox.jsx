@@ -12,11 +12,10 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 
+import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
 import PropTypes from 'prop-types';
 import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
-import ApproveBoxIcon from '../BoxIcons/ApproveBoxIcon.svg';
-import RejectBoxIcon from '../BoxIcons/RejectBoxIcon.svg';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 import ImageVector from '../BoxIcons/ImageVector.svg';
 import { FYABackend } from '../../common/utils';
@@ -40,8 +39,8 @@ const PickupBox = ({
 
   // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
   // This method is called when the approve box icon is clicked
-  const approvePickupBoxFromUR = async id => {
-    FYABackend.put('/boxHistory/update', {
+  const approvePickupBoxFromUnderReview = async id => {
+    FYABackend.put('/boxHistory/approveBox', {
       boxID: id,
     }).then(async () => {
       await fetchBoxes('under review', true);
@@ -85,24 +84,24 @@ const PickupBox = ({
                 )}
                 <FormControl>
                   {/* Box name */}
-                  <FormLabel htmlFor="name" marginTop="5%">
+                  <FormLabel htmlFor="name" className={styles['form-label']}>
                     Name
                   </FormLabel>
-                  <Input isReadOnly id="name" type="name" placeholder={boxHolderName} />
+                  <Input isReadOnly id="name" type="name" value={boxHolderName} />
                   {/* Box email */}
-                  <FormLabel isReadOnly htmlFor="email" marginTop="5%">
+                  <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
                     Email
                   </FormLabel>
-                  <Input isReadOnly id="email" type="email" placeholder={boxHolderEmail} />
+                  <Input isReadOnly id="email" type="email" value={boxHolderEmail} />
                   {/* Box zip code */}
-                  <FormLabel htmlFor="zipCode" marginTop="5%">
+                  <FormLabel htmlFor="zipCode" className={styles['form-label']}>
                     Zip Code
                   </FormLabel>
-                  <Input isReadOnly id="zipCode" type="zipCode" placeholder={zipCode} />
+                  <Input isReadOnly id="zipCode" type="zipCode" value={zipCode} />
                   {/* Rejection reason text area (only show if box has been evaluated and bxo was rejected) */}
                   {status === 'evaluated' && !approved && (
                     <>
-                      <FormLabel htmlFor="rejectionReason" marginTop="5%">
+                      <FormLabel htmlFor="rejectionReason" className={styles['form-label']}>
                         Rejection Reason
                       </FormLabel>
                       <Textarea isReadOnly value={rejectionReason} resize="vertical" />
@@ -120,7 +119,7 @@ const PickupBox = ({
                           setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen);
                         }}
                       >
-                        <img src={RejectBoxIcon} alt="" />
+                        <BsXCircleFill color="red" size="30px" />
                       </button>
                     </div>
                     {/* Approve box button */}
@@ -128,10 +127,10 @@ const PickupBox = ({
                       <button
                         type="button"
                         onClick={() => {
-                          approvePickupBoxFromUR(boxID);
+                          approvePickupBoxFromUnderReview(boxID);
                         }}
                       >
-                        <img src={ApproveBoxIcon} alt="" />
+                        <BsFillCheckCircleFill color="green" size="30px" />
                       </button>
                     </div>
                     <RejectBoxPopup

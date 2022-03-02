@@ -70,6 +70,10 @@
   margin: 15px 0px;
 }
 
+.form-label {
+  margin-top: 5%;
+}
+
 .title {
   min-height: 50px;
   float: left;

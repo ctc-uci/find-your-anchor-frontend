@@ -5,77 +5,83 @@
     background-color: white;
   }
 
-  .picture-div {
-    height: 100%;
-  }
+.picture-div {
+  height: 100%;
+}
 
-  .accordion-button {
-    box-shadow: none !important;
-  }
+.accordion-button {
+  box-shadow: none !important;
+}
 
-  .image-wrapper {
-    width: 100%;
-    height: 100%;
-    margin: auto;
-    border-radius: 10px;
-    border: 1px dashed black;
-    opacity: 0.4;
-  }
+.form-label {
+  margin-top: 5%;
+}
 
-  .image-box {
-    margin: 25% 40% 25% 40%;
-  }
+.image-wrapper {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  border-radius: 10px;
+  border: 1px dashed black;
+  opacity: 0.4;
+}
 
-  .accordion-panel {
-    background-color: white;
-    border-radius: 10px;
-  }
+.image-box {
+  margin: 25% 40% 25% 40%;
+}
 
-  .message-functionality {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  }
-  .message-approved {
-    border-color: green !important;
-  }
+.accordion-panel {
+  /* margin: 0 !important; */
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+}
 
-  .message-rejected {
-    border-color: red !important;
-  }
+.message-functionality {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.message-approved {
+  border-color: green !important;
+}
 
-  .approval-message {
-    color: green;
-    float:left;
-    padding: 1%;
-    width:100%;
-    text-align: left;
-    margin-left: 1%;
-  }
+.message-rejected {
+  border-color: red !important;
+}
 
-  .rejection-message {
-    color: red;
-    float:left;
-    width:100%;
-    padding: 1%;
-    text-align: left;
-    margin-left: 1%;
-  }
+.approval-message {
+  color: green;
+  float:left;
+  padding: 1%;
+  width:100%;
+  text-align: left;
+  margin-left: 1%;
+}
 
-  .approval-button {
-    float:left;
-    margin: 2% 2% 0% 0%;
-  }
+.rejection-message {
+  color: red;
+  float:left;
+  width:100%;
+  padding: 1%;
+  text-align: left;
+  margin-left: 1%;
+}
 
-  .rejection-button {
-    float:left;
-    margin: 2% 2% 0% 0%;
-  }
+.approval-button {
+  float:left;
+  margin: 2% 2% 0% 0%;
+}
 
-  .message-functionality-wrapper {
-    display: flex;
-    width: 100%;
-  }
+.rejection-button {
+  float:left;
+  margin: 2% 2% 0% 0%;
+}
+
+.message-functionality-wrapper {
+  display: flex;
+  width: 100%;
+}
 
 .message-approved {
   float:right;
@@ -143,23 +149,23 @@
 
 .icon-row {
   width: 100%;
+  padding-top: 5%;
   float: bottom;
-  padding: 5%;
 }
 
 .close-icon {
-  width: 33%;
+  width: 33.33%;
   float: left;
 }
 
 .arrow-forward-icon {
 
-  width: 33%;
+  width: 33.33%;
   float: left;
 }
 
 .check-icon {
-  width: 33%;
+  width: 33.33%;
   float: right;
 }
 

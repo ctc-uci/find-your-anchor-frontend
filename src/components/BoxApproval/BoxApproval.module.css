@@ -1,25 +1,25 @@
 .box-approval {
-  /* min-width: 300px; */
   width: 100%;
   padding: 1%;
   height: 95vh;
-  overflow: hidden;
   background-color: #e5e5e5;
   position: relative;
-
 }
 
 .box-list {
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
   height: 75vh;
 }
 
 .legend {
+  background-color: #e5e5e5;
   width :100%;
-  margin: 2%;
-  margin-bottom: 10%;
-  height: 20vh;
+  margin-left: 5%;
+  height: 100px;
+  padding-top: 4%;
+  position: sticky;
+  bottom: 0;
 }
 
 .request-changes-row {
