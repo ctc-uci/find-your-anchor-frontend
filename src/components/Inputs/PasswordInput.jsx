@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   FormControl,
@@ -42,9 +43,9 @@ const PasswordInput = ({ error, register, showForgotPassword, title }) => {
         </div>
         {showForgotPassword && (
           <div className={styles['forgot-password-wrapper']} align="right">
-            <a className={styles['forgot-password']} href="/forgotPassword">
+            <Link className={styles['forgot-password']} to="/forgotPassword">
               Forgot Password?
-            </a>
+            </Link>
           </div>
         )}
       </div>

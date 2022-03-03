@@ -2,7 +2,7 @@ import React from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import LoginForm from '../../components/Login/LoginForm';
 import styles from './LoginPage.module.css';
-import FYALogo from '../../assets/fya-text-logo.png';
+import FYALogo from '../../assets/fya-text-logo.svg';
 
 const LoginPage = () => {
   return (
@@ -13,7 +13,9 @@ const LoginPage = () => {
             <div className={styles['logo-container']}>
               <img src={FYALogo} className={styles.logo} alt="logo" />
             </div>
-            <LoginForm className={styles['login-form-component']} />
+            <div className={styles['login-form-component']}>
+              <LoginForm />
+            </div>
           </div>
         </div>
         <div className={styles.banner} />

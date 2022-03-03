@@ -33,6 +33,7 @@ const RegisterForm = () => {
   });
 
   const onSubmit = data => {
+    // eslint-disable-next-line no-alert
     alert(JSON.stringify(data));
   };
 
@@ -64,11 +65,9 @@ const RegisterForm = () => {
           error={errors?.confirmPassword}
           title="Confirm Password"
         />
-        <div align="right">
-          <Button className={styles['register-button']} type="submit" size="md">
-            Register
-          </Button>
-        </div>
+        <Button className={styles['register-button']} type="submit" size="md">
+          Register
+        </Button>
       </form>
     </div>
   );

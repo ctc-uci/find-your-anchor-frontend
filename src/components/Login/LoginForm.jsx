@@ -26,6 +26,7 @@ const LoginForm = () => {
   });
 
   const onSubmit = data => {
+    // eslint-disable-next-line no-alert
     alert(JSON.stringify(data));
   };
 
@@ -46,11 +47,9 @@ const LoginForm = () => {
           title="Password"
           showForgotPassword
         />
-        <div align="right">
-          <Button className={styles['login-button']} type="submit" size="md">
-            Log In
-          </Button>
-        </div>
+        <Button className={styles['login-button']} type="submit" size="md">
+          Log In
+        </Button>
       </form>
     </div>
   );
