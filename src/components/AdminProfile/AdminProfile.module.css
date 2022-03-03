@@ -20,8 +20,8 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin: 2em 0;
-  padding: 2.75em;
+  margin: 2.5vh 0;
+  padding: 3.5vh 4vw;
   border: 2px solid #E2E8F0;
   border-radius: 22px;
 }
@@ -30,14 +30,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 145px;
-  width: 145px;
+  height: 10vh;
+  width: 16vw;
   margin: 1.25em 0;
 }
 
 .form-input {
   width: 100%;
-  margin-top: 1.5em;
+  margin-top: 2.2vh;
   font-size: 18px;
   font-weight: bold;
 }
