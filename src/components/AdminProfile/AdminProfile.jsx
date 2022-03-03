@@ -58,11 +58,9 @@ const AdminProfile = () => {
           <SendLinkModal isOpen={isOpenLinkModal} onClose={onCloseLinkModal} />
         </div>
         <div className={styles['profile-form']}>
-          <img
-            className={styles['fya-logo-large']}
-            src={FYALogoLarge}
-            alt="Find Your Anchor Logo"
-          />
+          <div className={styles['logo-wrapper']}>
+            <img className={styles['fya-logo']} src={FYALogoLarge} alt="Find Your Anchor Logo" />
+          </div>
           <TextInput
             inputLabel="First Name"
             placeHolder="Jane"

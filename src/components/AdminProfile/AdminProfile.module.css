@@ -20,19 +20,20 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin: 2.5vh 0;
-  padding: 3.5vh 4vw;
+  margin: 2vh 0;
+  padding: 2.75em;
   border: 2px solid #E2E8F0;
   border-radius: 22px;
 }
 
-.fya-logo-large {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 10vh;
-  width: 16vw;
-  margin: 1.25em 0;
+.logo-wrapper {
+  max-width: 140px;
+}
+
+.fya-logo {
+  max-width: 100%;
+  height: auto;
+  width: auto;
 }
 
 .form-input {
