@@ -6,10 +6,15 @@ import DeleteBoxModal from '../DeleteBoxModal/DeleteBoxModal';
 import styles from './ReadOnlyRow.module.css';
 
 const ReadOnlyRow = ({ data, editRow, handleDeleteRow, isError }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenDeleteModal,
+    onOpen: onOpenDeleteModal,
+    onClose: onCloseDeleteModal,
+  } = useDisclosure();
+
   const onDelete = () => {
     handleDeleteRow(data.id);
-    onClose();
+    onCloseDeleteModal();
   };
 
   return (
@@ -25,8 +30,12 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow, isError }) => {
         )}
       </Td>
       <Td>
-        <DeleteBoxModal isOpen={isOpen} onClose={onClose} onDelete={onDelete} />
-        <button type="button" onClick={onOpen}>
+        <DeleteBoxModal
+          isOpen={isOpenDeleteModal}
+          onClose={onCloseDeleteModal}
+          onDelete={onDelete}
+        />
+        <button type="button" onClick={onOpenDeleteModal}>
           <DeleteIcon alt="Edit Icon" className={styles['delete-icon']} />
         </button>
         <button type="button" onClick={e => editRow(e, data)}>

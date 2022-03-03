@@ -7,7 +7,11 @@ import './NavBar.css';
 import FYALogo from '../../assets/fya-logo.png';
 
 function NavBar() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isUploadCSVOpenModal,
+    onOpen: onUploadCSVOpenModal,
+    onClose: onCloseUploadCSVOpenModal,
+  } = useDisclosure();
 
   return (
     <ChakraProvider>
@@ -19,9 +23,9 @@ function NavBar() {
           <Link className="navbar-buttons" to="/add-box-form">
             Add Box
           </Link>
-          <Button variant="unstyled" onClick={onOpen} className="navbar-buttons">
+          <Button variant="unstyled" onClick={onUploadCSVOpenModal} className="navbar-buttons">
             Upload CSV
-            <UploadCSV isOpen={isOpen} onClose={onClose} />
+            <UploadCSV isOpen={isUploadCSVOpenModal} onClose={onCloseUploadCSVOpenModal} />
           </Button>
           <Link className="navbar-buttons" to="/export-csv">
             Export CSV
