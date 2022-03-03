@@ -1,5 +1,5 @@
 .box {
-    padding: 0px 15px 0px 15px;
+    padding: 0px 15px 15px 15px;
     margin-top: 15px;
     border-radius: 10px;
     background-color: white;
@@ -31,7 +31,6 @@
 }
 
 .accordion-panel {
-  /* margin: 0 !important; */
   width: 100%;
   background-color: white;
   border-radius: 10px;
@@ -94,23 +93,14 @@
 
 .box-approved {
   background-color: #C6F6D5;
-  padding: 0px 15px 0px 15px;
-  margin-top: 15px;
-  border-radius: 10px;
 }
 
 .box-rejected {
   background-color: #FED7D7;
-  padding: 0px 15px 0px 15px;
-  margin-top: 15px;
-  border-radius: 10px;
 }
 
 .box-pending {
   background-color: #BEE3F8;
-  padding: 0px 15px 0px 15px;
-  margin-top: 15px;
-  border-radius: 10px;
 }
 
 .arrowButton {

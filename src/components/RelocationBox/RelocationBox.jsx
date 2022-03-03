@@ -90,7 +90,7 @@ const RelocationBox = ({
   };
 
   // A function that approves a relocation box submission and updates the backend state accordingly and then refetches all boxes (boxes can be approved from any tab)
-  const approveRelocationBoxFromUR = async id => {
+  const approveRelocationBox = async id => {
     await FYABackend.put('/boxHistory/update', {
       boxID,
       status,
@@ -337,7 +337,7 @@ const RelocationBox = ({
                       <button
                         type="button"
                         onClick={async () => {
-                          await approveRelocationBoxFromUR(boxID);
+                          await approveRelocationBox(boxID);
                         }}
                       >
                         <BsFillCheckCircleFill color="green" size="30px" />

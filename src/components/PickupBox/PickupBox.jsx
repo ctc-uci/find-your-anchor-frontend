@@ -39,7 +39,7 @@ const PickupBox = ({
 
   // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
   // This method is called when the approve box icon is clicked
-  const approvePickupBoxFromUnderReview = async id => {
+  const approvePickupBox = async id => {
     FYABackend.put('/boxHistory/approveBox', {
       boxID: id,
     }).then(async () => {
@@ -127,7 +127,7 @@ const PickupBox = ({
                       <button
                         type="button"
                         onClick={() => {
-                          approvePickupBoxFromUnderReview(boxID);
+                          approvePickupBox(boxID);
                         }}
                       >
                         <BsFillCheckCircleFill color="green" size="30px" />
