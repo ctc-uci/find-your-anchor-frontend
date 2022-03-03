@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   ChakraProvider,
   Text,
-  Textarea,
+  Input,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -17,11 +17,23 @@ import styles from './SendLinkModal.module.css';
 const ModalOne = ({ count, setCount }) => {
   return (
     <div className={styles['modal-content']}>
-      <Text fontSize="2xl" fontWeight="bold" textAlign="left">
+      <Text fontSize="xl" fontWeight="bold" style={{ alignSelf: 'flex-start' }}>
         Send registration link via email:
       </Text>
-      <Textarea placeholder="ex: jdoeFYA@gmail.com" />
-      <Button onClick={() => setCount(count + 1)} color="white" bg="#345E80" iconSpacing="120px">
+      <Input
+        placeholder="ex: jdoeFYA@gmail.com"
+        size="lg"
+        color="#7D7D7D"
+        bg="#F6F6F6"
+        className={styles['modal-one-input']}
+      />
+      <Button
+        onClick={() => setCount(count + 1)}
+        color="white"
+        bg="#345E80"
+        iconSpacing="120px"
+        className={styles['modal-one-button']}
+      >
         Send Link
       </Button>
     </div>
@@ -37,7 +49,7 @@ const ModalTwo = () => (
     <Text color="#3182CE" textAlign="center">
       Recipient will receive link in their inbox shortly...
     </Text>
-    <Button color="white" bg="#1F2F38">
+    <Button color="white" bg="#1F2F38" className={styles['modal-two-button']}>
       Resend Link
     </Button>
   </div>
