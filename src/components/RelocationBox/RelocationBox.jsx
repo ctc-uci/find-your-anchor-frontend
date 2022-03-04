@@ -145,12 +145,13 @@ const RelocationBox = ({
             {/* Box picture */}
             <AccordionPanel pb={4} className={styles['accordion-panel']}>
               <div className={styles['box-details']}>
-                {picture === null ? (
+                {picture !== null && (
+                  <img src={picture} alt="" className={styles['pickup-image-corners']} />
+                )}
+                {picture === null && status !== 'evaluated' && (
                   <div className={styles['image-wrapper']}>
                     <img className={styles['image-box']} src={ImageVector} alt="" />
                   </div>
-                ) : (
-                  <img src={picture} alt="" className={styles['image-corners']} />
                 )}
                 {/* Box Name */}
                 <FormControl>

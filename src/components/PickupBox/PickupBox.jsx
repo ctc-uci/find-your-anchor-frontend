@@ -77,9 +77,9 @@ const PickupBox = ({
                 {picture !== null && (
                   <img src={picture} alt="" className={styles['pickup-image-corners']} />
                 )}
-                {picture === null && (
-                  <div className={styles['image-box']}>
-                    <img className={styles['image-vector']} src={ImageVector} alt="" />
+                {picture === null && status !== 'evaluated' && (
+                  <div className={styles['image-wrapper']}>
+                    <img className={styles['image-box']} src={ImageVector} alt="" />
                   </div>
                 )}
                 <FormControl>

@@ -1,12 +1,13 @@
 import { React, useEffect, useState } from 'react';
 import { ChakraProvider, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import { BsFillArrowRightCircleFill } from 'react-icons/bs';
 import PickupBox from '../PickupBox/PickupBox';
 import RelocationBox from '../RelocationBox/RelocationBox';
 import styles from './BoxApproval.module.css';
 import { FYABackend } from '../../common/utils';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
-import RequestChangesMiniIcon from '../BoxIcons/RequestChangesMiniIcon.svg';
+// import RequestChangesMiniIcon from '../BoxIcons/RequestChangesMiniIcon.svg';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 
@@ -135,7 +136,8 @@ const BoxApproval = () => {
         </Tabs>
         <div className={styles.legend}>
           <div className={styles['request-changes-row']}>
-            <img className={styles['request-changes-icon']} src={RequestChangesMiniIcon} alt="" />
+            {/* <img className={styles['request-changes-icon']} src={RequestChangesMiniIcon} alt="" /> */}
+            <BsFillArrowRightCircleFill className={styles['request-changes-icon']} />
             <p className={styles['request-changes-text']}>Request Changes</p>
           </div>
           <div className={styles['relocate-box-row']}>
