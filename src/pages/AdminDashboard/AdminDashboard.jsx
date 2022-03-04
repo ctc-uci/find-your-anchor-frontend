@@ -3,7 +3,6 @@ import { ChakraProvider, Button } from '@chakra-ui/react';
 
 import Map from '../../components/Map/Map';
 import BoxApproval from '../../components/BoxApproval/BoxApproval';
-import NavBar from '../../components/NavBar/NavBar';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
@@ -12,9 +11,6 @@ function AdminDashboard() {
   return (
     <ChakraProvider>
       <div className="admin-dashboard-container">
-        <div className="admin-nav-bar">
-          <NavBar />
-        </div>
         <div className="side-bar-and-map-container">
           <div className={`side-bar ${showReview ? 'show-review' : ''}`}>
             <BoxApproval />
