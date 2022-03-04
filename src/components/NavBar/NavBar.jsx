@@ -48,12 +48,6 @@ const NavBar = ({ isAdmin }) => {
               <img className={styles['profile-picture']} src={PlaceHolderPFP} alt="Profile" />
             </div>
           </Link>
-          <Link to="/profile">
-            <div className="navbar-account">
-              <span className="navbar-account-circle" />
-              <p className="navbar-account-name">SA</p>
-            </div>
-          </Link>
         </div>
       </div>
     </ChakraProvider>

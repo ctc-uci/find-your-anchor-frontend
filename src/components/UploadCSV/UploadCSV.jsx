@@ -73,14 +73,14 @@ const UploadCSV = ({ isOpen, onClose }) => {
     }
   };
 
-  const onEditViewFile = e => {
-    e.preventDefault();
-    navigate('/upload-csv-view', { state: { rows: formDatas, filename: CSVFilename } });
-  };
-
   const onCloseModal = () => {
     setIsUploadingNewFile(true);
     onClose();
+  };
+
+  const onEditViewFile = () => {
+    onClose();
+    navigate('/upload-csv-view', { state: { rows: formDatas, filename: CSVFilename } });
   };
 
   const addToMap = async e => {

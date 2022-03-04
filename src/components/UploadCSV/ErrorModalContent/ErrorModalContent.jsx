@@ -14,9 +14,9 @@ const ErrorModalContent = ({
     setIsUploadingNewFile(true);
   };
 
-  const viewFile = e => {
+  const viewFile = () => {
     setIsUploadingNewFile(false);
-    onEditViewFile(e);
+    onEditViewFile();
   };
 
   return (

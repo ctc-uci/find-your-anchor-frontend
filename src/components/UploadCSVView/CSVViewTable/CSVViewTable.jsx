@@ -94,9 +94,10 @@ const CSVViewTable = ({ rows }) => {
 
   // check if any rows have an error when page first loads
   useEffect(async () => {
-    const errors = await checkErrors(formDatas);
+    setFormData(rows);
+    const errors = await checkErrors(rows);
     addErrors(errors);
-  }, []);
+  }, [rows]);
 
   return (
     <form onSubmit={addToMap} className={styles['csv-table-form']}>
