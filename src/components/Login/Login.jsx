@@ -57,7 +57,7 @@ const Login = ({ cookies }) => {
         Sign in with Google
       </button>
       <br />
-      <a href="/forgotpassword">Forgot Password</a>
+      <a href="/forgot-password">Forgot Password</a>
     </div>
   );
 };
