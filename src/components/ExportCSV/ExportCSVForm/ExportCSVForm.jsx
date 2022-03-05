@@ -87,7 +87,8 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
 
   const onSubmit = data => {
     setFormValues(data);
-    reset();
+    // alert('submitted');
+    // reset();
   };
 
   const [boxOption, dateOption, startDate, endDate, zipOption] = watch([
@@ -122,6 +123,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
       setValue('singleDate', '');
       clearErrors('singleDate');
     }
+    // handleSubmit(onSubmit)
   }, [boxOption, zipOption, dateOption]);
 
   return (
@@ -135,7 +137,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
             <option value="ascend-box-num">Ascending Box Number</option>
             <option value="descend-box-num">Descending Box Number</option>
             <option value="chronologic">Chronologically</option>
-            <option value="ascend-zip-code">Descending Zip Code</option>
+            <option value="ascend-zip-code">Ascending Zip Code</option>
             <option value="descend-zip-code">Descending Zip Code</option>
           </Select>
         </FormControl>

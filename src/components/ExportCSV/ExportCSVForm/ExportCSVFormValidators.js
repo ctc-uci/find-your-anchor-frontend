@@ -6,7 +6,9 @@ function isDate(message) {
 
     // checking if value != null because
     // data picker will only have a date value or empty
-    return value !== '' ? true : createError({ path, message: message ?? 'Not a valid date' });
+    return value !== '' && value !== null
+      ? true
+      : createError({ path, message: message ?? 'Not a valid date' });
   });
 }
 
