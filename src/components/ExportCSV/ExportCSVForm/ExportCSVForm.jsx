@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import DatePicker from 'react-datepicker';
+import useDeepCompareEffect from 'use-deep-compare-effect';
 import * as yup from 'yup';
 
 import {
@@ -20,6 +21,7 @@ import {
 import styles from './ExportCSVForm.module.css';
 import { isValidRange, isZip, isDate } from './ExportCSVFormValidators';
 
+// yup validation
 yup.addMethod(yup.mixed, 'isDate', isDate);
 yup.addMethod(yup.mixed, 'isZip', isZip);
 yup.addMethod(yup.mixed, 'isValidRange', isValidRange);
@@ -62,7 +64,6 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
     reset,
     getValues,
     register,
-    watch,
     handleSubmit,
     setValue,
     clearErrors,
@@ -85,37 +86,29 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
     delayError: 750,
   });
 
-  const onSubmit = data => {
-    setFormValues(data);
-    // alert('submitted');
-    // reset();
-  };
+  const watchAllFields = useWatch({
+    control,
+  });
 
-  const [boxOption, dateOption, startDate, endDate, zipOption] = watch([
-    'boxOption',
-    'dateOption',
-    'startDate',
-    'endDate',
-    'zipOption',
-  ]);
-
-  useEffect(() => {
-    if (boxOption === 'boxes-all') {
+  // using deep compare effect because watch always
+  // assigns new value every render
+  useDeepCompareEffect(() => {
+    if (watchAllFields.boxOption === 'boxes-all') {
       setValue('boxRange', '');
       clearErrors('boxRange');
     }
 
-    if (zipOption === 'zip-code-all') {
+    if (watchAllFields.zipOption === 'zip-code-all') {
       setValue('zipCode', '');
       clearErrors('zipCode');
     }
 
-    if (dateOption === 'date-all') {
+    if (watchAllFields.dateOption === 'date-all') {
       setValue('singleDate', '');
       setValue('startDate', '');
       setValue('endDate', '');
       clearErrors(['singleDate', 'rangeDate']);
-    } else if (dateOption === 'date-single') {
+    } else if (watchAllFields.dateOption === 'date-single') {
       setValue('startDate', '');
       setValue('endDate', '');
       clearErrors('rangeDate');
@@ -123,8 +116,15 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
       setValue('singleDate', '');
       clearErrors('singleDate');
     }
-    // handleSubmit(onSubmit)
-  }, [boxOption, zipOption, dateOption]);
+
+    setFormValues(getValues());
+  }, [watchAllFields]);
+
+  const onSubmit = data => {
+    setFormValues(data);
+    // alert('submitted');
+    // reset();
+  };
 
   return (
     <div className={styles['csv-form-wrapper']}>
@@ -157,7 +157,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                     <option value="boxes-all">All</option>
                     <option value="boxes-custom">Custom</option>
                   </Select>
-                  {boxOption === 'boxes-custom' && (
+                  {watchAllFields.boxOption === 'boxes-custom' && (
                     <Input
                       isInvalid={errors?.boxRange}
                       placeholder="e.g. 1-9, 6, 12"
@@ -182,7 +182,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                     <option value="date-single">Single Day</option>
                     <option value="date-range">Range</option>
                   </Select>
-                  {dateOption === 'date-single' && (
+                  {watchAllFields.dateOption === 'date-single' && (
                     <Controller
                       name="singleDate"
                       control={control}
@@ -199,7 +199,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                     />
                   )}
                   <p className={styles['error-message']}>{errors.singleDate?.message}</p>
-                  {dateOption === 'date-range' && (
+                  {watchAllFields.dateOption === 'date-range' && (
                     <div className={styles['date-range']}>
                       <FormControl>
                         <FormLabel className={styles['date-range-label']} htmlFor="start-date">
@@ -217,8 +217,8 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                               selected={value}
                               onChange={onChange}
                               selectsStart
-                              startDate={startDate}
-                              endDate={endDate}
+                              startDate={watchAllFields.startDate}
+                              endDate={watchAllFields.endDate}
                             />
                           )}
                         />
@@ -240,9 +240,9 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                               selected={value}
                               onChange={onChange}
                               selectsEnd
-                              startDate={startDate}
-                              endDate={endDate}
-                              minDate={startDate}
+                              startDate={watchAllFields.startDate}
+                              endDate={watchAllFields.endDate}
+                              minDate={watchAllFields.startDate}
                             />
                           )}
                         />
@@ -265,7 +265,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                     <option value="zip-code-all">All</option>
                     <option value="zip-code-custom">Custom</option>
                   </Select>
-                  {zipOption === 'zip-code-custom' && (
+                  {watchAllFields.zipOption === 'zip-code-custom' && (
                     <Input
                       isInvalid={errors?.zipCode}
                       placeholder="e.g. 96162, 91007"
