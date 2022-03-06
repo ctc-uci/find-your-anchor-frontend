@@ -45,18 +45,21 @@ const RegisterForm = () => {
           register={register('firstName')}
           error={errors?.firstName}
           type="text"
+          placeholder="Jane"
           title="First Name"
         />
         <TextInput
           register={register('lastName')}
           error={errors?.lastName}
           type="text"
+          placeholder="Doe"
           title="Last Name"
         />
         <TextInput
           register={register('email')}
           error={errors?.email}
           type="text"
+          placeholder="name@findyouranchor.us"
           title="FYA Email Address"
         />
         <PasswordInput register={register('password')} error={errors?.password} title="Password" />
