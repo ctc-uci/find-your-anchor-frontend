@@ -1,5 +1,6 @@
 .page-wrapper {
-  height: calc(100vh - 55px);
+  margin-top: 2%;
+  padding-bottom: 2%;
   flex-flow: column;
   align-items: stretch;
   justify-content: center;
