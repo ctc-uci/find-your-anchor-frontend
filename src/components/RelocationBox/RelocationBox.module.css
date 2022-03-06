@@ -202,3 +202,18 @@
 .image-corners {
   border-radius: 5%;
 }
+
+.request-changes-icon {
+  color: #DD6B20;
+  font-size: 30px;
+}
+
+.reject-box-icon {
+  color: red;
+  font-size: 30px;
+}
+
+.approve-box-icon {
+  color: green;
+  font-size: 30px;
+}

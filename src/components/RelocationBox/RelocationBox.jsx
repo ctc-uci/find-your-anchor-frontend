@@ -14,11 +14,12 @@ import {
 } from '@chakra-ui/react';
 
 import { BsFillArrowRightCircleFill, BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
-
+import { renderEmail } from 'react-html-email';
 import PropTypes from 'prop-types';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 import SaveChangesIcon from '../BoxIcons/SaveChangesIcon.svg';
-import { FYABackend } from '../../common/utils';
+import { FYABackend, sendEmail } from '../../common/utils';
+import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import ImageVector from '../BoxIcons/ImageVector.svg';
@@ -109,6 +110,11 @@ const RelocationBox = ({
       fetchBoxes('under review', false),
       fetchBoxes('pending changes', false),
       fetchBoxes('evaluated', false),
+      sendEmail(
+        boxHolderNameState,
+        boxHolderEmailState,
+        renderEmail(<ApprovedBoxEmail boxHolderName={boxHolderName} />),
+      ),
     ];
     await Promise.all(requests);
   };
@@ -311,7 +317,7 @@ const RelocationBox = ({
                           setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen);
                         }}
                       >
-                        <BsXCircleFill color="red" size="30px" />
+                        <BsXCircleFill className={styles['reject-box-icon']} />
                       </button>
                     </div>
                     {/* Pending changes (if the box is under review) or Save (if the box is under pending changes) button */}
@@ -327,7 +333,7 @@ const RelocationBox = ({
                         }}
                       >
                         {status === 'under review' ? (
-                          <BsFillArrowRightCircleFill color="yellow" size="30px" />
+                          <BsFillArrowRightCircleFill className={styles['request-changes-icon']} />
                         ) : (
                           <img src={SaveChangesIcon} alt="save" />
                         )}
@@ -341,12 +347,14 @@ const RelocationBox = ({
                           await approveRelocationBox(boxID);
                         }}
                       >
-                        <BsFillCheckCircleFill color="green" size="30px" />
+                        <BsFillCheckCircleFill className={styles['approve-box-icon']} />
                       </button>
                     </div>
                   </div>
                 )}
                 <RequestChangesPopup
+                  boxHolderName={boxHolderNameState}
+                  boxHolderEmail={boxHolderEmail}
                   isOpen={requestChangesPopupIsOpen}
                   setIsOpen={setRequestChangesPopupIsOpen}
                   boxID={boxID}
@@ -354,6 +362,8 @@ const RelocationBox = ({
                   fetchBoxes={fetchBoxes}
                 />
                 <RejectBoxPopup
+                  boxHolderName={boxHolderNameState}
+                  boxHolderEmail={boxHolderEmail}
                   isOpen={rejectBoxPopupIsOpen}
                   setIsOpen={setRejectBoxPopupIsOpen}
                   boxID={boxID}

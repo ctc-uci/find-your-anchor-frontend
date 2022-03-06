@@ -13,12 +13,14 @@ import {
 } from '@chakra-ui/react';
 
 import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
+import { renderEmail } from 'react-html-email';
 import PropTypes from 'prop-types';
 import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
+import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
 import ImageVector from '../BoxIcons/ImageVector.svg';
-import { FYABackend } from '../../common/utils';
+import { FYABackend, sendEmail } from '../../common/utils';
 
 const PickupBox = ({
   approved,
@@ -45,6 +47,11 @@ const PickupBox = ({
     }).then(async () => {
       await fetchBoxes('under review', true);
     });
+    sendEmail(
+      boxHolderName,
+      boxHolderEmail,
+      renderEmail(<ApprovedBoxEmail boxHolderName={boxHolderName} />),
+    );
   };
 
   return (
@@ -119,7 +126,7 @@ const PickupBox = ({
                           setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen);
                         }}
                       >
-                        <BsXCircleFill color="red" size="30px" />
+                        <BsXCircleFill className={styles['rejected-icon']} />
                       </button>
                     </div>
                     {/* Approve box button */}
@@ -130,7 +137,7 @@ const PickupBox = ({
                           approvePickupBox(boxID);
                         }}
                       >
-                        <BsFillCheckCircleFill color="green" size="30px" />
+                        <BsFillCheckCircleFill className={styles['approved-icon']} />
                       </button>
                     </div>
                     <RejectBoxPopup
