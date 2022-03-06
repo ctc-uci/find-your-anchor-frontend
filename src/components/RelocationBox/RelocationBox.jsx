@@ -21,7 +21,6 @@ import SaveChangesIcon from '../BoxIcons/SaveChangesIcon.svg';
 import { FYABackend } from '../../common/utils';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
-import ImageVector from '../BoxIcons/ImageVector.svg';
 import styles from './RelocationBox.module.css';
 
 const RelocationBox = ({
@@ -147,11 +146,6 @@ const RelocationBox = ({
               <div className={styles['box-details']}>
                 {picture !== null && (
                   <img src={picture} alt="" className={styles['pickup-image-corners']} />
-                )}
-                {picture === null && status !== 'evaluated' && (
-                  <div className={styles['image-wrapper']}>
-                    <img className={styles['image-box']} src={ImageVector} alt="" />
-                  </div>
                 )}
                 {/* Box Name */}
                 <FormControl>
