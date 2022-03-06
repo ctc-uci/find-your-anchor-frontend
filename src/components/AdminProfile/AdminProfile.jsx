@@ -16,7 +16,7 @@ const TextInput = ({ inputLabel, placeHolder, editable, editState, makeEditable 
       <Input top="5px" size="lg" width="100%" placeholder={placeHolder} isDisabled={!editState} />
       <button type="button" style={editable ? {} : { visibility: 'hidden' }} onClick={makeEditable}>
         {editState ? (
-          <RiCheckFill color="#8E8E8E" size={35} />
+          <RiCheckFill color="#38a169" size={35} />
         ) : (
           <RiPencilFill color="#8E8E8E" size={35} />
         )}
