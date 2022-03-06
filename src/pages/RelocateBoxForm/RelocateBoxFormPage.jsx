@@ -7,7 +7,6 @@ const RelocateBoxFormPage = () => {
   return (
     <ChakraProvider>
       <h1 className={styles['relocate-page-title']}>Relocate Box</h1>
-      <div>RelocateBoxFormPage.jsx</div>
       <RelocateBoxForm />
     </ChakraProvider>
   );
