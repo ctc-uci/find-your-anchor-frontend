@@ -7,7 +7,6 @@ import styles from './BoxApproval.module.css';
 import { FYABackend } from '../../common/utils';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
-// import RequestChangesMiniIcon from '../BoxIcons/RequestChangesMiniIcon.svg';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 
@@ -136,7 +135,6 @@ const BoxApproval = () => {
         </Tabs>
         <div className={styles.legend}>
           <div className={styles['request-changes-row']}>
-            {/* <img className={styles['request-changes-icon']} src={RequestChangesMiniIcon} alt="" /> */}
             <BsFillArrowRightCircleFill className={styles['request-changes-icon']} />
             <p className={styles['request-changes-text']}>Request Changes</p>
           </div>
