@@ -24,13 +24,26 @@ yup.addMethod(yup.string, 'isZip', validateZip);
 const schema = yup
   .object({
     name: yup.string().typeError('Invalid name'),
-    email: yup.string().required('Invalid email address').typeError('Invalid email address'),
-    boxNumber: yup.number().required('Invalid box number').typeError('Invalid box number'),
-    date: yup.date().required('Invalid date').typeError('Invalid date'),
-    zipCode: yup.string().isZip().required('Invalid zipcode'),
-    generalLocation: yup.string().typeError('Invalid location'),
-    dropOffMethod: yup.string().required('Invalid drop off method'),
-    message: yup.string().typeError('Invalid message'),
+    email: yup
+      .string()
+      .email('Invalid email address')
+      .required('Invalid email address, please enter a valid email address')
+      .typeError('Invalid email address, please enter a valid email address'),
+    boxNumber: yup
+      .number()
+      .min(1, 'Invalid box number, please enter a valid box number')
+      .required('Invalid box number, please enter a valid box number')
+      .typeError('Invalid box number, please enter a valid box number'),
+    date: yup
+      .date()
+      .required('Invalid date, please enter a valid date')
+      .typeError('Invalid date, please enter a valid date'),
+    zipCode: yup.string().isZip().required('Invalid zipcode, please enter a valid zipcode'),
+    generalLocation: yup.string().typeError('Invalid location, please enter a valid location'),
+    dropOffMethod: yup
+      .string()
+      .required('Invalid drop off method, please enter a valid drop off method'),
+    message: yup.string().typeError('Invalid message, please enter a valid message'),
     picture: yup.string().url(),
   })
   .required();
@@ -55,7 +68,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
 
     // TODO: Add call to post data to backend
-    // console.table(formData);
+    console.table(formData);
   };
 
   return (
