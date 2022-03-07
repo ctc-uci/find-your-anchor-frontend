@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
+import { Table, Tbody, Th, Thead, Tr, Text } from '@chakra-ui/react';
 
 import styles from './CSVPreview.module.css';
 import ExportCSVRow from '../ExportCSVRow/ExportCSVRow';
@@ -8,7 +8,7 @@ import ExportCSVRow from '../ExportCSVRow/ExportCSVRow';
 const CSVPreview = ({ formValues }) => {
   return (
     <div className="csv-preview">
-      <h2>CSV Preview</h2>
+      <Text className={styles['csv-preview-title']}>CSV Preview</Text>
       <div className={`${styles['csv-preview-wrapper']} ${styles['scrollable-div']}`}>
         {/* <pre>{JSON.stringify(formValues, null, 2)}</pre> */}
         {formValues.length > 0 && (
