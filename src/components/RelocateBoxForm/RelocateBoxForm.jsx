@@ -82,19 +82,25 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
           </FormControl>
           <br />
           <FormControl isInvalid={errors?.email}>
-            <FormLabel htmlFor="email">Email Address *</FormLabel>
+            <FormLabel htmlFor="email" className={styles['required-field']}>
+              Email Address
+            </FormLabel>
             <Input id="email" placeholder="name@domain.com" name="email" {...register('email')} />
             <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
           </FormControl>
           <br />
           <FormControl isInvalid={errors?.boxNumber}>
-            <FormLabel htmlFor="boxNumber">Box Number *</FormLabel>
+            <FormLabel htmlFor="boxNumber" className={styles['required-field']}>
+              Box Number
+            </FormLabel>
             <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
             <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
           </FormControl>
           <br />
           <FormControl isInvalid={errors?.date}>
-            <FormLabel htmlFor="date">Date *</FormLabel>
+            <FormLabel htmlFor="date" className={styles['required-field']}>
+              Date
+            </FormLabel>
             <Controller
               control={control}
               name="date"
@@ -113,7 +119,9 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
           </FormControl>
           <br />
           <FormControl isInvalid={errors?.zipCode}>
-            <FormLabel htmlFor="zipCode">Zip Code *</FormLabel>
+            <FormLabel htmlFor="zipCode" className={styles['required-field']}>
+              Zip Code
+            </FormLabel>
             <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
             <FormErrorMessage>{errors.zipCode?.message}</FormErrorMessage>
           </FormControl>
@@ -133,8 +141,8 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
 
       <div className={styles['relocate-box-info-section-right']}>
         <FormControl className={styles['section-wrapper']}>
-          <FormLabel htmlFor="drop-off-method" className={styles['csv-form-labels']}>
-            Drop Off Method *
+          <FormLabel htmlFor="drop-off-method" className={styles['required-field']}>
+            Drop Off Method
           </FormLabel>
           <Select id="drop-off-method" {...register('dropOffMethod')}>
             <option value="given-to-someone">Given to Someone</option>
