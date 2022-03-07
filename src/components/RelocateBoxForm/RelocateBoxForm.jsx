@@ -60,21 +60,23 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
   });
 
   const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async data => {
     const formData = data;
     formData.date = formatDate(data.date);
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
 
-    // TODO: Add call to post data to backend
-    console.table(formData);
     try {
+      setLoading(true);
       await FYABackend.post('/boxHistory', {
         ...formData,
         launchedOrganically: formData.dropOffMethod === 'organic-launch',
       });
       setFormSubmitted(true);
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
       // TODO: show error banner on failure
       console.log(err.message);
     }
@@ -211,7 +213,13 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <Button size="md" className="cancel-button">
               Cancel
             </Button>
-            <Button type="submit" size="md" colorScheme="teal">
+            <Button
+              type="submit"
+              size="md"
+              colorScheme="teal"
+              isLoading={loading}
+              loadingText="Submitting"
+            >
               Submit
             </Button>
           </div>
