@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import RelocateBoxForm from '../../components/RelocateBoxForm/RelocateBoxForm';
 import styles from './RelocateBoxFormPage.module.css';
 
+import BoxFormConfirmation from '../../components/BoxFormConfirmation/BoxFormConfirmation';
+
 const RelocateBoxFormPage = () => {
+  const [submitted, setSubmitted] = useState(false);
+
   return (
     <ChakraProvider>
-      <h1 className={styles['relocate-page-title']}>Relocate Box</h1>
-      <RelocateBoxForm />
+      {submitted ? (
+        <BoxFormConfirmation />
+      ) : (
+        <>
+          <h1 className={styles['relocate-page-title']}>Relocate Box</h1>
+          <RelocateBoxForm setFormSubmitted={setSubmitted} />
+        </>
+      )}
     </ChakraProvider>
   );
 };

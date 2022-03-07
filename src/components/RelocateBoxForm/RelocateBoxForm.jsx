@@ -55,6 +55,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
 
     // TODO: Add call to post data to backend
+    // console.table(formData);
   };
 
   return (
@@ -119,13 +120,14 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
 
       <div className={styles['relocate-box-info-section-right']}>
         <FormControl className={styles['section-wrapper']}>
-          <FormLabel htmlFor="sort-by" className={styles['csv-form-labels']}>
+          <FormLabel htmlFor="drop-off-method" className={styles['csv-form-labels']}>
             Drop Off Method *
           </FormLabel>
-          <Select id="sort-by" placeholder="Select" {...register('sortBy')}>
+          <Select id="drop-off-method" {...register('dropOffMethod')}>
             <option value="given-to-someone">Given to Someone</option>
             <option value="drop-off-location">Dropped off at a location</option>
           </Select>
+          <FormErrorMessage>{errors.dropOffMethod?.message}</FormErrorMessage>
         </FormControl>
         <br />
 
