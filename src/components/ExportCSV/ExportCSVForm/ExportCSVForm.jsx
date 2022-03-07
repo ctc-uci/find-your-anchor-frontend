@@ -19,6 +19,7 @@ import {
   Button,
 } from '@chakra-ui/react';
 import styles from './ExportCSVForm.module.css';
+import { FYABackend } from '../../../common/utils';
 import { isValidRange, isZip, isDate } from './ExportCSVFormValidators';
 
 // yup validation
@@ -117,11 +118,21 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
       clearErrors('singleDate');
     }
 
-    setFormValues(getValues());
+    // TODO: fix setFormValues to update as user is changing the filters
+    // setFormValues(getValues());
   }, [watchAllFields]);
 
-  const onSubmit = data => {
-    setFormValues(data);
+  const onSubmit = async data => {
+    // setFormValues(data);
+
+    const res = await FYABackend.post('/exportCSV/boxes', data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    setFormValues(res.data);
+
     // alert('submitted');
     // reset();
   };

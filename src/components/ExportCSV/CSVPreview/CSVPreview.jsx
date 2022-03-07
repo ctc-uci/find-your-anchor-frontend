@@ -25,9 +25,10 @@ const CSVPreview = ({ data }) => {
 // };
 
 CSVPreview.propTypes = {
-  data: PropTypes.shape({
-    temp: PropTypes.string,
-  }).isRequired,
+  // data: PropTypes.shape({
+  //   temp: PropTypes.string,
+  // }).isRequired,
+  data: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])).isRequired,
 };
 
 export default CSVPreview;
