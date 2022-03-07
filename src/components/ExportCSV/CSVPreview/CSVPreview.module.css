@@ -57,11 +57,12 @@
 }
 
 .csv-preview th {
-  font-weight: 700;
+  font-weight: 600;
   border-bottom: none;
   text-transform: none;
   font-size: 1rem;
   letter-spacing: 0;
+  color: black;
 }
 
 .csv-preview th:first-child {
