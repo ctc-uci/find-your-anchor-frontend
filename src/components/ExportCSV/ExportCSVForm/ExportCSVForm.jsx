@@ -323,12 +323,12 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                 <div className={styles['box-detail-checkboxes']}>
                   <CheckboxGroup value={value} onChange={onChange}>
                     <Checkbox value="date">Date</Checkbox>
-                    <Checkbox value="box-num">Box Number</Checkbox>
-                    <Checkbox value="zip-code">Zip Code</Checkbox>
-                    <Checkbox value="image">Image</Checkbox>
-                    <Checkbox value="landmarks">Landmarks</Checkbox>
-                    <Checkbox value="launch-type">Launch Type</Checkbox>
-                    <Checkbox value="messages">Messages</Checkbox>
+                    <Checkbox value="box_id">Box Number</Checkbox>
+                    <Checkbox value="zip_code">Zip Code</Checkbox>
+                    <Checkbox value="picture">Image</Checkbox>
+                    <Checkbox value="general_location">Landmarks</Checkbox>
+                    <Checkbox value="launched_organically">Launch Type</Checkbox>
+                    <Checkbox value="message">Messages</Checkbox>
                   </CheckboxGroup>
                 </div>
               )}
