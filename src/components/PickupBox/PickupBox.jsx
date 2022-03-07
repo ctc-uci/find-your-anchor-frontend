@@ -31,16 +31,21 @@ const PickupBox = ({
   rejectionReason,
   fetchBoxes,
   pickup,
+  imageStatus,
 }) => {
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
   const [rejectBoxPopupIsOpen, setRejectBoxPopupIsOpen] = useState(false);
+  // A state for the box's image status
+  // This state is updated when the user approves or rejects the image under pending changes
+  const [imageStatusState, setImageStatusState] = useState(imageStatus);
 
   // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
   // This method is called when the approve box icon is clicked
   const approvePickupBox = async id => {
     FYABackend.put('/boxHistory/approveBox', {
       boxID: id,
+      imageStatus: imageStatusState,
     }).then(async () => {
       await fetchBoxes('under review', true);
     });
@@ -73,8 +78,68 @@ const PickupBox = ({
             {/* Box details */}
             <AccordionPanel className={styles['accordion-panel']} pb={4}>
               <div className={styles['box-details']}>
-                {picture !== null && (
-                  <img src={picture} alt="" className={styles['pickup-image-corners']} />
+                {(!(status === 'evaluated') || !(imageStatus === 'rejected')) && picture !== null && (
+                  <img
+                    src={picture}
+                    alt=""
+                    className={`${styles['pickup-image-corners']}
+                    ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
+                    ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
+                  />
+                )}
+                {picture !== null && status !== 'evaluated' && (
+                  <div className={styles['image-functionality-wrapper']}>
+                    {/* Image approved indicator (only show if message is approved) */}
+                    <div className={styles['image-functionality']}>
+                      {imageStatus === 'approved' && (
+                        <>
+                          <button type="button" className={styles['approval-button']}>
+                            <BsFillCheckCircleFill color="green" />
+                          </button>
+                          <p className={styles['approval-message']}>Image Approved</p>
+                        </>
+                      )}
+                      {/* Image rejected indicator (only show if message is rejected) */}
+                      {imageStatus === 'rejected' && (
+                        <>
+                          <button type="button" className={styles['rejection-button']}>
+                            <BsXCircleFill color="red" />
+                          </button>
+                          <p className={styles['rejection-message']}>Image Denied</p>
+                        </>
+                      )}
+                    </div>
+                    {/* Approve image button */}
+                    <button
+                      type="button"
+                      className={styles['image-approved-button']}
+                      onClick={async () => {
+                        setImageStatusState('approved');
+                        await FYABackend.put('/boxHistory/update', {
+                          boxID,
+                          imageStatus: 'approved',
+                        });
+                        await fetchBoxes(status, true);
+                      }}
+                    >
+                      <BsFillCheckCircleFill color="green" />
+                    </button>
+                    {/* Reject image button */}
+                    <button
+                      type="button"
+                      className={styles['image-rejected-button']}
+                      onClick={async () => {
+                        setImageStatusState('rejected');
+                        await FYABackend.put('/boxHistory/update', {
+                          boxID,
+                          imageStatus: 'rejected',
+                        });
+                        await fetchBoxes(status, true);
+                      }}
+                    >
+                      <BsXCircleFill color="red" />
+                    </button>
+                  </div>
                 )}
                 <FormControl>
                   {/* Box name */}
@@ -160,6 +225,7 @@ PickupBox.propTypes = {
   rejectionReason: PropTypes.string.isRequired,
   pickup: PropTypes.bool.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
+  imageStatus: PropTypes.string.isRequired,
 };
 
 export default PickupBox;

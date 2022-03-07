@@ -40,6 +40,7 @@ const RelocationBox = ({
   fetchBoxes,
   pickup,
   launchedOrganically,
+  imageStatus,
 }) => {
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
@@ -65,6 +66,9 @@ const RelocationBox = ({
   // A state for the box's message status
   // This state is updated when the user approves or rejects the message under pending changes
   const [messageStatusState, setMessageStatusState] = useState(messageStatus);
+  // A state for the box's image status
+  // This state is updated when the user approves or rejects the image under pending changes
+  const [imageStatusState, setImageStatusState] = useState(imageStatus);
   // A state for the box's launched organically state
   // This state is updated when the user edits the launched organically field under pending changes
   const [launchedOrganicallyState, setLaunchedOrganicallyState] = useState(launchedOrganically);
@@ -82,6 +86,7 @@ const RelocationBox = ({
       message: messageState,
       messageStatus: messageStatusState,
       launchedOrganically: launchedOrganicallyState,
+      imageStatus: imageStatusState,
     });
 
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
@@ -100,6 +105,7 @@ const RelocationBox = ({
       message: messageState,
       messageStatus: messageStatusState,
       launchedOrganically: launchedOrganicallyState,
+      imageStatus: imageStatusState,
     });
     await FYABackend.put('/boxHistory/approveBox', {
       boxID: id,
@@ -144,8 +150,68 @@ const RelocationBox = ({
             {/* Box picture */}
             <AccordionPanel pb={4} className={styles['accordion-panel']}>
               <div className={styles['box-details']}>
-                {picture !== null && (
-                  <img src={picture} alt="" className={styles['pickup-image-corners']} />
+                {(!(status === 'evaluated') || !(imageStatus === 'rejected')) && picture !== null && (
+                  <img
+                    src={picture}
+                    alt=""
+                    className={`${styles['pickup-image-corners']}
+                    ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
+                    ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
+                  />
+                )}
+                {picture !== null && status !== 'evaluated' && (
+                  <div className={styles['image-functionality-wrapper']}>
+                    {/* Image approved indicator (only show if message is approved) */}
+                    <div className={styles['image-functionality']}>
+                      {imageStatus === 'approved' && (
+                        <>
+                          <button type="button" className={styles['approval-button']}>
+                            <BsFillCheckCircleFill color="green" />
+                          </button>
+                          <p className={styles['approval-message']}>Image Approved</p>
+                        </>
+                      )}
+                      {/* Image rejected indicator (only show if message is rejected) */}
+                      {imageStatus === 'rejected' && (
+                        <>
+                          <button type="button" className={styles['rejection-button']}>
+                            <BsXCircleFill color="red" />
+                          </button>
+                          <p className={styles['rejection-message']}>Image Denied</p>
+                        </>
+                      )}
+                    </div>
+                    {/* Approve image button */}
+                    <button
+                      type="button"
+                      className={styles['image-approved-button']}
+                      onClick={async () => {
+                        setImageStatusState('approved');
+                        await FYABackend.put('/boxHistory/update', {
+                          boxID,
+                          imageStatus: 'approved',
+                        });
+                        await fetchBoxes(status, false);
+                      }}
+                    >
+                      <BsFillCheckCircleFill color="green" />
+                    </button>
+                    {/* Reject image button */}
+                    <button
+                      type="button"
+                      className={styles['image-rejected-button']}
+                      onClick={async () => {
+                        setImageStatusState('rejected');
+                        await FYABackend.put('/boxHistory/update', {
+                          boxID,
+                          imageStatus: 'rejected',
+                        });
+                        await fetchBoxes(status, false);
+                      }}
+                    >
+                      <BsXCircleFill color="red" />
+                    </button>
+                  </div>
                 )}
                 {/* Box Name */}
                 <FormControl>
@@ -246,7 +312,7 @@ const RelocationBox = ({
                       {/* Approve message button */}
                       <button
                         type="button"
-                        className={styles['message-approved']}
+                        className={styles['message-approved-button']}
                         onClick={async () => {
                           setMessageStatusState('approved');
                           await FYABackend.put('/boxHistory/update', {
@@ -261,7 +327,7 @@ const RelocationBox = ({
                       {/* Reject message button */}
                       <button
                         type="button"
-                        className={styles['message-rejected']}
+                        className={styles['message-rejected-button']}
                         onClick={async () => {
                           setMessageStatusState('rejected');
                           await FYABackend.put('/boxHistory/update', {
@@ -380,6 +446,7 @@ RelocationBox.propTypes = {
   fetchBoxes: PropTypes.func.isRequired,
   pickup: PropTypes.bool.isRequired,
   launchedOrganically: PropTypes.bool.isRequired,
+  imageStatus: PropTypes.string.isRequired,
 };
 
 export default RelocationBox;
