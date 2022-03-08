@@ -24,6 +24,7 @@ import { FYABackend, sendEmail } from '../../common/utils';
 
 const PickupBox = ({
   approved,
+  transactionID,
   boxID,
   boxHolderName,
   boxHolderEmail,
@@ -43,7 +44,7 @@ const PickupBox = ({
   // This method is called when the approve box icon is clicked
   const approvePickupBox = async id => {
     FYABackend.put('/boxHistory/approveBox', {
-      boxID: id,
+      transactionID: id,
     }).then(async () => {
       await fetchBoxes('under review', true);
     });
@@ -134,7 +135,7 @@ const PickupBox = ({
                       <button
                         type="button"
                         onClick={() => {
-                          approvePickupBox(boxID);
+                          approvePickupBox(transactionID);
                         }}
                       >
                         <BsFillCheckCircleFill className={styles['approved-icon']} />
@@ -143,6 +144,7 @@ const PickupBox = ({
                     <RejectBoxPopup
                       isOpen={rejectBoxPopupIsOpen}
                       setIsOpen={setRejectBoxPopupIsOpen}
+                      transactionID={transactionID}
                       boxID={boxID}
                       boxHolderName={boxHolderName}
                       boxHolderEmail={boxHolderEmail}
@@ -163,6 +165,7 @@ const PickupBox = ({
 
 PickupBox.propTypes = {
   approved: PropTypes.bool.isRequired,
+  transactionID: PropTypes.number.isRequired,
   boxID: PropTypes.number.isRequired,
   boxHolderName: PropTypes.string.isRequired,
   boxHolderEmail: PropTypes.string.isRequired,

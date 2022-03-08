@@ -19,10 +19,11 @@ import styles from './RejectBoxPopup.module.css';
 
 const RejectBoxPopup = ({
   boxHolderName,
+  transactionID,
+  boxID,
   boxHolderEmail,
   isOpen,
   setIsOpen,
-  boxID,
   fetchBoxes,
   pickup,
 }) => {
@@ -31,6 +32,7 @@ const RejectBoxPopup = ({
 
   const handleRejectButtonClicked = async () => {
     await FYABackend.put('/boxHistory/update', {
+      transactionID,
       boxID,
       status: 'evaluated',
       rejectionReason,
@@ -97,9 +99,10 @@ const RejectBoxPopup = ({
 };
 
 RejectBoxPopup.propTypes = {
+  transactionID: PropTypes.number.isRequired,
+  boxID: PropTypes.number.isRequired,
   boxHolderName: PropTypes.string.isRequired,
   boxHolderEmail: PropTypes.string.isRequired,
-  boxID: PropTypes.number.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   pickup: PropTypes.bool.isRequired,

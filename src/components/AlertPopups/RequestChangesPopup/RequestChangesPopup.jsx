@@ -22,6 +22,7 @@ const RequestChangesPopup = ({
   boxHolderEmail,
   isOpen,
   setIsOpen,
+  transactionID,
   boxID,
   fetchBoxes,
 }) => {
@@ -30,6 +31,7 @@ const RequestChangesPopup = ({
 
   const handleRequestChangesClicked = async () => {
     await FYABackend.put('/boxHistory/update', {
+      transactionID,
       boxID,
       status: 'pending changes',
       changesRequested,
@@ -99,6 +101,7 @@ const RequestChangesPopup = ({
 RequestChangesPopup.propTypes = {
   boxHolderName: PropTypes.string.isRequired,
   boxHolderEmail: PropTypes.string.isRequired,
+  transactionID: PropTypes.number.isRequired,
   boxID: PropTypes.number.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,

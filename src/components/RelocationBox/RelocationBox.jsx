@@ -27,6 +27,7 @@ import styles from './RelocationBox.module.css';
 
 const RelocationBox = ({
   approved,
+  transactionID,
   boxID,
   boxHolderName,
   boxHolderEmail,
@@ -75,6 +76,7 @@ const RelocationBox = ({
   // This method is called when the save button is clicked under pending changes
   const updateBoxInfo = async stat => {
     await FYABackend.put('/boxHistory/update', {
+      transactionID,
       boxID,
       status: stat,
       boxHolderName: boxHolderNameState,
@@ -91,8 +93,9 @@ const RelocationBox = ({
   };
 
   // A function that approves a relocation box submission and updates the backend state accordingly and then refetches all boxes (boxes can be approved from any tab)
-  const approveRelocationBox = async id => {
+  const approveRelocationBox = async () => {
     await FYABackend.put('/boxHistory/update', {
+      transactionID,
       boxID,
       status,
       boxHolderName: boxHolderNameState,
@@ -104,7 +107,7 @@ const RelocationBox = ({
       launchedOrganically: launchedOrganicallyState,
     });
     await FYABackend.put('/boxHistory/approveBox', {
-      boxID: id,
+      transactionID,
     });
     const requests = [
       fetchBoxes('under review', false),
@@ -357,6 +360,7 @@ const RelocationBox = ({
                   boxHolderEmail={boxHolderEmail}
                   isOpen={requestChangesPopupIsOpen}
                   setIsOpen={setRequestChangesPopupIsOpen}
+                  transactionID={transactionID}
                   boxID={boxID}
                   pickup={pickup}
                   fetchBoxes={fetchBoxes}
@@ -366,6 +370,7 @@ const RelocationBox = ({
                   boxHolderEmail={boxHolderEmail}
                   isOpen={rejectBoxPopupIsOpen}
                   setIsOpen={setRejectBoxPopupIsOpen}
+                  transactionID={transactionID}
                   boxID={boxID}
                   pickup={pickup}
                   fetchBoxes={fetchBoxes}
@@ -381,6 +386,7 @@ const RelocationBox = ({
 
 RelocationBox.propTypes = {
   approved: PropTypes.bool.isRequired,
+  transactionID: PropTypes.number.isRequired,
   boxID: PropTypes.number.isRequired,
   boxHolderName: PropTypes.string.isRequired,
   boxHolderEmail: PropTypes.string.isRequired,

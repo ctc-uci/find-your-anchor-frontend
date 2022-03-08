@@ -5,12 +5,12 @@
   background-color: white;
 }
 
-.rejected-icon{
+.rejected-icon {
   color: red;
   font-size: 30px;
 }
 
-.approved-icon{
+.approved-icon {
   color: green;
   font-size: 30px;
 }

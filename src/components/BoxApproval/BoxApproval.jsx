@@ -48,6 +48,7 @@ const BoxApproval = () => {
   const mapDataToRelocationBox = boxData => (
     <RelocationBox
       key={boxData.box_id}
+      transactionID={boxData.transaction_id}
       boxID={boxData.box_id}
       boxHolderName={boxData.boxholder_name}
       boxHolderEmail={boxData.boxholder_email}
@@ -70,6 +71,7 @@ const BoxApproval = () => {
   // Maps a single box to a PickupBox component
   const mapDataToPickupBox = boxData => (
     <PickupBox
+      transactionID={boxData.transaction_id}
       key={boxData.box_id}
       boxID={boxData.box_id}
       boxHolderName={boxData.boxholder_name}
