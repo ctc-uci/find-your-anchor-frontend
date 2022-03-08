@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
-import { instanceOf } from 'prop-types';
+import React, { useState, useEffect } from 'react';
+import { PropTypes, instanceOf } from 'prop-types';
 import { Cookies, withCookies } from '../../common/cookie_utils';
-import { logInWithEmailAndPassword, signInWithGoogle, useNavigate } from '../../common/auth_utils';
+import {
+  logInWithEmailAndPassword,
+  signInWithGoogle,
+  useNavigate,
+  refreshToken,
+  getCurrentUser,
+  auth,
+} from '../../common/auth_utils';
 
-const Login = ({ cookies }) => {
+const Login = ({ cookies, redirectLink }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [errorMessage, setErrorMessage] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   /**
    * This function handles logging in with email/password (standard log in)
@@ -38,6 +46,20 @@ const Login = ({ cookies }) => {
     }
   };
 
+  useEffect(async () => {
+    // await refreshToken();
+    const user = await getCurrentUser(auth);
+    if (user !== null) {
+      await refreshToken();
+      navigate(redirectLink);
+    }
+    setIsLoading(false);
+  }, []);
+
+  if (isLoading) {
+    return <h1>LOADING...</h1>;
+  }
+
   return (
     <div>
       <h2>Login</h2>
@@ -64,6 +86,7 @@ const Login = ({ cookies }) => {
 
 Login.propTypes = {
   cookies: instanceOf(Cookies).isRequired,
+  redirectLink: PropTypes.string.isRequired,
 };
 
 export default withCookies(Login);

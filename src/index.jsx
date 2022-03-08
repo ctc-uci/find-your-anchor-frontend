@@ -25,7 +25,7 @@ ReactDOM.render(
           <Route exact path="/" element={<Map />} />
           <Route path="/admin" element={<AdminDashboard />} />
 
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login redirectLink="/" />} />
           <Route
             exact
             path="/logout"
