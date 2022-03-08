@@ -1,0 +1,21 @@
+.register-form-container {
+  width: 100%;
+}
+
+.register-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.register-button {
+  background-color: #345e80 !important;
+  color: white;
+  align-self: flex-end;
+}
+
+.form-heading {
+  padding-bottom: 5%;
+}
