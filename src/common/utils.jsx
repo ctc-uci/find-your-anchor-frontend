@@ -17,6 +17,8 @@ FYABackend.interceptors.response.use(
   },
 );
 
+// Reference auth_utils.js for an additional auth interceptor.
+
 export const isValidZip = zip => {
   const countries = [
     'US',

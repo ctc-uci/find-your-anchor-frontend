@@ -218,9 +218,9 @@ const sendPasswordReset = async email => {
  */
 const sendInviteLink = async email => {
   // generate a random password (not going to be used as new account will reset password)
-  const randomPassword = Math.random().toString(36).slice(-8);
-  const user = await createUserInFirebase(email, randomPassword);
-  createUserInDB('', '', email, user.uid, false, randomPassword);
+  // const randomPassword = Math.random().toString(36).slice(-8);
+  // const user = await createUserInFirebase(email, randomPassword);
+  createUserInDB('', '', email, '', false, '');
   sendPasswordReset(email);
 };
 
@@ -255,6 +255,7 @@ const logout = async (redirectPath, navigate, cookies) => {
 /**
  * Adds an axios interceptor for auth to given axiosInstance
  * @param {AxiosInstance} axiosInstance instance of axios to apply interceptor to
+ * Reference utils.js for axios instance
  */
 const addAuthInterceptor = axiosInstance => {
   // This response interceptor will refresh the user's access token using the refreshToken helper method
@@ -306,7 +307,6 @@ const addAuthInterceptor = axiosInstance => {
   );
 };
 
-// to be moved where FYABackend is declared
 addAuthInterceptor(FYABackend);
 
 export {
