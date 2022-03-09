@@ -19,7 +19,6 @@ import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
-import ImageVector from '../BoxIcons/ImageVector.svg';
 import { FYABackend, sendEmail } from '../../common/utils';
 
 const PickupBox = ({
@@ -84,11 +83,6 @@ const PickupBox = ({
               <div className={styles['box-details']}>
                 {picture !== null && (
                   <img src={picture} alt="" className={styles['pickup-image-corners']} />
-                )}
-                {picture === null && status !== 'evaluated' && (
-                  <div className={styles['image-wrapper']}>
-                    <img className={styles['image-box']} src={ImageVector} alt="" />
-                  </div>
                 )}
                 <FormControl>
                   {/* Box name */}

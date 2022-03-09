@@ -1,0 +1,35 @@
+.modal {
+  display: flex;
+}
+
+.delete-modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 36px;
+}
+
+.delete-modal-content .fya-logo {
+  height: 125px;
+  width: 125px;
+  margin-bottom: 20px;
+}
+
+.delete-modal-content .step-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.delete-modal-content .step-text {
+  text-align: center;
+  margin: 0px 60px 40px;
+}
+
+.delete-modal-content .step-button-group {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}

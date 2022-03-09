@@ -22,7 +22,6 @@ import { FYABackend, sendEmail } from '../../common/utils';
 import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
-import ImageVector from '../BoxIcons/ImageVector.svg';
 import styles from './RelocationBox.module.css';
 
 const RelocationBox = ({
@@ -156,11 +155,6 @@ const RelocationBox = ({
               <div className={styles['box-details']}>
                 {picture !== null && (
                   <img src={picture} alt="" className={styles['pickup-image-corners']} />
-                )}
-                {picture === null && status !== 'evaluated' && (
-                  <div className={styles['image-wrapper']}>
-                    <img className={styles['image-box']} src={ImageVector} alt="" />
-                  </div>
                 )}
                 {/* Box Name */}
                 <FormControl>
