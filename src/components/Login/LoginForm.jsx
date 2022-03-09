@@ -10,7 +10,7 @@ import PasswordInput from '../Inputs/PasswordInput';
 import { Cookies, withCookies } from '../../common/cookie_utils';
 import {
   logInWithEmailAndPassword,
-  // signInWithGoogle,
+  signInWithGoogle,
   useNavigate,
   refreshToken,
   getCurrentUser,
@@ -59,16 +59,15 @@ const LoginForm = ({ cookies, redirectLink }) => {
    * If the user logs in and isn't new, they are directed to the dashboard.
    * If the user fails to log in, they are directed back to the login screen
    */
-  // const handleGoogleSignIn = async e => {
-  //   try {
-  //     await signInWithGoogle('/logout', navigate, cookies);
-  //   } catch (err) {
-  //     setErrorMessage(err.message);
-  //   }
-  // };
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle('/logout', navigate, cookies);
+    } catch (err) {
+      setErrorMessage(err.message);
+    }
+  };
 
   useEffect(async () => {
-    // await refreshToken();
     const user = await getCurrentUser(auth);
     if (user !== null) {
       await refreshToken();
@@ -80,11 +79,6 @@ const LoginForm = ({ cookies, redirectLink }) => {
   if (isLoading) {
     return <h1>LOADING...</h1>;
   }
-
-  // const onSubmit = data => {
-  //   // eslint-disable-next-line no-alert
-  //   alert(JSON.stringify(data));
-  // };
 
   return (
     <div className={styles['login-form-container']}>
@@ -107,6 +101,9 @@ const LoginForm = ({ cookies, redirectLink }) => {
           Log In
         </Button>
       </form>
+      <Button className={styles['google-login-button']} onClick={handleGoogleSignIn} size="md">
+        Sign In With Google
+      </Button>
     </div>
   );
 };

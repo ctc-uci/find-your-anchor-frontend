@@ -16,6 +16,13 @@
   align-self: flex-end;
 }
 
+.google-login-button {
+  background-color: #345e80 !important;
+  color: white;
+  float: right;
+  margin-top: 2%;
+}
+
 .form-heading {
   padding-bottom: 5%;
 }
