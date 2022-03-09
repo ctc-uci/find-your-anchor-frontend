@@ -11,12 +11,11 @@ import AdminProfilePage from './pages/AdminProfilePage/AdminProfilePage';
 import ExportCSV from './pages/ExportCSV/ExportCSV';
 import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
 import Logout from './components/Login/Logout';
-import Register from './components/Register/Register';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import AuthEmail from './components/AuthEmail/AuthEmail';
 import AdminInvite from './components/AuthEmail/AdminInvite';
 import LoginPage from './pages/Login/LoginPage';
-// import RegisterPage from './pages/Register/RegisterPage';
+import RegisterPage from './pages/Register/RegisterPage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -29,7 +28,7 @@ ReactDOM.render(
             path="/logout"
             element={<ProtectedRoute path="/logout" Component={Logout} redirectPath="/" />}
           />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/auth-email" element={<AuthEmail redirectPath="/" />} />
           <Route
@@ -39,8 +38,6 @@ ReactDOM.render(
             }
           />
 
-          {/* <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} /> */}
           <Route path="/" element={<App />} />
           <Route element={<Layout isAdmin />}>
             <Route path="/admin" element={<AdminDashboard />} />

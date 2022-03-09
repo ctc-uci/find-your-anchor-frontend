@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { instanceOf } from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import { Button, Heading } from '@chakra-ui/react';
+import { Cookies, withCookies } from '../../common/cookie_utils';
+import { registerWithEmailAndPassword, signInWithGoogle } from '../../common/auth_utils';
 import styles from './RegisterForm.module.css';
 import TextInput from '../Inputs/TextInput';
 import PasswordInput from '../Inputs/PasswordInput';
@@ -22,7 +26,7 @@ const schema = yup.object({
     .oneOf([yup.ref('password'), null], 'Please confirm your password / Passwords must both match'),
 });
 
-const RegisterForm = () => {
+const RegisterForm = ({ cookies }) => {
   const {
     register,
     handleSubmit,
@@ -32,9 +36,40 @@ const RegisterForm = () => {
     delayError: 750,
   });
 
-  const onSubmit = data => {
-    // eslint-disable-next-line no-alert
-    alert(JSON.stringify(data));
+  const [errorMessage, setErrorMessage] = useState();
+  const navigate = useNavigate();
+
+  const onSubmit = async e => {
+    try {
+      if (e.password !== e.confirmPassword) {
+        throw new Error("Passwords don't match");
+      }
+      await registerWithEmailAndPassword(
+        e.firstName,
+        e.lastName,
+        e.email,
+        e.password,
+        navigate,
+        '/',
+      );
+    } catch (error) {
+      setErrorMessage(error.message);
+      console.log(errorMessage);
+    }
+  };
+
+  /**
+   * This function handles signing up with Google
+   * If the user logs in and is new, they are directed to a new-user path
+   * If the user logs in and isn't new, they are directed to the dashboard.
+   * If the user fails to log in, they are directed back to the login screen
+   */
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle('/logout', navigate, cookies);
+    } catch (err) {
+      setErrorMessage(err.message);
+    }
   };
 
   return (
@@ -72,8 +107,15 @@ const RegisterForm = () => {
           Register
         </Button>
       </form>
+      <Button className={styles['google-register-button']} onClick={handleGoogleSignIn} size="md">
+        Sign Up With Google
+      </Button>
     </div>
   );
 };
 
-export default RegisterForm;
+RegisterForm.propTypes = {
+  cookies: instanceOf(Cookies).isRequired,
+};
+
+export default withCookies(RegisterForm);
