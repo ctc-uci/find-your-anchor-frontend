@@ -5,10 +5,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import ProtectedRoute from './common/ProtectedRoute';
+import Layout from './components/Layout/Layout';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
+import AdminProfilePage from './pages/AdminProfilePage/AdminProfilePage';
 import ExportCSV from './pages/ExportCSV/ExportCSV';
-
-import Map from './components/Map/Map';
 import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
 import Login from './components/Login/Login';
 import Logout from './components/Login/Logout';
@@ -16,15 +16,14 @@ import Register from './components/Register/Register';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import AuthEmail from './components/AuthEmail/AuthEmail';
 import AdminInvite from './components/AuthEmail/AdminInvite';
+// import LoginPage from './pages/Login/LoginPage';
+// import RegisterPage from './pages/Register/RegisterPage';
 
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
       <Router>
         <Routes>
-          <Route exact path="/" element={<Map />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-
           <Route path="/login" element={<Login redirectLink="/" />} />
           <Route
             exact
@@ -41,10 +40,17 @@ ReactDOM.render(
             }
           />
 
-          <Route path="/dropoff-form" element={<App />} />
-          <Route path="/pickup-form" element={<App />} />
-          <Route path="/export-csv" element={<ExportCSV />} />
-          <Route path="/add-box-form" element={<AddBoxFormPage />} />
+          {/* <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} /> */}
+          <Route path="/" element={<App />} />
+          <Route element={<Layout isAdmin />}>
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/profile" element={<AdminProfilePage />} />
+            <Route path="/dropoff-form" element={<App />} />
+            <Route path="/pickup-form" element={<App />} />
+            <Route path="/export-csv" element={<ExportCSV />} />
+            <Route path="/add-box-form" element={<AddBoxFormPage />} />
+          </Route>
         </Routes>
       </Router>
     </CookiesProvider>

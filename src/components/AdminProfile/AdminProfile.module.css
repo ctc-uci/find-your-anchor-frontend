@@ -1,0 +1,57 @@
+.profile-page-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 30em;
+  margin: 0 auto;
+}
+
+.top-buttons {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 2vh 0;
+  padding: 2.75em;
+  border: 2px solid #e2e8f0;
+  border-radius: 22px;
+}
+
+.logo-wrapper {
+  max-width: 140px;
+}
+
+.fya-logo {
+  max-width: 100%;
+  height: auto;
+  width: auto;
+}
+
+.form-input {
+  width: 100%;
+  margin-top: 2.2vh;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.editable-input {
+  gap: 0.65em;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bottom-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 2em;
+}
