@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { PropTypes } from 'prop-types';
 import { FormErrorMessage, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
-import { formatDate } from '../../common/utils';
+import { formatDate, FYABackend } from '../../common/utils';
 import { uploadBoxPhoto, validateZip } from '../../common/FormUtils/boxFormUtils';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -15,8 +15,8 @@ import styles from './PickupBoxForm.module.css';
 yup.addMethod(yup.string, 'isZip', validateZip);
 const schema = yup
   .object({
-    name: yup.string().typeError('Invalid name'),
-    boxNumber: yup
+    boxholderName: yup.string().typeError('Invalid name'),
+    boxID: yup
       .number()
       .required('Invalid box number, please enter a valid box number')
       .typeError('Invalid box number, please enter a valid box number'),
@@ -24,11 +24,11 @@ const schema = yup
       .date()
       .required('Invalid date, please enter a valid date')
       .typeError('Invalid date, please enter a valid date'),
-    email: yup
+    boxholderEmail: yup
       .string()
       .required('Invalid email address, please enter a valid email address')
       .typeError('Invalid email address, please enter a valid email address'),
-    zipCode: yup.string().isZip().required('Invalid zipcode, please enter a valid zipcode'),
+    zipcode: yup.string().isZip().required('Invalid zipcode, please enter a valid zipcode'),
     picture: yup.string().url(),
   })
   .required();
@@ -45,6 +45,7 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
   });
 
   const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async data => {
     setFormSubmitted(true);
@@ -52,27 +53,48 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
     formData.date = formatDate(data.date);
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
 
-    // TODO: Add call to post data to backend
+    try {
+      setLoading(true);
+      await FYABackend.post('/boxHistory', {
+        ...formData,
+        pickup: true,
+      });
+      setFormSubmitted(true);
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      // TODO: show error banner on failure
+      console.log(err.message);
+    }
   };
 
   return (
     <form className={styles['pickup-box-form']} onSubmit={handleSubmit(onSubmit)}>
       <div className={styles['pickup-box-info-section-left']}>
         <div>
-          <FormControl isInvalid={errors?.name}>
-            <FormLabel htmlFor="name">Name</FormLabel>
-            <Input id="name" placeholder="John Adams" name="name" {...register('name')} />
-            <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+          <FormControl isInvalid={errors?.boxholderName}>
+            <FormLabel htmlFor="boxholderName">Name</FormLabel>
+            <Input
+              id="boxholderName"
+              placeholder="John Adams"
+              name="boxholderName"
+              {...register('boxholderName')}
+            />
+            <FormErrorMessage>{errors.boxholderName?.message}</FormErrorMessage>
           </FormControl>
           <br />
-          <FormControl isInvalid={errors?.boxNumber}>
-            <FormLabel htmlFor="boxNumber">Box Number *</FormLabel>
-            <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
-            <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
+          <FormControl isInvalid={errors?.boxID}>
+            <FormLabel htmlFor="boxID" className={styles['required-field']}>
+              Box Number
+            </FormLabel>
+            <Input id="boxID" placeholder="12345" name="boxID" {...register('boxID')} />
+            <FormErrorMessage>{errors.boxID?.message}</FormErrorMessage>
           </FormControl>
           <br />
           <FormControl isInvalid={errors?.date}>
-            <FormLabel htmlFor="date">Date *</FormLabel>
+            <FormLabel htmlFor="date" className={styles['required-field']}>
+              Date
+            </FormLabel>
             <Controller
               control={control}
               name="date"
@@ -90,18 +112,27 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
           </FormControl>
           <br />
-          <FormControl isInvalid={errors?.zipCode}>
-            <FormLabel htmlFor="zipCode">Zip Code *</FormLabel>
-            <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
-            <FormErrorMessage>{errors.zipCode?.message}</FormErrorMessage>
+          <FormControl isInvalid={errors?.zipcode}>
+            <FormLabel htmlFor="zipcode" className={styles['required-field']}>
+              Zip Code
+            </FormLabel>
+            <Input id="zipCode" placeholder="e.g. 90210" name="zipcode" {...register('zipcode')} />
+            <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
           </FormControl>
         </div>
       </div>
       <div className={styles['pickup-box-info-section-right']}>
-        <FormControl isInvalid={errors?.email}>
-          <FormLabel htmlFor="email">Email Address *</FormLabel>
-          <Input id="email" placeholder="name@domain.com" name="email" {...register('email')} />
-          <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+        <FormControl isInvalid={errors?.boxholderEmail}>
+          <FormLabel htmlFor="boxholderEmail" className={styles['required-field']}>
+            Email Address
+          </FormLabel>
+          <Input
+            id="boxholderEmail"
+            placeholder="name@domain.com"
+            name="boxholderEmail"
+            {...register('boxholderEmail')}
+          />
+          <FormErrorMessage>{errors.boxholderEmail?.message}</FormErrorMessage>
         </FormControl>
         <br />
         <div>
@@ -130,7 +161,13 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
             <Button size="md" className="cancel-button">
               Cancel
             </Button>
-            <Button type="submit" size="md" colorScheme="teal">
+            <Button
+              type="submit"
+              size="md"
+              colorScheme="teal"
+              isLoading={loading}
+              loadingText="Submitting"
+            >
               Submit
             </Button>
           </div>

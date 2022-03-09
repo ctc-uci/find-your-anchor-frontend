@@ -1,10 +1,11 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { Button, Heading } from '@chakra-ui/react';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import styles from './BoxFormConfirmation.module.css';
 
-const BoxFormConfirmation = pickup => {
+const BoxFormConfirmation = ({ pickup }) => {
   const navigate = useNavigate();
 
   const handleBackToHome = () => {
@@ -34,6 +35,10 @@ const BoxFormConfirmation = pickup => {
       </Button>
     </div>
   );
+};
+
+BoxFormConfirmation.propTypes = {
+  pickup: PropTypes.bool.isRequired,
 };
 
 export default BoxFormConfirmation;

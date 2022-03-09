@@ -11,7 +11,7 @@ const RelocateBoxFormPage = () => {
   return (
     <ChakraProvider>
       {submitted ? (
-        <BoxFormConfirmation />
+        <BoxFormConfirmation pickup={false} />
       ) : (
         <>
           <h1 className={styles['relocate-page-title']}>Relocate Box</h1>

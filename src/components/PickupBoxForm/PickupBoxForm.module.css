@@ -12,6 +12,11 @@
   margin-top: 3%;
 }
 
+.required-field::after {
+  content: " *";
+  color: red;
+}
+
 /* box image section */
 .box-image {
   width: 100%;
