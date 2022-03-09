@@ -46,7 +46,7 @@ const LoginForm = ({ cookies, redirectLink }) => {
    */
   const onSubmit = async e => {
     try {
-      await logInWithEmailAndPassword(e.email, e.password, '/logout', navigate, cookies);
+      await logInWithEmailAndPassword(e.email, e.password, '/', navigate, cookies);
     } catch (err) {
       setErrorMessage(err.message);
       console.log(errorMessage);

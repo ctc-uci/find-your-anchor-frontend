@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { PropTypes, instanceOf } from 'prop-types';
 import { ChakraProvider, Button, useDisclosure, Input, Text } from '@chakra-ui/react';
 
 import { RiPencilFill, RiCheckFill } from 'react-icons/ri';
@@ -8,6 +8,9 @@ import styles from './AdminProfile.module.css';
 import DeleteAccountModal from './DeleteAccountModal/DeleteAccountModal';
 import SendLinkModal from './SendLinkModal/SendLinkModal';
 import FYALogoLarge from '../../assets/fya-logo-large.svg';
+
+import { logout, useNavigate } from '../../common/auth_utils';
+import { Cookies, withCookies } from '../../common/cookie_utils';
 
 const TextInput = ({ inputLabel, placeHolder, editable, editState, makeEditable }) => (
   <div className={styles['form-input']}>
@@ -25,7 +28,7 @@ const TextInput = ({ inputLabel, placeHolder, editable, editState, makeEditable 
   </div>
 );
 
-const AdminProfile = () => {
+const AdminProfile = ({ cookies }) => {
   const {
     isOpen: isOpenDeleteModal,
     onOpen: onOpenDeleteModal,
@@ -40,6 +43,18 @@ const AdminProfile = () => {
 
   const [editFirst, setEditFirst] = useState(false);
   const [editLast, setEditLast] = useState(false);
+
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState();
+
+  const handleLogout = async () => {
+    try {
+      await logout('/login', navigate, cookies);
+    } catch (err) {
+      setErrorMessage(err.message);
+      console.log(errorMessage);
+    }
+  };
 
   return (
     <ChakraProvider>
@@ -81,7 +96,14 @@ const AdminProfile = () => {
           <Button onClick={onOpenDeleteModal} colorScheme="red" size="lg" rightIcon={<DiReact />}>
             Delete Account
           </Button>
-          <Button colorScheme="teal" bg="#345E80" fontSize="20px" size="lg" rightIcon={<DiReact />}>
+          <Button
+            onClick={handleLogout}
+            colorScheme="teal"
+            bg="#345E80"
+            fontSize="20px"
+            size="lg"
+            rightIcon={<DiReact />}
+          >
             Logout
           </Button>
           <DeleteAccountModal isOpen={isOpenDeleteModal} onClose={onCloseDeleteModal} />
@@ -105,4 +127,8 @@ TextInput.propTypes = {
   makeEditable: PropTypes.func,
 };
 
-export default AdminProfile;
+AdminProfile.propTypes = {
+  cookies: instanceOf(Cookies).isRequired,
+};
+
+export default withCookies(AdminProfile);

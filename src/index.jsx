@@ -10,7 +10,6 @@ import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import AdminProfilePage from './pages/AdminProfilePage/AdminProfilePage';
 import ExportCSV from './pages/ExportCSV/ExportCSV';
 import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
-import Logout from './components/Login/Logout';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import AuthEmail from './components/AuthEmail/AuthEmail';
 import AdminInvite from './components/AuthEmail/AdminInvite';
@@ -23,11 +22,6 @@ ReactDOM.render(
       <Router>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route
-            exact
-            path="/logout"
-            element={<ProtectedRoute path="/logout" Component={Logout} redirectPath="/" />}
-          />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/auth-email" element={<AuthEmail redirectPath="/" />} />
@@ -41,7 +35,13 @@ ReactDOM.render(
           <Route path="/" element={<App />} />
           <Route element={<Layout isAdmin />}>
             <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/profile" element={<AdminProfilePage />} />
+            <Route
+              exact
+              path="/profile"
+              element={
+                <ProtectedRoute path="/profile" Component={AdminProfilePage} redirectPath="/" />
+              }
+            />
             <Route path="/dropoff-form" element={<App />} />
             <Route path="/pickup-form" element={<App />} />
             <Route path="/export-csv" element={<ExportCSV />} />
