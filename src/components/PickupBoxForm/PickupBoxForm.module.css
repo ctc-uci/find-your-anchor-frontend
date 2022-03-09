@@ -13,7 +13,7 @@
 }
 
 .required-field::after {
-  content: " *";
+  content: ' *';
   color: red;
 }
 

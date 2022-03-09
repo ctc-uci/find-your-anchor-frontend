@@ -1,34 +1,54 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import './NavBar.css';
+import styles from './NavBar.module.css';
 import FYALogo from '../../assets/fya-logo.png';
+import PlaceHolderPFP from '../../assets/placeholder_pfp.svg';
 
-function NavBar() {
+const AdminLinks = () => (
+  <>
+    <Link to="/add-box-form">Add Box</Link>
+    <Link to="/upload-csv">Upload CSV</Link>
+    <Link to="/export-csv">Export CSV</Link>
+  </>
+);
+
+const UserLinks = () => (
+  <>
+    <Link to="/relocate-box-form">Relocate a Box</Link>
+    <Link to="/pickup-box-form">Pick Up a Box</Link>
+  </>
+);
+
+const NavBar = ({ isAdmin }) => {
   return (
-    <div className="nav-bar">
-      <div className="fya-logo">
-        <img src={FYALogo} alt="Find Your Anchor Logo" />
-      </div>
-      <div className="navbar-buttons-and-account">
-        <Link className="navbar-buttons" to="/add-box-form">
-          Add Box
-        </Link>
-        <Link className="navbar-buttons" to="/upload-csv">
-          Upload CSV
-        </Link>
-        <Link className="navbar-buttons" to="/export-csv">
-          Export CSV
-        </Link>
-        <Link to="/profile">
-          <div className="navbar-account">
-            <span className="navbar-account-circle" />
-            <p className="navbar-account-name">SA</p>
-          </div>
-        </Link>
+    <div className={styles['nav-bar']}>
+      <Link to="/">
+        <div className={styles['fya-logo']}>
+          <img src={FYALogo} alt="Find Your Anchor Logo" />
+        </div>
+      </Link>
+      <div className={styles['navbar-buttons-and-account']}>
+        <div className={styles['navbar-buttons']}>{isAdmin ? <AdminLinks /> : <UserLinks />}</div>
+        {isAdmin && (
+          <Link to="/profile">
+            <div className={styles['navbar-account']}>
+              <img className={styles['profile-picture']} src={PlaceHolderPFP} alt="Profile" />
+            </div>
+          </Link>
+        )}
       </div>
     </div>
   );
-}
+};
+
+NavBar.defaultProps = {
+  isAdmin: false,
+};
+
+NavBar.propTypes = {
+  isAdmin: PropTypes.bool,
+};
 
 export default NavBar;
