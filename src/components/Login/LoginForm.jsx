@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { PropTypes, instanceOf } from 'prop-types';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Heading } from '@chakra-ui/react';
 import styles from './LoginForm.module.css';
 import TextInput from '../Inputs/TextInput';
 import PasswordInput from '../Inputs/PasswordInput';
+import { Cookies, withCookies } from '../../common/cookie_utils';
+import {
+  logInWithEmailAndPassword,
+  // signInWithGoogle,
+  useNavigate,
+  refreshToken,
+  getCurrentUser,
+  auth,
+} from '../../common/auth_utils';
 
 const schema = yup.object({
   email: yup
@@ -15,7 +25,7 @@ const schema = yup.object({
   password: yup.string().required('Incorrect Password / Please enter your password'),
 });
 
-const LoginForm = () => {
+const LoginForm = ({ cookies, redirectLink }) => {
   const {
     register,
     handleSubmit,
@@ -25,10 +35,56 @@ const LoginForm = () => {
     delayError: 750,
   });
 
-  const onSubmit = data => {
-    // eslint-disable-next-line no-alert
-    alert(JSON.stringify(data));
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+
+  /**
+   * This function handles logging in with email/password (standard log in)
+   * If the user signs in successfully, they are redirected to /logout, otherwise they are redirected to the login screen
+   * @param {Event} e
+   */
+  const onSubmit = async e => {
+    try {
+      await logInWithEmailAndPassword(e.email, e.password, '/logout', navigate, cookies);
+    } catch (err) {
+      setErrorMessage(err.message);
+      console.log(errorMessage);
+    }
   };
+
+  /**
+   * This function handles logging in with Google
+   * If the user logs in and is new, they are directed to a new-user path
+   * If the user logs in and isn't new, they are directed to the dashboard.
+   * If the user fails to log in, they are directed back to the login screen
+   */
+  // const handleGoogleSignIn = async e => {
+  //   try {
+  //     await signInWithGoogle('/logout', navigate, cookies);
+  //   } catch (err) {
+  //     setErrorMessage(err.message);
+  //   }
+  // };
+
+  useEffect(async () => {
+    // await refreshToken();
+    const user = await getCurrentUser(auth);
+    if (user !== null) {
+      await refreshToken();
+      navigate(redirectLink);
+    }
+    setIsLoading(false);
+  }, []);
+
+  if (isLoading) {
+    return <h1>LOADING...</h1>;
+  }
+
+  // const onSubmit = data => {
+  //   // eslint-disable-next-line no-alert
+  //   alert(JSON.stringify(data));
+  // };
 
   return (
     <div className={styles['login-form-container']}>
@@ -55,4 +111,9 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+LoginForm.propTypes = {
+  cookies: instanceOf(Cookies).isRequired,
+  redirectLink: PropTypes.string.isRequired,
+};
+
+export default withCookies(LoginForm);

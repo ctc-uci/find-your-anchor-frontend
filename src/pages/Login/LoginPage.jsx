@@ -14,7 +14,7 @@ const LoginPage = () => {
               <img src={FYALogo} className={styles.logo} alt="logo" />
             </div>
             <div className={styles['login-form-component']}>
-              <LoginForm />
+              <LoginForm redirectLink="/" />
             </div>
           </div>
         </div>

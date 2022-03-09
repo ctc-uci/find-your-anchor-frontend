@@ -10,13 +10,13 @@ import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import AdminProfilePage from './pages/AdminProfilePage/AdminProfilePage';
 import ExportCSV from './pages/ExportCSV/ExportCSV';
 import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
-import Login from './components/Login/Login';
+// import Login from './components/Login/Login';
 import Logout from './components/Login/Logout';
 import Register from './components/Register/Register';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import AuthEmail from './components/AuthEmail/AuthEmail';
 import AdminInvite from './components/AuthEmail/AdminInvite';
-// import LoginPage from './pages/Login/LoginPage';
+import LoginPage from './pages/Login/LoginPage';
 // import RegisterPage from './pages/Register/RegisterPage';
 
 ReactDOM.render(
@@ -24,7 +24,7 @@ ReactDOM.render(
     <CookiesProvider>
       <Router>
         <Routes>
-          <Route path="/login" element={<Login redirectLink="/" />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route
             exact
             path="/logout"
