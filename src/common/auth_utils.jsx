@@ -218,9 +218,9 @@ const sendPasswordReset = async email => {
  */
 const sendInviteLink = async email => {
   // generate a random password (not going to be used as new account will reset password)
-  // const randomPassword = Math.random().toString(36).slice(-8);
-  // const user = await createUserInFirebase(email, randomPassword);
-  createUserInDB('', '', email, '', false, '');
+  const randomPassword = Math.random().toString(36).slice(-8);
+  const user = await createUserInFirebase(email, randomPassword);
+  createUserInDB('', '', email, user.uid, false, '');
   sendPasswordReset(email);
 };
 
