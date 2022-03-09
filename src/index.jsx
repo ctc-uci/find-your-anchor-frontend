@@ -9,13 +9,16 @@ import AdminProfilePage from './pages/AdminProfilePage/AdminProfilePage';
 import ExportCSV from './pages/ExportCSV/ExportCSV';
 import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
 import EmailForm from './components/Email/EmailForm';
+import LoginPage from './pages/Login/LoginPage';
+import RegisterPage from './pages/Register/RegisterPage';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<App />} />
-        <Route path="/login" element={<App />} />
         <Route element={<Layout isAdmin />}>
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/profile" element={<AdminProfilePage />} />
