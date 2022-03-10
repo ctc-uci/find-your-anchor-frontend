@@ -58,9 +58,9 @@ export const sendEmail = (name, email, messageHtml) => {
     email,
     messageHtml,
   }).then(response => {
-    if (response.data.msg === 'success') {
+    if (response.status === 200) {
       alert('Email sent, awesome!');
-    } else if (response.data.msg === 'fail') {
+    } else {
       alert('Oops, something went wrong. Try again');
     }
   });
