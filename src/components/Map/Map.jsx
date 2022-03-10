@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl } from 'react-leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import PropTypes from 'prop-types';
 import icons from 'leaflet-color-number-markers';
 import PopUpBox from '../PopUpBox/PopUpBox';
 
 import './Map.css';
 
-const Map = () => {
+const Map = ({ setShowInfo }) => {
   // The activeMarker represents the current marker that is selected (i.e. which popup is shown)
   const [activeMarker, setActiveMarker] = useState(null);
   // This mapState variable stores the current instance of the map.
@@ -81,6 +82,7 @@ const Map = () => {
             click: () => {
               setActiveMarker(markerObject);
               mapState.flyTo(markerObject.coordinates, 10);
+              setShowInfo(true);
             },
           }}
         />
@@ -105,6 +107,10 @@ const Map = () => {
       )}
     </MapContainer>
   );
+};
+
+Map.propTypes = {
+  setShowInfo: PropTypes.func.isRequired,
 };
 
 export default Map;
