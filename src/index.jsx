@@ -8,7 +8,6 @@ import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import AdminProfilePage from './pages/AdminProfilePage/AdminProfilePage';
 import ExportCSV from './pages/ExportCSV/ExportCSV';
 import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
-import EmailForm from './components/Email/EmailForm';
 import LoginPage from './pages/Login/LoginPage';
 import RegisterPage from './pages/Register/RegisterPage';
 
@@ -27,7 +26,6 @@ ReactDOM.render(
           <Route path="/export-csv" element={<ExportCSV />} />
           <Route path="/add-box-form" element={<AddBoxFormPage />} />
         </Route>
-        <Route path="/email-form" element={<EmailForm />} />
       </Routes>
     </Router>
   </React.StrictMode>,
