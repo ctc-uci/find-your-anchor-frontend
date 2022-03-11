@@ -10,19 +10,22 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
   Button,
+  RadioGroup,
+  Radio,
+  Stack,
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
 
 import { FYABackend, formatDate } from '../../common/utils';
-import { uploadBoxPhoto, validateZip } from './AddBoxFormUtils';
+import { uploadBoxPhoto, validateZip, validateLaunchedOrg } from './AddBoxFormUtils';
 import DropZone from './DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
 import './AddBoxForm.css';
 import './DatePicker.css';
 
 yup.addMethod(yup.string, 'isZip', validateZip);
+yup.addMethod(yup.string, 'isLaunchedOrg', validateLaunchedOrg);
 const schema = yup
   .object({
     boxNumber: yup.number().required().typeError('Invalid box number'),
@@ -34,7 +37,7 @@ const schema = yup
     boxLocation: yup.string(),
     message: yup.string(),
     comments: yup.string(),
-    launchedOrganically: yup.bool().default(false),
+    launchedOrganically: yup.string().isLaunchedOrg().required('Invalid selection'),
     picture: yup.string().url(),
   })
   .required();
@@ -54,6 +57,7 @@ const BoxForm = () => {
 
   const onSubmit = async data => {
     const formData = data;
+    console.log('FORMDATA: ', formData);
     formData.date = formatDate(data.date);
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
 
@@ -67,8 +71,9 @@ const BoxForm = () => {
 
   return (
     <form className="box-form" onSubmit={handleSubmit(onSubmit)}>
-      <div className="box-info-section">
-        <div className="box-info">
+      <div className="box-form-container">
+        {/* left column */}
+        <div className="left-column">
           <FormControl isInvalid={errors?.date}>
             <FormLabel htmlFor="date">Date *</FormLabel>
             <Controller
@@ -87,19 +92,41 @@ const BoxForm = () => {
             />
             <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
           </FormControl>
-
-          <FormControl isInvalid={errors?.boxNumber}>
-            <FormLabel htmlFor="boxNumber">Box Number *</FormLabel>
-            <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
-            <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
-          </FormControl>
-
           <FormControl isInvalid={errors?.zipCode}>
             <FormLabel htmlFor="zipCode">Zip Code *</FormLabel>
             <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
             <FormErrorMessage>{errors.zipCode?.message}</FormErrorMessage>
           </FormControl>
-          <FormControl>
+          <div className="box-message-section">
+            <FormControl>
+              <FormLabel htmlFor="message">Message:</FormLabel>
+              <Textarea
+                id="message"
+                placeholder="200 characters max"
+                maxLength="200"
+                rows="5"
+                name="message"
+                {...register('message')}
+              />
+            </FormControl>
+          </div>
+          <div className="box-comments-section">
+            <FormControl>
+              <FormLabel htmlFor="comments">Additional Comments (for admin purposes)</FormLabel>
+              <Textarea
+                id="message"
+                placeholder="200 characters max"
+                maxLength="200"
+                rows="5"
+                name="comments"
+                {...register('comments')}
+              />
+            </FormControl>
+          </div>
+        </div>
+        {/* right column */}
+        <div className="right-column">
+          <FormControl FormControl>
             <FormLabel htmlFor="location">Box Location</FormLabel>
             <Input
               id="location"
@@ -108,73 +135,51 @@ const BoxForm = () => {
               {...register('boxLocation')}
             />
           </FormControl>
-        </div>
-      </div>
-      <div className="box-message-section">
-        <FormControl>
-          <FormLabel htmlFor="message">Message:</FormLabel>
-          <Textarea
-            id="message"
-            placeholder="200 characters max"
-            maxLength="200"
-            rows="6"
-            name="message"
-            {...register('message')}
-          />
-        </FormControl>
-      </div>
-      <div className="box-comments-section">
-        <FormControl>
-          <FormLabel htmlFor="comments">Additional Comments (for admin purposes)</FormLabel>
-          <Textarea
-            id="message"
-            placeholder="200 characters max"
-            maxLength="200"
-            rows="6"
-            name="comments"
-            {...register('comments')}
-          />
-        </FormControl>
-      </div>
-      <div className="box-photo-section">
-        <FormControl>
-          <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
-          <DropZone setFiles={setFiles} />
-        </FormControl>
-      </div>
-      <div className="box-photo-preview-section">
-        <div className="box-image">
-          {files.length !== 0 && <img src={URL.createObjectURL(files[0])} alt="" />}
-        </div>
-      </div>
-      <div className="box-launched-section">
-        <div className="box-launched">
-          <FormControl>
-            <Checkbox
-              className="checkbox"
-              name="launchedOrganically"
-              {...register('launchedOrganically')}
-            />
-            <FormLabel htmlFor="isLaunched">Launched Organically?</FormLabel>
-            <div className="info-icon">
-              <InfoIcon />
-              <span className="tooltiptext">
-                Organic launch means when the box is left somewhere for an individual to stumble
-                upon it.
-              </span>
-            </div>
+          <FormControl isInvalid={errors?.boxNumber}>
+            <FormLabel htmlFor="boxNumber">Box Number *</FormLabel>
+            <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
+            <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
           </FormControl>
-        </div>
-        <div className="box-bottom">
-          <div className="box-buttons">
-            <Button size="md" className="cancel-button">
-              Cancel
-            </Button>
-            <Button type="submit" size="md" colorScheme="teal">
-              Add Box
-            </Button>
+          <div className="box-launched-section">
+            <FormControl isInvalid={errors?.launchedOrganically}>
+              <FormLabel htmlFor="isLaunched">Launched Organically? *</FormLabel>
+              <div className="info-icon">
+                <InfoIcon />
+                <span className="tooltiptext">
+                  Organic launch means when the box is left somewhere for an individual to stumble
+                  upon it.
+                </span>
+              </div>
+              <RadioGroup defaultValue="1" className="launch-org-radio">
+                <Stack spacing={8} direction="row">
+                  <Radio
+                    name="launchedOrganically"
+                    value="yes"
+                    {...register('launchedOrganically')}
+                  >
+                    Yes
+                  </Radio>
+                  <Radio name="launchedOrganically" value="no" {...register('launchedOrganically')}>
+                    No
+                  </Radio>
+                </Stack>
+              </RadioGroup>
+              <FormErrorMessage>{errors.launchedOrganically?.message}</FormErrorMessage>
+            </FormControl>
+          </div>
+          <div className="box-photo-section">
+            <FormControl>
+              <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
+              <DropZone setFiles={setFiles} />
+            </FormControl>
           </div>
         </div>
+      </div>
+
+      <div className="box-buttons">
+        <Button type="submit" size="md" colorScheme="teal">
+          Submit
+        </Button>
       </div>
     </form>
   );

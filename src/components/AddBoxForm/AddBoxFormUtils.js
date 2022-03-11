@@ -8,6 +8,14 @@ function validateZip() {
   });
 }
 
+function validateLaunchedOrg() {
+  return this.test('isLaunchedOrg', function launchedOrgCheck(value) {
+    console.log('validateLaunchedOrg: ', value);
+    const { path, createError } = this;
+    return value === 'yes' ? true : createError({ path, message: 'Invalid selection' });
+  });
+}
+
 const uploadBoxPhoto = async file => {
   // get S3 upload url from server
   const { data: uploadUrl } = await FYABackend.get('/s3Upload');
@@ -24,4 +32,4 @@ const uploadBoxPhoto = async file => {
   return imageUrl;
 };
 
-export { validateZip, uploadBoxPhoto };
+export { validateZip, validateLaunchedOrg, uploadBoxPhoto };
