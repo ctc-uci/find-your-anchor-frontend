@@ -18,6 +18,7 @@ ReactDOM.render(
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/" element={<App />} />
         <Route element={<Layout isAdmin />}>
           <Route path="/admin" element={<AdminDashboard />} />
@@ -26,7 +27,6 @@ ReactDOM.render(
           <Route path="/pickup-form" element={<App />} />
           <Route path="/export-csv" element={<ExportCSV />} />
           <Route path="/add-box-form" element={<AddBoxFormPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
         </Route>
       </Routes>
     </Router>
