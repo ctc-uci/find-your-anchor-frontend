@@ -72,6 +72,10 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
       await FYABackend.post('/boxHistory', {
         ...formData,
         launchedOrganically: formData.dropOffMethod === 'organic-launch',
+        pickup: false,
+        status: 'under review',
+        messageStatus: 'pending',
+        imageStatus: 'pending',
       });
       setFormSubmitted(true);
       setLoading(false);

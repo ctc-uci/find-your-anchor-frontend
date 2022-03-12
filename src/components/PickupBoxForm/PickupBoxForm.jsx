@@ -58,6 +58,9 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
       await FYABackend.post('/boxHistory', {
         ...formData,
         pickup: true,
+        status: 'under review',
+        messageStatus: 'pending',
+        imageStatus: 'pending',
       });
       setFormSubmitted(true);
       setLoading(false);
