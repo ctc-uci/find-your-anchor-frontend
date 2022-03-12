@@ -9,7 +9,6 @@
 
 .navbar-buttons-and-account {
   gap: 20px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -28,7 +27,11 @@
   border-radius: 50%;
 }
 
-a {
+.nav-link-unselected {
   color: black;
   text-decoration: none;
+}
+
+.nav-link-selected {
+  color: #126893;
 }

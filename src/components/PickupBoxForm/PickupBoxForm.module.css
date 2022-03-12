@@ -40,9 +40,9 @@
   color: var(--text-gray-color);
 }
 
-.box-buttons {
-  display: flex;
-  column-gap: 10px;
+.submit-button {
+  float: right;
+  margin-bottom: 3%;
 }
 
 .pickup-box-photo-preview-section {

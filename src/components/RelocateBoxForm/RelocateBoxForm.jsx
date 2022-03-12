@@ -209,20 +209,16 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
         </div>
         <br />
         <div className={styles['box-bottom']}>
-          <div className={styles['box-buttons']}>
-            <Button size="md" className="cancel-button">
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              size="md"
-              colorScheme="teal"
-              isLoading={loading}
-              loadingText="Submitting"
-            >
-              Submit
-            </Button>
-          </div>
+          <Button
+            type="submit"
+            size="md"
+            colorScheme="teal"
+            isLoading={loading}
+            loadingText="Submitting"
+            className={styles['submit-button']}
+          >
+            Submit
+          </Button>
         </div>
       </div>
     </form>
