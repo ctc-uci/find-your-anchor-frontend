@@ -10,6 +10,7 @@ import ExportCSV from './pages/ExportCSV/ExportCSV';
 import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
 import LoginPage from './pages/Login/LoginPage';
 import RegisterPage from './pages/Register/RegisterPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage/ResetPasswordPage';
 
 ReactDOM.render(
@@ -18,6 +19,7 @@ ReactDOM.render(
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/" element={<App />} />
         <Route element={<Layout isAdmin />}>
           <Route path="/admin" element={<AdminDashboard />} />

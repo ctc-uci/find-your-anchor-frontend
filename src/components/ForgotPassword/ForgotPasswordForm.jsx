@@ -2,7 +2,8 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Heading } from '@chakra-ui/react';
+import { Button, Heading, Text } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 import styles from './ForgotPasswordForm.module.css';
 import TextInput from '../Inputs/TextInput';
 
@@ -29,9 +30,13 @@ const ForgotPasswordForm = () => {
   };
 
   return (
-    <div className={styles['login-form-container']}>
+    <div className={styles['forgot-password-form-container']}>
       <Heading className={styles['form-heading']}>FORGOT PASSWORD</Heading>
-      <form className={styles['login-form']} onSubmit={handleSubmit(onSubmit)}>
+      <form className={styles['forgot-password-form']} onSubmit={handleSubmit(onSubmit)}>
+        <Text>
+          Please enter your registered FYA email address and we will send you a link to reset your
+          password.
+        </Text>
         <TextInput
           register={register('email')}
           error={errors?.email}
@@ -39,8 +44,13 @@ const ForgotPasswordForm = () => {
           placeholder="name@findyouranchor.us"
           title="FYA Email Address"
         />
-        <Button className={styles['login-button']} type="submit" size="md">
-          Log In
+        <Link to="/login" className={styles['return-to-login-link']}>
+          <Text className={styles['return-to-login-text']} as="u">
+            Return to Login
+          </Text>
+        </Link>
+        <Button className={styles['send-email-button']} type="submit" size="md">
+          Send Email
         </Button>
       </form>
     </div>
