@@ -4,9 +4,10 @@
 .dropzone-zone {
   text-align: center;
   padding: 55px;
+  height: 235px;
   border-radius: 5px;
   border-width: 2px;
-  border-style: dashed;
+  border-style: solid;
   border-color: #b9b9b9;
   background-color: var(--dropzone-color);
   color: #b9b9b9;
@@ -27,6 +28,13 @@
   font-size: 0.8rem;
 }
 
+.dropzone-icon {
+  /* width: 80px;
+  height: 80px; */
+  /* margin-bottom: 20px; */
+  margin-left: 100px;
+}
+
 .fileSelector {
   border: none;
   background-color: transparent;
@@ -41,15 +49,6 @@
   padding: 0;
 }
 
-.file-item-button {
-  border: 1px solid #a0aec0;
-  border-radius: 2px;
-  height: 30px;
-  width: 30px;
-  margin-right: 10px;
-  padding-bottom: 2px;
-}
-
-.file-item-span {
-  color: var(--text-gray-color);
+.file-item-span-text {
+  margin-left: 20px;
 }

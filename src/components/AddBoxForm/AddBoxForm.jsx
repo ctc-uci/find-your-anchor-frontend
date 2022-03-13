@@ -19,10 +19,10 @@ import { InfoIcon } from '@chakra-ui/icons';
 
 import { FYABackend, formatDate } from '../../common/utils';
 import { uploadBoxPhoto, validateZip } from './AddBoxFormUtils';
-import DropZone from './DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
 import './AddBoxForm.css';
 import './DatePicker.css';
+import AddBoxDropZone from './DropZone/AddBoxDropZone';
 
 yup.addMethod(yup.string, 'isZip', validateZip);
 const schema = yup
@@ -59,10 +59,9 @@ const BoxForm = () => {
     formData.date = formatDate(data.date);
     formData.launchedOrganically = formData.launchedOrganically === 'yes';
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
-    console.log('FORMDATA: ', formData);
 
     // send form data to server
-    await FYABackend.post('/boxForm', formData, {
+    await FYABackend.post('/boxForm/box', formData, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -171,7 +170,7 @@ const BoxForm = () => {
           <div className="box-photo-section">
             <FormControl>
               <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
-              <DropZone setFiles={setFiles} />
+              <AddBoxDropZone setFiles={setFiles} />
             </FormControl>
           </div>
         </div>

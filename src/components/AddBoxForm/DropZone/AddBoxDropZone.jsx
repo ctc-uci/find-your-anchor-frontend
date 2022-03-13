@@ -4,9 +4,10 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { CloseIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
-import './DropZone.css';
+import DropZoneIcon from '../../../assets/add-box-upload.png';
+import './AddBoxDropZone.css';
 
-const DropZone = ({ setFiles }) => {
+const AddBoxDropZone = ({ setFiles }) => {
   const { getRootProps, getInputProps, isDragAccept, isDragReject, acceptedFiles, open } =
     useDropzone({
       noClick: true,
@@ -44,9 +45,9 @@ const DropZone = ({ setFiles }) => {
         aria-label="Remove"
         onClick={removeUploadedPhoto}
       >
-        <CloseIcon w={4} h={4} color="gray.400" />
+        <CloseIcon w={3} h={3} color="gray.600" />
       </button>
-      <span className="file-item-span">{acceptedFile.path}</span>
+      <span className="file-item-span-text">{acceptedFile.path}</span>
     </li>
   ));
 
@@ -55,6 +56,7 @@ const DropZone = ({ setFiles }) => {
       {!uploaded ? (
         <div className={dropzoneBox} {...getRootProps()}>
           <input {...getInputProps()} />
+          <img src={DropZoneIcon} alt="Icon" className="dropzone-icon" />
           <button type="button" className="fileSelector" onClick={open}>
             Click
           </button>
@@ -62,16 +64,21 @@ const DropZone = ({ setFiles }) => {
           <p className="dropzone-support-text">Support for jpeg, jpg, png</p>
         </div>
       ) : (
-        <div>
-          <ul className="files-list">{acceptedFileItems}</ul>
+        <div className="box-photo-preview-container">
+          <div className="box-image-container">
+            <img src={URL.createObjectURL(acceptedFiles[0])} alt="" />
+          </div>
+          <div>
+            <ul className="files-list">{acceptedFileItems}</ul>
+          </div>
         </div>
       )}
     </>
   );
 };
 
-DropZone.propTypes = {
+AddBoxDropZone.propTypes = {
   setFiles: PropTypes.func.isRequired,
 };
 
-export default DropZone;
+export default AddBoxDropZone;

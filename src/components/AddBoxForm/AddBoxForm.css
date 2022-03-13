@@ -33,18 +33,17 @@
 }
 
 /* box image section */
-.box-image {
+.box-image-container {
   width: 100%;
   height: 100%;
-  border-radius: 5px;
-  border-width: 2px;
-  border-style: dashed;
-  border-color: #b9b9b9;
+  margin-bottom: 5px;
+  height: 235px;
 }
 
-.box-image img {
+.box-image-container img {
   width: 100%;
   height: 100%;
+  border-radius: 10px;
 }
 
 /* launched organically checkbox */
