@@ -6,6 +6,27 @@ import styles from './CSVPreview.module.css';
 import ExportCSVRow from '../ExportCSVRow/ExportCSVRow';
 
 const CSVPreview = ({ formValues }) => {
+  const displayProperty = property => {
+    switch (property) {
+      case 'date':
+        return 'Date';
+      case 'box_id':
+        return 'Box #';
+      case 'zip_code':
+        return 'Zip Code';
+      case 'picture':
+        return 'Image';
+      case 'general_location':
+        return 'Landmarks';
+      case 'launched_organically':
+        return 'Launched Organically?';
+      case 'message':
+        return 'Message';
+      default:
+        return '';
+    }
+  };
+
   return (
     <div className="csv-preview">
       <Text className={styles['csv-preview-title']}>CSV Preview</Text>
@@ -17,7 +38,7 @@ const CSVPreview = ({ formValues }) => {
               <Tr>
                 {/* eslint-disable react/no-array-index-key */}
                 {Object.keys(formValues[0]).map((property, index) => (
-                  <Th key={index}>{property}</Th>
+                  <Th key={index}>{displayProperty(property)}</Th>
                 ))}
               </Tr>
             </Thead>

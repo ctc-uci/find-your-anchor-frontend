@@ -19,7 +19,7 @@ import {
   Button,
 } from '@chakra-ui/react';
 import styles from './ExportCSVForm.module.css';
-import { FYABackend } from '../../../common/utils';
+import { formatDate, FYABackend } from '../../../common/utils';
 import { isValidRange, isZip, isDate } from './ExportCSVFormValidators';
 
 // yup validation
@@ -124,8 +124,16 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
 
   const onSubmit = async data => {
     // setFormValues(data);
+    const formData = data;
 
-    const res = await FYABackend.post('/exportCSV/boxes', data, {
+    if (data.dateOption === 'date-range') {
+      formData.startDate = formatDate(data.startDate);
+      formData.endDate = formatDate(data.endDate);
+    } else if (data.dataOption === 'date-single') {
+      formData.singleDate = formatDate(data.singleDate);
+    }
+
+    const res = await FYABackend.post('/exportCSV/boxes', formData, {
       headers: {
         'Content-Type': 'application/json',
       },
