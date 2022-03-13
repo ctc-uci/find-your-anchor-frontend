@@ -13,7 +13,7 @@ const schema = yup.object({
   confirmPassword: yup.string().required('Passwords must both match'),
 });
 
-const ResetPasswordForm = returnToLoginPage => {
+const ResetPasswordForm = () => {
   const {
     register,
     handleSubmit,
@@ -49,13 +49,9 @@ const ResetPasswordForm = returnToLoginPage => {
           title="Confirm New Password"
         />
         <div className={styles['action-panel']}>
-          {returnToLoginPage && (
-            <div className={styles['reset-password-wrapper']} align="left">
-              <Link className={styles['reset-password']} to="/login">
-                Return to Login
-              </Link>
-            </div>
-          )}
+          <Link className={styles['reset-password']} to="/login">
+            Return to Login
+          </Link>
           <Button
             className={styles['reset-password-button']}
             onClick={onOpenResetModal}

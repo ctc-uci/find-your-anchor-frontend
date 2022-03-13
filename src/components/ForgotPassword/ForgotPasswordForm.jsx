@@ -44,7 +44,7 @@ const ForgotPasswordForm = () => {
           placeholder="name@findyouranchor.us"
           title="FYA Email Address"
         />
-        <div className={styles['forgot-password-form-button-group']}>
+        <div className={styles['action-panel']}>
           <Link to="/login" className={styles['return-to-login-link']}>
             Return to Login
           </Link>
