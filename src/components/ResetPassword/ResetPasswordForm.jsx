@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Heading } from '@chakra-ui/react';
+import { Button, Heading, useDisclosure } from '@chakra-ui/react';
 import styles from './ResetPasswordForm.module.css';
 import PasswordInput from '../Inputs/PasswordInput';
+import ResetPasswordModal from './ResetPasswordModal/ResetPasswordModal';
 
 const schema = yup.object({
   newPassword: yup.string().required('Password must be at least 8 characters'),
@@ -21,6 +22,12 @@ const LoginForm = returnToLoginPage => {
     resolver: yupResolver(schema),
     delayError: 750,
   });
+
+  const {
+    isOpen: isOpenResetModal,
+    onOpen: onOpenResetModal,
+    onClose: onCloseResetModal,
+  } = useDisclosure();
 
   const onSubmit = data => {
     // eslint-disable-next-line no-alert
@@ -42,9 +49,6 @@ const LoginForm = returnToLoginPage => {
           title="Confirm New Password"
         />
         <div className={styles['action-panel']}>
-          <Button className={styles['reset-password-button']} type="submit" size="md">
-            Reset
-          </Button>
           {returnToLoginPage && (
             <div className={styles['reset-password-wrapper']} align="left">
               <Link className={styles['reset-password']} to="/login">
@@ -52,6 +56,16 @@ const LoginForm = returnToLoginPage => {
               </Link>
             </div>
           )}
+          <Button
+            className={styles['reset-password-button']}
+            onClick={onOpenResetModal}
+            type="submit"
+            size="md"
+            align="right"
+          >
+            Reset
+          </Button>
+          <ResetPasswordModal isOpen={isOpenResetModal} onClose={onCloseResetModal} />
         </div>
       </form>
     </div>
