@@ -1,8 +1,8 @@
 import React from 'react';
 import { ChakraProvider, Button } from '@chakra-ui/react';
-
 import Map from '../../components/Map/Map';
 import BoxApproval from '../../components/BoxApproval/BoxApproval';
+// import CustomToast from '../../components/CustomToast/CustomToast';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
