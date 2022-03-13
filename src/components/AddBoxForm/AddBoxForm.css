@@ -96,7 +96,7 @@ span.chakra-checkbox__control {
   border-color: transparent transparent black transparent;
 }
 
-.box-launched-section .chakra-form-control {
+.box-launched-section {
   display: flex;
   flex-direction: row;
   align-items: center;

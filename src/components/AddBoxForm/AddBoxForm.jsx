@@ -18,14 +18,13 @@ import {
 import { InfoIcon } from '@chakra-ui/icons';
 
 import { FYABackend, formatDate } from '../../common/utils';
-import { uploadBoxPhoto, validateZip, validateLaunchedOrg } from './AddBoxFormUtils';
+import { uploadBoxPhoto, validateZip } from './AddBoxFormUtils';
 import DropZone from './DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
 import './AddBoxForm.css';
 import './DatePicker.css';
 
 yup.addMethod(yup.string, 'isZip', validateZip);
-yup.addMethod(yup.string, 'isLaunchedOrg', validateLaunchedOrg);
 const schema = yup
   .object({
     boxNumber: yup.number().required().typeError('Invalid box number'),
@@ -37,7 +36,7 @@ const schema = yup
     boxLocation: yup.string(),
     message: yup.string(),
     comments: yup.string(),
-    launchedOrganically: yup.string().isLaunchedOrg().required('Invalid selection'),
+    launchedOrganically: yup.string().typeError('Invalid selection'),
     picture: yup.string().url(),
   })
   .required();
@@ -57,9 +56,10 @@ const BoxForm = () => {
 
   const onSubmit = async data => {
     const formData = data;
-    console.log('FORMDATA: ', formData);
     formData.date = formatDate(data.date);
+    formData.launchedOrganically = formData.launchedOrganically === 'yes';
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
+    console.log('FORMDATA: ', formData);
 
     // send form data to server
     await FYABackend.post('/boxForm', formData, {
@@ -140,8 +140,8 @@ const BoxForm = () => {
             <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
             <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
           </FormControl>
-          <div className="box-launched-section">
-            <FormControl isInvalid={errors?.launchedOrganically}>
+          <FormControl isInvalid={errors?.launchedOrganically}>
+            <div className="box-launched-section">
               <FormLabel htmlFor="isLaunched">Launched Organically? *</FormLabel>
               <div className="info-icon">
                 <InfoIcon />
@@ -155,6 +155,7 @@ const BoxForm = () => {
                   <Radio
                     name="launchedOrganically"
                     value="yes"
+                    defaultChecked
                     {...register('launchedOrganically')}
                   >
                     Yes
@@ -164,9 +165,9 @@ const BoxForm = () => {
                   </Radio>
                 </Stack>
               </RadioGroup>
-              <FormErrorMessage>{errors.launchedOrganically?.message}</FormErrorMessage>
-            </FormControl>
-          </div>
+            </div>
+            <FormErrorMessage>{errors.launchedOrganically?.message}</FormErrorMessage>
+          </FormControl>
           <div className="box-photo-section">
             <FormControl>
               <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
