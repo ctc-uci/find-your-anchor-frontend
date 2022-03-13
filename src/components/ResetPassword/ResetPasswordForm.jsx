@@ -13,7 +13,7 @@ const schema = yup.object({
   confirmPassword: yup.string().required('Passwords must both match'),
 });
 
-const LoginForm = returnToLoginPage => {
+const ResetPasswordForm = returnToLoginPage => {
   const {
     register,
     handleSubmit,
@@ -76,4 +76,4 @@ const LoginForm = returnToLoginPage => {
 //   returnToLoginPage: false,
 // };
 
-export default LoginForm;
+export default ResetPasswordForm;

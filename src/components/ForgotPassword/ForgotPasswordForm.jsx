@@ -44,14 +44,14 @@ const ForgotPasswordForm = () => {
           placeholder="name@findyouranchor.us"
           title="FYA Email Address"
         />
-        <Link to="/login" className={styles['return-to-login-link']}>
-          <Text className={styles['return-to-login-text']} as="u">
+        <div className={styles['forgot-password-form-button-group']}>
+          <Link to="/login" className={styles['return-to-login-link']}>
             Return to Login
-          </Text>
-        </Link>
-        <Button className={styles['send-email-button']} type="submit" size="md">
-          Send Email
-        </Button>
+          </Link>
+          <Button className={styles['send-email-button']} type="submit" size="md">
+            Send Email
+          </Button>
+        </div>
       </form>
     </div>
   );
