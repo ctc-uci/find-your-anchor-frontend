@@ -117,6 +117,7 @@ const BoxForm = () => {
                 maxLength="200"
                 rows="5"
                 name="message"
+                className={styles['text-area']}
                 {...register('message')}
               />
             </FormControl>
@@ -130,6 +131,7 @@ const BoxForm = () => {
                 maxLength="200"
                 rows="5"
                 name="comments"
+                className={styles['text-area']}
                 {...register('comments')}
               />
             </FormControl>
