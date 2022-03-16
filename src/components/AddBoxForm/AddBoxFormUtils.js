@@ -8,6 +8,16 @@ function validateZip() {
   });
 }
 
+function validateBoxNumber() {
+  return this.test('boxNotExists', async function boxCheck(value) {
+    const { path, createError } = this;
+    const box = await FYABackend.get(`/boxForm/${value}`);
+    return box.data.length === 0
+      ? true
+      : createError({ path, message: `Box number ${value} already exists` });
+  });
+}
+
 const uploadBoxPhoto = async file => {
   // get S3 upload url from server
   const { data: uploadUrl } = await FYABackend.get('/s3Upload');
@@ -24,4 +34,4 @@ const uploadBoxPhoto = async file => {
   return imageUrl;
 };
 
-export { validateZip, uploadBoxPhoto };
+export { validateZip, validateBoxNumber, uploadBoxPhoto };

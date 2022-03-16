@@ -61,11 +61,11 @@ span.chakra-checkbox__control {
 }
 
 /* tooltip */
-.info-icon:hover .tooltiptext {
+.info-icon:hover .tool-tip-text {
   visibility: visible;
 }
 
-.info-icon .tooltiptext {
+.info-icon .tool-tip-text {
   visibility: hidden;
   /* tooltip styling */
   width: 200px;
@@ -84,7 +84,7 @@ span.chakra-checkbox__control {
   margin-left: -105px;
 }
 
-.info-icon .tooltiptext::after {
+.info-icon .tool-tip-text::after {
   content: '';
   position: absolute;
   bottom: 100%;
@@ -108,4 +108,23 @@ span.chakra-checkbox__control {
 
 .box-buttons {
   margin-left: 72%;
+}
+
+.required-field::after {
+  content: ' *';
+  color: red;
+}
+
+/* date picker */
+.date-picker {
+  font-size: 15px;
+  height: 2.5rem;
+  width: 100%;
+  border: 1px solid rgb(226, 232, 240);
+  border-radius: 0.375rem;
+  padding-left: 1rem;
+}
+
+.date-picker-error {
+  border: 2.5px solid #ea6565;
 }

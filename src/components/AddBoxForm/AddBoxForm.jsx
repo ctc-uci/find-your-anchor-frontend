@@ -19,16 +19,16 @@ import {
 import { InfoIcon } from '@chakra-ui/icons';
 
 import { FYABackend, formatDate } from '../../common/utils';
-import { uploadBoxPhoto, validateZip } from './AddBoxFormUtils';
+import { uploadBoxPhoto, validateZip, validateBoxNumber } from './AddBoxFormUtils';
 import 'react-datepicker/dist/react-datepicker.css';
-import './AddBoxForm.css';
-import './DatePicker.css';
+import styles from './AddBoxForm.module.css';
 import AddBoxDropZone from './DropZone/AddBoxDropZone';
 
 yup.addMethod(yup.string, 'isZip', validateZip);
+yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
 const schema = yup
   .object({
-    boxNumber: yup.number().required().typeError('Invalid box number'),
+    boxNumber: yup.number().boxNotExists().required().typeError('Invalid box number'),
     date: yup
       .date()
       .required('Invalid date, please enter a valid date')
@@ -73,12 +73,14 @@ const BoxForm = () => {
   };
 
   return (
-    <form className="box-form" onSubmit={handleSubmit(onSubmit)}>
-      <div className="box-form-container">
+    <form className={styles['box-form']} onSubmit={handleSubmit(onSubmit)}>
+      <div className={styles['box-form-container']}>
         {/* left column */}
-        <div className="left-column">
+        <div className={styles['left-column']}>
           <FormControl isInvalid={errors?.date}>
-            <FormLabel htmlFor="date">Date *</FormLabel>
+            <FormLabel htmlFor="date" className={styles['required-field']}>
+              Date
+            </FormLabel>
             <Controller
               control={control}
               name="date"
@@ -86,7 +88,11 @@ const BoxForm = () => {
               render={({ field: { onChange, value, ref } }) => (
                 <DatePicker
                   placeholderText="MM/DD/YYYY"
-                  className={errors?.date ? 'date-picker date-picker-error' : 'date-picker'}
+                  className={
+                    errors?.date
+                      ? `${styles['date-picker']} ${styles['date-picker-error']}`
+                      : `${styles['date-picker']}`
+                  }
                   type="date"
                   selected={value}
                   onChange={onChange}
@@ -96,11 +102,13 @@ const BoxForm = () => {
             <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={errors?.zipCode}>
-            <FormLabel htmlFor="zipCode">Zip Code *</FormLabel>
+            <FormLabel htmlFor="zipCode" className={styles['required-field']}>
+              Zip Code
+            </FormLabel>
             <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
             <FormErrorMessage>{errors.zipCode?.message}</FormErrorMessage>
           </FormControl>
-          <div className="box-message-section">
+          <div className={styles['box-message-section']}>
             <FormControl>
               <FormLabel htmlFor="message">Message:</FormLabel>
               <Textarea
@@ -113,7 +121,7 @@ const BoxForm = () => {
               />
             </FormControl>
           </div>
-          <div className="box-comments-section">
+          <div className={styles['box-comments-section']}>
             <FormControl>
               <FormLabel htmlFor="comments">Additional Comments (for admin purposes)</FormLabel>
               <Textarea
@@ -128,7 +136,7 @@ const BoxForm = () => {
           </div>
         </div>
         {/* right column */}
-        <div className="right-column">
+        <div className={styles['right-column']}>
           <FormControl FormControl>
             <FormLabel htmlFor="location">Box Location</FormLabel>
             <Input
@@ -139,21 +147,25 @@ const BoxForm = () => {
             />
           </FormControl>
           <FormControl isInvalid={errors?.boxNumber}>
-            <FormLabel htmlFor="boxNumber">Box Number *</FormLabel>
+            <FormLabel htmlFor="boxNumber" className={styles['required-field']}>
+              Box Number
+            </FormLabel>
             <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
             <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={errors?.launchedOrganically}>
-            <div className="box-launched-section">
-              <FormLabel htmlFor="isLaunched">Launched Organically? *</FormLabel>
-              <div className="info-icon">
+            <div className={styles['box-launched-section']}>
+              <FormLabel htmlFor="isLaunched" className={styles['required-field']}>
+                Launched Organically?
+              </FormLabel>
+              <div className={styles['info-icon']}>
                 <InfoIcon />
-                <span className="tooltiptext">
+                <span className={styles['tool-tip-text']}>
                   Organic launch means when the box is left somewhere for an individual to stumble
                   upon it.
                 </span>
               </div>
-              <RadioGroup defaultValue="1" className="launch-org-radio">
+              <RadioGroup defaultValue="1" className={styles['launch-org-radio']}>
                 <Stack spacing={8} direction="row">
                   <Radio
                     name="launchedOrganically"
@@ -171,7 +183,7 @@ const BoxForm = () => {
             </div>
             <FormErrorMessage>{errors.launchedOrganically?.message}</FormErrorMessage>
           </FormControl>
-          <div className="box-photo-section">
+          <div className={styles['box-photo-section']}>
             <FormControl>
               <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
               <AddBoxDropZone setFiles={setFiles} />
@@ -180,7 +192,7 @@ const BoxForm = () => {
         </div>
       </div>
 
-      <div className="box-buttons">
+      <div className={styles['box-buttons']}>
         <Button type="submit" size="md" colorScheme="teal">
           Submit
         </Button>
