@@ -1,30 +1,11 @@
-:root {
-  --text-gray-color: #808080;
-}
-
 * {
   box-sizing: border-box;
 }
 
-.box-form {
+.add-box-form {
   display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-  gap: 20px;
-}
-
-.box-form-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  gap: 70px;
-}
-
-.left-column, .right-column {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  width: 400px;
+  justify-content: space-evenly;
+  margin-top: 3%;
 }
 
 /* textarea section */
@@ -32,21 +13,18 @@
   resize: none;
 }
 
-/* box image section */
-.box-image-container {
-  width: 100%;
-  height: 100%;
-  margin-bottom: 5px;
-  height: 235px;
+/* launched organically section */
+.box-launched-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 10px;
 }
 
-.box-image-container img {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
+.box-launched-section label {
+  margin: 0;
 }
 
-/* launched organically checkbox */
 span.chakra-checkbox__control {
   background-color: #eee;
 }
@@ -95,19 +73,9 @@ span.chakra-checkbox__control {
   border-color: transparent transparent black transparent;
 }
 
-.box-launched-section {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  column-gap: 10px;
-}
-
-.box-launched-section label {
-  margin: 0;
-}
-
-.box-buttons {
-  margin-left: 72%;
+.submit-button {
+  float: right;
+  margin-top: 5%;
 }
 
 .required-field::after {
@@ -127,4 +95,9 @@ span.chakra-checkbox__control {
 
 .date-picker-error {
   border: 2.5px solid #ea6565;
+}
+
+.add-box-info-section-left,
+.add-box-info-section-right {
+  width: 40%;
 }

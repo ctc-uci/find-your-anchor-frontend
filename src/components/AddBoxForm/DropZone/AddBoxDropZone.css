@@ -4,7 +4,7 @@
 .dropzone-zone {
   text-align: center;
   padding: 55px;
-  height: 235px;
+  height: 240px;
   border-radius: 5px;
   border-width: 2px;
   border-style: solid;
@@ -34,7 +34,7 @@
   color: black;
 }
 
-.fileSelector {
+.file-selector {
   border: none;
   background-color: transparent;
   color: black;

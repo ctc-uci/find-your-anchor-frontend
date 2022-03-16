@@ -57,7 +57,7 @@ const AddBoxDropZone = ({ setFiles }) => {
         <div className={dropzoneBox} {...getRootProps()}>
           <input {...getInputProps()} />
           <BsUpload className="dropzone-icon" />
-          <button type="button" className="fileSelector" onClick={open}>
+          <button type="button" className="file-selector" onClick={open}>
             Click
           </button>
           <span className="dropzone-text">/drag file to upload</span>
