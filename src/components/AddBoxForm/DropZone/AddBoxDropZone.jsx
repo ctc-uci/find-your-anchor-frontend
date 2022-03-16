@@ -64,13 +64,8 @@ const AddBoxDropZone = ({ setFiles }) => {
           <p className="dropzone-support-text">Support for jpeg, jpg, png</p>
         </div>
       ) : (
-        <div className="box-photo-preview-container">
-          <div className="box-image-container">
-            <img src={URL.createObjectURL(acceptedFiles[0])} alt="" />
-          </div>
-          <div>
-            <ul className="files-list">{acceptedFileItems}</ul>
-          </div>
+        <div>
+          <ul className="files-list">{acceptedFileItems}</ul>
         </div>
       )}
     </>

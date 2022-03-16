@@ -97,6 +97,26 @@ span.chakra-checkbox__control {
   border: 2.5px solid #ea6565;
 }
 
+/* box image section */
+.box-image {
+  width: 100%;
+  height: 100%;
+}
+
+.box-image img {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.add-box-photo-preview-section {
+  height: 50%;
+}
+
+.add-box-photo-preview-section-hidden {
+  display: none;
+}
+
 .add-box-info-section-left,
 .add-box-info-section-right {
   width: 40%;

@@ -190,6 +190,19 @@ const AddBoxForm = () => {
           <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
           <AddBoxDropZone setFiles={setFiles} />
         </FormControl>
+        <div
+          className={
+            styles[
+              files.length !== 0
+                ? `${styles['add-box-photo-preview-section']}`
+                : `${styles['add-box-photo-preview-section-hidden']}`
+            ]
+          }
+        >
+          <div className={styles['box-image']}>
+            {files.length !== 0 && <img src={URL.createObjectURL(files[0])} alt="" />}
+          </div>
+        </div>
         <br />
         <div className={styles['submit-button']}>
           <Button type="submit" size="md" colorScheme="teal">
