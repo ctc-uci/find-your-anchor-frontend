@@ -34,6 +34,7 @@ const RejectBoxPopup = ({
     await FYABackend.put('/boxHistory/update', {
       transactionID,
       boxID,
+      approved: false,
       status: 'evaluated',
       rejectionReason,
     });
