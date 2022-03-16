@@ -4,7 +4,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { CloseIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
-import DropZoneIcon from '../../../assets/add-box-upload.png';
+import { BsUpload } from 'react-icons/bs';
 import './AddBoxDropZone.css';
 
 const AddBoxDropZone = ({ setFiles }) => {
@@ -56,7 +56,7 @@ const AddBoxDropZone = ({ setFiles }) => {
       {!uploaded ? (
         <div className={dropzoneBox} {...getRootProps()}>
           <input {...getInputProps()} />
-          <img src={DropZoneIcon} alt="Icon" className="dropzone-icon" />
+          <BsUpload className="dropzone-icon" />
           <button type="button" className="fileSelector" onClick={open}>
             Click
           </button>

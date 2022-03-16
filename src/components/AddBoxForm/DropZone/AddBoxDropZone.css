@@ -29,10 +29,9 @@
 }
 
 .dropzone-icon {
-  /* width: 80px;
-  height: 80px; */
-  /* margin-bottom: 20px; */
-  margin-left: 100px;
+  margin: 10px auto;
+  font-size: 30px;
+  color: black;
 }
 
 .fileSelector {
