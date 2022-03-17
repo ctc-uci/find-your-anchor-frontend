@@ -52,16 +52,15 @@ export const formatDate = value => {
   return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
 };
 
-export const sendEmail = (name, email, messageHtml) => {
-  FYABackend.post('/nodemailer/send', {
+export const sendEmail = async (name, email, messageHtml) => {
+  const response = await FYABackend.post('/nodemailer/send', {
     name,
     email,
     messageHtml,
-  }).then(response => {
-    if (response.status === 200) {
-      alert('Email sent, awesome!');
-    } else {
-      alert('Oops, something went wrong. Try again');
-    }
   });
+  if (response.status === 200) {
+    alert('Email sent, awesome!');
+  } else {
+    alert('Oops, something went wrong. Try again');
+  }
 };
