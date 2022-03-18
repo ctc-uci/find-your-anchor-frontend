@@ -62,7 +62,7 @@ const LoginForm = ({ cookies, redirectLink }) => {
    */
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithGoogle('/logout', navigate, cookies);
+      await signInWithGoogle('/', navigate, cookies);
     } catch (err) {
       setErrorMessage(err.message);
     }
