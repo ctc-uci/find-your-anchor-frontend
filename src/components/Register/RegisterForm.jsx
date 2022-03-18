@@ -10,6 +10,7 @@ import { registerWithEmailAndPassword, signInWithGoogle } from '../../common/aut
 import styles from './RegisterForm.module.css';
 import TextInput from '../Inputs/TextInput';
 import PasswordInput from '../Inputs/PasswordInput';
+import GoogleIcon from '../../assets/google-icon.svg';
 
 const schema = yup.object({
   firstName: yup.string().required('Please enter your first name.'),
@@ -74,7 +75,7 @@ const RegisterForm = ({ cookies }) => {
 
   return (
     <div className={styles['register-form-container']}>
-      <Heading className={styles['form-heading']}>REGISTER</Heading>
+      <Heading className={styles['form-heading']}>Register</Heading>
       <form className={styles['register-form']} onSubmit={handleSubmit(onSubmit)}>
         <TextInput
           register={register('firstName')}
@@ -108,7 +109,7 @@ const RegisterForm = ({ cookies }) => {
         </Button>
       </form>
       <Button className={styles['google-register-button']} onClick={handleGoogleSignIn} size="md">
-        Sign Up With Google
+        <img src={GoogleIcon} alt="google" className={styles['google-icon']} /> Register with Google
       </Button>
     </div>
   );

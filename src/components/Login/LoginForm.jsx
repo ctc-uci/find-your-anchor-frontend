@@ -16,6 +16,7 @@ import {
   getCurrentUser,
   auth,
 } from '../../common/auth_utils';
+import GoogleIcon from '../../assets/google-icon.svg';
 
 const schema = yup.object({
   email: yup
@@ -82,7 +83,7 @@ const LoginForm = ({ cookies, redirectLink }) => {
 
   return (
     <div className={styles['login-form-container']}>
-      <Heading className={styles['form-heading']}>LOGIN</Heading>
+      <Heading className={styles['form-heading']}>Login</Heading>
       <form className={styles['login-form']} onSubmit={handleSubmit(onSubmit)}>
         <TextInput
           register={register('email')}
@@ -102,7 +103,7 @@ const LoginForm = ({ cookies, redirectLink }) => {
         </Button>
       </form>
       <Button className={styles['google-login-button']} onClick={handleGoogleSignIn} size="md">
-        Sign In With Google
+        <img src={GoogleIcon} alt="google" className={styles['google-icon']} /> Log in with Google
       </Button>
     </div>
   );
