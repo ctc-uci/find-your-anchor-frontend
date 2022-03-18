@@ -21,9 +21,9 @@ import GoogleIcon from '../../assets/google-icon.svg';
 const schema = yup.object({
   email: yup
     .string()
-    .email('Invalid Email Address / Please enter your FYA email address')
-    .required('Invalid Email Address / Please enter your FYA email address'),
-  password: yup.string().required('Incorrect Password / Please enter your password'),
+    .email('Please enter your FYA email address')
+    .required('Please enter your FYA email address'),
+  password: yup.string().required('Please enter your password'),
 });
 
 const LoginForm = ({ cookies, redirectLink }) => {

@@ -192,16 +192,8 @@ const createUser = async (firstName, lastName, email, password) => {
  * @param {hook} navigate An instance of the useNavigate hook from react-router-dom
  * @param {string} redirectPath path to redirect users once logged in
  */
-const registerWithEmailAndPassword = async (
-  firstName,
-  lastName,
-  email,
-  password,
-  navigate,
-  redirectPath,
-) => {
+const registerWithEmailAndPassword = async (firstName, lastName, email, password) => {
   await createUser(firstName, lastName, email, password);
-  navigate(redirectPath);
 };
 
 /**

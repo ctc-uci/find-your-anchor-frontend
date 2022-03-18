@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { instanceOf } from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { Button, Heading } from '@chakra-ui/react';
+import { Button, Heading, useDisclosure } from '@chakra-ui/react';
 import { Cookies, withCookies } from '../../common/cookie_utils';
 import { registerWithEmailAndPassword, signInWithGoogle } from '../../common/auth_utils';
 import styles from './RegisterForm.module.css';
@@ -12,19 +12,17 @@ import TextInput from '../Inputs/TextInput';
 import PasswordInput from '../Inputs/PasswordInput';
 import GoogleIcon from '../../assets/google-icon.svg';
 
+import RegisterConfirmationPopup from './RegisterConfirmationPopup/RegisterConfirmationPopup';
+
 const schema = yup.object({
-  firstName: yup.string().required('Please enter your first name.'),
-  lastName: yup.string().required('Please enter your last name.'),
+  firstName: yup.string().required('Please enter your first name'),
+  lastName: yup.string().required('Please enter your last name'),
   email: yup
     .string()
-    .email('Invalid Email Address / Please enter your FYA email address')
-    .required('Invalid Email Address / Please enter your FYA email address'),
-  password: yup
-    .string()
-    .required('Please enter a password / Passwords must contain a special character'),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref('password'), null], 'Please confirm your password / Passwords must both match'),
+    .email('Please enter your email address')
+    .required('Please enter your email address'),
+  password: yup.string().required('Please enter a password'),
+  confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Please confirm your password'),
 });
 
 const RegisterForm = ({ cookies }) => {
@@ -37,6 +35,12 @@ const RegisterForm = ({ cookies }) => {
     delayError: 750,
   });
 
+  const {
+    isOpen: isOpenConfirmedModal,
+    onOpen: onOpenConfirmedModal,
+    onClose: onCloseConfirmedModal,
+  } = useDisclosure();
+
   const [errorMessage, setErrorMessage] = useState();
   const navigate = useNavigate();
 
@@ -45,14 +49,8 @@ const RegisterForm = ({ cookies }) => {
       if (e.password !== e.confirmPassword) {
         throw new Error("Passwords don't match");
       }
-      await registerWithEmailAndPassword(
-        e.firstName,
-        e.lastName,
-        e.email,
-        e.password,
-        navigate,
-        '/',
-      );
+      await registerWithEmailAndPassword(e.firstName, e.lastName, e.email, e.password);
+      onOpenConfirmedModal();
     } catch (error) {
       setErrorMessage(error.message);
       console.log(errorMessage);
@@ -111,6 +109,7 @@ const RegisterForm = ({ cookies }) => {
       <Button className={styles['google-register-button']} onClick={handleGoogleSignIn} size="md">
         <img src={GoogleIcon} alt="google" className={styles['google-icon']} /> Register with Google
       </Button>
+      <RegisterConfirmationPopup isOpen={isOpenConfirmedModal} onClose={onCloseConfirmedModal} />
     </div>
   );
 };
