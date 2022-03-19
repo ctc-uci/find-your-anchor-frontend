@@ -13,14 +13,17 @@ import {
 } from '@chakra-ui/react';
 
 import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
+import { renderEmail } from 'react-html-email';
 import PropTypes from 'prop-types';
 import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
-import { FYABackend } from '../../common/utils';
+import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
+import { FYABackend, sendEmail } from '../../common/utils';
 
 const PickupBox = ({
   approved,
+  transactionID,
   boxID,
   boxHolderName,
   boxHolderEmail,
@@ -43,12 +46,18 @@ const PickupBox = ({
   // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
   // This method is called when the approve box icon is clicked
   const approvePickupBox = async id => {
-    FYABackend.put('/boxHistory/approveBox', {
-      boxID: id,
-      imageStatus: imageStatusState,
-    }).then(async () => {
-      await fetchBoxes('under review', true);
+    await FYABackend.put('/boxHistory/approveBox', {
+      transactionID: id,
     });
+    const requests = [
+      fetchBoxes('under review', true),
+      sendEmail(
+        boxHolderName,
+        boxHolderEmail,
+        renderEmail(<ApprovedBoxEmail boxHolderName={boxHolderName} />),
+      ),
+    ];
+    await Promise.all(requests);
   };
 
   return (
@@ -78,15 +87,16 @@ const PickupBox = ({
             {/* Box details */}
             <AccordionPanel className={styles['accordion-panel']} pb={4}>
               <div className={styles['box-details']}>
-                {(!(status === 'evaluated') || !(imageStatus === 'rejected')) && picture !== null && (
-                  <img
-                    src={picture}
-                    alt=""
-                    className={`${styles['pickup-image-corners']}
-                    ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
-                    ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
-                  />
-                )}
+                {(!(status === 'evaluated') || !(imageStatusState === 'rejected')) &&
+                  picture !== null && (
+                    <img
+                      src={picture}
+                      alt=""
+                      className={`${styles['pickup-image-corners']}
+                      ${imageStatusState === 'approved' ? `${styles['image-approved']}` : ''}
+                      ${imageStatusState === 'rejected' ? `${styles['image-rejected']}` : ''}`}
+                    />
+                  )}
                 {picture !== null && status !== 'evaluated' && (
                   <div className={styles['image-functionality-wrapper']}>
                     {/* Image approved indicator (only show if message is approved) */}
@@ -178,7 +188,7 @@ const PickupBox = ({
                           setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen);
                         }}
                       >
-                        <BsXCircleFill color="red" size="30px" />
+                        <BsXCircleFill className={styles['rejected-icon']} />
                       </button>
                     </div>
                     {/* Approve box button */}
@@ -186,15 +196,16 @@ const PickupBox = ({
                       <button
                         type="button"
                         onClick={() => {
-                          approvePickupBox(boxID);
+                          approvePickupBox(transactionID);
                         }}
                       >
-                        <BsFillCheckCircleFill color="green" size="30px" />
+                        <BsFillCheckCircleFill className={styles['approved-icon']} />
                       </button>
                     </div>
                     <RejectBoxPopup
                       isOpen={rejectBoxPopupIsOpen}
                       setIsOpen={setRejectBoxPopupIsOpen}
+                      transactionID={transactionID}
                       boxID={boxID}
                       boxHolderName={boxHolderName}
                       boxHolderEmail={boxHolderEmail}
@@ -215,6 +226,7 @@ const PickupBox = ({
 
 PickupBox.propTypes = {
   approved: PropTypes.bool.isRequired,
+  transactionID: PropTypes.number.isRequired,
   boxID: PropTypes.number.isRequired,
   boxHolderName: PropTypes.string.isRequired,
   boxHolderEmail: PropTypes.string.isRequired,

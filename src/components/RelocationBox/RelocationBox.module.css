@@ -1,9 +1,9 @@
 .box {
-    padding: 0px 15px 15px 15px;
-    margin-top: 15px;
-    border-radius: 10px;
-    background-color: white;
-  }
+  padding: 0px 15px 15px 15px;
+  margin-top: 15px;
+  border-radius: 10px;
+  background-color: white;
+}
 
 .picture-div {
   height: 100%;
@@ -60,29 +60,29 @@
 
 .approval-message {
   color: green;
-  float:left;
+  float: left;
   padding: 1%;
-  width:100%;
+  width: 100%;
   text-align: left;
   margin-left: 1%;
 }
 
 .rejection-message {
   color: red;
-  float:left;
-  width:100%;
+  float: left;
+  width: 100%;
   padding: 1%;
   text-align: left;
   margin-left: 1%;
 }
 
 .approval-button {
-  float:left;
+  float: left;
   margin: 2% 2% 0% 0%;
 }
 
 .rejection-button {
-  float:left;
+  float: left;
   margin: 2% 2% 0% 0%;
 }
 
@@ -102,15 +102,15 @@
 }
 
 .box-approved {
-  background-color: #C6F6D5;
+  background-color: #c6f6d5;
 }
 
 .box-rejected {
-  background-color: #FED7D7;
+  background-color: #fed7d7;
 }
 
 .box-pending {
-  background-color: #BEE3F8;
+  background-color: #bee3f8;
 }
 
 .arrowButton {
@@ -159,7 +159,6 @@
 }
 
 .arrow-forward-icon {
-
   width: 33.33%;
   float: left;
 }
@@ -210,7 +209,21 @@
   width: 25%;
 }
 
-
 .image-corners {
   border-radius: 5%;
+}
+
+.request-changes-icon {
+  color: #dd6b20;
+  font-size: 30px;
+}
+
+.reject-box-icon {
+  color: red;
+  font-size: 30px;
+}
+
+.approve-box-icon {
+  color: green;
+  font-size: 30px;
 }
