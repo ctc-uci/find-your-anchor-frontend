@@ -65,12 +65,6 @@ const RelocationBox = ({
   // A state for the box's message
   // This state is updated when the user edits the message under pending changes
   const [messageState, setMessageState] = useState(message);
-  // A state for the box's message status
-  // This state is updated when the user approves or rejects the message under pending changes
-  const [messageStatusState, setMessageStatusState] = useState(messageStatus);
-  // A state for the box's image status
-  // This state is updated when the user approves or rejects the image under pending changes
-  const [imageStatusState, setImageStatusState] = useState(imageStatus);
   // A state for the box's launched organically state
   // This state is updated when the user edits the launched organically field under pending changes
   const [launchedOrganicallyState, setLaunchedOrganicallyState] = useState(launchedOrganically);
@@ -87,9 +81,7 @@ const RelocationBox = ({
       zipCode: zipCodeState,
       generalLocation: generalLocationState,
       message: messageState,
-      messageStatus: messageStatusState,
       launchedOrganically: launchedOrganicallyState,
-      imageStatus: imageStatusState,
     });
 
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
@@ -107,9 +99,7 @@ const RelocationBox = ({
       zipCode: zipCodeState,
       generalLocation: generalLocationState,
       message: messageState,
-      messageStatus: messageStatusState,
       launchedOrganically: launchedOrganicallyState,
-      imageStatus: imageStatusState,
     });
     await FYABackend.put('/boxHistory/approveBox', {
       transactionID,
@@ -195,7 +185,7 @@ const RelocationBox = ({
                       type="button"
                       className={styles['image-approved-button']}
                       onClick={async () => {
-                        setImageStatusState('approved');
+                        // setImageStatusState('approved');
                         await FYABackend.put('/boxHistory/update', {
                           transactionID,
                           boxID,
@@ -211,7 +201,7 @@ const RelocationBox = ({
                       type="button"
                       className={styles['image-rejected-button']}
                       onClick={async () => {
-                        setImageStatusState('rejected');
+                        // setImageStatusState('rejected');
                         await FYABackend.put('/boxHistory/update', {
                           transactionID,
                           boxID,
@@ -325,7 +315,6 @@ const RelocationBox = ({
                         type="button"
                         className={styles['message-approved-button']}
                         onClick={async () => {
-                          setMessageStatusState('approved');
                           await FYABackend.put('/boxHistory/update', {
                             transactionID,
                             boxID,
@@ -341,7 +330,6 @@ const RelocationBox = ({
                         type="button"
                         className={styles['message-rejected-button']}
                         onClick={async () => {
-                          setMessageStatusState('rejected');
                           await FYABackend.put('/boxHistory/update', {
                             transactionID,
                             boxID,

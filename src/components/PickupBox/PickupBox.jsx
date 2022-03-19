@@ -39,9 +39,6 @@ const PickupBox = ({
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
   const [rejectBoxPopupIsOpen, setRejectBoxPopupIsOpen] = useState(false);
-  // A state for the box's image status
-  // This state is updated when the user approves or rejects the image under pending changes
-  const [imageStatusState, setImageStatusState] = useState(imageStatus);
 
   // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
   // This method is called when the approve box icon is clicked
@@ -87,16 +84,15 @@ const PickupBox = ({
             {/* Box details */}
             <AccordionPanel className={styles['accordion-panel']} pb={4}>
               <div className={styles['box-details']}>
-                {(!(status === 'evaluated') || !(imageStatusState === 'rejected')) &&
-                  picture !== null && (
-                    <img
-                      src={picture}
-                      alt=""
-                      className={`${styles['pickup-image-corners']}
-                      ${imageStatusState === 'approved' ? `${styles['image-approved']}` : ''}
-                      ${imageStatusState === 'rejected' ? `${styles['image-rejected']}` : ''}`}
-                    />
-                  )}
+                {(!(status === 'evaluated') || !(imageStatus === 'rejected')) && picture && (
+                  <img
+                    src={picture}
+                    alt=""
+                    className={`${styles['pickup-image-corners']}
+                    ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
+                    ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
+                  />
+                )}
                 {picture && status !== 'evaluated' && (
                   <div className={styles['image-functionality-wrapper']}>
                     {/* Image approved indicator (only show if message is approved) */}
@@ -124,7 +120,6 @@ const PickupBox = ({
                       type="button"
                       className={styles['image-approved-button']}
                       onClick={async () => {
-                        setImageStatusState('approved');
                         await FYABackend.put('/boxHistory/update', {
                           transactionID,
                           boxID,
@@ -140,7 +135,6 @@ const PickupBox = ({
                       type="button"
                       className={styles['image-rejected-button']}
                       onClick={async () => {
-                        setImageStatusState('rejected');
                         await FYABackend.put('/boxHistory/update', {
                           transactionID,
                           boxID,
