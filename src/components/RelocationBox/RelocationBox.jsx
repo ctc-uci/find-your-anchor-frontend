@@ -149,7 +149,7 @@ const RelocationBox = ({
             {/* Box picture */}
             <AccordionPanel pb={4} className={styles['accordion-panel']}>
               <div className={styles['box-details']}>
-                {(!(status === 'evaluated') || !(imageStatus === 'rejected')) && picture !== null && (
+                {(!(status === 'evaluated') || !(imageStatus === 'rejected')) && picture && (
                   <img
                     src={picture}
                     alt=""
