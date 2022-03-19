@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ChakraProvider } from '@chakra-ui/react';
 import RegisterForm from '../../components/Register/RegisterForm';
 import styles from './RegisterPage.module.css';
 import FYALogo from '../../assets/fya-text-logo.svg';
 
-const RegisterPage = () => {
+const RegisterPage = ({ email }) => {
   return (
     <ChakraProvider>
       <div className={styles['page-container']}>
@@ -14,7 +15,7 @@ const RegisterPage = () => {
               <img src={FYALogo} className={styles.logo} alt="logo" />
             </div>
             <div className={styles['register-form-component']}>
-              <RegisterForm />
+              <RegisterForm email={email} />
             </div>
           </div>
         </div>
@@ -22,6 +23,10 @@ const RegisterPage = () => {
       </div>
     </ChakraProvider>
   );
+};
+
+RegisterPage.propTypes = {
+  email: PropTypes.string.isRequired,
 };
 
 export default RegisterPage;

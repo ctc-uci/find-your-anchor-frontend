@@ -12,7 +12,6 @@ import {
   AlertDialogCloseButton,
   Textarea,
 } from '@chakra-ui/react';
-import { renderEmail } from 'react-html-email';
 import styles from './RequestChangesPopup.module.css';
 import { FYABackend, sendEmail } from '../../../common/utils';
 import PendingChangesBoxEmail from '../../Email/EmailTemplates/PendingChangesBoxEmail';
@@ -42,12 +41,10 @@ const RequestChangesPopup = ({
       sendEmail(
         boxHolderName,
         boxHolderEmail,
-        renderEmail(
-          <PendingChangesBoxEmail
-            boxHolderName={boxHolderName}
-            changesRequested={changesRequested}
-          />,
-        ),
+        <PendingChangesBoxEmail
+          boxHolderName={boxHolderName}
+          changesRequested={changesRequested}
+        />,
       ),
     ];
     await Promise.all(requests);

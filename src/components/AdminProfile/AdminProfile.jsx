@@ -69,6 +69,7 @@ const AdminProfile = ({ cookies }) => {
   const [editLast, setEditLast] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
 
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState();
@@ -96,6 +97,7 @@ const AdminProfile = ({ cookies }) => {
     const backendUser = await FYABackend.get(`/users/${firebaseUser.uid}`);
     setFirstName(backendUser.data.user.first_name);
     setLastName(backendUser.data.user.last_name);
+    setEmail(backendUser.data.user.email);
   }, []);
 
   return (
@@ -138,7 +140,7 @@ const AdminProfile = ({ cookies }) => {
             makeEditable={() => setEditLast(!editLast)}
             handleCheckMarkClicked={handleCheckMarkClicked}
           />
-          <TextInput inputLabel="Email" placeHolder="name@findyouranchor.us" editState={false} />
+          <TextInput inputLabel="Email" placeHolder={email} editState={false} />
         </div>
         <div className={styles['bottom-buttons']}>
           <Button onClick={onOpenDeleteModal} colorScheme="red" size="lg" rightIcon={<DiReact />}>

@@ -1,3 +1,4 @@
+import React from 'react';
 import axios from 'axios';
 import { initializeApp } from 'firebase/app';
 import {
@@ -14,8 +15,11 @@ import {
   applyActionCode,
 } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import { nanoid } from 'nanoid';
 import { cookieKeys, cookieConfig, clearCookies } from './cookie_utils';
-import { FYABackend } from './utils';
+import { FYABackend, sendEmail } from './utils';
+
+import AdminInviteEmail from '../components/Email/EmailTemplates/AdminInviteEmail';
 
 // Using Firebase Web version 9
 const firebaseConfig = {
@@ -209,11 +213,10 @@ const sendPasswordReset = async email => {
  * @param {string} email The email to create an account with
  */
 const sendInviteLink = async email => {
-  // generate a random password (not going to be used as new account will reset password)
-  const randomPassword = Math.random().toString(36).slice(-8);
-  const user = await createUserInFirebase(email, randomPassword);
-  createUserInDB('', '', email, user.uid, false, '');
-  sendPasswordReset(email);
+  const inviteId = nanoid();
+  await FYABackend.post('/adminInvite', { email, inviteId });
+  const url = `http://localhost:3000/auth-email?mode=inviteUser&inviteID=${inviteId}`;
+  await sendEmail(email, email, <AdminInviteEmail url={url} />);
 };
 
 /**

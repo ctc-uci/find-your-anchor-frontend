@@ -2,30 +2,28 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { instanceOf } from 'prop-types';
+import PropTypes, { instanceOf } from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { Button, Heading, useDisclosure } from '@chakra-ui/react';
 import { Cookies, withCookies } from '../../common/cookie_utils';
-import { registerWithEmailAndPassword, signInWithGoogle } from '../../common/auth_utils';
+import { signInWithGoogle } from '../../common/auth_utils';
 import styles from './RegisterForm.module.css';
 import TextInput from '../Inputs/TextInput';
 import PasswordInput from '../Inputs/PasswordInput';
 import GoogleIcon from '../../assets/google-icon.svg';
+import { FYABackend } from '../../common/utils';
 
 import RegisterConfirmationPopup from './RegisterConfirmationPopup/RegisterConfirmationPopup';
 
 const schema = yup.object({
   firstName: yup.string().required('Please enter your first name'),
   lastName: yup.string().required('Please enter your last name'),
-  email: yup
-    .string()
-    .email('Please enter your email address')
-    .required('Please enter your email address'),
+  email: yup.string().email('Please enter your email address'),
   password: yup.string().required('Please enter a password'),
   confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Please confirm your password'),
 });
 
-const RegisterForm = ({ cookies }) => {
+const RegisterForm = ({ cookies, email }) => {
   const {
     register,
     handleSubmit,
@@ -49,7 +47,15 @@ const RegisterForm = ({ cookies }) => {
       if (e.password !== e.confirmPassword) {
         throw new Error("Passwords don't match");
       }
-      await registerWithEmailAndPassword(e.firstName, e.lastName, e.email, e.password);
+      // await registerWithEmailAndPassword(e.firstName, e.lastName, e.email, e.password);
+
+      await FYABackend.post('/users/create', {
+        firstName: e.firstName,
+        lastName: e.lastName,
+        email,
+        password: e.password,
+      });
+
       onOpenConfirmedModal();
     } catch (error) {
       setErrorMessage(error.message);
@@ -93,8 +99,9 @@ const RegisterForm = ({ cookies }) => {
           register={register('email')}
           error={errors?.email}
           type="text"
-          placeholder="name@findyouranchor.us"
+          placeholder={email}
           title="FYA Email Address"
+          isEditable={false}
         />
         <PasswordInput register={register('password')} error={errors?.password} title="Password" />
         <PasswordInput
@@ -116,6 +123,7 @@ const RegisterForm = ({ cookies }) => {
 
 RegisterForm.propTypes = {
   cookies: instanceOf(Cookies).isRequired,
+  email: PropTypes.string.isRequired,
 };
 
 export default withCookies(RegisterForm);

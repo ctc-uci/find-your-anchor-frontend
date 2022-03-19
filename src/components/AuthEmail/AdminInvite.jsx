@@ -10,7 +10,7 @@ const AdminInvite = () => {
     try {
       e.preventDefault();
       await sendInviteLink(email);
-      setConfirmationMessage(`A reset password email has been sent to ${email}`);
+      setConfirmationMessage(`A registration email has been sent to ${email}`);
       setErrorMessage('');
       setEmail('');
     } catch (err) {

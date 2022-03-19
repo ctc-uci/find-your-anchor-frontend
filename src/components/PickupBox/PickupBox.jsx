@@ -13,7 +13,6 @@ import {
 } from '@chakra-ui/react';
 
 import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
-import { renderEmail } from 'react-html-email';
 import PropTypes from 'prop-types';
 import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
@@ -47,11 +46,7 @@ const PickupBox = ({
     });
     const requests = [
       fetchBoxes('under review', true),
-      sendEmail(
-        boxHolderName,
-        boxHolderEmail,
-        renderEmail(<ApprovedBoxEmail boxHolderName={boxHolderName} />),
-      ),
+      sendEmail(boxHolderName, boxHolderEmail, <ApprovedBoxEmail boxHolderName={boxHolderName} />),
     ];
     await Promise.all(requests);
   };
