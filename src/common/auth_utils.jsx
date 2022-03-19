@@ -117,6 +117,7 @@ const registerWithEmailAndPassword = async (firstName, lastName, email, password
     email,
     password,
   });
+  await FYABackend.delete(`/adminInvite/${email}`);
 };
 
 /**
