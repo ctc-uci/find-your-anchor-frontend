@@ -168,7 +168,7 @@ const RelocationBox = ({
                     ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
                   />
                 )}
-                {picture !== null && status !== 'evaluated' && (
+                {picture && status !== 'evaluated' && (
                   <div className={styles['image-functionality-wrapper']}>
                     {/* Image approved indicator (only show if message is approved) */}
                     <div className={styles['image-functionality']}>
@@ -197,6 +197,7 @@ const RelocationBox = ({
                       onClick={async () => {
                         setImageStatusState('approved');
                         await FYABackend.put('/boxHistory/update', {
+                          transactionID,
                           boxID,
                           imageStatus: 'approved',
                         });
@@ -212,6 +213,7 @@ const RelocationBox = ({
                       onClick={async () => {
                         setImageStatusState('rejected');
                         await FYABackend.put('/boxHistory/update', {
+                          transactionID,
                           boxID,
                           imageStatus: 'rejected',
                         });
@@ -325,6 +327,7 @@ const RelocationBox = ({
                         onClick={async () => {
                           setMessageStatusState('approved');
                           await FYABackend.put('/boxHistory/update', {
+                            transactionID,
                             boxID,
                             messageStatus: 'approved',
                           });
@@ -340,6 +343,7 @@ const RelocationBox = ({
                         onClick={async () => {
                           setMessageStatusState('rejected');
                           await FYABackend.put('/boxHistory/update', {
+                            transactionID,
                             boxID,
                             messageStatus: 'rejected',
                           });

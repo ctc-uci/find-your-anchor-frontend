@@ -97,7 +97,7 @@ const PickupBox = ({
                       ${imageStatusState === 'rejected' ? `${styles['image-rejected']}` : ''}`}
                     />
                   )}
-                {picture !== null && status !== 'evaluated' && (
+                {picture && status !== 'evaluated' && (
                   <div className={styles['image-functionality-wrapper']}>
                     {/* Image approved indicator (only show if message is approved) */}
                     <div className={styles['image-functionality']}>
@@ -126,6 +126,7 @@ const PickupBox = ({
                       onClick={async () => {
                         setImageStatusState('approved');
                         await FYABackend.put('/boxHistory/update', {
+                          transactionID,
                           boxID,
                           imageStatus: 'approved',
                         });
@@ -141,6 +142,7 @@ const PickupBox = ({
                       onClick={async () => {
                         setImageStatusState('rejected');
                         await FYABackend.put('/boxHistory/update', {
+                          transactionID,
                           boxID,
                           imageStatus: 'rejected',
                         });
