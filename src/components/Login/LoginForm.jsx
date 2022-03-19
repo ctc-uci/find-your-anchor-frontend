@@ -10,13 +10,11 @@ import PasswordInput from '../Inputs/PasswordInput';
 import { Cookies, withCookies } from '../../common/cookie_utils';
 import {
   logInWithEmailAndPassword,
-  signInWithGoogle,
   useNavigate,
   refreshToken,
   getCurrentUser,
   auth,
 } from '../../common/auth_utils';
-import GoogleIcon from '../../assets/google-icon.svg';
 
 const schema = yup.object({
   email: yup
@@ -54,20 +52,6 @@ const LoginForm = ({ cookies, redirectLink }) => {
     }
   };
 
-  /**
-   * This function handles logging in with Google
-   * If the user logs in and is new, they are directed to a new-user path
-   * If the user logs in and isn't new, they are directed to the dashboard.
-   * If the user fails to log in, they are directed back to the login screen
-   */
-  const handleGoogleSignIn = async () => {
-    try {
-      await signInWithGoogle('/', navigate, cookies);
-    } catch (err) {
-      setErrorMessage(err.message);
-    }
-  };
-
   useEffect(async () => {
     const user = await getCurrentUser(auth);
     if (user !== null) {
@@ -102,9 +86,6 @@ const LoginForm = ({ cookies, redirectLink }) => {
           Log In
         </Button>
       </form>
-      <Button className={styles['google-login-button']} onClick={handleGoogleSignIn} size="md">
-        <img src={GoogleIcon} alt="google" className={styles['google-icon']} /> Log in with Google
-      </Button>
     </div>
   );
 };

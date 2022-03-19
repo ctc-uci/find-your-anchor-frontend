@@ -17,19 +17,6 @@
   align-self: flex-end;
 }
 
-.google-register-button {
-  width: 100% !important;
-  background-color: white !important;
-  border: 1px solid #345e80;
-  color: #345e80;
-  float: right;
-  margin-top: 2%;
-}
-
 .form-heading {
   padding-bottom: 5%;
-}
-
-.google-icon {
-  margin-right: 1%;
 }

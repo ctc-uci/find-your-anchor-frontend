@@ -5,9 +5,6 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   signOut,
-  GoogleAuthProvider,
-  signInWithPopup,
-  getAdditionalUserInfo,
   sendPasswordResetEmail,
   confirmPasswordReset,
   applyActionCode,
@@ -85,64 +82,6 @@ const refreshToken = async () => {
     return idToken;
   }
   return null;
-};
-
-/**
- * Makes requests to add user to NPO DB. Deletes user if Firebase error
- * @param {string} email
- * @param {string} userId
- * @param {bool} signUpWithGoogle true if user used Google provider to sign in
- * @param {string} password
- */
-const createUserInDB = async (
-  firstName,
-  lastName,
-  email,
-  userId,
-  signUpWithGoogle,
-  password = null,
-) => {
-  try {
-    if (signUpWithGoogle) {
-      await FYABackend.post('/users/create', { firstName, lastName, email, userId });
-    } else {
-      await FYABackend.post('/users/create', { firstName, lastName, email, userId });
-    }
-  } catch (err) {
-    // Since this route is called after user is created in firebase, if this
-    // route errors out, that means we have to discard the created firebase object
-    if (!signUpWithGoogle) {
-      await signInWithEmailAndPassword(auth, email, password);
-    }
-    const userToBeTerminated = await auth.currentUser;
-    userToBeTerminated.delete();
-    throw new Error(err.message);
-  }
-};
-
-/**
- * Signs a user in with Google using Firebase.
- * @param {string} newUserRedirectPath path to redirect new users to after signing in with Google Provider for the first time
- * @param {string} defaultRedirectPath path to redirect users to after signing in with Google Provider
- * @param {hook} navigate An instance of the useNavigate hook from react-router-dom
- * @param {Cookies} cookies The user's cookies to populate
- * @returns A boolean indicating whether or not the user is new
- */
-const signInWithGoogle = async (defaultRedirectPath, navigate, cookies) => {
-  const provider = new GoogleAuthProvider();
-  const userCredential = await signInWithPopup(auth, provider);
-  const user = getAdditionalUserInfo(userCredential);
-  cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
-  if (user.isNewUser) {
-    await createUserInDB(
-      user.profile.given_name, // First Name
-      user.profile.family_name, // Last Name
-      auth.currentUser.email,
-      userCredential.user.uid,
-      true,
-    );
-  }
-  navigate(defaultRedirectPath);
 };
 
 /**
@@ -287,7 +226,6 @@ addAuthInterceptor(FYABackend);
 export {
   auth,
   useNavigate,
-  signInWithGoogle,
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
   addAuthInterceptor,
