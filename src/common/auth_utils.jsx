@@ -8,8 +8,6 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   getAdditionalUserInfo,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
   sendPasswordResetEmail,
   confirmPasswordReset,
   applyActionCode,
@@ -167,29 +165,6 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
 };
 
 /**
- * Creates a user in firebase database
- * @param {string} email
- * @param {string} password
- * @returns A UserCredential object from firebase
- */
-const createUserInFirebase = async (email, password) => {
-  const user = await createUserWithEmailAndPassword(auth, email, password);
-  return user.user;
-};
-
-/**
- * Creates a user (both in firebase and database)
- * @param {string} email
- * @param {string} password
- * @returns A UserCredential object from firebase
- */
-const createUser = async (firstName, lastName, email, password) => {
-  const user = await createUserInFirebase(email, password);
-  await createUserInDB(firstName, lastName, email, user.uid, false, password);
-  sendEmailVerification(user);
-};
-
-/**
  * Registers a new user using the email provider
  * @param {string} email
  * @param {string} password
@@ -197,7 +172,12 @@ const createUser = async (firstName, lastName, email, password) => {
  * @param {string} redirectPath path to redirect users once logged in
  */
 const registerWithEmailAndPassword = async (firstName, lastName, email, password) => {
-  await createUser(firstName, lastName, email, password);
+  await FYABackend.post('/users/create', {
+    firstName,
+    lastName,
+    email,
+    password,
+  });
 };
 
 /**

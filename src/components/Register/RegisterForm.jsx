@@ -6,12 +6,11 @@ import PropTypes, { instanceOf } from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { Button, Heading, useDisclosure } from '@chakra-ui/react';
 import { Cookies, withCookies } from '../../common/cookie_utils';
-import { signInWithGoogle } from '../../common/auth_utils';
+import { signInWithGoogle, registerWithEmailAndPassword } from '../../common/auth_utils';
 import styles from './RegisterForm.module.css';
 import TextInput from '../Inputs/TextInput';
 import PasswordInput from '../Inputs/PasswordInput';
 import GoogleIcon from '../../assets/google-icon.svg';
-import { FYABackend } from '../../common/utils';
 
 import RegisterConfirmationPopup from './RegisterConfirmationPopup/RegisterConfirmationPopup';
 
@@ -47,15 +46,7 @@ const RegisterForm = ({ cookies, email }) => {
       if (e.password !== e.confirmPassword) {
         throw new Error("Passwords don't match");
       }
-      // await registerWithEmailAndPassword(e.firstName, e.lastName, e.email, e.password);
-
-      await FYABackend.post('/users/create', {
-        firstName: e.firstName,
-        lastName: e.lastName,
-        email,
-        password: e.password,
-      });
-
+      await registerWithEmailAndPassword(e.firstName, e.lastName, e.email, e.password);
       onOpenConfirmedModal();
     } catch (error) {
       setErrorMessage(error.message);
