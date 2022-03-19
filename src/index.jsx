@@ -12,7 +12,6 @@ import ExportCSV from './pages/ExportCSV/ExportCSV';
 import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import AuthEmail from './components/AuthEmail/AuthEmail';
-import AdminInvite from './components/AuthEmail/AdminInvite';
 import LoginPage from './pages/Login/LoginPage';
 import RegisterPage from './pages/Register/RegisterPage';
 
@@ -25,12 +24,6 @@ ReactDOM.render(
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/auth-email" element={<AuthEmail redirectPath="/" />} />
-          <Route
-            path="/admin-invite"
-            element={
-              <ProtectedRoute path="/admin-invite" Component={AdminInvite} redirectPath="/" />
-            }
-          />
 
           <Route path="/" element={<App />} />
           <Route element={<Layout isAdmin />}>
