@@ -46,7 +46,7 @@ const RegisterForm = ({ cookies, email }) => {
       if (e.password !== e.confirmPassword) {
         throw new Error("Passwords don't match");
       }
-      await registerWithEmailAndPassword(e.firstName, e.lastName, e.email, e.password);
+      await registerWithEmailAndPassword(e.firstName, e.lastName, email, e.password);
       onOpenConfirmedModal();
     } catch (error) {
       setErrorMessage(error.message);

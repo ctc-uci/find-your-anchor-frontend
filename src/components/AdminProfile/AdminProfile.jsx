@@ -94,7 +94,7 @@ const AdminProfile = ({ cookies }) => {
 
   useEffect(async () => {
     const firebaseUser = await getCurrentUser(auth);
-    const backendUser = await FYABackend.get(`/users/${firebaseUser.uid}`);
+    const backendUser = await FYABackend.get(`/users/userId/${firebaseUser.uid}`);
     setFirstName(backendUser.data.user.first_name);
     setLastName(backendUser.data.user.last_name);
     setEmail(backendUser.data.user.email);
