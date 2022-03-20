@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -49,9 +48,18 @@ const ResetPasswordForm = () => {
           title="Confirm New Password"
         />
         <div className={styles['action-panel']}>
-          <Link className={styles['reset-password']} to="/login">
+          {/* <Link className={styles['reset-password']} to="/login">
             Return to Login
-          </Link>
+          </Link> */}
+          <Button
+            className={styles['reset-password']}
+            color="#173848"
+            bg="white"
+            variant="outline"
+            colorScheme="#173848"
+          >
+            Return to Login
+          </Button>
           <Button
             className={styles['reset-password-button']}
             onClick={onOpenResetModal}
@@ -59,7 +67,7 @@ const ResetPasswordForm = () => {
             size="md"
             align="right"
           >
-            Reset
+            Reset Password
           </Button>
           <ResetPasswordModal isOpen={isOpenResetModal} onClose={onCloseResetModal} />
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, Button, ButtonGroup, Link } from '@chakra-ui/react';
+import { Text, Button, ButtonGroup } from '@chakra-ui/react';
 import styles from './ResetPasswordModal.module.css';
 
 // TODO:
@@ -8,9 +8,8 @@ import styles from './ResetPasswordModal.module.css';
 //   This should fix the button highlight color, which is currently white
 // - Implement "Return to Login page" button
 
-const ModalStep = ({ incrementStep, closeModal, resetPassword }) => {
+const ModalStep = ({ resetPassword }) => {
   const handleReset = () => {
-    incrementStep();
     resetPassword();
   };
   return (
@@ -23,9 +22,17 @@ const ModalStep = ({ incrementStep, closeModal, resetPassword }) => {
       </Text>
       <ButtonGroup size="lg" className={styles['step-button-group']}>
         {/* Will need to specify what this UNDO link leads to, right now placeholder is "someLink" */}
-        <Link className={styles['undo-click']} onClick={closeModal} to="/someLink">
+        {/* Will need to figure out how to have CHAKRA UI Buttons link to other pages */}
+        <Button
+          className={styles['undo-modal-button']}
+          onClick={handleReset}
+          color="#173848"
+          bg="white"
+          variant="outline"
+          colorScheme="#173848"
+        >
           Undo
-        </Link>
+        </Button>
         <Button onClick={handleReset} color="white" bg="#173848">
           Return to Login
         </Button>
@@ -41,8 +48,6 @@ const ResetPasswordModalContent = ({ modalStep, closeModal, resetPassword }) => 
 };
 
 ModalStep.propTypes = {
-  incrementStep: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
   resetPassword: PropTypes.func.isRequired,
 };
 
