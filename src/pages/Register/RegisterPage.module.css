@@ -1,0 +1,36 @@
+.page-container {
+  display: flex;
+  flex-direction: row;
+  min-height: 100%;
+}
+
+.register-form {
+  flex: 1;
+}
+
+.register-container {
+  height: 100%;
+  padding: 1% 2%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.banner {
+  flex: 1;
+  background-color: #345e80;
+}
+
+.logo-container {
+  width: 100%;
+}
+
+.register-form-component {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

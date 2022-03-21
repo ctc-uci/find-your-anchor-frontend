@@ -13,14 +13,17 @@ import {
 } from '@chakra-ui/react';
 
 import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
+import { renderEmail } from 'react-html-email';
 import PropTypes from 'prop-types';
 import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
-import { FYABackend } from '../../common/utils';
+import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
+import { FYABackend, sendEmail } from '../../common/utils';
 
 const PickupBox = ({
   approved,
+  transactionID,
   boxID,
   boxHolderName,
   boxHolderEmail,
@@ -39,11 +42,18 @@ const PickupBox = ({
   // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
   // This method is called when the approve box icon is clicked
   const approvePickupBox = async id => {
-    FYABackend.put('/boxHistory/approveBox', {
-      boxID: id,
-    }).then(async () => {
-      await fetchBoxes('under review', true);
+    await FYABackend.put('/boxHistory/approveBox', {
+      transactionID: id,
     });
+    const requests = [
+      fetchBoxes('under review', true),
+      sendEmail(
+        boxHolderName,
+        boxHolderEmail,
+        renderEmail(<ApprovedBoxEmail boxHolderName={boxHolderName} />),
+      ),
+    ];
+    await Promise.all(requests);
   };
 
   return (
@@ -113,7 +123,7 @@ const PickupBox = ({
                           setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen);
                         }}
                       >
-                        <BsXCircleFill color="red" size="30px" />
+                        <BsXCircleFill className={styles['rejected-icon']} />
                       </button>
                     </div>
                     {/* Approve box button */}
@@ -121,15 +131,16 @@ const PickupBox = ({
                       <button
                         type="button"
                         onClick={() => {
-                          approvePickupBox(boxID);
+                          approvePickupBox(transactionID);
                         }}
                       >
-                        <BsFillCheckCircleFill color="green" size="30px" />
+                        <BsFillCheckCircleFill className={styles['approved-icon']} />
                       </button>
                     </div>
                     <RejectBoxPopup
                       isOpen={rejectBoxPopupIsOpen}
                       setIsOpen={setRejectBoxPopupIsOpen}
+                      transactionID={transactionID}
                       boxID={boxID}
                       boxHolderName={boxHolderName}
                       boxHolderEmail={boxHolderEmail}
@@ -150,6 +161,7 @@ const PickupBox = ({
 
 PickupBox.propTypes = {
   approved: PropTypes.bool.isRequired,
+  transactionID: PropTypes.number.isRequired,
   boxID: PropTypes.number.isRequired,
   boxHolderName: PropTypes.string.isRequired,
   boxHolderEmail: PropTypes.string.isRequired,

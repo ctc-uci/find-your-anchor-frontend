@@ -12,20 +12,44 @@ import {
   AlertDialogCloseButton,
   Textarea,
 } from '@chakra-ui/react';
+import { renderEmail } from 'react-html-email';
 import styles from './RequestChangesPopup.module.css';
-import { FYABackend } from '../../../common/utils';
+import { FYABackend, sendEmail } from '../../../common/utils';
+import PendingChangesBoxEmail from '../../Email/EmailTemplates/PendingChangesBoxEmail';
 
-const RequestChangesPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes }) => {
+const RequestChangesPopup = ({
+  boxHolderName,
+  boxHolderEmail,
+  isOpen,
+  setIsOpen,
+  transactionID,
+  boxID,
+  fetchBoxes,
+}) => {
   const cancelRef = React.useRef();
   const [changesRequested, setChangesRequested] = useState('');
 
   const handleRequestChangesClicked = async () => {
     await FYABackend.put('/boxHistory/update', {
+      transactionID,
       boxID,
       status: 'pending changes',
       changesRequested,
     });
-    const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
+    const requests = [
+      fetchBoxes('under review', false),
+      fetchBoxes('pending changes', false),
+      sendEmail(
+        boxHolderName,
+        boxHolderEmail,
+        renderEmail(
+          <PendingChangesBoxEmail
+            boxHolderName={boxHolderName}
+            changesRequested={changesRequested}
+          />,
+        ),
+      ),
+    ];
     await Promise.all(requests);
     setIsOpen(false);
   };
@@ -75,6 +99,9 @@ const RequestChangesPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes }) => {
 };
 
 RequestChangesPopup.propTypes = {
+  boxHolderName: PropTypes.string.isRequired,
+  boxHolderEmail: PropTypes.string.isRequired,
+  transactionID: PropTypes.number.isRequired,
   boxID: PropTypes.number.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,

@@ -5,6 +5,16 @@
   background-color: white;
 }
 
+.rejected-icon {
+  color: red;
+  font-size: 30px;
+}
+
+.approved-icon {
+  color: green;
+  font-size: 30px;
+}
+
 .image-wrapper {
   width: 100%;
   height: 100%;
@@ -28,22 +38,22 @@
 }
 
 .box-approved {
-  background-color: #C6F6D5;
-  padding: 0px 15px 0px 15px;
+  background-color: #c6f6d5;
+  padding: 0px 15px 15px 15px;
   margin-top: 15px;
   border-radius: 10px;
 }
 
 .box-rejected {
-  background-color: #FED7D7;
-  padding: 0px 15px 0px 15px;
+  background-color: #fed7d7;
+  padding: 0px 15px 15px 15px;
   margin-top: 15px;
   border-radius: 10px;
 }
 
 .box-pending {
-  background-color: #BEE3F8;
-  padding: 0px 15px 0px 15px;
+  background-color: #bee3f8;
+  padding: 0px 15px 15px 15px;
   margin-top: 15px;
   border-radius: 10px;
 }
@@ -98,7 +108,6 @@
 }
 
 .check-icon {
-
   float: right;
 }
 
@@ -106,7 +115,6 @@
   float: left;
   width: 100%;
 }
-
 
 .box-details {
   display: flex;
@@ -121,8 +129,6 @@
   margin: 0;
 }
 
-
 .image-corners {
   border-radius: 5%;
 }
-
