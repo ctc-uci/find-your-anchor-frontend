@@ -7,7 +7,7 @@ import RightSideBar from '../../components/RightSideBar/RightSideBar';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
-  const [showReview, setShowReview] = useState();
+  const [showReview, setShowReview] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
 
   return (
