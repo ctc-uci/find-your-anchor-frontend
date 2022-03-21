@@ -57,6 +57,15 @@ const PickupBox = ({
     await Promise.all(requests);
   };
 
+  const updateImageStatus = async newStatus => {
+    await FYABackend.put('/boxHistory/update', {
+      transactionID,
+      boxID,
+      imageStatus: newStatus,
+    });
+    await fetchBoxes(status, true);
+  };
+
   return (
     <ChakraProvider>
       <div
@@ -84,7 +93,7 @@ const PickupBox = ({
             {/* Box details */}
             <AccordionPanel className={styles['accordion-panel']} pb={4}>
               <div className={styles['box-details']}>
-                {(!(status === 'evaluated') || !(imageStatus === 'rejected')) && picture && (
+                {(status !== 'evaluated' || imageStatus !== 'rejected') && picture && (
                   <img
                     src={picture}
                     alt=""
@@ -95,7 +104,7 @@ const PickupBox = ({
                 )}
                 {picture && status !== 'evaluated' && (
                   <div className={styles['image-functionality-wrapper']}>
-                    {/* Image approved indicator (only show if message is approved) */}
+                    {/* Image approved indicator (only show if image is approved) */}
                     <div className={styles['image-functionality']}>
                       {imageStatus === 'approved' && (
                         <>
@@ -105,7 +114,7 @@ const PickupBox = ({
                           <p className={styles['approval-message']}>Image Approved</p>
                         </>
                       )}
-                      {/* Image rejected indicator (only show if message is rejected) */}
+                      {/* Image rejected indicator (only show if image is rejected) */}
                       {imageStatus === 'rejected' && (
                         <>
                           <button type="button" className={styles['rejection-button']}>
@@ -119,14 +128,7 @@ const PickupBox = ({
                     <button
                       type="button"
                       className={styles['image-approved-button']}
-                      onClick={async () => {
-                        await FYABackend.put('/boxHistory/update', {
-                          transactionID,
-                          boxID,
-                          imageStatus: 'approved',
-                        });
-                        await fetchBoxes(status, true);
-                      }}
+                      onClick={async () => updateImageStatus('approved')}
                     >
                       <BsFillCheckCircleFill color="green" />
                     </button>
@@ -134,14 +136,7 @@ const PickupBox = ({
                     <button
                       type="button"
                       className={styles['image-rejected-button']}
-                      onClick={async () => {
-                        await FYABackend.put('/boxHistory/update', {
-                          transactionID,
-                          boxID,
-                          imageStatus: 'rejected',
-                        });
-                        await fetchBoxes(status, true);
-                      }}
+                      onClick={async () => updateImageStatus('rejected')}
                     >
                       <BsXCircleFill color="red" />
                     </button>
@@ -180,21 +175,14 @@ const PickupBox = ({
                     <div className={styles['close-icon']}>
                       <button
                         type="button"
-                        onClick={() => {
-                          setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen);
-                        }}
+                        onClick={() => setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen)}
                       >
                         <BsXCircleFill className={styles['rejected-icon']} />
                       </button>
                     </div>
                     {/* Approve box button */}
                     <div className={styles['check-icon']}>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          approvePickupBox(transactionID);
-                        }}
-                      >
+                      <button type="button" onClick={() => approvePickupBox(transactionID)}>
                         <BsFillCheckCircleFill className={styles['approved-icon']} />
                       </button>
                     </div>

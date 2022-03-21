@@ -71,11 +71,11 @@ const RelocationBox = ({
 
   // A function that updates box information in the backend and refetches all boxes that are under review or pending changes (message status can be updated in 'under review')
   // This method is called when the save button is clicked under pending changes
-  const updateBoxInfo = async stat => {
+  const updateBoxInfo = async newStatus => {
     await FYABackend.put('/boxHistory/update', {
       transactionID,
       boxID,
-      status: stat,
+      status: newStatus,
       boxHolderName: boxHolderNameState,
       boxHolderEmail: boxHolderEmailState,
       zipCode: zipCodeState,
@@ -117,6 +117,35 @@ const RelocationBox = ({
     await Promise.all(requests);
   };
 
+  // A function that updates imageStatus in the backend when a user clicks on the accept/reject buttons below the box's image
+  const updateImageStatus = async newStatus => {
+    await FYABackend.put('/boxHistory/update', {
+      transactionID,
+      boxID,
+      imageStatus: newStatus,
+    });
+    await fetchBoxes(status, false);
+  };
+
+  // A function that updates imageStatus in the backend when a user clicks on the accept/reject buttons below the message
+  const updateMessageStatus = async newStatus => {
+    await FYABackend.put('/boxHistory/update', {
+      transactionID,
+      boxID,
+      messageStatus: newStatus,
+    });
+    await fetchBoxes(status, false);
+  };
+
+  // A function that handles when the middle button (move to pending changes or save changes) is clicked
+  const handleMiddleButtonClicked = async () => {
+    if (status === 'under review') {
+      setRequestChangesPopupIsOpen(!requestChangesPopupIsOpen);
+    } else {
+      await updateBoxInfo('pending changes');
+    }
+  };
+
   return (
     <ChakraProvider>
       <div
@@ -149,7 +178,7 @@ const RelocationBox = ({
             {/* Box picture */}
             <AccordionPanel pb={4} className={styles['accordion-panel']}>
               <div className={styles['box-details']}>
-                {(!(status === 'evaluated') || !(imageStatus === 'rejected')) && picture && (
+                {(status !== 'evaluated' || imageStatus !== 'rejected') && picture && (
                   <img
                     src={picture}
                     alt=""
@@ -160,23 +189,31 @@ const RelocationBox = ({
                 )}
                 {picture && status !== 'evaluated' && (
                   <div className={styles['image-functionality-wrapper']}>
-                    {/* Image approved indicator (only show if message is approved) */}
+                    {/* Image approved indicator (only show if image is approved) */}
                     <div className={styles['image-functionality']}>
                       {imageStatus === 'approved' && (
                         <>
                           <button type="button" className={styles['approval-button']}>
                             <BsFillCheckCircleFill color="green" />
                           </button>
-                          <p className={styles['approval-message']}>Image Approved</p>
+                          <p
+                            className={`${styles['status-message']} ${styles['approval-message']}`}
+                          >
+                            Image Approved
+                          </p>
                         </>
                       )}
-                      {/* Image rejected indicator (only show if message is rejected) */}
+                      {/* Image rejected indicator (only show if image is rejected) */}
                       {imageStatus === 'rejected' && (
                         <>
                           <button type="button" className={styles['rejection-button']}>
                             <BsXCircleFill color="red" />
                           </button>
-                          <p className={styles['rejection-message']}>Image Denied</p>
+                          <p
+                            className={`${styles['status-message']} ${styles['rejection-message']}`}
+                          >
+                            Image Denied
+                          </p>
                         </>
                       )}
                     </div>
@@ -184,15 +221,7 @@ const RelocationBox = ({
                     <button
                       type="button"
                       className={styles['image-approved-button']}
-                      onClick={async () => {
-                        // setImageStatusState('approved');
-                        await FYABackend.put('/boxHistory/update', {
-                          transactionID,
-                          boxID,
-                          imageStatus: 'approved',
-                        });
-                        await fetchBoxes(status, false);
-                      }}
+                      onClick={async () => updateImageStatus('approved')}
                     >
                       <BsFillCheckCircleFill color="green" />
                     </button>
@@ -200,15 +229,7 @@ const RelocationBox = ({
                     <button
                       type="button"
                       className={styles['image-rejected-button']}
-                      onClick={async () => {
-                        // setImageStatusState('rejected');
-                        await FYABackend.put('/boxHistory/update', {
-                          transactionID,
-                          boxID,
-                          imageStatus: 'rejected',
-                        });
-                        await fetchBoxes(status, false);
-                      }}
+                      onClick={async () => updateImageStatus('rejected')}
                     >
                       <BsXCircleFill color="red" />
                     </button>
@@ -297,7 +318,11 @@ const RelocationBox = ({
                             <button type="button" className={styles['approval-button']}>
                               <BsFillCheckCircleFill color="green" />
                             </button>
-                            <p className={styles['approval-message']}>Message Approved</p>
+                            <p
+                              className={`${styles['status-message']} ${styles['approval-message']}`}
+                            >
+                              Message Approved
+                            </p>
                           </>
                         )}
                         {/* Message rejected indicator (only show if message is rejected) */}
@@ -306,7 +331,11 @@ const RelocationBox = ({
                             <button type="button" className={styles['rejection-button']}>
                               <BsXCircleFill color="red" />
                             </button>
-                            <p className={styles['rejection-message']}>Message Denied</p>
+                            <p
+                              className={`${styles['status-message']} ${styles['rejection-message']}`}
+                            >
+                              Message Denied
+                            </p>
                           </>
                         )}
                       </div>
@@ -314,14 +343,7 @@ const RelocationBox = ({
                       <button
                         type="button"
                         className={styles['message-approved-button']}
-                        onClick={async () => {
-                          await FYABackend.put('/boxHistory/update', {
-                            transactionID,
-                            boxID,
-                            messageStatus: 'approved',
-                          });
-                          await fetchBoxes(status, false);
-                        }}
+                        onClick={async () => updateMessageStatus('approved')}
                       >
                         <BsFillCheckCircleFill color="green" />
                       </button>
@@ -329,14 +351,7 @@ const RelocationBox = ({
                       <button
                         type="button"
                         className={styles['message-rejected-button']}
-                        onClick={async () => {
-                          await FYABackend.put('/boxHistory/update', {
-                            transactionID,
-                            boxID,
-                            messageStatus: 'rejected',
-                          });
-                          await fetchBoxes(status, false);
-                        }}
+                        onClick={async () => updateMessageStatus('rejected')}
                       >
                         <BsXCircleFill color="red" />
                       </button>
@@ -368,25 +383,14 @@ const RelocationBox = ({
                     <div className={styles['close-icon']}>
                       <button
                         type="button"
-                        onClick={async () => {
-                          setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen);
-                        }}
+                        onClick={async () => setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen)}
                       >
                         <BsXCircleFill className={styles['reject-box-icon']} />
                       </button>
                     </div>
                     {/* Pending changes (if the box is under review) or Save (if the box is under pending changes) button */}
                     <div className={styles['arrow-forward-icon']}>
-                      <button
-                        type="button"
-                        onClick={async () => {
-                          if (status === 'under review') {
-                            setRequestChangesPopupIsOpen(!requestChangesPopupIsOpen);
-                          } else {
-                            await updateBoxInfo('pending changes');
-                          }
-                        }}
-                      >
+                      <button type="button" onClick={async () => handleMiddleButtonClicked()}>
                         {status === 'under review' ? (
                           <BsFillArrowRightCircleFill className={styles['request-changes-icon']} />
                         ) : (
@@ -396,12 +400,7 @@ const RelocationBox = ({
                     </div>
                     {/* Accept box button */}
                     <div className={styles['check-icon']}>
-                      <button
-                        type="button"
-                        onClick={async () => {
-                          await approveRelocationBox(boxID);
-                        }}
-                      >
+                      <button type="button" onClick={async () => approveRelocationBox(boxID)}>
                         <BsFillCheckCircleFill className={styles['approve-box-icon']} />
                       </button>
                     </div>

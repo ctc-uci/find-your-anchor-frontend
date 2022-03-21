@@ -58,30 +58,23 @@
   border: 1px solid red;
 }
 
-.approval-message {
-  color: green;
-  float: left;
+.status-message {
+  float:left;
   padding: 1%;
-  width: 100%;
+  width:100%;
   text-align: left;
   margin-left: 1%;
+}
+
+.approval-message {
+  color: green;
 }
 
 .rejection-message {
   color: red;
-  float: left;
-  width: 100%;
-  padding: 1%;
-  text-align: left;
-  margin-left: 1%;
 }
 
-.approval-button {
-  float: left;
-  margin: 2% 2% 0% 0%;
-}
-
-.rejection-button {
+.approval-button, .rejection-button {
   float: left;
   margin: 2% 2% 0% 0%;
 }
