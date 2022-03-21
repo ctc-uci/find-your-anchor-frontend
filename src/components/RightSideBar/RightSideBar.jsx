@@ -6,7 +6,7 @@ import styles from './RightSideBar.module.css';
 import BoxList from './BoxList';
 import BoxInfo from './BoxInfo';
 
-const RightSideBar = ({ setShowInfo }) => {
+const RightSideBar = ({ selectedCountry, selectedZipCode, setSelectedZipCode }) => {
   const [selectedBox, setSelectedBox] = useState(null);
   return (
     <ChakraProvider>
@@ -18,20 +18,31 @@ const RightSideBar = ({ setShowInfo }) => {
         <CloseIcon
           boxSize={7}
           className={styles['close-button']}
-          onClick={() => setShowInfo(false)}
+          onClick={() => setSelectedZipCode(null)}
         />
         {selectedBox ? (
           <BoxInfo boxID={selectedBox} setSelectedBox={setSelectedBox} />
         ) : (
-          <BoxList setSelectedBox={setSelectedBox} />
+          <BoxList
+            selectedCountry={selectedCountry}
+            selectedZipCode={selectedZipCode}
+            setSelectedBox={setSelectedBox}
+          />
         )}
       </div>
     </ChakraProvider>
   );
 };
 
+RightSideBar.defaultProps = {
+  selectedZipCode: null,
+  selectedCountry: null,
+};
+
 RightSideBar.propTypes = {
-  setShowInfo: PropTypes.func.isRequired,
+  selectedCountry: PropTypes.string,
+  setSelectedZipCode: PropTypes.func.isRequired,
+  selectedZipCode: PropTypes.string,
 };
 
 export default RightSideBar;

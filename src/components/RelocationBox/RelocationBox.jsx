@@ -384,7 +384,7 @@ RelocationBox.propTypes = {
   boxID: PropTypes.number.isRequired,
   boxHolderName: PropTypes.string.isRequired,
   boxHolderEmail: PropTypes.string.isRequired,
-  zipCode: PropTypes.number.isRequired,
+  zipCode: PropTypes.string.isRequired,
   picture: PropTypes.string.isRequired,
   generalLocation: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,

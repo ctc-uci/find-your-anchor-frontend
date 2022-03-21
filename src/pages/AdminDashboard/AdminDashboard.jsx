@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// import PropTypes from 'prop-types';
 import { ChakraProvider, Button } from '@chakra-ui/react';
 
 import Map from '../../components/Map/Map';
@@ -6,10 +7,10 @@ import BoxApproval from '../../components/BoxApproval/BoxApproval';
 import RightSideBar from '../../components/RightSideBar/RightSideBar';
 import './AdminDashboard.css';
 
-function AdminDashboard() {
+const AdminDashboard = () => {
   const [showReview, setShowReview] = useState(false);
-  const [showInfo, setShowInfo] = useState(false);
-
+  const [selectedZipCode, setSelectedZipCode] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState(null);
   return (
     <ChakraProvider>
       <div className="admin-dashboard-container">
@@ -27,11 +28,11 @@ function AdminDashboard() {
           </div>
           <div
             className={`map
-            ${showReview && !showInfo ? 'one-bar-open' : ''}
-            ${showInfo && !showReview ? 'one-bar-open' : ''}
-            ${showInfo && showReview ? 'two-bars-open' : ''}`}
+            ${showReview && !selectedZipCode ? 'one-bar-open' : ''}
+            ${selectedZipCode && !showReview ? 'one-bar-open' : ''}
+            ${selectedZipCode && showReview ? 'two-bars-open' : ''}`}
           >
-            <Map setShowInfo={setShowInfo} />
+            <Map setSelectedZipCode={setSelectedZipCode} setSelectedCountry={setSelectedCountry} />
           </div>
 
           <Button
@@ -41,13 +42,17 @@ function AdminDashboard() {
           >
             Review Submission
           </Button>
-          <div className={`side-bar ${showInfo ? 'show-info' : ''}`}>
-            <RightSideBar setShowInfo={setShowInfo} />
+          <div className={`side-bar ${selectedZipCode ? 'show-info' : ''}`}>
+            <RightSideBar
+              selectedZipCode={selectedZipCode}
+              selectedCountry={selectedCountry}
+              setSelectedZipCode={setSelectedZipCode}
+            />
           </div>
         </div>
       </div>
     </ChakraProvider>
   );
-}
+};
 
 export default AdminDashboard;
