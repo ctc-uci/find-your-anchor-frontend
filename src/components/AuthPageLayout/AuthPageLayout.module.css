@@ -4,11 +4,11 @@
   min-height: 100%;
 }
 
-.reset-password-form {
+.auth-form {
   flex: 1;
 }
 
-.reset-password-container {
+.auth-container {
   height: 100%;
   padding: 1% 2%;
   display: flex;
@@ -26,7 +26,7 @@
   width: 100%;
 }
 
-.reset-password-form-component {
+.auth-form-component {
   width: 80%;
   height: 100%;
   display: flex;
