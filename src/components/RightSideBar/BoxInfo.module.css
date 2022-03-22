@@ -62,7 +62,7 @@ ul {
   border-left: 2px solid lightgrey;
   margin: 1em;
   padding: 0;
-  }
+}
 
 ul li {
   list-style: none;
@@ -88,4 +88,3 @@ ul li:before {
   width: 100%;
   margin-left: 10px;
 }
-

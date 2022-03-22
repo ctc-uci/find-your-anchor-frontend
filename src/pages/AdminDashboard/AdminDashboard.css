@@ -30,7 +30,8 @@
   z-index: 400; /* since leaflet has a high z index */
 }
 
-.side-bar.show-review, .show-info {
+.side-bar.show-review,
+.show-info {
   display: block;
 }
 

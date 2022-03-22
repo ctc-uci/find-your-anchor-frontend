@@ -42,9 +42,13 @@ const PickupBox = ({
   // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
   // This method is called when the approve box icon is clicked
   const approvePickupBox = async id => {
-    await FYABackend.put('/boxHistory/approveBox', {
+    await FYABackend.put('/boxHistory/update', {
       transactionID: id,
+      boxID,
+      status: 'evaluated',
+      approved: true,
     });
+    await FYABackend.delete(`/anchorBox/${boxID}`);
     const requests = [
       fetchBoxes('under review', true),
       sendEmail(

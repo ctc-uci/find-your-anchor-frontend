@@ -9,7 +9,7 @@ const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox }) => {
   const [boxList, setBoxList] = useState([]);
 
   useEffect(async () => {
-    if (selectedCountry) {
+    if (selectedCountry && selectedZipCode) {
       const anchorBoxes = await FYABackend.get('/anchorBox', {
         params: {
           zipCode: selectedZipCode,
@@ -17,8 +17,9 @@ const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox }) => {
         },
       });
       setBoxList(anchorBoxes.data);
+      console.log(selectedZipCode);
     }
-  }, [selectedCountry]);
+  }, [selectedZipCode]);
   return (
     <ChakraProvider>
       <div className={styles['box-list']}>

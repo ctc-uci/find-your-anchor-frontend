@@ -105,8 +105,8 @@ const Map = ({ setSelectedCountry, setSelectedZipCode }) => {
             // Marker click effect
             click: () => {
               mapState.flyTo([markerObject.longitude, markerObject.latitude], 10);
-              setSelectedZipCode(markerObject.zipCode);
               setSelectedCountry(markerObject.country);
+              setSelectedZipCode(markerObject.zipCode);
             },
           }}
         />
