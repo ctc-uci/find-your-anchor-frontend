@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ChakraProvider,
   FormControl,
@@ -12,8 +12,14 @@ import {
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 import styles from './BoxInfo.module.css';
+import { FYABackend } from '../../common/utils';
 
-const BoxInfo = ({ boxID, setSelectedBox }) => {
+const BoxInfo = ({ selectedBox, setSelectedBox }) => {
+  const [boxHistory, setBoxHistory] = useState([]);
+  useEffect(async () => {
+    const response = await FYABackend.get('/boxHistory/history/40');
+    setBoxHistory(response.data);
+  }, []);
   return (
     <ChakraProvider>
       <div className={styles['box-info']}>
@@ -24,28 +30,24 @@ const BoxInfo = ({ boxID, setSelectedBox }) => {
             onClick={() => setSelectedBox(null)}
           />
           <p className={styles.title}>
-            <p className={styles['box-number']}>Box #{boxID}</p>
+            <p className={styles['box-number']}>Box #{selectedBox.box_id}</p>
             01/20/22
           </p>
         </div>
         <div className={styles['box-data']}>
-          <img
-            src="https://fya-dev.s3.us-west-1.amazonaws.com/266c5ba863b653657de378d9fc6bf262"
-            alt=""
-            className={styles['image-corners']}
-          />
+          <img src={selectedBox.picture} alt="" className={styles['image-corners']} />
           <FormControl>
-            {/* Box name */}
+            {/* Box name
             <FormLabel htmlFor="name" className={styles['form-label']}>
-              Name
+              Jane Doe
             </FormLabel>
             <Input isReadOnly id="name" type="name" value="Jane Doe" />
             {/* Box email */}
-            <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
+            {/* <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
               Email
-            </FormLabel>
-            <Input isReadOnly id="email" type="email" value="jdoe12@gmail.com" />
-            {/* Box general location */}
+            </FormLabel> */}
+            {/* <Input isReadOnly id="email" type="email" value="jdoe12@gmail.com" />
+            Box general location */}
             <FormLabel isReadOnly htmlFor="generalLocation" className={styles['form-label']}>
               General Location
             </FormLabel>
@@ -53,27 +55,34 @@ const BoxInfo = ({ boxID, setSelectedBox }) => {
               isReadOnly
               id="generalLocation"
               type="generalLocation"
-              value="Santa Monica Pier"
+              value={selectedBox.general_location}
             />
             {/* Box drop off method */}
             <FormLabel htmlFor="dropOffMethod" className={styles['form-label']}>
               Drop Off Method
             </FormLabel>
-            <Select disabled placeholder="Given to Someone" />
+            <Select
+              disabled
+              placeholder={
+                selectedBox.launched_organically ? 'Left at Location' : 'Given to Someone'
+              }
+            />
             {/* Box message */}
             <FormLabel htmlFor="message" className={styles['form-label']}>
               Message
             </FormLabel>
-            <Textarea isReadOnly value="hello" resize="vertical" />
+            <Textarea isReadOnly value={selectedBox.additional_comments} resize="vertical" />
           </FormControl>
           <div className={styles['history-div']}>
             <Text fontSize="md">History</Text>
           </div>
           <div className={styles['history-graph']}>
             <ul>
-              <li>1</li>
-              <li>2</li>
-              <li>3</li>
+              {boxHistory.map(box => (
+                <li key={box.transaction_id}>
+                  {box.general_location} {box.date}
+                </li>
+              ))}
             </ul>
           </div>
           <div className={styles['button-div']}>
@@ -88,7 +97,20 @@ const BoxInfo = ({ boxID, setSelectedBox }) => {
 };
 
 BoxInfo.propTypes = {
-  boxID: PropTypes.number.isRequired,
+  selectedBox: PropTypes.shape({
+    box_id: PropTypes.number,
+    additional_comments: PropTypes.string,
+    country: PropTypes.string,
+    date: PropTypes.string,
+    general_location: PropTypes.string,
+    latitude: PropTypes.number,
+    longitude: PropTypes.number,
+    message: PropTypes.string,
+    launched_organically: PropTypes.bool,
+    picture: PropTypes.string,
+    show_on_map: PropTypes.bool,
+    zip_code: PropTypes.string,
+  }).isRequired,
   setSelectedBox: PropTypes.func.isRequired,
 };
 export default BoxInfo;

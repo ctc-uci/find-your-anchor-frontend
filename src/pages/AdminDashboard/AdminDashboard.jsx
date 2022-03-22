@@ -11,6 +11,7 @@ const AdminDashboard = () => {
   const [showReview, setShowReview] = useState(false);
   const [selectedZipCode, setSelectedZipCode] = useState(null);
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedBox, setSelectedBox] = useState(null);
   return (
     <ChakraProvider>
       <div className="admin-dashboard-container">
@@ -32,7 +33,11 @@ const AdminDashboard = () => {
             ${selectedZipCode && !showReview ? 'one-bar-open' : ''}
             ${selectedZipCode && showReview ? 'two-bars-open' : ''}`}
           >
-            <Map setSelectedZipCode={setSelectedZipCode} setSelectedCountry={setSelectedCountry} />
+            <Map
+              setSelectedZipCode={setSelectedZipCode}
+              setSelectedCountry={setSelectedCountry}
+              setSelectedBox={setSelectedBox}
+            />
           </div>
 
           <Button
@@ -47,6 +52,8 @@ const AdminDashboard = () => {
               selectedZipCode={selectedZipCode}
               selectedCountry={selectedCountry}
               setSelectedZipCode={setSelectedZipCode}
+              setSelectedBox={setSelectedBox}
+              selectedBox={selectedBox}
             />
           </div>
         </div>

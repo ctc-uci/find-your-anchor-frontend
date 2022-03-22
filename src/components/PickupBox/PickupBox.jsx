@@ -48,7 +48,10 @@ const PickupBox = ({
       status: 'evaluated',
       approved: true,
     });
-    await FYABackend.delete(`/anchorBox/${boxID}`);
+    await FYABackend.put('/anchorBox/update', {
+      boxID,
+      showOnMap: false,
+    });
     const requests = [
       fetchBoxes('under review', true),
       sendEmail(

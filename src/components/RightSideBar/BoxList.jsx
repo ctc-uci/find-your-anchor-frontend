@@ -16,6 +16,7 @@ const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox }) => {
           country: selectedCountry,
         },
       });
+      console.log(anchorBoxes.data);
       setBoxList(anchorBoxes.data);
       console.log(selectedZipCode);
     }
@@ -24,19 +25,22 @@ const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox }) => {
     <ChakraProvider>
       <div className={styles['box-list']}>
         <Text fontSize="lg" className={styles.title}>
-          Zip Code: 92657
+          Zip Code: {selectedZipCode}
         </Text>
         {boxList &&
-          boxList.map(() => (
-            <Box key={1} className={styles['box-list-item']} onClick={() => setSelectedBox(1)}>
+          boxList.map(box => (
+            <Box
+              key={box.box_id}
+              className={styles['box-list-item']}
+              onClick={() => setSelectedBox(box)}
+            >
               <div className={styles['box-list-item-text']}>
-                <p className={styles['box-number']}>Box #69 </p>
-                01/22/2022
+                <p className={styles['box-number']}>Box #{box.box_id}</p>
+                {box.date}
               </div>
               <ChevronRightIcon boxSize={10} />
             </Box>
           ))}
-        {/* <BoxInfo /> */}
       </div>
     </ChakraProvider>
   );

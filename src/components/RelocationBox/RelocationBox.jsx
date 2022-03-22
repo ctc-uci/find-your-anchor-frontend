@@ -18,7 +18,7 @@ import { renderEmail } from 'react-html-email';
 import PropTypes from 'prop-types';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 import SaveChangesIcon from '../BoxIcons/SaveChangesIcon.svg';
-import { FYABackend, sendEmail } from '../../common/utils';
+import { FYABackend, getLatLon, sendEmail } from '../../common/utils';
 import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
@@ -105,8 +105,16 @@ const RelocationBox = ({
       messageStatus: messageStatusState,
       launchedOrganically: launchedOrganicallyState,
     });
+    let coordinates = await getLatLon(zipCode, 'USA');
+    if (coordinates.length !== 2) {
+      coordinates = [0, 0];
+    }
+
+    console.log(coordinates);
     await FYABackend.put('/boxHistory/approveBox', {
       transactionID,
+      latitude: coordinates[0],
+      longitude: coordinates[1],
     });
     const requests = [
       fetchBoxes('under review', false),
