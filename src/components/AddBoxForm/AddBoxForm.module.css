@@ -75,7 +75,7 @@ span.chakra-checkbox__control {
 
 .submit-button {
   float: right;
-  margin-top: 5%;
+  margin: 5% 0;
 }
 
 .required-field::after {
@@ -95,12 +95,6 @@ span.chakra-checkbox__control {
 
 .date-picker-error {
   border: 2.5px solid #ea6565;
-}
-
-/* box image section */
-.box-image {
-  width: 100%;
-  height: 100%;
 }
 
 .box-image img {
