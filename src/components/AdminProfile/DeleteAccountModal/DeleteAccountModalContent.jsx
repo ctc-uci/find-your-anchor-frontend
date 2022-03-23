@@ -2,11 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes, { instanceOf } from 'prop-types';
 import { Text, Button, ButtonGroup } from '@chakra-ui/react';
-import { signOut } from 'firebase/auth';
 import styles from './DeleteAccountModal.module.css';
 import { FYABackend } from '../../../common/utils';
-import { auth, getCurrentUser } from '../../../common/auth_utils';
-import { Cookies, withCookies, clearCookies } from '../../../common/cookie_utils';
+import { auth, getCurrentUser, logout } from '../../../common/auth_utils';
+import { Cookies, withCookies } from '../../../common/cookie_utils';
 
 // TODO:
 // - Button colors should be added to ChakraProvider using extendTheme
@@ -22,8 +21,7 @@ const ModalStepOne = ({ incrementStep, closeModal, cookies }) => {
     await FYABackend.delete(`/users/${user.uid}`);
 
     // Manually log out the user.
-    await signOut(auth);
-    clearCookies(cookies);
+    await logout(cookies);
   };
 
   return (
