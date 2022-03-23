@@ -148,10 +148,9 @@ const confirmNewPassword = async (code, newPassword) => {
  * @param {string} redirectPath The path to redirect the user to after logging out
  * @param {hook} navigate An instance of the useNavigate hook from react-router-dom
  */
-const logout = async (redirectPath, navigate, cookies) => {
+const logout = async cookies => {
   await signOut(auth);
   clearCookies(cookies);
-  navigate(redirectPath);
 };
 
 /**

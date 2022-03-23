@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import CommonModal from '../../../common/CommonModal/CommonModal';
-import DeleteAccountModalContent from './DeleteAccountModalContent';
-import styles from './DeleteAccountModal.module.css';
+import LogoutModalContent from './LogoutModalContent';
+import styles from './LogoutModal.module.css';
 import FYALogo from '../../../assets/fya-logo-large.svg';
 
-const DeleteAccountModal = ({ isOpen, onClose }) => {
+const LogoutModal = ({ isOpen, onClose }) => {
   const [modalStep, setModalStep] = useState(0);
 
   const closeModal = () => {
@@ -21,9 +21,9 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
       showCloseButton={modalStep === 0}
       closeOnOverlayClick={modalStep === 0}
     >
-      <div className={styles['delete-modal-content']}>
+      <div className={styles['logout-modal-content']}>
         <img src={FYALogo} alt="Logo" className={styles['fya-logo']} />
-        <DeleteAccountModalContent
+        <LogoutModalContent
           modalStep={modalStep}
           setModalStep={setModalStep}
           closeModal={closeModal}
@@ -33,9 +33,9 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
   );
 };
 
-DeleteAccountModal.propTypes = {
+LogoutModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default DeleteAccountModal;
+export default LogoutModal;

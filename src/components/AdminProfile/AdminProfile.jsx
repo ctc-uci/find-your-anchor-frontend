@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { PropTypes, instanceOf } from 'prop-types';
+import { PropTypes } from 'prop-types';
 import { ChakraProvider, Button, useDisclosure, Input, Text } from '@chakra-ui/react';
 
 import { RiPencilFill, RiCheckFill } from 'react-icons/ri';
 import { DiReact } from 'react-icons/di';
 import styles from './AdminProfile.module.css';
 import DeleteAccountModal from './DeleteAccountModal/DeleteAccountModal';
+import LogoutModal from './LogoutModal/LogoutModal';
 import SendLinkModal from './SendLinkModal/SendLinkModal';
 import FYALogoLarge from '../../assets/fya-logo-large.svg';
 
-import { logout, useNavigate, getCurrentUser, auth } from '../../common/auth_utils';
-import { Cookies, withCookies } from '../../common/cookie_utils';
+import { getCurrentUser, auth } from '../../common/auth_utils';
 import { FYABackend } from '../../common/utils';
 
 const TextInput = ({
@@ -52,7 +52,7 @@ const TextInput = ({
   );
 };
 
-const AdminProfile = ({ cookies }) => {
+const AdminProfile = () => {
   const {
     isOpen: isOpenDeleteModal,
     onOpen: onOpenDeleteModal,
@@ -65,23 +65,17 @@ const AdminProfile = ({ cookies }) => {
     onClose: onCloseLinkModal,
   } = useDisclosure();
 
+  const {
+    isOpen: isOpenLogoutModal,
+    onOpen: onOpenLogoutModal,
+    onClose: onCloseLogoutModal,
+  } = useDisclosure();
+
   const [editFirst, setEditFirst] = useState(false);
   const [editLast, setEditLast] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-
-  const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState();
-
-  const handleLogout = async () => {
-    try {
-      await logout('/login', navigate, cookies);
-    } catch (err) {
-      setErrorMessage(err.message);
-      console.log(errorMessage);
-    }
-  };
 
   const handleCheckMarkClicked = async () => {
     const user = await getCurrentUser(auth);
@@ -147,7 +141,7 @@ const AdminProfile = ({ cookies }) => {
             Delete Account
           </Button>
           <Button
-            onClick={handleLogout}
+            onClick={onOpenLogoutModal}
             colorScheme="teal"
             bg="#345E80"
             fontSize="20px"
@@ -157,6 +151,7 @@ const AdminProfile = ({ cookies }) => {
             Logout
           </Button>
           <DeleteAccountModal isOpen={isOpenDeleteModal} onClose={onCloseDeleteModal} />
+          <LogoutModal isOpen={isOpenLogoutModal} onClose={onCloseLogoutModal} />
         </div>
       </div>
     </ChakraProvider>
@@ -183,8 +178,4 @@ TextInput.propTypes = {
   handleCheckMarkClicked: PropTypes.func,
 };
 
-AdminProfile.propTypes = {
-  cookies: instanceOf(Cookies).isRequired,
-};
-
-export default withCookies(AdminProfile);
+export default AdminProfile;

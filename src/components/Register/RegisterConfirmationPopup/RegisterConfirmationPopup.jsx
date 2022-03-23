@@ -13,7 +13,13 @@ const RegisterConfirmationPopup = ({ isOpen, onClose }) => {
   };
 
   return (
-    <CommonModal isOpen={isOpen} onClose={closeModal} modalClassName={styles.modal}>
+    <CommonModal
+      isOpen={isOpen}
+      onClose={closeModal}
+      modalClassName={styles.modal}
+      showCloseButton={false}
+      closeOnOverlayClick={false}
+    >
       <div className={styles['popup-wrapper']}>
         <CheckCircleIcon className={styles['check-icon']} color="#345E80" />
         <h1 className={styles['main-text']}>Account Registered</h1>
