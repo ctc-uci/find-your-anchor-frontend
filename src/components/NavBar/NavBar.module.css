@@ -9,7 +9,6 @@
 
 .navbar-buttons-and-account {
   gap: 20px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,10 +21,16 @@
   justify-content: space-between;
 }
 
-.profile-picture {
+.navbar-initials {
   height: 48px;
   width: 48px;
   border-radius: 50%;
+  background-color: #3182CE;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
 }
 
 a {
