@@ -7,7 +7,6 @@ import {
   signOut,
   sendPasswordResetEmail,
   confirmPasswordReset,
-  applyActionCode,
 } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
@@ -95,10 +94,6 @@ const refreshToken = async () => {
  */
 const logInWithEmailAndPassword = async (email, password, redirectPath, navigate, cookies) => {
   await signInWithEmailAndPassword(auth, email, password);
-  // Check if the user has verified their email.
-  if (!auth.currentUser.emailVerified) {
-    throw new Error('Please verify your email before logging in.');
-  }
   cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
   navigate(redirectPath);
 };
@@ -146,14 +141,6 @@ const sendInviteLink = async email => {
  */
 const confirmNewPassword = async (code, newPassword) => {
   await confirmPasswordReset(auth, code, newPassword);
-};
-
-/**
- * Applies a verification code sent to the user by email or other out-of-band mechanism.
- * @param {string} code The confirmation code sent via email to the user
- */
-const confirmVerifyEmail = async code => {
-  await applyActionCode(auth, code);
 };
 
 /**
@@ -236,5 +223,4 @@ export {
   getCurrentUser,
   sendInviteLink,
   confirmNewPassword,
-  confirmVerifyEmail,
 };

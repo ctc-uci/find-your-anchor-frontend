@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ResetPassword from './ResetPassword';
-import VerifyEmail from './VerifyEmail';
 import { FYABackend } from '../../common/utils';
 import RegisterPage from '../../pages/Register/RegisterPage';
 
@@ -34,11 +33,11 @@ const AuthEmail = ({ redirectPath }) => {
     return <RegisterPage email={invitedUser.data.admin.email} />;
   }
 
-  if (code === null) {
+  if (code === null || mode !== 'resetPassword') {
     return <Navigate to={redirectPath} />;
   }
 
-  return mode === 'resetPassword' ? <ResetPassword code={code} /> : <VerifyEmail code={code} />;
+  return <ResetPassword code={code} />;
 };
 
 AuthEmail.propTypes = {
