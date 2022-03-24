@@ -37,17 +37,17 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
         <div className={styles['box-data']}>
           <img src={selectedBox.picture} alt="" className={styles['image-corners']} />
           <FormControl>
-            {/* Box name
+            {/* Box name */}
             <FormLabel htmlFor="name" className={styles['form-label']}>
               Jane Doe
             </FormLabel>
             <Input isReadOnly id="name" type="name" value="Jane Doe" />
             {/* Box email */}
-            {/* <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
+            <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
               Email
-            </FormLabel> */}
-            {/* <Input isReadOnly id="email" type="email" value="jdoe12@gmail.com" />
-            Box general location */}
+            </FormLabel>
+            <Input isReadOnly id="email" type="email" value="jdoe12@gmail.com" />
+            {/* Box general location */}
             <FormLabel isReadOnly htmlFor="generalLocation" className={styles['form-label']}>
               General Location
             </FormLabel>
@@ -74,7 +74,9 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
             <Textarea isReadOnly value={selectedBox.additional_comments} resize="vertical" />
           </FormControl>
           <div className={styles['history-div']}>
-            <Text fontSize="md">History</Text>
+            <Text fontSize="md" fontWeight="500">
+              History
+            </Text>
           </div>
           <div className={styles['history-graph']}>
             <ul>
