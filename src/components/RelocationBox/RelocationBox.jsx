@@ -110,7 +110,6 @@ const RelocationBox = ({
       coordinates = [0, 0];
     }
 
-    console.log(coordinates);
     await FYABackend.put('/boxHistory/approveBox', {
       transactionID,
       latitude: coordinates[0],

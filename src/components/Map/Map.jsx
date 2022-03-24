@@ -7,16 +7,21 @@ import icons from 'leaflet-color-number-markers';
 import './Map.css';
 import { FYABackend } from '../../common/utils';
 
-const Map = ({ setSelectedCountry, setSelectedZipCode, setSelectedBox }) => {
+const Map = ({
+  setSelectedCountry,
+  setSelectedZipCode,
+  setSelectedBox,
+  setSelectedLocation,
+  selectedLocation,
+}) => {
   // This mapState variable stores the current instance of the map.
   // This is used to fly to markers when they're clicked
   const [mapState, setMapState] = useState(null);
   const [markerData, setMarkerData] = useState([]);
 
   useEffect(async () => {
-    const response = await FYABackend.get('/anchorBox/');
+    const response = await FYABackend.get('/anchorBox/locations');
     setMarkerData(response.data);
-    console.log(markerData);
   }, []);
 
   // This is the SearchField component used for searching locations
@@ -26,6 +31,8 @@ const Map = ({ setSelectedCountry, setSelectedZipCode, setSelectedBox }) => {
     const searchControl = new GeoSearchControl({
       provider: new OpenStreetMapProvider(),
       searchLabel: 'Search city, zipcode, or box number',
+      showMarker: false,
+      showPopup: false,
     });
     useEffect(() => {
       map.addControl(searchControl);
@@ -53,11 +60,7 @@ const Map = ({ setSelectedCountry, setSelectedZipCode, setSelectedBox }) => {
       {markerData &&
         markerData.map(markerObject => (
           <Marker
-            icon={
-              icons.blue.numbers[
-                markerData.filter(marker => marker.zip_code === markerObject.zip_code).length
-              ]
-            }
+            icon={icons.blue.numbers[markerObject.box_count]}
             key={markerObject.box_id}
             position={[markerObject.latitude, markerObject.longitude]}
             eventHandlers={{
@@ -66,6 +69,7 @@ const Map = ({ setSelectedCountry, setSelectedZipCode, setSelectedBox }) => {
                 mapState.flyTo([markerObject.latitude, markerObject.longitude], 10);
                 setSelectedCountry(markerObject.country);
                 setSelectedZipCode(markerObject.zip_code);
+                setSelectedLocation(!selectedLocation);
                 setSelectedBox(null);
               },
             }}
@@ -79,7 +83,9 @@ const Map = ({ setSelectedCountry, setSelectedZipCode, setSelectedBox }) => {
 Map.propTypes = {
   setSelectedCountry: PropTypes.func.isRequired,
   setSelectedZipCode: PropTypes.func.isRequired,
+  setSelectedLocation: PropTypes.func.isRequired,
   setSelectedBox: PropTypes.func.isRequired,
+  selectedLocation: PropTypes.bool.isRequired,
 };
 
 export default Map;

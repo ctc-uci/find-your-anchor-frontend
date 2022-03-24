@@ -1,22 +1,24 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { ChakraProvider } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 import styles from './RightSideBar.module.css';
 import BoxList from './BoxList';
 import BoxInfo from './BoxInfo';
-import { getLatLon } from '../../common/utils';
 
 const RightSideBar = ({
   selectedCountry,
   selectedZipCode,
   setSelectedZipCode,
+  setSelectedCountry,
   setSelectedBox,
+  selectedLocation,
   selectedBox,
 }) => {
-  useEffect(async () => {
-    await getLatLon(92617, 'USA');
-  }, []);
+  const clearSelectedInfo = () => {
+    setSelectedZipCode(null);
+    setSelectedCountry(null);
+  };
   return (
     <ChakraProvider>
       <div
@@ -24,11 +26,7 @@ const RightSideBar = ({
           !selectedBox ? styles['right-side-bar-box-list'] : styles['right-side-bar-box-info']
         }`}
       >
-        <CloseIcon
-          boxSize={7}
-          className={styles['close-button']}
-          onClick={() => setSelectedZipCode(null)}
-        />
+        <CloseIcon boxSize={7} className={styles['close-button']} onClick={clearSelectedInfo} />
         {selectedBox ? (
           <BoxInfo selectedBox={selectedBox} setSelectedBox={setSelectedBox} />
         ) : (
@@ -36,6 +34,7 @@ const RightSideBar = ({
             selectedCountry={selectedCountry}
             selectedZipCode={selectedZipCode}
             setSelectedBox={setSelectedBox}
+            selectedLocation={selectedLocation}
           />
         )}
       </div>
@@ -51,7 +50,9 @@ RightSideBar.defaultProps = {
 
 RightSideBar.propTypes = {
   selectedCountry: PropTypes.string,
+  selectedLocation: PropTypes.bool.isRequired,
   setSelectedZipCode: PropTypes.func.isRequired,
+  setSelectedCountry: PropTypes.func.isRequired,
   selectedZipCode: PropTypes.string,
   selectedBox: PropTypes.shape({
     box_id: PropTypes.number,

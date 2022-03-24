@@ -11,6 +11,7 @@ const AdminDashboard = () => {
   const [showReview, setShowReview] = useState(false);
   const [selectedZipCode, setSelectedZipCode] = useState(null);
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(false);
   const [selectedBox, setSelectedBox] = useState(null);
   return (
     <ChakraProvider>
@@ -37,6 +38,8 @@ const AdminDashboard = () => {
               setSelectedZipCode={setSelectedZipCode}
               setSelectedCountry={setSelectedCountry}
               setSelectedBox={setSelectedBox}
+              selectedLocation={selectedLocation}
+              setSelectedLocation={setSelectedLocation}
             />
           </div>
 
@@ -47,11 +50,14 @@ const AdminDashboard = () => {
           >
             Review Submission
           </Button>
-          <div className={`side-bar ${selectedZipCode ? 'show-info' : ''}`}>
+          <div className={`side-bar ${selectedZipCode && selectedCountry ? 'show-info' : ''}`}>
             <RightSideBar
               selectedZipCode={selectedZipCode}
               selectedCountry={selectedCountry}
               setSelectedZipCode={setSelectedZipCode}
+              setSelectedCountry={setSelectedCountry}
+              setSelectedLocation={setSelectedLocation}
+              selectedLocation={selectedLocation}
               setSelectedBox={setSelectedBox}
               selectedBox={selectedBox}
             />

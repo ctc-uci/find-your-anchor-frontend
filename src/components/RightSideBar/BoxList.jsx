@@ -5,7 +5,7 @@ import { ChevronRightIcon } from '@chakra-ui/icons';
 import styles from './BoxList.module.css';
 import { FYABackend } from '../../common/utils';
 
-const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox }) => {
+const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox, selectedLocation }) => {
   const [boxList, setBoxList] = useState([]);
 
   useEffect(async () => {
@@ -16,11 +16,9 @@ const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox }) => {
           country: selectedCountry,
         },
       });
-      console.log(anchorBoxes.data);
       setBoxList(anchorBoxes.data);
-      console.log(selectedZipCode);
     }
-  }, [selectedZipCode]);
+  }, [selectedLocation]);
   return (
     <ChakraProvider>
       <div className={styles['box-list']}>
@@ -55,6 +53,7 @@ BoxList.propTypes = {
   selectedCountry: PropTypes.string,
   selectedZipCode: PropTypes.string,
   setSelectedBox: PropTypes.func.isRequired,
+  selectedLocation: PropTypes.bool.isRequired,
 };
 
 export default BoxList;
