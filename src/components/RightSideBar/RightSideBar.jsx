@@ -12,9 +12,10 @@ const RightSideBar = ({
   setSelectedZipCode,
   setSelectedCountry,
   setSelectedBox,
-  selectedLocation,
+  updateBoxListSwitch,
   selectedBox,
 }) => {
+  // This function clears the selected zip code/country states (called when the user exits out of the right side bar)
   const clearSelectedInfo = () => {
     setSelectedZipCode(null);
     setSelectedCountry(null);
@@ -34,7 +35,7 @@ const RightSideBar = ({
             selectedCountry={selectedCountry}
             selectedZipCode={selectedZipCode}
             setSelectedBox={setSelectedBox}
-            selectedLocation={selectedLocation}
+            updateBoxListSwitch={updateBoxListSwitch}
           />
         )}
       </div>
@@ -50,7 +51,7 @@ RightSideBar.defaultProps = {
 
 RightSideBar.propTypes = {
   selectedCountry: PropTypes.string,
-  selectedLocation: PropTypes.bool.isRequired,
+  updateBoxListSwitch: PropTypes.bool.isRequired,
   setSelectedZipCode: PropTypes.func.isRequired,
   setSelectedCountry: PropTypes.func.isRequired,
   selectedZipCode: PropTypes.string,

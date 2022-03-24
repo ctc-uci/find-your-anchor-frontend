@@ -5,9 +5,12 @@ import { ChevronRightIcon } from '@chakra-ui/icons';
 import styles from './BoxList.module.css';
 import { FYABackend } from '../../common/utils';
 
-const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox, selectedLocation }) => {
+const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox, updateBoxListSwitch }) => {
+  // This state contains all boxes to be shown in the right side bar
   const [boxList, setBoxList] = useState([]);
 
+  // Load all boxes in the current selected pin
+  // This useEffect is triggered whenever the user clicks on a pin
   useEffect(async () => {
     if (selectedCountry && selectedZipCode) {
       const anchorBoxes = await FYABackend.get('/anchorBox', {
@@ -18,7 +21,7 @@ const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox, selectedLoc
       });
       setBoxList(anchorBoxes.data);
     }
-  }, [selectedLocation]);
+  }, [updateBoxListSwitch]);
   return (
     <ChakraProvider>
       <div className={styles['box-list']}>
@@ -53,7 +56,7 @@ BoxList.propTypes = {
   selectedCountry: PropTypes.string,
   selectedZipCode: PropTypes.string,
   setSelectedBox: PropTypes.func.isRequired,
-  selectedLocation: PropTypes.bool.isRequired,
+  updateBoxListSwitch: PropTypes.bool.isRequired,
 };
 
 export default BoxList;

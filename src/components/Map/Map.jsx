@@ -11,17 +11,18 @@ const Map = ({
   setSelectedCountry,
   setSelectedZipCode,
   setSelectedBox,
-  setSelectedLocation,
-  selectedLocation,
+  setUpdateBoxListSwitch,
+  updateBoxListSwitch,
 }) => {
   // This mapState variable stores the current instance of the map.
   // This is used to fly to markers when they're clicked
   const [mapState, setMapState] = useState(null);
-  const [markerData, setMarkerData] = useState([]);
+  // A list containing all unique zip codes stored in Anchor_Box
+  const [zipcodeData, setZipCodeData] = useState([]);
 
   useEffect(async () => {
-    const response = await FYABackend.get('/anchorBox/locations');
-    setMarkerData(response.data);
+    const zipCodes = await FYABackend.get('/anchorBox/locations');
+    setZipCodeData(zipCodes.data);
   }, []);
 
   // This is the SearchField component used for searching locations
@@ -57,8 +58,8 @@ const Map = ({
       />
       <ZoomControl position="bottomright" />
       {/* Map the marker data into <Marker /> components */}
-      {markerData &&
-        markerData.map(markerObject => (
+      {zipcodeData &&
+        zipcodeData.map(markerObject => (
           <Marker
             icon={icons.blue.numbers[markerObject.box_count]}
             key={markerObject.box_id}
@@ -69,7 +70,8 @@ const Map = ({
                 mapState.flyTo([markerObject.latitude, markerObject.longitude], 10);
                 setSelectedCountry(markerObject.country);
                 setSelectedZipCode(markerObject.zip_code);
-                setSelectedLocation(!selectedLocation);
+                // Toggle updateBoxListSwitch, which will update update the box list in the right side bar
+                setUpdateBoxListSwitch(!updateBoxListSwitch);
                 setSelectedBox(null);
               },
             }}
@@ -83,9 +85,9 @@ const Map = ({
 Map.propTypes = {
   setSelectedCountry: PropTypes.func.isRequired,
   setSelectedZipCode: PropTypes.func.isRequired,
-  setSelectedLocation: PropTypes.func.isRequired,
+  setUpdateBoxListSwitch: PropTypes.func.isRequired,
   setSelectedBox: PropTypes.func.isRequired,
-  selectedLocation: PropTypes.bool.isRequired,
+  updateBoxListSwitch: PropTypes.bool.isRequired,
 };
 
 export default Map;

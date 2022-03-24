@@ -8,10 +8,18 @@ import RightSideBar from '../../components/RightSideBar/RightSideBar';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
+  // This state determines whether or not to show the admin approval (left) side bar
   const [showReview, setShowReview] = useState(false);
+  // This state contains the currently selected zip code (set when a user clicks on a map pin)
   const [selectedZipCode, setSelectedZipCode] = useState(null);
+  // This state contains the currently selected country (set when a user clicks on a map pin)
   const [selectedCountry, setSelectedCountry] = useState(null);
-  const [selectedLocation, setSelectedLocation] = useState(false);
+  // This state determines when to update the box list. This state is inverted whenever a pin is clicked so that box list is updated
+  // See BoxList.jsx for the corresponding useEffect
+  const [updateBoxListSwitch, setUpdateBoxListSwitch] = useState(false);
+  // This state determines which view to show in the right side bar (set when a user clicks on a box in the right side bar)
+  // Not null: Show the full box info view
+  // Null: show the box list view
   const [selectedBox, setSelectedBox] = useState(null);
   return (
     <ChakraProvider>
@@ -38,8 +46,8 @@ const AdminDashboard = () => {
               setSelectedZipCode={setSelectedZipCode}
               setSelectedCountry={setSelectedCountry}
               setSelectedBox={setSelectedBox}
-              selectedLocation={selectedLocation}
-              setSelectedLocation={setSelectedLocation}
+              updateBoxListSwitch={updateBoxListSwitch}
+              setUpdateBoxListSwitch={setUpdateBoxListSwitch}
             />
           </div>
 
@@ -56,8 +64,8 @@ const AdminDashboard = () => {
               selectedCountry={selectedCountry}
               setSelectedZipCode={setSelectedZipCode}
               setSelectedCountry={setSelectedCountry}
-              setSelectedLocation={setSelectedLocation}
-              selectedLocation={selectedLocation}
+              setUpdateBoxListSwitch={setUpdateBoxListSwitch}
+              updateBoxListSwitch={updateBoxListSwitch}
               setSelectedBox={setSelectedBox}
               selectedBox={selectedBox}
             />
