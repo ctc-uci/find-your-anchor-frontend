@@ -48,7 +48,6 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async data => {
-    setFormSubmitted(true);
     const formData = data;
     formData.date = formatDate(data.date);
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
