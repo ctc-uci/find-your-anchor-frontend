@@ -34,6 +34,7 @@ const PickupBox = ({
   rejectionReason,
   fetchBoxes,
   pickup,
+  imageStatus,
 }) => {
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
@@ -54,6 +55,15 @@ const PickupBox = ({
       ),
     ];
     await Promise.all(requests);
+  };
+
+  const updateImageStatus = async newStatus => {
+    await FYABackend.put('/boxHistory/update', {
+      transactionID,
+      boxID,
+      imageStatus: newStatus,
+    });
+    await fetchBoxes(status, true);
   };
 
   return (
@@ -83,8 +93,54 @@ const PickupBox = ({
             {/* Box details */}
             <AccordionPanel className={styles['accordion-panel']} pb={4}>
               <div className={styles['box-details']}>
-                {picture !== null && (
-                  <img src={picture} alt="" className={styles['pickup-image-corners']} />
+                {(status !== 'evaluated' || imageStatus !== 'rejected') && picture && (
+                  <img
+                    src={picture}
+                    alt=""
+                    className={`${styles['pickup-image-corners']}
+                    ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
+                    ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
+                  />
+                )}
+                {picture && status !== 'evaluated' && (
+                  <div className={styles['image-functionality-wrapper']}>
+                    {/* Image approved indicator (only show if image is approved) */}
+                    <div className={styles['image-functionality']}>
+                      {imageStatus === 'approved' && (
+                        <>
+                          <button type="button" className={styles['approval-button']}>
+                            <BsFillCheckCircleFill color="green" />
+                          </button>
+                          <p className={styles['approval-message']}>Image Approved</p>
+                        </>
+                      )}
+                      {/* Image rejected indicator (only show if image is rejected) */}
+                      {imageStatus === 'rejected' && (
+                        <>
+                          <button type="button" className={styles['rejection-button']}>
+                            <BsXCircleFill color="red" />
+                          </button>
+                          <p className={styles['rejection-message']}>Image Denied</p>
+                        </>
+                      )}
+                    </div>
+                    {/* Approve image button */}
+                    <button
+                      type="button"
+                      className={styles['image-approved-button']}
+                      onClick={async () => updateImageStatus('approved')}
+                    >
+                      <BsFillCheckCircleFill color="green" />
+                    </button>
+                    {/* Reject image button */}
+                    <button
+                      type="button"
+                      className={styles['image-rejected-button']}
+                      onClick={async () => updateImageStatus('rejected')}
+                    >
+                      <BsXCircleFill color="red" />
+                    </button>
+                  </div>
                 )}
                 <FormControl>
                   {/* Box name */}
@@ -119,21 +175,14 @@ const PickupBox = ({
                     <div className={styles['close-icon']}>
                       <button
                         type="button"
-                        onClick={() => {
-                          setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen);
-                        }}
+                        onClick={() => setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen)}
                       >
                         <BsXCircleFill className={styles['rejected-icon']} />
                       </button>
                     </div>
                     {/* Approve box button */}
                     <div className={styles['check-icon']}>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          approvePickupBox(transactionID);
-                        }}
-                      >
+                      <button type="button" onClick={() => approvePickupBox(transactionID)}>
                         <BsFillCheckCircleFill className={styles['approved-icon']} />
                       </button>
                     </div>
@@ -172,6 +221,7 @@ PickupBox.propTypes = {
   rejectionReason: PropTypes.string.isRequired,
   pickup: PropTypes.bool.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
+  imageStatus: PropTypes.string.isRequired,
 };
 
 export default PickupBox;
