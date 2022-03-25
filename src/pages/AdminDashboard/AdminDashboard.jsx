@@ -4,7 +4,7 @@ import { ChakraProvider, Button } from '@chakra-ui/react';
 
 import Map from '../../components/Map/Map';
 import BoxApproval from '../../components/BoxApproval/BoxApproval';
-import RightSideBar from '../../components/RightSideBar/RightSideBar';
+import RightSideBar from '../../components/PinInformation/PinInformation';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {

@@ -12,7 +12,7 @@ import {
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 import styles from './BoxInfo.module.css';
-import { FYABackend } from '../../common/utils';
+import { FYABackend } from '../../../common/utils';
 
 const BoxInfo = ({ selectedBox, setSelectedBox }) => {
   const [boxHistory, setBoxHistory] = useState([]);

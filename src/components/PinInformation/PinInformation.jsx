@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ChakraProvider } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
-import styles from './RightSideBar.module.css';
-import BoxList from './BoxList';
-import BoxInfo from './BoxInfo';
+import styles from './PinInformation.module.css';
+import BoxList from './BoxList/BoxList';
+import BoxInfo from './BoxInfo/BoxInfo';
 
 const RightSideBar = ({
   selectedCountry,

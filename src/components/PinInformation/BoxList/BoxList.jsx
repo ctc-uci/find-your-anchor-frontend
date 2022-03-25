@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ChakraProvider, Box, Text } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import styles from './BoxList.module.css';
-import { FYABackend } from '../../common/utils';
+import { FYABackend } from '../../../common/utils';
 
 const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox, updateBoxListSwitch }) => {
   // This state contains all boxes to be shown in the right side bar
