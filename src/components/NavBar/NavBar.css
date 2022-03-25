@@ -16,15 +16,13 @@
 .navbar-buttons-and-account {
   margin-right: 10px;
   gap: 20px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .navbar-buttons {
-  font-size: 18px !important;
-  font-weight: 400 !important;
+  font-size: 18px;
 }
 
 .navbar-account {
