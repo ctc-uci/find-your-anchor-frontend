@@ -9,12 +9,12 @@ import {
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 
-const CommonModal = ({ isOpen, onClose, children, modalClassName }) => {
+const CommonModal = ({ isOpen, onClose, width, height, children, modalClassName }) => {
   return (
     <ChakraProvider>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent minHeight="500px" minWidth="700px">
+        <ModalContent minHeight={height} minWidth={width}>
           <ModalCloseButton />
           <ModalBody className={modalClassName}>{children}</ModalBody>
         </ModalContent>
@@ -23,16 +23,19 @@ const CommonModal = ({ isOpen, onClose, children, modalClassName }) => {
   );
 };
 
-CommonModal.defaultProps = {
-  modalClassName: '',
-};
-
 CommonModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  width: PropTypes.number,
+  height: PropTypes.number,
   children: PropTypes.node.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   modalClassName: PropTypes.string,
+};
+
+CommonModal.defaultProps = {
+  width: 700,
+  height: 500,
+  modalClassName: '',
 };
 
 export default CommonModal;
