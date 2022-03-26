@@ -14,17 +14,19 @@ import {
 } from '@chakra-ui/react';
 
 import { BsFillArrowRightCircleFill, BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
-
+import { renderEmail } from 'react-html-email';
 import PropTypes from 'prop-types';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 import SaveChangesIcon from '../BoxIcons/SaveChangesIcon.svg';
-import { FYABackend } from '../../common/utils';
+import { FYABackend, sendEmail } from '../../common/utils';
+import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import styles from './RelocationBox.module.css';
 
 const RelocationBox = ({
   approved,
+  transactionID,
   boxID,
   boxHolderName,
   boxHolderEmail,
@@ -73,6 +75,7 @@ const RelocationBox = ({
   // This method is called when the save button is clicked under pending changes
   const updateBoxInfo = async stat => {
     await FYABackend.put('/boxHistory/update', {
+      transactionID,
       boxID,
       status: stat,
       boxHolderName: boxHolderNameState,
@@ -89,8 +92,9 @@ const RelocationBox = ({
   };
 
   // A function that approves a relocation box submission and updates the backend state accordingly and then refetches all boxes (boxes can be approved from any tab)
-  const approveRelocationBox = async id => {
+  const approveRelocationBox = async () => {
     await FYABackend.put('/boxHistory/update', {
+      transactionID,
       boxID,
       status,
       boxHolderName: boxHolderNameState,
@@ -102,12 +106,17 @@ const RelocationBox = ({
       launchedOrganically: launchedOrganicallyState,
     });
     await FYABackend.put('/boxHistory/approveBox', {
-      boxID: id,
+      transactionID,
     });
     const requests = [
       fetchBoxes('under review', false),
       fetchBoxes('pending changes', false),
       fetchBoxes('evaluated', false),
+      sendEmail(
+        boxHolderNameState,
+        boxHolderEmailState,
+        renderEmail(<ApprovedBoxEmail boxHolderName={boxHolderName} />),
+      ),
     ];
     await Promise.all(requests);
   };
@@ -305,7 +314,7 @@ const RelocationBox = ({
                           setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen);
                         }}
                       >
-                        <BsXCircleFill color="red" size="30px" />
+                        <BsXCircleFill className={styles['reject-box-icon']} />
                       </button>
                     </div>
                     {/* Pending changes (if the box is under review) or Save (if the box is under pending changes) button */}
@@ -321,7 +330,7 @@ const RelocationBox = ({
                         }}
                       >
                         {status === 'under review' ? (
-                          <BsFillArrowRightCircleFill color="yellow" size="30px" />
+                          <BsFillArrowRightCircleFill className={styles['request-changes-icon']} />
                         ) : (
                           <img src={SaveChangesIcon} alt="save" />
                         )}
@@ -335,21 +344,27 @@ const RelocationBox = ({
                           await approveRelocationBox(boxID);
                         }}
                       >
-                        <BsFillCheckCircleFill color="green" size="30px" />
+                        <BsFillCheckCircleFill className={styles['approve-box-icon']} />
                       </button>
                     </div>
                   </div>
                 )}
                 <RequestChangesPopup
+                  boxHolderName={boxHolderNameState}
+                  boxHolderEmail={boxHolderEmail}
                   isOpen={requestChangesPopupIsOpen}
                   setIsOpen={setRequestChangesPopupIsOpen}
+                  transactionID={transactionID}
                   boxID={boxID}
                   pickup={pickup}
                   fetchBoxes={fetchBoxes}
                 />
                 <RejectBoxPopup
+                  boxHolderName={boxHolderNameState}
+                  boxHolderEmail={boxHolderEmail}
                   isOpen={rejectBoxPopupIsOpen}
                   setIsOpen={setRejectBoxPopupIsOpen}
+                  transactionID={transactionID}
                   boxID={boxID}
                   pickup={pickup}
                   fetchBoxes={fetchBoxes}
@@ -365,6 +380,7 @@ const RelocationBox = ({
 
 RelocationBox.propTypes = {
   approved: PropTypes.bool.isRequired,
+  transactionID: PropTypes.number.isRequired,
   boxID: PropTypes.number.isRequired,
   boxHolderName: PropTypes.string.isRequired,
   boxHolderEmail: PropTypes.string.isRequired,
