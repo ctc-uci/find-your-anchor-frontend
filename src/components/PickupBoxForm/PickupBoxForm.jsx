@@ -54,18 +54,13 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
 
     try {
       setLoading(true);
-      const response = await FYABackend.post('/boxHistory', {
+      await FYABackend.post('/boxHistory', {
         ...formData,
         pickup: true,
         status: 'under review',
         messageStatus: 'pending',
         imageStatus: 'pending',
       });
-
-      // Throw an error if the response is undefined since this means there was a backend error.
-      if (!response) {
-        throw new Error('Unable to submit form with inputted data.');
-      }
 
       setFormSubmitted(true);
       setLoading(false);
