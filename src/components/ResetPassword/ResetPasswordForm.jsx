@@ -1,15 +1,20 @@
-import React from 'react';
+import { React, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Heading, useDisclosure } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import styles from './ResetPasswordForm.module.css';
 import PasswordInput from '../Inputs/PasswordInput';
 import ResetPasswordModal from './ResetPasswordModal/ResetPasswordModal';
 
 const schema = yup.object({
-  newPassword: yup.string().required('Password must be at least 8 characters'),
-  confirmPassword: yup.string().required('Passwords must both match'),
+  newPassword: yup.string().min(8).required('Please enter your password'),
+  // confirmPassword: yup.string().required('Please confirm your password'),
+  confirmPassword: yup
+    .string()
+    .required('Please confirm your password')
+    .oneOf([yup.ref('newPassword'), null], 'Please confirm your password'),
 });
 
 const ResetPasswordForm = () => {
@@ -28,6 +33,14 @@ const ResetPasswordForm = () => {
     onClose: onCloseResetModal,
   } = useDisclosure();
 
+  const navigate = useNavigate();
+  const [newPasswordValue, setNewPasswordValue] = useState('');
+  const [confirmPasswordValue, setConfirmPasswordValue] = useState('');
+
+  const returnToLogin = () => {
+    navigate('/login');
+  };
+
   const onSubmit = data => {
     // eslint-disable-next-line no-alert
     alert(JSON.stringify(data));
@@ -38,31 +51,35 @@ const ResetPasswordForm = () => {
       <Heading className={styles['form-heading']}>RESET PASSWORD</Heading>
       <form className={styles['reset-password-form']} onSubmit={handleSubmit(onSubmit)}>
         <PasswordInput
-          register={register('password')}
+          name="newPassword"
+          register={register('newPassword')}
           error={errors?.newPassword}
-          title="New Password"
+          title="Password"
+          value={newPasswordValue}
+          onChange={e => setNewPasswordValue(e.currentTarget.newPasswordValue)}
         />
         <PasswordInput
-          register={register('password')}
+          name="confirmPassword"
+          register={register('confirmPassword')}
           error={errors?.confirmPassword}
           title="Confirm New Password"
+          value={confirmPasswordValue}
+          onChange={e => setConfirmPasswordValue(e.currentTarget.confirmPasswordValue)}
         />
         <div className={styles['action-panel']}>
-          {/* <Link className={styles['reset-password']} to="/login">
-            Return to Login
-          </Link> */}
           <Button
-            className={styles['reset-password']}
-            color="#173848"
-            bg="white"
-            variant="outline"
-            colorScheme="#173848"
+            to="/login"
+            className={styles['return-to-login-button']}
+            onClick={() => returnToLogin()}
           >
             Return to Login
           </Button>
           <Button
+            error={errors?.confirmPassword}
             className={styles['reset-password-button']}
-            onClick={onOpenResetModal}
+            onClick={
+              newPasswordValue === confirmPasswordValue ? onOpenResetModal : onCloseResetModal
+            }
             type="submit"
             size="md"
             align="right"
@@ -75,9 +92,5 @@ const ResetPasswordForm = () => {
     </div>
   );
 };
-
-// LoginForm.defaultProps = {
-//   returnToLoginPage: false,
-// };
 
 export default ResetPasswordForm;

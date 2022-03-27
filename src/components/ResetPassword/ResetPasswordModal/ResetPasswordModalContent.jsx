@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Text, Button, ButtonGroup } from '@chakra-ui/react';
+import { Text, Button } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import styles from './ResetPasswordModal.module.css';
 
 // TODO:
@@ -8,10 +8,13 @@ import styles from './ResetPasswordModal.module.css';
 //   This should fix the button highlight color, which is currently white
 // - Implement "Return to Login page" button
 
-const ModalStep = ({ resetPassword }) => {
-  const handleReset = () => {
-    resetPassword();
+const ModalStep = () => {
+  const navigate = useNavigate();
+
+  const returnToLogin = () => {
+    navigate('/login');
   };
+
   return (
     <div className={styles['step-content']}>
       <Text fontSize="48px" fontWeight="bold" className={styles['step-text']}>
@@ -20,23 +23,9 @@ const ModalStep = ({ resetPassword }) => {
       <Text fontSize="18px" fontWeight="bold" className={styles['step-text']}>
         You may now log into your account using your new password
       </Text>
-      <ButtonGroup size="lg" className={styles['step-button-group']}>
-        {/* Will need to specify what this UNDO link leads to, right now placeholder is "someLink" */}
-        {/* Will need to figure out how to have CHAKRA UI Buttons link to other pages */}
-        <Button
-          className={styles['undo-modal-button']}
-          onClick={handleReset}
-          color="#173848"
-          bg="white"
-          variant="outline"
-          colorScheme="#173848"
-        >
-          Undo
-        </Button>
-        <Button onClick={handleReset} color="white" bg="#173848">
-          Return to Login
-        </Button>
-      </ButtonGroup>
+      <Button onClick={() => returnToLogin()} color="white" bg="#173848">
+        Return to Login
+      </Button>
     </div>
   );
 };
@@ -45,10 +34,6 @@ const ResetPasswordModalContent = ({ modalStep, closeModal, resetPassword }) => 
   const modalSteps = [<ModalStep key="" closeModal={closeModal} resetPassword={resetPassword} />];
 
   return modalSteps[modalStep];
-};
-
-ModalStep.propTypes = {
-  resetPassword: PropTypes.func.isRequired,
 };
 
 export default ResetPasswordModalContent;
