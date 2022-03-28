@@ -44,3 +44,17 @@
   border-top: 2px solid rgba(0, 0, 0, 0.2);
   border-bottom: 2px solid rgba(0, 0, 0, 0.2);
 }
+
+.tooltip {
+  background-color: #345E80;
+  color: white;
+  border: 0px;
+}
+
+.leaflet-tooltip-top:before {
+  border-top-color: #345E80 !important;
+}
+
+.test {
+  display: none;
+}

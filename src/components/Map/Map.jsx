@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, useMap, ZoomControl } from 'react-leaflet';
+import { MapContainer, TileLayer, useMap, ZoomControl, Tooltip, Marker } from 'react-leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import PropTypes from 'prop-types';
-import icons from 'leaflet-color-number-markers';
+// import icons from 'leaflet-color-number-markers';
 
 import './Map.css';
 import { FYABackend } from '../../common/utils';
@@ -72,7 +72,7 @@ const Map = ({
       {zipcodeData &&
         zipcodeData.map(markerObject => (
           <Marker
-            icon={icons.blue.numbers[markerObject.box_count]}
+            className="test"
             key={markerObject.box_id}
             position={[markerObject.latitude, markerObject.longitude]}
             eventHandlers={{
@@ -81,7 +81,11 @@ const Map = ({
                 handleMarkerClicked(markerObject);
               },
             }}
-          />
+          >
+            <Tooltip className="tooltip" direction="top" offset={[-15, 30]} permanent>
+              {markerObject.box_count}
+            </Tooltip>
+          </Marker>
         ))}
       <SearchField />
     </MapContainer>
