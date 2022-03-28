@@ -92,7 +92,7 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
             </>
           )}
           <div className={styles['button-div']}>
-            <Button colorScheme="red" size="md" className={styles['delete-button']}>
+            <Button colorScheme="red" size="md">
               Delete Box
             </Button>
           </div>
