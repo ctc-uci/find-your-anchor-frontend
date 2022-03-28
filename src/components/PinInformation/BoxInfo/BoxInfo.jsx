@@ -17,7 +17,7 @@ import { FYABackend } from '../../../common/utils';
 const BoxInfo = ({ selectedBox, setSelectedBox }) => {
   const [boxHistory, setBoxHistory] = useState([]);
   useEffect(async () => {
-    const response = await FYABackend.get('/boxHistory/history/40');
+    const response = await FYABackend.get(`/boxHistory/history/${selectedBox.box_id}`);
     setBoxHistory(response.data);
   }, []);
   return (
@@ -73,20 +73,24 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
             </FormLabel>
             <Textarea isReadOnly value={selectedBox.additional_comments} resize="vertical" />
           </FormControl>
-          <div className={styles['history-div']}>
-            <Text fontSize="md" fontWeight="500">
-              History
-            </Text>
-          </div>
-          <div className={styles['history-graph']}>
-            <ul>
-              {boxHistory.map(box => (
-                <li key={box.transaction_id}>
-                  {box.general_location} {box.date}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {boxHistory.length > 0 && (
+            <>
+              <div className={styles['history-div']}>
+                <Text fontSize="md" fontWeight="500">
+                  History
+                </Text>
+              </div>
+              <div className={styles['history-graph']}>
+                <ul>
+                  {boxHistory.map(box => (
+                    <li key={box.transaction_id}>
+                      {box.general_location} {box.date}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </>
+          )}
           <div className={styles['button-div']}>
             <Button colorScheme="red" size="md" className={styles['delete-button']}>
               Delete Box

@@ -20,6 +20,18 @@ const Map = ({
   // A list containing all unique zip codes stored in Anchor_Box
   const [zipcodeData, setZipCodeData] = useState([]);
 
+  // Handles when a marker is clicked
+  // 1. Updates the box list with the boxes located in the zip code (in PinInformation)
+  // 2. Switches PinInformation to box list view
+  const handleMarkerClicked = markerObject => {
+    mapState.flyTo([markerObject.latitude, markerObject.longitude], 10);
+    setSelectedCountry(markerObject.country);
+    setSelectedZipCode(markerObject.zip_code);
+    // Toggle updateBoxListSwitch, which will update update the box list in the right side bar
+    setUpdateBoxListSwitch(!updateBoxListSwitch);
+    setSelectedBox(null);
+  };
+
   useEffect(async () => {
     const zipCodes = await FYABackend.get('/anchorBox/locations');
     setZipCodeData(zipCodes.data);
@@ -67,12 +79,7 @@ const Map = ({
             eventHandlers={{
               // Marker click effect
               click: () => {
-                mapState.flyTo([markerObject.latitude, markerObject.longitude], 10);
-                setSelectedCountry(markerObject.country);
-                setSelectedZipCode(markerObject.zip_code);
-                // Toggle updateBoxListSwitch, which will update update the box list in the right side bar
-                setUpdateBoxListSwitch(!updateBoxListSwitch);
-                setSelectedBox(null);
+                handleMarkerClicked(markerObject);
               },
             }}
           />

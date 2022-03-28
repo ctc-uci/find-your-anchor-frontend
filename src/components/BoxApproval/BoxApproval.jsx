@@ -5,8 +5,6 @@ import PickupBox from '../PickupBox/PickupBox';
 import RelocationBox from '../RelocationBox/RelocationBox';
 import styles from './BoxApproval.module.css';
 import { FYABackend } from '../../common/utils';
-// import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
-// import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 
