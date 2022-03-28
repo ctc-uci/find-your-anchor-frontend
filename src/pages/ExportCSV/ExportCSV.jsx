@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ChakraProvider, Button, Text } from '@chakra-ui/react';
 import ExportCSVForm from '../../components/ExportCSV/ExportCSVForm/ExportCSVForm';
 import CSVPreview from '../../components/ExportCSV/CSVPreview/CSVPreview';
-
 import styles from './ExportCSV.module.css';
 
 const ExportCSV = () => {
@@ -10,6 +10,13 @@ const ExportCSV = () => {
   const formID = 'export-csv-form';
 
   const [formValues, setFormValues] = useState([]);
+
+  const navigate = useNavigate();
+
+  const previewCSV = e => {
+    e.preventDefault();
+    navigate('/export-csv-preview', { state: { rows: formValues } });
+  };
 
   return (
     <ChakraProvider>
@@ -35,8 +42,9 @@ const ExportCSV = () => {
               type="submit"
               className={styles['header-button']}
               colorScheme="teal"
+              onSubmit={previewCSV()}
             >
-              Export
+              Preview CSV
             </Button>
           </div>
         </div>
