@@ -3,7 +3,6 @@ import { MapContainer, TileLayer, useMap, ZoomControl, Tooltip, Marker } from 'r
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import L from 'leaflet';
 import PropTypes from 'prop-types';
-import MarkerIcon from './MarkerIcon.svg';
 import './Map.css';
 import { FYABackend } from '../../common/utils';
 
@@ -55,10 +54,10 @@ const Map = ({
   };
 
   const markerIcon = new L.Icon({
-    iconUrl: MarkerIcon,
-    iconRetinaUrl: MarkerIcon,
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/No_image.svg',
+    iconRetinaUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/No_image.svg',
     popupAnchor: [-0, -0],
-    iconSize: [0, 0],
+    iconSize: [30, 30],
   });
 
   return (
