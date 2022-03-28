@@ -14,6 +14,7 @@ const Map = ({
   setUpdateBoxListSwitch,
   updateBoxListSwitch,
 }) => {
+  const [mapState, setMapState] = useState(null);
   // A list containing all unique zip codes stored in Anchor_Box
   const [zipcodeData, setZipCodeData] = useState([]);
 
@@ -27,6 +28,7 @@ const Map = ({
     // Toggle updateBoxListSwitch, which will update update the box list in the right side bar
     setUpdateBoxListSwitch(!updateBoxListSwitch);
     setSelectedBox(null);
+    mapState.flyTo([markerObject.latitude, markerObject.longitude], 10);
   };
 
   useEffect(async () => {
@@ -53,7 +55,13 @@ const Map = ({
   };
 
   return (
-    <MapContainer center={[33.684566, -117.826508]} zoom={8} scrollWheelZoom zoomControl={false}>
+    <MapContainer
+      whenCreated={setMapState}
+      center={[33.684566, -117.826508]}
+      zoom={8}
+      scrollWheelZoom
+      zoomControl={false}
+    >
       <TileLayer
         // Can change this url to display different tilelayers (samples: https://leaflet-extras.github.io/leaflet-providers/preview/)
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
