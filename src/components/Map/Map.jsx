@@ -14,9 +14,6 @@ const Map = ({
   setUpdateBoxListSwitch,
   updateBoxListSwitch,
 }) => {
-  // This mapState variable stores the current instance of the map.
-  // This is used to fly to markers when they're clicked
-  const [mapState, setMapState] = useState(null);
   // A list containing all unique zip codes stored in Anchor_Box
   const [zipcodeData, setZipCodeData] = useState([]);
 
@@ -24,7 +21,7 @@ const Map = ({
   // 1. Updates the box list with the boxes located in the zip code (in PinInformation)
   // 2. Switches PinInformation to box list view
   const handleMarkerClicked = markerObject => {
-    mapState.flyTo([markerObject.latitude, markerObject.longitude], 10);
+    // mapState.flyTo([markerObject.latitude, markerObject.longitude], 10);
     setSelectedCountry(markerObject.country);
     setSelectedZipCode(markerObject.zip_code);
     // Toggle updateBoxListSwitch, which will update update the box list in the right side bar
@@ -56,13 +53,7 @@ const Map = ({
   };
 
   return (
-    <MapContainer
-      whenCreated={setMapState}
-      center={[33.684566, -117.826508]}
-      zoom={8}
-      scrollWheelZoom
-      zoomControl={false}
-    >
+    <MapContainer center={[33.684566, -117.826508]} zoom={8} scrollWheelZoom zoomControl={false}>
       <TileLayer
         // Can change this url to display different tilelayers (samples: https://leaflet-extras.github.io/leaflet-providers/preview/)
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
