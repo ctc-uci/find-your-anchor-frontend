@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, useMap, ZoomControl, Tooltip, Marker } from 'react-leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import L from 'leaflet';
 import PropTypes from 'prop-types';
-// import icons from 'leaflet-color-number-markers';
-
+import MarkerIcon from './MarkerIcon.svg';
 import './Map.css';
 import { FYABackend } from '../../common/utils';
 
@@ -54,6 +54,13 @@ const Map = ({
     return null;
   };
 
+  const markerIcon = new L.Icon({
+    iconUrl: MarkerIcon,
+    iconRetinaUrl: MarkerIcon,
+    popupAnchor: [-0, -0],
+    iconSize: [0, 0],
+  });
+
   return (
     <MapContainer
       whenCreated={setMapState}
@@ -73,6 +80,7 @@ const Map = ({
         zipcodeData.map(markerObject => (
           <Marker
             className="test"
+            icon={markerIcon}
             key={markerObject.box_id}
             position={[markerObject.latitude, markerObject.longitude]}
             eventHandlers={{
