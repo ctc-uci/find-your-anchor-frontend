@@ -90,7 +90,7 @@ const Map = ({
               },
             }}
           >
-            <Tooltip className="tooltip" direction="top" offset={[-15, 30]} permanent>
+            <Tooltip className="tooltip" direction="top" permanent>
               {markerObject.box_count}
             </Tooltip>
           </Marker>
