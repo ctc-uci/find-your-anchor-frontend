@@ -56,7 +56,6 @@ const Map = ({
   const markerIcon = new L.Icon({
     iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/No_image.svg',
     iconRetinaUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/No_image.svg',
-    popupAnchor: [-0, -0],
     iconSize: [30, 30],
   });
 
@@ -78,7 +77,6 @@ const Map = ({
       {zipcodeData &&
         zipcodeData.map(markerObject => (
           <Marker
-            className="test"
             icon={markerIcon}
             key={markerObject.box_id}
             position={[markerObject.latitude, markerObject.longitude]}
@@ -89,7 +87,7 @@ const Map = ({
               },
             }}
           >
-            <Tooltip className="tooltip" direction="top" permanent>
+            <Tooltip interactive className="tooltip" direction="top" permanent>
               {markerObject.box_count}
             </Tooltip>
           </Marker>
