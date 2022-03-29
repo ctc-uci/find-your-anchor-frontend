@@ -41,12 +41,12 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
             <FormLabel htmlFor="name" className={styles['form-label']}>
               Name
             </FormLabel>
-            <Input isReadOnly id="name" type="name" value="Jane Doe" />
+            <Input isReadOnly id="name" type="name" value={selectedBox.boxholder_name} />
             {/* Box email */}
             <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
               Email
             </FormLabel>
-            <Input isReadOnly id="email" type="email" value="jdoe12@gmail.com" />
+            <Input isReadOnly id="email" type="email" value={selectedBox.boxholder_email} />
             {/* Box general location */}
             <FormLabel isReadOnly htmlFor="generalLocation" className={styles['form-label']}>
               General Location
@@ -116,6 +116,8 @@ BoxInfo.propTypes = {
     picture: PropTypes.string,
     show_on_map: PropTypes.bool,
     zip_code: PropTypes.string,
+    boxholder_name: PropTypes.string,
+    boxholder_email: PropTypes.string,
   }).isRequired,
   setSelectedBox: PropTypes.func.isRequired,
 };
