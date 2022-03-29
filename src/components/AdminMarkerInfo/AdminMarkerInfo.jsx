@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ChakraProvider } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
-import styles from './PinInformation.module.css';
+import styles from './AdminMarkerInfo.module.css';
 import BoxList from './BoxList/BoxList';
 import BoxInfo from './BoxInfo/BoxInfo';
 
-const RightSideBar = ({
+const AdminMarkerInfo = ({
   selectedCountry,
   selectedZipCode,
   setSelectedZipCode,
@@ -43,13 +43,13 @@ const RightSideBar = ({
   );
 };
 
-RightSideBar.defaultProps = {
+AdminMarkerInfo.defaultProps = {
   selectedZipCode: null,
   selectedCountry: null,
   selectedBox: null,
 };
 
-RightSideBar.propTypes = {
+AdminMarkerInfo.propTypes = {
   selectedCountry: PropTypes.string,
   updateBoxListSwitch: PropTypes.bool.isRequired,
   setSelectedZipCode: PropTypes.func.isRequired,
@@ -72,4 +72,4 @@ RightSideBar.propTypes = {
   setSelectedBox: PropTypes.func.isRequired,
 };
 
-export default RightSideBar;
+export default AdminMarkerInfo;

@@ -4,7 +4,7 @@ import { ChakraProvider, Button } from '@chakra-ui/react';
 
 import Map from '../../components/Map/Map';
 import BoxApproval from '../../components/BoxApproval/BoxApproval';
-import RightSideBar from '../../components/PinInformation/PinInformation';
+import AdminMarkerInfo from '../../components/AdminMarkerInfo/AdminMarkerInfo';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -59,7 +59,7 @@ const AdminDashboard = () => {
             Review Submission
           </Button>
           <div className={`side-bar ${selectedZipCode && selectedCountry ? 'show-info' : ''}`}>
-            <RightSideBar
+            <AdminMarkerInfo
               selectedZipCode={selectedZipCode}
               selectedCountry={selectedCountry}
               setSelectedZipCode={setSelectedZipCode}
