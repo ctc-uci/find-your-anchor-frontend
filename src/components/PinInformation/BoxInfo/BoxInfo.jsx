@@ -31,7 +31,7 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
           />
           <p className={styles.title}>
             <p className={styles['box-number']}>Box #{selectedBox.box_id}</p>
-            01/20/22
+            {selectedBox.date}
           </p>
         </div>
         <div className={styles['box-data']}>
