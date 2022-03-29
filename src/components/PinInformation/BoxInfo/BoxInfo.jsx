@@ -39,7 +39,7 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
           <FormControl>
             {/* Box name */}
             <FormLabel htmlFor="name" className={styles['form-label']}>
-              Jane Doe
+              Name
             </FormLabel>
             <Input isReadOnly id="name" type="name" value="Jane Doe" />
             {/* Box email */}
