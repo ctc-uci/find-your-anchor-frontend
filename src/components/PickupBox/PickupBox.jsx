@@ -18,6 +18,7 @@ import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 import { FYABackend } from '../../common/utils';
+import CustomToast from '../CustomToast/CustomToast';
 
 const PickupBox = ({
   approved,
@@ -39,9 +40,16 @@ const PickupBox = ({
   // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
   // This method is called when the approve box icon is clicked
   const approvePickupBox = async id => {
+    const boxId = id;
     FYABackend.put('/boxHistory/approveBox', {
-      boxID: id,
+      boxID: boxId,
     }).then(async () => {
+      CustomToast({
+        icon: 'success',
+        title: `Box #${boxId} Approved`,
+        message: '',
+        toastPosition: 'bottom-right',
+      })();
       await fetchBoxes('under review', true);
     });
   };

@@ -22,6 +22,7 @@ import { FYABackend } from '../../common/utils';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import styles from './RelocationBox.module.css';
+import CustomToast from '../CustomToast/CustomToast';
 
 const RelocationBox = ({
   approved,
@@ -101,8 +102,16 @@ const RelocationBox = ({
       messageStatus: messageStatusState,
       launchedOrganically: launchedOrganicallyState,
     });
+    const globalBoxID = id;
     await FYABackend.put('/boxHistory/approveBox', {
-      boxID: id,
+      boxID: globalBoxID,
+    }).then(() => {
+      CustomToast({
+        icon: 'success',
+        title: `Box #${globalBoxID} Approved`,
+        message: '',
+        toastPosition: 'bottom-right',
+      })();
     });
     const requests = [
       fetchBoxes('under review', false),

@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import styles from './RequestChangesPopup.module.css';
 import { FYABackend } from '../../../common/utils';
+import CustomToast from '../../CustomToast/CustomToast';
 
 const RequestChangesPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes }) => {
   const cancelRef = React.useRef();
@@ -24,6 +25,13 @@ const RequestChangesPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes }) => {
       boxID,
       status: 'pending changes',
       changesRequested,
+    }).then(() => {
+      CustomToast({
+        icon: 'warning',
+        title: `Changes for Box #${boxID} Requested`,
+        message: 'A copy of your response has been sent to the messenger. ',
+        toastPosition: 'bottom-right',
+      })();
     });
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
     await Promise.all(requests);

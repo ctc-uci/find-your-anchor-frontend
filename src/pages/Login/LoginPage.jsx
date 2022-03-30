@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ChakraProvider, useToast } from '@chakra-ui/react';
+import { Button, ChakraProvider } from '@chakra-ui/react';
 import LoginForm from '../../components/Login/LoginForm';
 import CustomToast from '../../components/CustomToast/CustomToast';
 import styles from './LoginPage.module.css';
@@ -15,21 +15,19 @@ const LoginPage = () => {
   //     isClosable: true,
   //   });
 
-  const toast = useToast();
-
-  const warningToast = CustomToast(toast, {
+  const warningToast = CustomToast({
     icon: 'warning',
     title: 'title',
     message: 'message',
     toastPosition: 'bottom-left',
   });
-  const errorToast = CustomToast(toast, {
+  const errorToast = CustomToast({
     icon: 'error',
     title: 'title',
     message: 'message',
     toastPosition: 'bottom-left',
   });
-  const successToast = CustomToast(toast, {
+  const successToast = CustomToast({
     icon: 'success',
     title: 'title',
     message: 'message',
