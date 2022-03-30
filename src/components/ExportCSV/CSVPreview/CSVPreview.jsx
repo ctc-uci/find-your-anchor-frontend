@@ -31,7 +31,6 @@ const CSVPreview = ({ formValues }) => {
     <div className="csv-preview">
       <Text className={styles['csv-preview-title']}>CSV Preview</Text>
       <div className={`${styles['csv-preview-wrapper']} ${styles['scrollable-div']}`}>
-        {/* <pre>{JSON.stringify(formValues, null, 2)}</pre> */}
         {formValues.length > 0 && (
           <Table className={styles['csv-preview']}>
             <Thead>
@@ -54,22 +53,7 @@ const CSVPreview = ({ formValues }) => {
   );
 };
 
-// CSVPreview.propTypes = {
-//   data: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       date: PropTypes.string,
-//       boxNum: PropTypes.number,
-//       zipCode: PropTypes.string,
-//       organicLaunch: PropTypes.bool,
-//       imgUrl: PropTypes.string,
-//     }),
-//   ).isRequired,
-// };
-
 CSVPreview.propTypes = {
-  // data: PropTypes.shape({
-  //   temp: PropTypes.string,
-  // }).isRequired,
   formValues: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])).isRequired,
 };
 

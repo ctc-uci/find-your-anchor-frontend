@@ -146,7 +146,6 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
 
     navigate('/export-csv-preview', { state: { rows: res.data } });
 
-    // alert('submitted');
     // reset();
   };
 
@@ -155,9 +154,6 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
       <form id={formID} className={styles['export-csv-form']} onSubmit={handleSubmit(onSubmit)}>
         <FormControl className={styles['section-wrapper']}>
           <Text className={styles['csv-form-labels']}>Sort By</Text>
-          {/* <FormLabel htmlFor="sort-by" className={styles['csv-form-labels']}>
-            Sort By
-          </FormLabel> */}
           <Select id="sort-by" {...register('sortBy')}>
             <option value="ascend-box-num">Ascending Box Number</option>
             <option value="descend-box-num">Descending Box Number</option>
