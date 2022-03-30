@@ -8,7 +8,7 @@ import renameProperty from '../ExportCSVUtils';
 
 const CSVPreview = ({ formValues }) => {
   return (
-    <div className="csv-preview">
+    <div className={styles['csv-preview']}>
       <Text className={styles['csv-preview-title']}>CSV Preview</Text>
       <div className={`${styles['csv-preview-wrapper']} ${styles['scrollable-div']}`}>
         {formValues.length > 0 && (
