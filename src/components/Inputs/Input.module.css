@@ -1,0 +1,44 @@
+.password-show-hide-button {
+  background-color: white !important;
+  border: none;
+  outline: none;
+}
+
+.form-control {
+  padding: 0% 0%;
+}
+
+.form-title {
+  font-weight: bold !important;
+}
+
+.input-tools {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 1% 0%;
+}
+
+.form-error-wrapper,
+.forgot-password-wrapper {
+  flex: 1;
+}
+
+.form-error-wrapper {
+  margin: 0;
+  padding: 0;
+}
+
+.forgot-password-wrapper {
+  display: flex;
+  justify-content: right;
+}
+
+.forgot-password {
+  color: #3182ce;
+}
+.form-error-message {
+  margin-top: 0 !important;
+  align-items: center;
+  height: 100%;
+}
