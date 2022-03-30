@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import DatePicker from 'react-datepicker';
@@ -60,6 +61,8 @@ const schema = yup
   .required();
 
 const ExportCSVForm = ({ formID, setFormValues }) => {
+  const navigate = useNavigate();
+
   const {
     control,
     reset,
@@ -141,6 +144,8 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
 
     setFormValues(res.data);
 
+    navigate('/export-csv-preview', { state: { rows: res.data } });
+
     // alert('submitted');
     // reset();
   };
@@ -149,9 +154,10 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
     <div className={styles['csv-form-wrapper']}>
       <form id={formID} className={styles['export-csv-form']} onSubmit={handleSubmit(onSubmit)}>
         <FormControl className={styles['section-wrapper']}>
-          <FormLabel htmlFor="sort-by" className={styles['csv-form-labels']}>
+          <Text className={styles['csv-form-labels']}>Sort By</Text>
+          {/* <FormLabel htmlFor="sort-by" className={styles['csv-form-labels']}>
             Sort By
-          </FormLabel>
+          </FormLabel> */}
           <Select id="sort-by" {...register('sortBy')}>
             <option value="ascend-box-num">Ascending Box Number</option>
             <option value="descend-box-num">Descending Box Number</option>
