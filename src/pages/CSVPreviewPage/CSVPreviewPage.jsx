@@ -1,8 +1,8 @@
-/* eslint-disable object-shorthand */
 import React from 'react';
 import { ChakraProvider, Button, Text } from '@chakra-ui/react';
 import { CSVLink } from 'react-csv';
 import { useLocation } from 'react-router-dom';
+import renameProperty from '../../components/ExportCSV/ExportCSVUtils';
 import CSVPreview from '../../components/ExportCSV/CSVPreview/CSVPreview';
 
 import styles from './CSVPreviewPage.module.css';
@@ -10,71 +10,12 @@ import styles from './CSVPreviewPage.module.css';
 const CSVPreviewPage = () => {
   const { state } = useLocation();
 
-  const data = state.rows.map(row => {
-    const dataObj = {};
-    if (row.date) {
-      dataObj.date = row.date;
-    }
-    if (row.box_id) {
-      dataObj.box_id = row.box_id;
-    }
-    if (row.zip_code) {
-      dataObj.zip_code = row.zip_code;
-    }
-    if (row.picture) {
-      dataObj.picture = row.picture;
-    }
-    if (row.general_location) {
-      dataObj.general_location = row.general_location;
-    }
-    if (row.launched_organically) {
-      dataObj.launched_organically = row.launched_organically;
-    }
-    if (row.message) {
-      dataObj.message = row.message;
-    }
-    return dataObj;
-  });
-
-  const headers = Object.keys(state.rows[0]).map(property => {
-    const headerObj = {};
-    switch (property) {
-      case 'date':
-        headerObj.label = 'Date';
-        headerObj.key = 'date';
-        return headerObj;
-      case 'box_id':
-        headerObj.label = 'Box #';
-        headerObj.key = 'box_id';
-        return headerObj;
-      case 'zip_code':
-        headerObj.label = 'General Location';
-        headerObj.key = 'general_location';
-        return headerObj;
-      case 'picture':
-        headerObj.label = 'Launched Organically';
-        headerObj.key = 'launched_organically';
-        return headerObj;
-      case 'general_location':
-        headerObj.label = 'Message';
-        headerObj.key = 'message';
-        return headerObj;
-      case 'launched_organically':
-        headerObj.label = 'Picture';
-        headerObj.key = 'picture';
-        return headerObj;
-      case 'message':
-        headerObj.label = 'Zip Code';
-        headerObj.key = 'zip_code';
-        return headerObj;
-      default:
-        return headerObj;
-    }
-  });
-
   const csvReport = {
-    data: data,
-    headers: headers,
+    data: state.rows,
+    headers: Object.keys(state.rows[0]).map(property => ({
+      label: renameProperty(property),
+      key: property,
+    })),
     filename: 'FYA-CSV.csv',
   };
 
