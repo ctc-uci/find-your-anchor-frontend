@@ -33,6 +33,7 @@ const LoginPage = () => {
     message: 'message',
     toastPosition: 'bottom-left',
   });
+
   return (
     <ChakraProvider>
       <div className={styles['page-container']}>

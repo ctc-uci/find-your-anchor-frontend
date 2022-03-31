@@ -14,15 +14,14 @@ import {
 } from '@chakra-ui/react';
 
 import { BsFillArrowRightCircleFill, BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
-
 import PropTypes from 'prop-types';
+import CustomToast from '../CustomToast/CustomToast';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 import SaveChangesIcon from '../BoxIcons/SaveChangesIcon.svg';
 import { FYABackend } from '../../common/utils';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import styles from './RelocationBox.module.css';
-import CustomToast from '../CustomToast/CustomToast';
 
 const RelocationBox = ({
   approved,
@@ -41,6 +40,7 @@ const RelocationBox = ({
   fetchBoxes,
   pickup,
   launchedOrganically,
+  toast,
 }) => {
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
@@ -72,6 +72,7 @@ const RelocationBox = ({
 
   // A function that updates box information in the backend and refetches all boxes that are under review or pending changes (message status can be updated in 'under review')
   // This method is called when the save button is clicked under pending changes
+
   const updateBoxInfo = async stat => {
     await FYABackend.put('/boxHistory/update', {
       boxID,
@@ -88,37 +89,48 @@ const RelocationBox = ({
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
     await Promise.all(requests);
   };
-
+  const showToast = CustomToast(toast, {
+    icon: 'success',
+    title: `Box # Approved`,
+    message: '',
+    toastPosition: 'bottom-right',
+  });
+  const errorToast = CustomToast(toast, {
+    icon: 'error',
+    title: `Box # Approved`,
+    message: '',
+    toastPosition: 'bottom-right',
+  });
   // A function that approves a relocation box submission and updates the backend state accordingly and then refetches all boxes (boxes can be approved from any tab)
   const approveRelocationBox = async id => {
-    await FYABackend.put('/boxHistory/update', {
-      boxID,
-      status,
-      boxHolderName: boxHolderNameState,
-      boxHolderEmail: boxHolderEmailState,
-      zipCode: zipCodeState,
-      generalLocation: generalLocationState,
-      message: messageState,
-      messageStatus: messageStatusState,
-      launchedOrganically: launchedOrganicallyState,
-    });
-    const globalBoxID = id;
-    await FYABackend.put('/boxHistory/approveBox', {
-      boxID: globalBoxID,
-    }).then(() => {
-      CustomToast({
-        icon: 'success',
-        title: `Box #${globalBoxID} Approved`,
-        message: '',
-        toastPosition: 'bottom-right',
-      })();
-    });
-    const requests = [
-      fetchBoxes('under review', false),
-      fetchBoxes('pending changes', false),
-      fetchBoxes('evaluated', false),
-    ];
-    await Promise.all(requests);
+    try {
+      await FYABackend.put('/boxHistory/update', {
+        boxID,
+        status,
+        boxHolderName: boxHolderNameState,
+        boxHolderEmail: boxHolderEmailState,
+        zipCode: zipCodeState,
+        generalLocation: generalLocationState,
+        message: messageState,
+        messageStatus: messageStatusState,
+        launchedOrganically: launchedOrganicallyState,
+      });
+      const globalBoxID = id;
+
+      await FYABackend.put('/boxHistory/approveBox', {
+        boxID: globalBoxID,
+      });
+
+      const requests = [
+        fetchBoxes('under review', false),
+        fetchBoxes('pending changes', false),
+        fetchBoxes('evaluated', false),
+      ];
+      await Promise.all(requests);
+      showToast();
+    } catch (err) {
+      errorToast();
+    }
   };
 
   return (
@@ -341,7 +353,13 @@ const RelocationBox = ({
                       <button
                         type="button"
                         onClick={async () => {
-                          await approveRelocationBox(boxID);
+                          await approveRelocationBox(boxID)
+                            .then(() => {
+                              showToast();
+                            })
+                            .catch(() => {
+                              errorToast();
+                            });
                         }}
                       >
                         <BsFillCheckCircleFill color="green" size="30px" />
@@ -389,6 +407,7 @@ RelocationBox.propTypes = {
   fetchBoxes: PropTypes.func.isRequired,
   pickup: PropTypes.bool.isRequired,
   launchedOrganically: PropTypes.bool.isRequired,
+  toast: PropTypes.func.isRequired,
 };
 
 export default RelocationBox;

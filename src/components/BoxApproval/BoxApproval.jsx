@@ -1,6 +1,7 @@
 import { React, useEffect, useState } from 'react';
 import { ChakraProvider, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import { BsFillArrowRightCircleFill } from 'react-icons/bs';
+import PropTypes from 'prop-types';
 import PickupBox from '../PickupBox/PickupBox';
 import RelocationBox from '../RelocationBox/RelocationBox';
 import styles from './BoxApproval.module.css';
@@ -10,7 +11,10 @@ import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 
-const BoxApproval = () => {
+const BoxApproval = ({ toast }) => {
+  BoxApproval.propTypes = {
+    toast: PropTypes.func.isRequired,
+  };
   // display relocation boxes under review
   const [relocationBoxesUnderReview, setRelocationBoxesUnderReview] = useState([]);
   // display relocation boxes evaluated
@@ -63,6 +67,7 @@ const BoxApproval = () => {
       fetchBoxes={fetchBoxes}
       pickup={boxData.pickup}
       launchedOrganically={boxData.launched_organically}
+      toast={toast}
     />
   );
 

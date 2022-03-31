@@ -1,13 +1,12 @@
 import React from 'react';
-import { IconButton, ChakraProvider, Heading, Text, useToast } from '@chakra-ui/react';
+import { IconButton, ChakraProvider, Heading, Text } from '@chakra-ui/react';
 import { CheckCircleIcon, CloseIcon, InfoIcon, WarningTwoIcon, Icon } from '@chakra-ui/icons';
 
 import styles from './CustomToast.module.css';
 
-const CustomToast = ({ icon, title, message, toastPosition }) => {
+const CustomToast = (toast, { icon, title, message, toastPosition }) => {
   let bgColor;
   let statusIcon;
-  const toast = useToast();
 
   switch (icon) {
     case 'info':

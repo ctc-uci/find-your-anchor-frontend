@@ -32,24 +32,24 @@ const PickupBox = ({
   rejectionReason,
   fetchBoxes,
   pickup,
+  toast,
 }) => {
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
   const [rejectBoxPopupIsOpen, setRejectBoxPopupIsOpen] = useState(false);
-
   // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
   // This method is called when the approve box icon is clicked
   const approvePickupBox = async id => {
     const boxId = id;
+    CustomToast(toast, {
+      icon: 'success',
+      title: `Box # Approved`,
+      message: '',
+      toastPosition: 'bottom-right',
+    });
     FYABackend.put('/boxHistory/approveBox', {
       boxID: boxId,
     }).then(async () => {
-      CustomToast({
-        icon: 'success',
-        title: `Box #${boxId} Approved`,
-        message: '',
-        toastPosition: 'bottom-right',
-      })();
       await fetchBoxes('under review', true);
     });
   };
@@ -168,6 +168,7 @@ PickupBox.propTypes = {
   rejectionReason: PropTypes.string.isRequired,
   pickup: PropTypes.bool.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
+  toast: PropTypes.func.isRequired,
 };
 
 export default PickupBox;
