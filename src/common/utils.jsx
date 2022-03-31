@@ -70,7 +70,7 @@ export const getLatLong = async (zipCode, country) => {
     `https://nominatim.openstreetmap.org/search?postalcode=${zipCode}&country=${country}&format=json`,
   );
   if (response.status === 200 && response.data.length > 0) {
-    const { lat: latitude, long: longitude } = response.data[0];
+    const { lat: latitude, lon: longitude } = response.data[0];
     return [latitude, longitude];
   }
   return [];
