@@ -14,6 +14,7 @@ FYABackend.interceptors.response.use(
   error => {
     // eslint-disable-next-line no-console
     console.error(`[Axios] FYABackend error: ${JSON.stringify(error.toJSON(), null, 2)}`);
+    return Promise.reject(error.response);
   },
 );
 
