@@ -1,19 +1,18 @@
 import React from 'react';
-import { ChakraProvider, Button, useToast } from '@chakra-ui/react';
+import { ChakraProvider, Button } from '@chakra-ui/react';
 import Map from '../../components/Map/Map';
 import BoxApproval from '../../components/BoxApproval/BoxApproval';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
   const [showReview, setShowReview] = React.useState();
-  const toast = useToast();
 
   return (
     <ChakraProvider>
       <div className="admin-dashboard-container">
         <div className="side-bar-and-map-container">
           <div className={`side-bar ${showReview ? 'show-review' : ''}`}>
-            <BoxApproval toast={toast} />
+            <BoxApproval />
             <Button
               variant="link"
               colorScheme="white"

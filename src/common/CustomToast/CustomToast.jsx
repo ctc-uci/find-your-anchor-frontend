@@ -1,13 +1,12 @@
 import React from 'react';
-import { IconButton, ChakraProvider, Heading, Text } from '@chakra-ui/react';
+import { IconButton, ChakraProvider, Heading, Text, useToast } from '@chakra-ui/react';
 import { CheckCircleIcon, CloseIcon, InfoIcon, WarningTwoIcon, Icon } from '@chakra-ui/icons';
-
 import styles from './CustomToast.module.css';
 
-const CustomToast = (toast, { icon, title, message, toastPosition }) => {
+const CustomToast = ({ icon, title, message, toastPosition }) => {
   let bgColor;
   let statusIcon;
-
+  const toast = useToast();
   switch (icon) {
     case 'info':
       bgColor = '#DD6B20';
@@ -25,12 +24,12 @@ const CustomToast = (toast, { icon, title, message, toastPosition }) => {
       bgColor = '#DD6B20';
       statusIcon = InfoIcon;
   }
-  const toastIdRef = React.useRef();
 
   return () => {
-    toastIdRef.current = toast({
+    return toast({
       position: toastPosition,
-      duration: null,
+      duration: 3000,
+      isClosable: true,
       render: () => (
         <ChakraProvider>
           <div
@@ -59,7 +58,7 @@ const CustomToast = (toast, { icon, title, message, toastPosition }) => {
                   w={3}
                   h={3}
                   onClick={() => {
-                    toast.close(toastIdRef.current);
+                    toast.closeAll();
                   }}
                   variant="ghost"
                 />
@@ -69,7 +68,6 @@ const CustomToast = (toast, { icon, title, message, toastPosition }) => {
         </ChakraProvider>
       ),
     });
-    return toastIdRef.current;
   };
 };
 

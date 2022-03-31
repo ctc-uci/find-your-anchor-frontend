@@ -44,7 +44,6 @@ const RelocationBox = ({
   pickup,
   launchedOrganically,
   imageStatus,
-  toast,
 }) => {
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
@@ -89,18 +88,21 @@ const RelocationBox = ({
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
     await Promise.all(requests);
   };
-  const showToast = CustomToast(toast, {
+
+  const showToast = CustomToast({
     icon: 'success',
     title: `Box #${boxID} Approved`,
     message: '',
     toastPosition: 'bottom-right',
   });
-  const errorToast = CustomToast(toast, {
+
+  const errorToast = CustomToast({
     icon: 'error',
     title: `Failed to Approve Box #${boxID}`,
     message: '',
     toastPosition: 'bottom-right',
   });
+
   // A function that approves a relocation box submission and updates the backend state accordingly and then refetches all boxes (boxes can be approved from any tab)
   const approveRelocationBox = async () => {
     try {
@@ -471,7 +473,6 @@ RelocationBox.propTypes = {
   fetchBoxes: PropTypes.func.isRequired,
   pickup: PropTypes.bool.isRequired,
   launchedOrganically: PropTypes.bool.isRequired,
-  toast: PropTypes.func.isRequired,
   imageStatus: PropTypes.string.isRequired,
 };
 

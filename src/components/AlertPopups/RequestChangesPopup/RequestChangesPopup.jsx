@@ -13,6 +13,7 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { renderEmail } from 'react-html-email';
+import CustomToast from '../../../common/CustomToast/CustomToast';
 import styles from './RequestChangesPopup.module.css';
 import { FYABackend, sendEmail } from '../../../common/utils';
 import PendingChangesBoxEmail from '../../Email/EmailTemplates/PendingChangesBoxEmail';
@@ -29,29 +30,47 @@ const RequestChangesPopup = ({
   const cancelRef = React.useRef();
   const [changesRequested, setChangesRequested] = useState('');
 
+  const showToast = CustomToast({
+    icon: 'warning',
+    title: `Changes for Box #${boxID} Requested`,
+    message: 'A copy of your responses has been sent to the messenger.',
+    toastPosition: 'bottom-right',
+  });
+
+  const errorToast = CustomToast({
+    icon: 'error',
+    title: `Failed to Request Changes for Box #${boxID}`,
+    message: 'Please try again or contact an administrator. ',
+    toastPosition: 'bottom-right',
+  });
   const handleRequestChangesClicked = async () => {
-    await FYABackend.put('/boxHistory/update', {
-      transactionID,
-      boxID,
-      status: 'pending changes',
-      changesRequested,
-    }).then(() => {});
-    const requests = [
-      fetchBoxes('under review', false),
-      fetchBoxes('pending changes', false),
-      sendEmail(
-        boxHolderName,
-        boxHolderEmail,
-        renderEmail(
-          <PendingChangesBoxEmail
-            boxHolderName={boxHolderName}
-            changesRequested={changesRequested}
-          />,
+    try {
+      await FYABackend.put('/boxHistory/update', {
+        transactionID,
+        boxID,
+        status: 'pending changes',
+        changesRequested,
+      }).then(() => {});
+      const requests = [
+        fetchBoxes('under review', false),
+        fetchBoxes('pending changes', false),
+        sendEmail(
+          boxHolderName,
+          boxHolderEmail,
+          renderEmail(
+            <PendingChangesBoxEmail
+              boxHolderName={boxHolderName}
+              changesRequested={changesRequested}
+            />,
+          ),
         ),
-      ),
-    ];
-    await Promise.all(requests);
-    setIsOpen(false);
+      ];
+      await Promise.all(requests);
+      setIsOpen(false);
+      showToast();
+    } catch (err) {
+      errorToast();
+    }
   };
 
   return (

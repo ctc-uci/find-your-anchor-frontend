@@ -43,31 +43,50 @@ const PickupBox = ({
   const [rejectBoxPopupIsOpen, setRejectBoxPopupIsOpen] = useState(false);
   // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
   // This method is called when the approve box icon is clicked
+  const showToast = CustomToast({
+    icon: 'success',
+    title: `Box #${boxID} Approved`,
+    message: '',
+    toastPosition: 'bottom-right',
+  });
+
+  const errorToast = CustomToast({
+    icon: 'error',
+    title: `Failed to Approve Box #${boxID}`,
+    message: '',
+    toastPosition: 'bottom-right',
+  });
+
   const approvePickupBox = async id => {
-    const boxId = id;
-    CustomToast(toast, {
-      icon: 'success',
-      title: `Box # Approved`,
-      message: '',
-      toastPosition: 'bottom-right',
-    });
-    FYABackend.put('/boxHistory/approveBox', {
-      boxID: boxId,
-    }).then(async () => {
-      await fetchBoxes('under review', true);
-      await FYABackend.put('/boxHistory/approveBox', {
-        transactionID: id,
+    try {
+      const boxId = id;
+      CustomToast(toast, {
+        icon: 'success',
+        title: `Box # Approved`,
+        message: '',
+        toastPosition: 'bottom-right',
       });
-      const requests = [
-        fetchBoxes('under review', true),
-        sendEmail(
-          boxHolderName,
-          boxHolderEmail,
-          renderEmail(<ApprovedBoxEmail boxHolderName={boxHolderName} />),
-        ),
-      ];
-      await Promise.all(requests);
-    });
+      FYABackend.put('/boxHistory/approveBox', {
+        boxID: boxId,
+      }).then(async () => {
+        await fetchBoxes('under review', true);
+        await FYABackend.put('/boxHistory/approveBox', {
+          transactionID: id,
+        });
+        const requests = [
+          fetchBoxes('under review', true),
+          sendEmail(
+            boxHolderName,
+            boxHolderEmail,
+            renderEmail(<ApprovedBoxEmail boxHolderName={boxHolderName} />),
+          ),
+        ];
+        await Promise.all(requests);
+        showToast();
+      });
+    } catch (err) {
+      errorToast();
+    }
   };
 
   const updateImageStatus = async newStatus => {

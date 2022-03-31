@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Td, Tr, useDisclosure } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import DeleteBoxModal from '../DeleteBoxModal/DeleteBoxModal';
+import CustomToast from '../../../common/CustomToast/CustomToast';
 import styles from './ReadOnlyRow.module.css';
 
 const ReadOnlyRow = ({ data, editRow, handleDeleteRow, isError }) => {
@@ -11,10 +12,27 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow, isError }) => {
     onOpen: onOpenDeleteModal,
     onClose: onCloseDeleteModal,
   } = useDisclosure();
+  const showToast = CustomToast({
+    icon: 'success',
+    title: `Deleted Box #${data.boxNumber}`,
+    message: '',
+    toastPosition: 'bottom-right',
+  });
 
+  const errorToast = CustomToast({
+    icon: 'error',
+    title: `Failed to Delete Box #${data.boxNumber}`,
+    message: '',
+    toastPosition: 'bottom-right',
+  });
   const onDelete = () => {
-    handleDeleteRow(data.id);
-    onCloseDeleteModal();
+    try {
+      handleDeleteRow(data.id);
+      onCloseDeleteModal();
+      showToast();
+    } catch (err) {
+      errorToast();
+    }
   };
 
   return (

@@ -3,7 +3,6 @@ import DatePicker from 'react-datepicker';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
 import {
   FormErrorMessage,
   Textarea,
@@ -14,6 +13,7 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
+import CustomToast from '../../common/CustomToast/CustomToast';
 
 import { FYABackend, formatDate } from '../../common/utils';
 import { uploadBoxPhoto, validateZip } from './AddBoxFormUtils';
@@ -51,18 +51,34 @@ const BoxForm = () => {
   });
 
   const [files, setFiles] = useState([]);
-
+  const showToast = CustomToast({
+    icon: 'success',
+    title: `Successfully Added Box`,
+    message: '',
+    toastPosition: 'bottom-right',
+  });
+  const errorToast = CustomToast({
+    icon: 'error',
+    title: `Failed to Add Box`,
+    message: 'Please try again or contact an administrator',
+    toastPosition: 'bottom-right',
+  });
   const onSubmit = async data => {
-    const formData = data;
-    formData.date = formatDate(data.date);
-    formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
+    try {
+      const formData = data;
+      formData.date = formatDate(data.date);
+      formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
 
-    // send form data to server
-    await FYABackend.post('/boxForm', formData, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+      // send form data to server
+      await FYABackend.post('/boxForm', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      showToast();
+    } catch (err) {
+      errorToast();
+    }
   };
 
   return (

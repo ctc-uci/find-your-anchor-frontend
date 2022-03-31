@@ -54,8 +54,8 @@ export const formatDate = value => {
   return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
 };
 
-export const showToast = (toast, toastType, toastTitle, toastMessage, toastPosition) => {
-  return CustomToast(toast, {
+export const showToast = (toastType, toastTitle, toastMessage, toastPosition) => {
+  return CustomToast({
     icon: toastType,
     title: toastTitle,
     message: toastMessage,
