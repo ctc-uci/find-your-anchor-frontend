@@ -1,0 +1,24 @@
+.success-modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 25%; 
+  left: 15%;
+}
+
+.success-modal-text {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.success-modal-buttons {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.success-modal-file-name {
+  color: rgb(0, 183, 255);
+}

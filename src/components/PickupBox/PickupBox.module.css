@@ -5,6 +5,16 @@
   background-color: white;
 }
 
+.rejected-icon {
+  color: red;
+  font-size: 30px;
+}
+
+.approved-icon {
+  color: green;
+  font-size: 30px;
+}
+
 .image-wrapper {
   width: 100%;
   height: 100%;
@@ -28,22 +38,22 @@
 }
 
 .box-approved {
-  background-color: #C6F6D5;
-  padding: 0px 15px 0px 15px;
+  background-color: #c6f6d5;
+  padding: 0px 15px 15px 15px;
   margin-top: 15px;
   border-radius: 10px;
 }
 
 .box-rejected {
-  background-color: #FED7D7;
-  padding: 0px 15px 0px 15px;
+  background-color: #fed7d7;
+  padding: 0px 15px 15px 15px;
   margin-top: 15px;
   border-radius: 10px;
 }
 
 .box-pending {
-  background-color: #BEE3F8;
-  padding: 0px 15px 0px 15px;
+  background-color: #bee3f8;
+  padding: 0px 15px 15px 15px;
   margin-top: 15px;
   border-radius: 10px;
 }
@@ -97,7 +107,6 @@
 }
 
 .check-icon {
-
   float: right;
 }
 
@@ -105,7 +114,6 @@
   float: left;
   width: 100%;
 }
-
 
 .box-details {
   display: flex;
@@ -120,8 +128,56 @@
   margin: 0;
 }
 
-
 .image-corners {
   border-radius: 5%;
 }
 
+.image-functionality-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.image-functionality {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.approval-button, .rejection-button {
+  float:left;
+  margin: 2% 2% 0% 0%;
+}
+
+.image-approved {
+  border: 1px solid green;
+}
+
+.image-rejected {
+  border: 1px solid red;
+}
+
+.status-message {
+  float:left;
+  padding: 1%;
+  width:100%;
+  text-align: left;
+  margin-left: 1%;
+}
+
+.approval-message {
+  color: green;
+}
+
+.rejection-message {
+  color: red;
+}
+
+.image-approved-button {
+  float:right;
+  margin: 2% 0% 2% 2%;
+}
+
+.image-rejected-button {
+  float:right;
+  margin: 2% 1% 2% 2%;
+}

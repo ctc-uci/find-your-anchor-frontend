@@ -13,15 +13,18 @@ import {
 } from '@chakra-ui/react';
 
 import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
+import { renderEmail } from 'react-html-email';
 import PropTypes from 'prop-types';
 import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
-import { FYABackend } from '../../common/utils';
 import CustomToast from '../../common/CustomToast/CustomToast';
+import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
+import { FYABackend, sendEmail } from '../../common/utils';
 
 const PickupBox = ({
   approved,
+  transactionID,
   boxID,
   boxHolderName,
   boxHolderEmail,
@@ -33,6 +36,7 @@ const PickupBox = ({
   fetchBoxes,
   pickup,
   toast,
+  imageStatus,
 }) => {
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
@@ -51,7 +55,28 @@ const PickupBox = ({
       boxID: boxId,
     }).then(async () => {
       await fetchBoxes('under review', true);
+      await FYABackend.put('/boxHistory/approveBox', {
+        transactionID: id,
+      });
+      const requests = [
+        fetchBoxes('under review', true),
+        sendEmail(
+          boxHolderName,
+          boxHolderEmail,
+          renderEmail(<ApprovedBoxEmail boxHolderName={boxHolderName} />),
+        ),
+      ];
+      await Promise.all(requests);
     });
+  };
+
+  const updateImageStatus = async newStatus => {
+    await FYABackend.put('/boxHistory/update', {
+      transactionID,
+      boxID,
+      imageStatus: newStatus,
+    });
+    await fetchBoxes(status, true);
   };
 
   return (
@@ -81,8 +106,54 @@ const PickupBox = ({
             {/* Box details */}
             <AccordionPanel className={styles['accordion-panel']} pb={4}>
               <div className={styles['box-details']}>
-                {picture !== null && (
-                  <img src={picture} alt="" className={styles['pickup-image-corners']} />
+                {(status !== 'evaluated' || imageStatus !== 'rejected') && picture && (
+                  <img
+                    src={picture}
+                    alt=""
+                    className={`${styles['pickup-image-corners']}
+                    ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
+                    ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
+                  />
+                )}
+                {picture && status !== 'evaluated' && (
+                  <div className={styles['image-functionality-wrapper']}>
+                    {/* Image approved indicator (only show if image is approved) */}
+                    <div className={styles['image-functionality']}>
+                      {imageStatus === 'approved' && (
+                        <>
+                          <button type="button" className={styles['approval-button']}>
+                            <BsFillCheckCircleFill color="green" />
+                          </button>
+                          <p className={styles['approval-message']}>Image Approved</p>
+                        </>
+                      )}
+                      {/* Image rejected indicator (only show if image is rejected) */}
+                      {imageStatus === 'rejected' && (
+                        <>
+                          <button type="button" className={styles['rejection-button']}>
+                            <BsXCircleFill color="red" />
+                          </button>
+                          <p className={styles['rejection-message']}>Image Denied</p>
+                        </>
+                      )}
+                    </div>
+                    {/* Approve image button */}
+                    <button
+                      type="button"
+                      className={styles['image-approved-button']}
+                      onClick={async () => updateImageStatus('approved')}
+                    >
+                      <BsFillCheckCircleFill color="green" />
+                    </button>
+                    {/* Reject image button */}
+                    <button
+                      type="button"
+                      className={styles['image-rejected-button']}
+                      onClick={async () => updateImageStatus('rejected')}
+                    >
+                      <BsXCircleFill color="red" />
+                    </button>
+                  </div>
                 )}
                 <FormControl>
                   {/* Box name */}
@@ -117,27 +188,21 @@ const PickupBox = ({
                     <div className={styles['close-icon']}>
                       <button
                         type="button"
-                        onClick={() => {
-                          setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen);
-                        }}
+                        onClick={() => setRejectBoxPopupIsOpen(!rejectBoxPopupIsOpen)}
                       >
-                        <BsXCircleFill color="red" size="30px" />
+                        <BsXCircleFill className={styles['rejected-icon']} />
                       </button>
                     </div>
                     {/* Approve box button */}
                     <div className={styles['check-icon']}>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          approvePickupBox(boxID);
-                        }}
-                      >
-                        <BsFillCheckCircleFill color="green" size="30px" />
+                      <button type="button" onClick={() => approvePickupBox(transactionID)}>
+                        <BsFillCheckCircleFill className={styles['approved-icon']} />
                       </button>
                     </div>
                     <RejectBoxPopup
                       isOpen={rejectBoxPopupIsOpen}
                       setIsOpen={setRejectBoxPopupIsOpen}
+                      transactionID={transactionID}
                       boxID={boxID}
                       boxHolderName={boxHolderName}
                       boxHolderEmail={boxHolderEmail}
@@ -158,6 +223,7 @@ const PickupBox = ({
 
 PickupBox.propTypes = {
   approved: PropTypes.bool.isRequired,
+  transactionID: PropTypes.number.isRequired,
   boxID: PropTypes.number.isRequired,
   boxHolderName: PropTypes.string.isRequired,
   boxHolderEmail: PropTypes.string.isRequired,
@@ -169,6 +235,7 @@ PickupBox.propTypes = {
   pickup: PropTypes.bool.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
   toast: PropTypes.func.isRequired,
+  imageStatus: PropTypes.string.isRequired,
 };
 
 export default PickupBox;

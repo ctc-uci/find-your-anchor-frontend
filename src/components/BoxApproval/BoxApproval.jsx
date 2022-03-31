@@ -51,6 +51,7 @@ const BoxApproval = ({ toast }) => {
   const mapDataToRelocationBox = boxData => (
     <RelocationBox
       key={boxData.box_id}
+      transactionID={boxData.transaction_id}
       boxID={boxData.box_id}
       boxHolderName={boxData.boxholder_name}
       boxHolderEmail={boxData.boxholder_email}
@@ -68,12 +69,14 @@ const BoxApproval = ({ toast }) => {
       pickup={boxData.pickup}
       launchedOrganically={boxData.launched_organically}
       toast={toast}
+      imageStatus={boxData.image_status}
     />
   );
 
   // Maps a single box to a PickupBox component
   const mapDataToPickupBox = boxData => (
     <PickupBox
+      transactionID={boxData.transaction_id}
       key={boxData.box_id}
       boxID={boxData.box_id}
       boxHolderName={boxData.boxholder_name}
@@ -86,6 +89,7 @@ const BoxApproval = ({ toast }) => {
       rejectionReason={boxData.rejection_reason}
       pickup={boxData.pickup}
       fetchBoxes={fetchBoxes}
+      imageStatus={boxData.image_status}
     />
   );
 

@@ -8,6 +8,7 @@ import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import AdminProfilePage from './pages/AdminProfilePage/AdminProfilePage';
 import ExportCSV from './pages/ExportCSV/ExportCSV';
 import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
+import UploadCSVView from './pages/UploadCSVView/UploadCSVView';
 import LoginPage from './pages/Login/LoginPage';
 import RegisterPage from './pages/Register/RegisterPage';
 
@@ -25,6 +26,7 @@ ReactDOM.render(
           <Route path="/pickup-form" element={<App />} />
           <Route path="/export-csv" element={<ExportCSV />} />
           <Route path="/add-box-form" element={<AddBoxFormPage />} />
+          <Route path="/upload-csv-view" element={<UploadCSVView />} />
         </Route>
       </Routes>
     </Router>

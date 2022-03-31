@@ -14,7 +14,7 @@
 
 .legend {
   background-color: #e5e5e5;
-  width :100%;
+  width: 100%;
   margin-left: 5%;
   height: 100px;
   padding-top: 4%;
@@ -24,36 +24,36 @@
 
 .request-changes-row {
   display: flex;
-  width :100%;
+  width: 100%;
   margin: 1% 1% 1% 1%;
 }
 
 .relocate-box-row {
-  width :100%;
+  width: 100%;
   margin: 1% 1% 1% 1%;
 }
 
 .pickup-box-row {
-  width :100%;
+  width: 100%;
   margin: 1% 1% 1% 1%;
 }
 
 .request-changes-icon {
-  float:left;
-  margin-right:4%;
-  color: #DD6B20;
+  float: left;
+  margin-right: 4%;
+  color: #dd6b20;
 }
 
 .relocate-box-icon {
   width: 16px;
-  float:left;
-  margin-right:4%;
+  float: left;
+  margin-right: 4%;
 }
 
 .pickup-box-icon {
   width: 16px;
-  float:left;
-  margin-right:4%;
+  float: left;
+  margin-right: 4%;
 }
 
 .request-changes-text {

@@ -62,3 +62,15 @@ export const showToast = (toast, toastType, toastTitle, toastMessage, toastPosit
     position: toastPosition,
   });
 };
+export const sendEmail = async (name, email, messageHtml) => {
+  const response = await FYABackend.post('/nodemailer/send', {
+    name,
+    email,
+    messageHtml,
+  });
+  if (response.status === 200) {
+    alert('Email sent, awesome!');
+  } else {
+    alert('Oops, something went wrong. Try again');
+  }
+};
