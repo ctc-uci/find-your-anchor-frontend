@@ -18,7 +18,7 @@ import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 import { FYABackend } from '../../common/utils';
-import CustomToast from '../CustomToast/CustomToast';
+import CustomToast from '../../common/CustomToast/CustomToast';
 
 const PickupBox = ({
   approved,

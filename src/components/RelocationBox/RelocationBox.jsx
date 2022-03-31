@@ -15,7 +15,7 @@ import {
 
 import { BsFillArrowRightCircleFill, BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
 import PropTypes from 'prop-types';
-import CustomToast from '../CustomToast/CustomToast';
+import CustomToast from '../../common/CustomToast/CustomToast';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 import SaveChangesIcon from '../BoxIcons/SaveChangesIcon.svg';
 import { FYABackend } from '../../common/utils';
@@ -91,13 +91,13 @@ const RelocationBox = ({
   };
   const showToast = CustomToast(toast, {
     icon: 'success',
-    title: `Box # Approved`,
+    title: `Box #${boxID} Approved`,
     message: '',
     toastPosition: 'bottom-right',
   });
   const errorToast = CustomToast(toast, {
     icon: 'error',
-    title: `Box # Approved`,
+    title: `Failed to Approve Box #${boxID}`,
     message: '',
     toastPosition: 'bottom-right',
   });
@@ -353,13 +353,7 @@ const RelocationBox = ({
                       <button
                         type="button"
                         onClick={async () => {
-                          await approveRelocationBox(boxID)
-                            .then(() => {
-                              showToast();
-                            })
-                            .catch(() => {
-                              errorToast();
-                            });
+                          await approveRelocationBox(boxID);
                         }}
                       >
                         <BsFillCheckCircleFill color="green" size="30px" />

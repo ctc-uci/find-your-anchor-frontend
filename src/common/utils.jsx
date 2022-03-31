@@ -1,5 +1,6 @@
 import axios from 'axios';
 import isValidZipcode from 'is-valid-zipcode';
+import CustomToast from './CustomToast/CustomToast';
 
 const baseURL = 'http://localhost:3001';
 
@@ -14,6 +15,7 @@ FYABackend.interceptors.response.use(
   error => {
     // eslint-disable-next-line no-console
     console.error(`[Axios] FYABackend error: ${JSON.stringify(error.toJSON(), null, 2)}`);
+    return Promise.reject(error.response);
   },
 );
 
@@ -50,4 +52,13 @@ export const isValidZip = zip => {
 // Converts JS Date object into string, formatted MM/DD/YYYY
 export const formatDate = value => {
   return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+};
+
+export const showToast = (toast, toastType, toastTitle, toastMessage, toastPosition) => {
+  return CustomToast(toast, {
+    icon: toastType,
+    title: toastTitle,
+    message: toastMessage,
+    position: toastPosition,
+  });
 };

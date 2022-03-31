@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import styles from './RequestChangesPopup.module.css';
 import { FYABackend } from '../../../common/utils';
-import CustomToast from '../../CustomToast/CustomToast';
+import CustomToast from '../../../common/CustomToast/CustomToast';
 
 const RequestChangesPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes }) => {
   const cancelRef = React.useRef();
