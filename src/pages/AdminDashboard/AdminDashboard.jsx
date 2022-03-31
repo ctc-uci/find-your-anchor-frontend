@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import PropTypes from 'prop-types';
 import { ChakraProvider, Button } from '@chakra-ui/react';
 import styles from './AdminDashboard.module.css';
 import Map from '../../components/Map/Map';

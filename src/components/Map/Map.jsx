@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, useMap, ZoomControl, Tooltip, Marker } from 'react-leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
-import L from 'leaflet';
+import Leaflet from 'leaflet';
 import PropTypes from 'prop-types';
 
 import MarkerIcon from '../../assets/MarkerIcon.svg';
@@ -23,12 +23,12 @@ const Map = ({
   // 1. Updates the box list with the boxes located in the zip code (in PinInformation)
   // 2. Switches PinInformation to box list view
   const handleMarkerClicked = markerObject => {
-    // mapState.flyTo([markerObject.latitude, markerObject.longitude], 10);
     setSelectedCountry(markerObject.country);
     setSelectedZipCode(markerObject.zip_code);
     // Toggle updateBoxListSwitch, which will update update the box list in the right side bar
     setUpdateBoxListSwitch(!updateBoxListSwitch);
     setSelectedBox(null);
+    // IMPORTANT: mapState.flyTo(xxx) must be called LAST in order to avoid a moving pin bug
     mapState.flyTo([markerObject.latitude, markerObject.longitude], 10);
   };
 
@@ -55,7 +55,7 @@ const Map = ({
     return null;
   };
 
-  const markerIcon = new L.Icon({
+  const markerIcon = new Leaflet.Icon({
     iconUrl: MarkerIcon,
     iconRetinaUrl: MarkerIcon,
     iconSize: [30, 30],
