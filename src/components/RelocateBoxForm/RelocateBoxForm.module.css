@@ -1,0 +1,59 @@
+:root {
+  --text-gray-color: #808080;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.relocate-box-form {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 3%;
+}
+
+.required-field::after {
+  content: ' *';
+  color: red;
+}
+
+/* box image section */
+.box-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  border-width: 2px;
+  border-style: dashed;
+  border-color: #b9b9b9;
+}
+
+.box-image img {
+  width: 100%;
+  height: 100%;
+}
+
+.box-bottom {
+  margin-bottom: 5%;
+}
+
+.box-bottom small {
+  color: var(--text-gray-color);
+}
+
+.submit-button {
+  float: right;
+  margin-bottom: 3%;
+}
+
+.relocate-box-photo-preview-section {
+  height: 50%;
+}
+
+.relocate-box-photo-preview-section-hidden {
+  display: none;
+}
+
+.relocate-box-info-section-left,
+.relocate-box-info-section-right {
+  width: 40%;
+}
