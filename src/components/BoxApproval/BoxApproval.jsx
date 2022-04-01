@@ -64,6 +64,7 @@ const BoxApproval = () => {
       fetchBoxes={fetchBoxes}
       pickup={boxData.pickup}
       launchedOrganically={boxData.launched_organically}
+      imageStatus={boxData.image_status}
     />
   );
 
@@ -83,6 +84,7 @@ const BoxApproval = () => {
       rejectionReason={boxData.rejection_reason}
       pickup={boxData.pickup}
       fetchBoxes={fetchBoxes}
+      imageStatus={boxData.image_status}
     />
   );
 
