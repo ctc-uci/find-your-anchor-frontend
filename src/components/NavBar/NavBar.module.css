@@ -19,6 +19,12 @@
   gap: 20px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.upload-button {
+  font-size: 18px !important;
+  font-weight: 400 !important;  
 }
 
 .profile-picture {
