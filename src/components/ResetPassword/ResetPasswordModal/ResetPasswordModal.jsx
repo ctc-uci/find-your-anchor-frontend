@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import { CheckCircleIcon } from '@chakra-ui/icons';
 import CommonModal from '../../../common/CommonModal/CommonModal';
 import ResetPasswordModalContent from './ResetPasswordModalContent';
 import styles from './ResetPasswordModal.module.css';
-import CheckMark from '../../../assets/BlueCheckMark.png';
 
 // TODO:
 // - Implement resetPassword
@@ -15,23 +15,16 @@ const resetPassword = () => {
 };
 
 const ResetPasswordModal = ({ isOpen, onClose }) => {
-  const [modalStep, setModalStep] = useState(0);
-
   const closeModal = () => {
-    setModalStep(0);
     onClose();
   };
 
   return (
+    // TODO: remove the close button on the modal
     <CommonModal isOpen={isOpen} onClose={closeModal} modalClassName={styles.modal}>
       <div className={styles['reset-password-modal-content']}>
-        <img src={CheckMark} alt="Logo" className={styles['check-mark-image']} />
-        <ResetPasswordModalContent
-          modalStep={modalStep}
-          setModalStep={setModalStep}
-          closeModal={closeModal}
-          resetPassword={resetPassword}
-        />
+        <CheckCircleIcon w={24} h={24} color="#345E80" />
+        <ResetPasswordModalContent resetPassword={resetPassword} />
       </div>
     </CommonModal>
   );

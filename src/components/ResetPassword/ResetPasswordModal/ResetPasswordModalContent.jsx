@@ -18,7 +18,7 @@ const ModalStep = () => {
   return (
     <div className={styles['step-content']}>
       <Text fontSize="48px" fontWeight="bold" className={styles['step-text']}>
-        Password
+        Password Reset
       </Text>
       <Text fontSize="18px" fontWeight="bold" className={styles['step-text']}>
         You may now log into your account using your new password
@@ -30,10 +30,9 @@ const ModalStep = () => {
   );
 };
 
-const ResetPasswordModalContent = ({ modalStep, closeModal, resetPassword }) => {
-  const modalSteps = [<ModalStep key="" closeModal={closeModal} resetPassword={resetPassword} />];
-
-  return modalSteps[modalStep];
+// eslint-disable-next-line react/prop-types
+const ResetPasswordModalContent = ({ resetPassword }) => {
+  return <ModalStep key="" resetPassword={resetPassword} />;
 };
 
 export default ResetPasswordModalContent;

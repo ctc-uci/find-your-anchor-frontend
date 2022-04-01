@@ -54,7 +54,7 @@ const ResetPasswordForm = () => {
         <PasswordInput
           register={register('newPassword')}
           error={errors?.newPassword}
-          title="Password"
+          title="New Password"
         />
         <PasswordInput
           register={register('confirmPassword')}
