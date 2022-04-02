@@ -16,11 +16,11 @@ import { InfoIcon } from '@chakra-ui/icons';
 import CustomToast from '../../common/CustomToast/CustomToast';
 
 import { FYABackend, formatDate } from '../../common/utils';
-import { uploadBoxPhoto, validateZip } from './AddBoxFormUtils';
-import DropZone from './DropZone/DropZone';
+import { uploadBoxPhoto, validateZip } from '../../common/FormUtils/boxFormUtils';
+import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
 import './AddBoxForm.css';
-import './DatePicker.css';
+import '../../common/FormUtils/DatePicker.css';
 
 yup.addMethod(yup.string, 'isZip', validateZip);
 const schema = yup
@@ -70,7 +70,7 @@ const BoxForm = () => {
       formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
 
       // send form data to server
-      await FYABackend.post('/boxForm', formData, {
+      await FYABackend.post('/boxForm/box', formData, {
         headers: {
           'Content-Type': 'application/json',
         },
