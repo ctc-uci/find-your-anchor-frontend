@@ -5,15 +5,6 @@ import CommonModal from '../../../common/CommonModal/CommonModal';
 import ResetPasswordModalContent from './ResetPasswordModalContent';
 import styles from './ResetPasswordModal.module.css';
 
-// TODO:
-// - Implement resetPassword
-
-const resetPassword = () => {
-  // Make request to reset password here
-  // eslint-disable-next-line no-console
-  console.log('password reset complete');
-};
-
 const ResetPasswordModal = ({ isOpen, onClose }) => {
   const closeModal = () => {
     onClose();
@@ -24,7 +15,7 @@ const ResetPasswordModal = ({ isOpen, onClose }) => {
     <CommonModal isOpen={isOpen} onClose={closeModal} modalClassName={styles.modal}>
       <div className={styles['reset-password-modal-content']}>
         <CheckCircleIcon w={24} h={24} color="#345E80" />
-        <ResetPasswordModalContent resetPassword={resetPassword} />
+        <ResetPasswordModalContent />
       </div>
     </CommonModal>
   );

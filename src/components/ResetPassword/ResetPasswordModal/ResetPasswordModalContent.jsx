@@ -6,9 +6,8 @@ import styles from './ResetPasswordModal.module.css';
 // TODO:
 // - Button colors should be added to ChakraProvider using extendTheme
 //   This should fix the button highlight color, which is currently white
-// - Implement "Return to Login page" button
 
-const ModalStep = () => {
+const ResetPasswordModalContent = () => {
   const navigate = useNavigate();
 
   const returnToLogin = () => {
@@ -28,11 +27,6 @@ const ModalStep = () => {
       </Button>
     </div>
   );
-};
-
-// eslint-disable-next-line react/prop-types
-const ResetPasswordModalContent = ({ resetPassword }) => {
-  return <ModalStep key="" resetPassword={resetPassword} />;
 };
 
 export default ResetPasswordModalContent;

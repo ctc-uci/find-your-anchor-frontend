@@ -41,7 +41,15 @@ const ResetPasswordForm = () => {
     navigate('/login');
   };
 
+  // TODO: Implement reset password
+  const resetPassword = () => {
+    // Make request to reset password here
+    // eslint-disable-next-line no-console
+    console.log('password reset complete');
+  };
+
   const onSubmit = data => {
+    resetPassword();
     // eslint-disable-next-line no-alert
     alert(JSON.stringify(data));
     onOpenResetModal();
