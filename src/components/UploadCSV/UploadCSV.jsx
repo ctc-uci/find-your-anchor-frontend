@@ -85,7 +85,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
 
   const addToMap = async e => {
     e.preventDefault();
-    await FYABackend.post('/boxForm/boxes', formDatas, {
+    await FYABackend.post('/anchorBox/boxes', formDatas, {
       headers: {
         'Content-Type': 'application/json',
       },
