@@ -13,6 +13,8 @@ import RelocateBoxFormPage from './pages/RelocateBoxForm/RelocateBoxFormPage';
 import UploadCSVView from './pages/UploadCSVView/UploadCSVView';
 import LoginPage from './pages/Login/LoginPage';
 import RegisterPage from './pages/Register/RegisterPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage/ResetPasswordPage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -25,6 +27,8 @@ ReactDOM.render(
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/" element={<App />} />
 
         <Route element={<Layout isAdmin />}>
