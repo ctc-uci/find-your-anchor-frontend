@@ -126,8 +126,25 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
   }, [watchAllFields]);
 
   const onSubmit = async data => {
-    // setFormValues(data);
+    const importOrder = [
+      'date',
+      'box_id',
+      'zip_code',
+      'picture',
+      'general_location',
+      'launched_organically',
+      'message',
+    ];
+
+    const sortByObject = importOrder.reduce((obj, item, index) => {
+      return {
+        ...obj,
+        [item]: index,
+      };
+    }, {});
+
     const formData = data;
+    formData.boxDetails.sort((a, b) => sortByObject[a] - sortByObject[b]);
 
     if (data.dateOption === 'date-range') {
       formData.startDate = formatDate(data.startDate);
