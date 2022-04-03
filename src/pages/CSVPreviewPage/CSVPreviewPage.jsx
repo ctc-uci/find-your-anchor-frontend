@@ -1,14 +1,21 @@
 import React from 'react';
-import { ChakraProvider, Button, Text } from '@chakra-ui/react';
+import { ChakraProvider, Button, Text, useDisclosure } from '@chakra-ui/react';
 import { CSVLink } from 'react-csv';
 import { useLocation } from 'react-router-dom';
 import renameProperty from '../../components/ExportCSV/ExportCSVUtils';
 import CSVPreview from '../../components/ExportCSV/CSVPreview/CSVPreview';
 
 import styles from '../ExportCSV/ExportCSV.module.css';
+import ExportSuccessModal from '../../components/ExportCSV/ExportSuccessModal/ExportSuccessModal';
 
 const CSVPreviewPage = () => {
   const { state } = useLocation();
+
+  const {
+    isOpen: isUploadCSVOpenModal,
+    onOpen: onUploadCSVOpenModal,
+    onClose: onCloseUploadCSVOpenModal,
+  } = useDisclosure();
 
   const csvReport = {
     data: state.rows,
@@ -17,6 +24,7 @@ const CSVPreviewPage = () => {
       key: property,
     })),
     filename: 'FYA-CSV.csv',
+    onClick: () => onUploadCSVOpenModal(),
   };
 
   return (
@@ -46,6 +54,7 @@ const CSVPreviewPage = () => {
         <div className={styles['export-csv-content']}>
           <CSVPreview formValues={state.rows} />
         </div>
+        <ExportSuccessModal isOpen={isUploadCSVOpenModal} onClose={onCloseUploadCSVOpenModal} />
       </div>
     </ChakraProvider>
   );
