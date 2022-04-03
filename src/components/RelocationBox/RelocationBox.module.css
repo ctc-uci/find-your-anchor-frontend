@@ -36,11 +36,13 @@
   border-radius: 10px;
 }
 
+.image-functionality,
 .message-functionality {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
+
 .message-approved {
   border-color: green !important;
 }
@@ -49,44 +51,50 @@
   border-color: red !important;
 }
 
-.approval-message {
-  color: green;
+.image-approved {
+  border: 1px solid green;
+}
+
+.image-rejected {
+  border: 1px solid red;
+}
+
+.status-message {
   float: left;
   padding: 1%;
   width: 100%;
   text-align: left;
   margin-left: 1%;
+}
+
+.approval-message {
+  color: green;
 }
 
 .rejection-message {
   color: red;
-  float: left;
-  width: 100%;
-  padding: 1%;
-  text-align: left;
-  margin-left: 1%;
 }
 
-.approval-button {
-  float: left;
-  margin: 2% 2% 0% 0%;
-}
-
+.approval-button,
 .rejection-button {
   float: left;
   margin: 2% 2% 0% 0%;
 }
 
+.image-functionality-wrapper,
 .message-functionality-wrapper {
   display: flex;
   width: 100%;
 }
 
-.message-approved {
+.image-approved-button,
+.message-approved-button {
   float: right;
   margin: 2% 0% 2% 2%;
 }
-.message-rejected {
+
+.image-rejected-button,
+.message-rejected-button {
   float: right;
   margin: 2% 1% 2% 2%;
 }

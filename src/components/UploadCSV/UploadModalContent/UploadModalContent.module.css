@@ -1,0 +1,18 @@
+.upload-modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 36px;
+}
+
+.upload-modal-title {
+  color: black;
+  font-weight: 800;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.upload-modal-button {
+  margin-top: 20px;
+}

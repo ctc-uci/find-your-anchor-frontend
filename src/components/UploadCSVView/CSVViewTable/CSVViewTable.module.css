@@ -1,0 +1,71 @@
+.scrollable-div {
+  overflow-y: overlay;
+  max-height: 50%;
+}
+
+.scrollable-div::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+
+.scrollable-div::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(78, 73, 73, 0.5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.csv-table-container {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+}
+
+.csv-table {
+  border-collapse: separate !important;
+  width: 100%;
+  border-spacing: 0px 20px;
+}
+
+.csv-table th,
+.csv-table td {
+  text-align: left;
+  padding: 0 8px;
+  width: 300px;
+}
+
+.csv-table td {
+  position: relative;
+  padding: 8px;
+  height: 80px;
+  background-color: #efefef;
+}
+
+.csv-table td:last-child {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 80px;
+  gap: 20px;
+  border-radius: 0 8px 8px 0;
+}
+
+.csv-table td:first-child {
+  padding-left: 20px;
+  border-radius: 8px 0 0 8px;
+}
+
+.csv-table th {
+  background-color: none;
+  font-weight: 600;
+  border-bottom: none;
+  text-transform: none;
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.csv-table th:first-child {
+  padding-left: 20px;
+}
+
+.csv-table * {
+  font-size: 1rem;
+}

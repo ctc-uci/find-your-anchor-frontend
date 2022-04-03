@@ -16,12 +16,14 @@ const CommonModal = ({
   modalClassName,
   showCloseButton,
   closeOnOverlayClick,
+  width,
+  height,
 }) => {
   return (
     <ChakraProvider>
       <Modal isOpen={isOpen} onClose={onClose} isCentered closeOnOverlayClick={closeOnOverlayClick}>
         <ModalOverlay />
-        <ModalContent minHeight="500px" minWidth="700px">
+        <ModalContent minHeight={height} minWidth={width}>
           {showCloseButton && <ModalCloseButton />}
           <ModalBody className={modalClassName}>{children}</ModalBody>
         </ModalContent>
@@ -34,13 +36,16 @@ CommonModal.defaultProps = {
   modalClassName: '',
   showCloseButton: true,
   closeOnOverlayClick: true,
+  width: 700,
+  height: 500,
 };
 
 CommonModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  width: PropTypes.number,
+  height: PropTypes.number,
   children: PropTypes.node.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   modalClassName: PropTypes.string,
   showCloseButton: PropTypes.bool,
   closeOnOverlayClick: PropTypes.bool,

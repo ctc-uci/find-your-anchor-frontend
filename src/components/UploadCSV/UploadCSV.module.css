@@ -1,0 +1,10 @@
+.common-modal {
+  position: relative;
+}
+
+.loading-text {
+  position: absolute;
+  margin: auto;
+  top: 45%;
+  left: 45%;
+}

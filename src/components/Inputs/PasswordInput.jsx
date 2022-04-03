@@ -43,7 +43,7 @@ const PasswordInput = ({ error, register, showForgotPassword, title }) => {
         </div>
         {showForgotPassword && (
           <div className={styles['forgot-password-wrapper']} align="right">
-            <Link className={styles['forgot-password']} to="/forgotPassword">
+            <Link className={styles['forgot-password']} to="/forgot-password">
               Forgot Password?
             </Link>
           </div>

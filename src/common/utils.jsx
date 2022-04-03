@@ -15,6 +15,7 @@ FYABackend.interceptors.response.use(
   error => {
     // eslint-disable-next-line no-console
     console.error(`[Axios] FYABackend error: ${JSON.stringify(error.toJSON(), null, 2)}`);
+    return Promise.reject(error.response);
   },
 );
 
@@ -66,4 +67,15 @@ export const sendEmail = async (name, email, messageHtml) => {
   } else {
     alert('Oops, something went wrong. Try again');
   }
+};
+
+export const getLatLong = async (zipCode, country) => {
+  const response = await axios.get(
+    `https://nominatim.openstreetmap.org/search?postalcode=${zipCode}&country=${country}&format=json`,
+  );
+  if (response.status === 200 && response.data.length > 0) {
+    const { lat: latitude, lon: longitude } = response.data[0];
+    return [latitude, longitude];
+  }
+  return [];
 };

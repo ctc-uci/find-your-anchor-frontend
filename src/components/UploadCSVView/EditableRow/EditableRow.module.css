@@ -1,0 +1,49 @@
+.check-box {
+  background-color: white;
+  transform: scale(1.2);
+}
+
+.edit-row input {
+  width: 200px;
+  height: 35px;
+  background-color: white;
+}
+
+.edit-row .input-right-warning {
+  color: red;
+  position: absolute;
+  top: -3px;
+  right: 25px;
+}
+
+.check-icon {
+  color: gray;
+  width: 20px;
+  height: 15px;
+}
+
+.date-picker {
+  font-size: 15px;
+  height: 2.5rem;
+  width: 100%;
+  border: 1px solid rgb(226, 232, 240);
+  border-radius: 0.375rem;
+  padding-left: 1rem;
+}
+
+.date-picker-error {
+  border: 2.2px solid #ea6565;
+}
+
+.csv-error td {
+  border-top: 1px solid red;
+  border-bottom: 1px solid red;
+}
+
+.csv-error td:last-child {
+  border-right: 1px solid red;
+}
+
+.csv-error td:first-child {
+  border-left: 1px solid red;
+}
