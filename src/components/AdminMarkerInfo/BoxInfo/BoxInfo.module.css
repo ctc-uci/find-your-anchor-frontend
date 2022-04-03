@@ -55,20 +55,20 @@
   margin-top: 3%;
 }
 
-ul {
+.history-graph-items {
   counter-reset: list;
   border-left: 2px solid lightgrey;
   margin: 1em;
   padding: 0;
 }
 
-ul li {
+.history-graph-item {
   list-style: none;
   margin: 0 0 0.5em 0;
   padding: 0;
 }
 
-ul li:before {
+.history-graph-item:before {
   display: inline-block;
   width: 1.2em;
   height: 1.2em;
