@@ -1,5 +1,6 @@
 import axios from 'axios';
 import isValidZipcode from 'is-valid-zipcode';
+import { renderEmail } from 'react-html-email';
 
 const baseURL = 'http://localhost:3001';
 
@@ -17,6 +18,8 @@ FYABackend.interceptors.response.use(
     return Promise.reject(error.response);
   },
 );
+
+// Reference auth_utils.js for an additional auth interceptor.
 
 export const isValidZip = zip => {
   const countries = [
@@ -57,7 +60,7 @@ export const sendEmail = async (name, email, messageHtml) => {
   const response = await FYABackend.post('/nodemailer/send', {
     name,
     email,
-    messageHtml,
+    messageHtml: renderEmail(messageHtml),
   });
   if (response.status === 200) {
     alert('Email sent, awesome!');
