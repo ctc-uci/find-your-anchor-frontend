@@ -63,7 +63,7 @@ const AddBoxForm = () => {
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
 
     // send form data to server
-    await FYABackend.post('/boxForm/box', formData, {
+    await FYABackend.post('/anchorBox/box', formData, {
       headers: {
         'Content-Type': 'application/json',
       },
