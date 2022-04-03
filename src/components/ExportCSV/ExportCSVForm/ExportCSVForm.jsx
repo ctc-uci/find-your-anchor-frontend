@@ -83,7 +83,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
       endDate: '',
       zipOption: 'zip-code-all',
       zipCode: '',
-      launchOrg: 'yes',
+      launchedOrganically: 'yes',
       boxDetails: [],
     },
     resolver: yupResolver(schema),
@@ -146,7 +146,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
     if (data.dateOption === 'date-range') {
       formData.startDate = formatDate(data.startDate);
       formData.endDate = formatDate(data.endDate);
-    } else if (data.dataOption === 'date-single') {
+    } else if (data.dateOption === 'date-single') {
       formData.singleDate = formatDate(data.singleDate);
     }
 
@@ -347,7 +347,7 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                 <FormLabel htmlFor="launch-organic">Launch Organically?</FormLabel>
                 <Controller
                   id="launch-organic"
-                  name="launchOrg"
+                  name="launchedOrganically"
                   control={control}
                   // eslint-disable-next-line no-unused-vars
                   render={({ field: { onChange, value, ref } }) => (
