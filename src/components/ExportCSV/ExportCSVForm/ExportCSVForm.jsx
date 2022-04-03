@@ -120,9 +120,6 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
       setValue('singleDate', '');
       clearErrors('singleDate');
     }
-
-    // TODO: fix setFormValues to update as user is changing the filters
-    // setFormValues(getValues());
   }, [watchAllFields]);
 
   const onSubmit = async data => {
@@ -162,8 +159,6 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
     setFormValues(res.data);
 
     navigate('/export-csv-preview', { state: { rows: res.data } });
-
-    // reset();
   };
 
   return (
@@ -227,7 +222,9 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                       // eslint-disable-next-line no-unused-vars
                       render={({ field: { onChange, value, ref } }) => (
                         <DatePicker
-                          className={styles[`date-picker${errors?.singleDate ? '-error' : ''}`]}
+                          className={
+                            styles[`${errors?.singleDate ? 'date-picker-error' : 'date-picker'}`]
+                          }
                           placeholderText="MM/DD/YYYY"
                           type="date"
                           selected={value}
@@ -249,7 +246,9 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                           // eslint-disable-next-line no-unused-vars
                           render={({ field: { onChange, value, ref } }) => (
                             <DatePicker
-                              className={styles[`date-picker${errors?.startDate ? '-error' : ''}`]}
+                              className={
+                                styles[`${errors?.startDate ? 'date-picker-error' : 'date-picker'}`]
+                              }
                               placeholderText="MM/DD/YYYY"
                               type="date"
                               selected={value}
@@ -272,7 +271,9 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
                           // eslint-disable-next-line no-unused-vars
                           render={({ field: { onChange, value, ref } }) => (
                             <DatePicker
-                              className={styles[`date-picker${errors?.endDate ? '-error' : ''}`]}
+                              className={
+                                styles[`${errors?.endDate ? 'date-picker-error' : 'date-picker'}`]
+                              }
                               placeholderText="MM/DD/YYYY"
                               type="date"
                               selected={value}

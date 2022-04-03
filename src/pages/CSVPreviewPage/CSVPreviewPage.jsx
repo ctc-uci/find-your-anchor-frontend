@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import renameProperty from '../../components/ExportCSV/ExportCSVUtils';
 import CSVPreview from '../../components/ExportCSV/CSVPreview/CSVPreview';
 
-import styles from './CSVPreviewPage.module.css';
+import styles from '../ExportCSV/ExportCSV.module.css';
 
 const CSVPreviewPage = () => {
   const { state } = useLocation();
