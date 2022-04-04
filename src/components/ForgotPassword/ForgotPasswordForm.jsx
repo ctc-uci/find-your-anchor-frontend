@@ -32,6 +32,7 @@ const ForgotPasswordForm = () => {
       await sendPasswordReset(data.email);
       navigate('/login');
     } catch (err) {
+      // TODO: replace with toast component
       console.log(err.message);
     }
   };

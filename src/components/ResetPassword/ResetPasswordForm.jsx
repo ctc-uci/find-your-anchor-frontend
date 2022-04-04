@@ -47,6 +47,7 @@ const ResetPasswordForm = ({ code }) => {
     try {
       await confirmNewPassword(code, data.newPassword);
     } catch (err) {
+      // TODO: replace with toast component
       console.log(err.message);
     }
   };
