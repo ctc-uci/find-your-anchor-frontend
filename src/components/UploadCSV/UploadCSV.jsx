@@ -35,6 +35,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
     try {
       await BoxSchema.validate(CSVRow, { abortEarly: false });
     } catch (err) {
+      // display a message and its corresponding row number for any errors
       err.inner.forEach(e => {
         setUploadErrors(prevState => [...prevState, `${e.message} (line ${i})`]);
       });
@@ -55,6 +56,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
             zipCode: results.data[i][2],
             launchedOrganically: results.data[i][3].toLowerCase() === 'yes',
           };
+          // use yup validation to check each field in the row
           checkErrors(CSVRow, i);
           setFormDatas(prevState => [...prevState, CSVRow]);
         }

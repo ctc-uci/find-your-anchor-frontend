@@ -1,6 +1,8 @@
 import * as yup from 'yup';
 import { FYABackend, isValidZip } from '../../common/utils';
 
+const boxNumbers = new Set();
+
 function validateZip() {
   return this.test('isZip', function zipCheck(value) {
     const { path, createError } = this;
@@ -12,6 +14,8 @@ function validateBoxNumber() {
   return this.test('boxNotExists', async function boxCheck(value) {
     const { path, createError } = this;
     const box = await FYABackend.get(`/boxForm/${value}`);
+    boxNumbers.add(1);
+    console.log(boxNumbers);
     return box.data.length === 0
       ? true
       : createError({ path, message: `Box number ${value} already exists` });
