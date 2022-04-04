@@ -1,9 +1,11 @@
 import React from 'react';
 import { ChakraProvider, Button, Text } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import ExportCSVForm from '../../components/ExportCSV/ExportCSVForm/ExportCSVForm';
 import styles from './ExportCSV.module.css';
 
 const ExportCSV = () => {
+  const navigate = useNavigate();
   // Used to connect submit button outside form
   const formID = 'export-csv-form';
 
@@ -22,6 +24,7 @@ const ExportCSV = () => {
               colorScheme="white"
               color="black"
               variant="outline"
+              onClick={() => navigate('/admin')}
             >
               Cancel
             </Button>
