@@ -18,7 +18,7 @@ const schema = yup.object({
   confirmPassword: yup
     .string()
     .required('Please confirm your password')
-    .oneOf([yup.ref('newPassword'), null], 'Please confirm your password'),
+    .oneOf([yup.ref('newPassword'), null], 'Passwords must both match'),
 });
 
 const ResetPasswordForm = ({ code }) => {

@@ -7,12 +7,34 @@ import { useNavigate } from 'react-router-dom';
 import styles from './ForgotPasswordForm.module.css';
 import TextInput from '../Inputs/TextInput';
 import { sendPasswordReset } from '../../common/auth_utils';
+import { FYABackend } from '../../common/utils';
 
+// Check if user exists in the database
+const userExists = async email => {
+  try {
+    const backendUser = await FYABackend.get(`/users/email/${email}`);
+    return Object.keys(backendUser.data).length !== 0;
+  } catch (err) {
+    return false;
+  }
+};
+
+function validateEmail() {
+  return this.test('validEmail', async function emailCheck(value) {
+    const { path, createError } = this;
+    return (await userExists(value))
+      ? true
+      : createError({ path, message: 'This email has not been registered.' });
+  });
+}
+
+yup.addMethod(yup.string, 'validEmail', validateEmail);
 const schema = yup.object({
   email: yup
     .string()
-    .email('Invalid Email Address / Please enter your FYA email address')
-    .required('Invalid Email Address / Please enter your FYA email address'),
+    .email('Invalid email address. Please enter your FYA email address')
+    .required('Please enter your FYA email address')
+    .validEmail('This email has not been registered.'),
 });
 
 const ForgotPasswordForm = () => {
@@ -29,6 +51,7 @@ const ForgotPasswordForm = () => {
 
   const onSubmit = async data => {
     try {
+      // console.log(userExists(data.email));
       await sendPasswordReset(data.email);
       navigate('/login');
       // TODO: add toast component to confirm email has been sent (see Figma)
