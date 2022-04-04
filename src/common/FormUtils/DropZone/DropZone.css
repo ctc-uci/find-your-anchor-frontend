@@ -4,7 +4,6 @@
 .dropzone-zone {
   text-align: center;
   padding: 55px;
-  height: 240px;
   border-radius: 5px;
   border-width: 2px;
   border-style: solid;
@@ -29,12 +28,12 @@
 }
 
 .dropzone-icon {
-  margin: 10px auto;
+  margin: auto;
   font-size: 30px;
   color: black;
 }
 
-.file-selector {
+.fileSelector {
   border: none;
   background-color: transparent;
   color: black;
@@ -45,9 +44,18 @@
 
 .files-list {
   list-style-type: none;
-  margin-bottom: 2%;
+  padding: 0;
 }
 
-.file-item-span-text {
-  margin-left: 20px;
+.file-item-button {
+  border: 1px solid #a0aec0;
+  border-radius: 2px;
+  height: 30px;
+  width: 30px;
+  margin-right: 10px;
+  padding-bottom: 2px;
+}
+
+.file-item-span {
+  color: var(--text-gray-color);
 }

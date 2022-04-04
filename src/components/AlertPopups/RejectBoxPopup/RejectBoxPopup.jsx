@@ -12,16 +12,29 @@ import {
   AlertDialogCloseButton,
   Textarea,
 } from '@chakra-ui/react';
-import { FYABackend } from '../../../common/utils';
+import { renderEmail } from 'react-html-email';
+import { FYABackend, sendEmail } from '../../../common/utils';
+import RejectedBoxEmail from '../../Email/EmailTemplates/RejectedBoxEmail';
 import styles from './RejectBoxPopup.module.css';
 
-const RejectBoxPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes, pickup }) => {
+const RejectBoxPopup = ({
+  boxHolderName,
+  transactionID,
+  boxID,
+  boxHolderEmail,
+  isOpen,
+  setIsOpen,
+  fetchBoxes,
+  pickup,
+}) => {
   const cancelRef = React.useRef();
   const [rejectionReason, setRejectionReason] = useState('');
 
   const handleRejectButtonClicked = async () => {
     await FYABackend.put('/boxHistory/update', {
+      transactionID,
       boxID,
+      approved: false,
       status: 'evaluated',
       rejectionReason,
     });
@@ -29,6 +42,13 @@ const RejectBoxPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes, pickup }) => {
       fetchBoxes('under review', pickup),
       fetchBoxes('pending changes', pickup),
       fetchBoxes('evaluated', pickup),
+      sendEmail(
+        boxHolderName,
+        boxHolderEmail,
+        renderEmail(
+          <RejectedBoxEmail boxHolderName={boxHolderName} rejectionReason={rejectionReason} />,
+        ),
+      ),
     ];
     await Promise.all(requests);
     setIsOpen(false);
@@ -80,7 +100,10 @@ const RejectBoxPopup = ({ isOpen, setIsOpen, boxID, fetchBoxes, pickup }) => {
 };
 
 RejectBoxPopup.propTypes = {
+  transactionID: PropTypes.number.isRequired,
   boxID: PropTypes.number.isRequired,
+  boxHolderName: PropTypes.string.isRequired,
+  boxHolderEmail: PropTypes.string.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   pickup: PropTypes.bool.isRequired,

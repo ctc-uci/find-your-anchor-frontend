@@ -1,10 +1,10 @@
 .adminDashboardDiv {
-    width: 100%;
-    min-height: 100%;
+  width: 100%;
+  min-height: 100%;
 }
 
 .rejectBoxPopup {
-  float:right;
+  float: right;
 }
 
 .admin-dashboard-container {
@@ -30,7 +30,8 @@
   z-index: 400; /* since leaflet has a high z index */
 }
 
-.side-bar.show-review {
+.side-bar.show-review,
+.show-info {
   display: block;
 }
 
@@ -48,8 +49,12 @@
   width: 100vw;
 }
 
-.map.show-review {
+.map.one-bar-open {
   width: 80vw;
+}
+
+.two-bars-open {
+  width: 60vw;
 }
 
 .review-submission-button {

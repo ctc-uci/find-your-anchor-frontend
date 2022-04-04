@@ -19,10 +19,14 @@ import {
 import { InfoIcon } from '@chakra-ui/icons';
 
 import { FYABackend, formatDate } from '../../common/utils';
-import { uploadBoxPhoto, validateZip, validateBoxNumber } from './AddBoxFormUtils';
+import {
+  uploadBoxPhoto,
+  validateZip,
+  validateBoxNumber,
+} from '../../common/FormUtils/boxFormUtils';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './AddBoxForm.module.css';
-import AddBoxDropZone from './DropZone/AddBoxDropZone';
+import DropZone from '../../common/FormUtils/DropZone/DropZone';
 
 yup.addMethod(yup.string, 'isZip', validateZip);
 yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
@@ -188,7 +192,7 @@ const AddBoxForm = () => {
         <br />
         <FormControl>
           <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
-          <AddBoxDropZone setFiles={setFiles} />
+          <DropZone setFiles={setFiles} />
         </FormControl>
         <div
           className={

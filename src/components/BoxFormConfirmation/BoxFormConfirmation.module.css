@@ -1,0 +1,21 @@
+.box-form-confirmation-page {
+  text-align: center;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.confirmation-text {
+  margin-top: 3%;
+}
+
+.confirmation-check-circle {
+  font-size: 125px;
+}
+
+.confirmation-button {
+  margin-top: 5%;
+}

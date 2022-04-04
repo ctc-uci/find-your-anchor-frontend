@@ -1,44 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl } from 'react-leaflet';
+import { MapContainer, TileLayer, useMap, ZoomControl, Tooltip, Marker } from 'react-leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
-import icons from 'leaflet-color-number-markers';
-import PopUpBox from '../PopUpBox/PopUpBox';
+import Leaflet from 'leaflet';
+import PropTypes from 'prop-types';
 
+import MarkerIcon from '../../assets/MarkerIcon.svg';
 import './Map.css';
+import { FYABackend } from '../../common/utils';
 
-const Map = () => {
-  // The activeMarker represents the current marker that is selected (i.e. which popup is shown)
-  const [activeMarker, setActiveMarker] = useState(null);
-  // This mapState variable stores the current instance of the map.
-  // This is used to fly to markers when they're clicked
+const Map = ({
+  setSelectedCountry,
+  setSelectedZipCode,
+  setSelectedBox,
+  setUpdateBoxListSwitch,
+  updateBoxListSwitch,
+}) => {
   const [mapState, setMapState] = useState(null);
+  // A list containing all unique zip codes stored in Anchor_Box
+  const [zipcodeData, setZipCodeData] = useState([]);
 
-  // This is sample data for Markers
-  // The only required pieces of data for Markers to show up are the long/lat coordinates
-  // Could use Nominatim to convert from city/state/etc name to coordinates (https://nominatim.org/release-docs/develop/api/Overview/)
-  const markerData = [
-    {
-      id: 'San Diego',
-      coordinates: [32.715736, -117.161087],
-      description: 'Sample marker at San Diego',
-      image: 'https://pngimg.com/uploads/box/box_PNG49.png',
-      number: '1',
-    },
-    {
-      id: 'Irvine',
-      coordinates: [33.6846, -117.8265],
-      description: 'Sample marker at Irvine',
-      image: 'https://pngimg.com/uploads/box/box_PNG49.png',
-      number: '2',
-    },
-    {
-      id: 'Los Angeles',
-      coordinates: [34.052235, -118.243683],
-      description: 'Sample marker at Los Angeles',
-      image: 'https://pngimg.com/uploads/box/box_PNG49.png',
-      number: '3',
-    },
-  ];
+  // Handles when a marker is clicked
+  // 1. Updates the box list with the boxes located in the zip code (in PinInformation)
+  // 2. Switches PinInformation to box list view
+  const handleMarkerClicked = markerObject => {
+    setSelectedCountry(markerObject.country);
+    setSelectedZipCode(markerObject.zip_code);
+    // Toggle updateBoxListSwitch, which will update update the box list in the right side bar
+    setUpdateBoxListSwitch(!updateBoxListSwitch);
+    setSelectedBox(null);
+    // IMPORTANT: mapState.flyTo(xxx) must be called LAST in order to avoid a moving pin bug
+    mapState.flyTo([markerObject.latitude, markerObject.longitude], 10);
+  };
+
+  useEffect(async () => {
+    const zipCodes = await FYABackend.get('/anchorBox/locations');
+    setZipCodeData(zipCodes.data);
+  }, []);
 
   // This is the SearchField component used for searching locations
   const SearchField = () => {
@@ -47,6 +44,8 @@ const Map = () => {
     const searchControl = new GeoSearchControl({
       provider: new OpenStreetMapProvider(),
       searchLabel: 'Search city, zipcode, or box number',
+      showMarker: false,
+      showPopup: false,
     });
     useEffect(() => {
       map.addControl(searchControl);
@@ -55,6 +54,12 @@ const Map = () => {
 
     return null;
   };
+
+  const markerIcon = new Leaflet.Icon({
+    iconUrl: MarkerIcon,
+    iconRetinaUrl: MarkerIcon,
+    iconSize: [30, 30],
+  });
 
   return (
     <MapContainer
@@ -71,40 +76,35 @@ const Map = () => {
       />
       <ZoomControl position="bottomright" />
       {/* Map the marker data into <Marker /> components */}
-      {markerData.map(markerObject => (
-        <Marker
-          icon={icons.blue.numbers[markerObject.number]}
-          key={markerObject.id}
-          position={markerObject.coordinates}
-          eventHandlers={{
-            // Marker click effect
-            click: () => {
-              setActiveMarker(markerObject);
-              mapState.flyTo(markerObject.coordinates, 10);
-            },
-          }}
-        />
-      ))}
+      {zipcodeData &&
+        zipcodeData.map(markerObject => (
+          <Marker
+            icon={markerIcon}
+            key={markerObject.box_id}
+            position={[markerObject.latitude, markerObject.longitude]}
+            eventHandlers={{
+              // Marker click effect
+              click: () => {
+                handleMarkerClicked(markerObject);
+              },
+            }}
+          >
+            <Tooltip interactive className="tooltip" direction="top" permanent>
+              {markerObject.box_count}
+            </Tooltip>
+          </Marker>
+        ))}
       <SearchField />
-      {/* If a marker is selected, then show the popup for that marker */}
-      {activeMarker && (
-        <Popup
-          className="popup"
-          position={[activeMarker.coordinates[0], activeMarker.coordinates[1]]}
-          onClose={() => setActiveMarker(null)}
-          offset={[0, 280]}
-          closeButton={false}
-        >
-          <div className="marker-popup">
-            <p className="popup-header">Zip Code: 92627</p>
-            <PopUpBox number="Box #1234" date="01/22/2022" />
-            <PopUpBox number="Box #1234" date="01/22/2022" />
-            <PopUpBox number="Box #1234" date="01/22/2022" />
-          </div>
-        </Popup>
-      )}
     </MapContainer>
   );
+};
+
+Map.propTypes = {
+  setSelectedCountry: PropTypes.func.isRequired,
+  setSelectedZipCode: PropTypes.func.isRequired,
+  setUpdateBoxListSwitch: PropTypes.func.isRequired,
+  setSelectedBox: PropTypes.func.isRequired,
+  updateBoxListSwitch: PropTypes.bool.isRequired,
 };
 
 export default Map;

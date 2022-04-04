@@ -9,7 +9,6 @@
 
 .navbar-buttons-and-account {
   gap: 20px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -20,6 +19,12 @@
   gap: 20px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.upload-button {
+  font-size: 18px !important;
+  font-weight: 400 !important;  
 }
 
 .profile-picture {
@@ -28,7 +33,11 @@
   border-radius: 50%;
 }
 
-a {
+.nav-link-unselected {
   color: black;
   text-decoration: none;
+}
+
+.nav-link-selected {
+  color: #126893;
 }

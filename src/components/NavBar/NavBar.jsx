@@ -1,43 +1,86 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { ChakraProvider, Button, useDisclosure } from '@chakra-ui/react';
+import UploadCSV from '../UploadCSV/UploadCSV';
 
 import styles from './NavBar.module.css';
 import FYALogo from '../../assets/fya-logo.png';
 import PlaceHolderPFP from '../../assets/placeholder_pfp.svg';
 
-const AdminLinks = () => (
-  <>
-    <Link to="/add-box-form">Add Box</Link>
-    <Link to="/upload-csv">Upload CSV</Link>
-    <Link to="/export-csv">Export CSV</Link>
-  </>
-);
-
-const UserLinks = () => (
-  <>
-    <Link to="/">Relocate a Box</Link>
-    <Link to="/">Pick Up a Box</Link>
-  </>
-);
-
 const NavBar = ({ isAdmin }) => {
+  const {
+    isOpen: isUploadCSVOpenModal,
+    onOpen: onUploadCSVOpenModal,
+    onClose: onCloseUploadCSVOpenModal,
+  } = useDisclosure();
+
+  const AdminLinks = () => (
+    <>
+      <NavLink
+        to="/add-box-form"
+        className={navLink =>
+          navLink.isActive ? styles['nav-link-selected'] : styles['nav-link-unselected']
+        }
+      >
+        Add Box
+      </NavLink>
+      <Button variant="unstyled" onClick={onUploadCSVOpenModal} className={styles['upload-button']}>
+        Upload CSV
+        <UploadCSV isOpen={isUploadCSVOpenModal} onClose={onCloseUploadCSVOpenModal} />
+      </Button>
+      <NavLink
+        to="/export-csv"
+        className={navLink =>
+          navLink.isActive ? styles['nav-link-selected'] : styles['nav-link-unselected']
+        }
+      >
+        Export CSV
+      </NavLink>
+    </>
+  );
+
+  const UserLinks = () => (
+    <>
+      <NavLink
+        to="/relocate-box-form"
+        className={navLink =>
+          navLink.isActive ? styles['nav-link-selected'] : styles['nav-link-unselected']
+        }
+      >
+        Relocate a Box
+      </NavLink>
+      <NavLink
+        to="/pickup-box-form"
+        className={navLink =>
+          navLink.isActive ? styles['nav-link-selected'] : styles['nav-link-unselected']
+        }
+      >
+        Pick Up a Box
+      </NavLink>
+    </>
+  );
+
   return (
-    <div className={styles['nav-bar']}>
-      <Link to="/">
-        <div className={styles['fya-logo']}>
-          <img src={FYALogo} alt="Find Your Anchor Logo" />
-        </div>
-      </Link>
-      <div className={styles['navbar-buttons-and-account']}>
-        <div className={styles['navbar-buttons']}>{isAdmin ? <AdminLinks /> : <UserLinks />}</div>
-        <Link to="/profile">
-          <div className={styles['navbar-account']}>
-            <img className={styles['profile-picture']} src={PlaceHolderPFP} alt="Profile" />
+    <ChakraProvider>
+      <div className={styles['nav-bar']}>
+        <NavLink to="/">
+          <div className={styles['fya-logo']}>
+            <img src={FYALogo} alt="Find Your Anchor Logo" />
           </div>
-        </Link>
+        </NavLink>
+        <div className={styles['navbar-buttons-and-account']}>
+          <div className={styles['navbar-buttons']}>{isAdmin ? <AdminLinks /> : <UserLinks />}</div>
+          {isAdmin && (
+            <NavLink to="/profile">
+              <div className={styles['navbar-account']}>
+                <img className={styles['profile-picture']} src={PlaceHolderPFP} alt="Profile" />
+              </div>
+            </NavLink>
+          )}
+        </div>
       </div>
-    </div>
+    </ChakraProvider>
   );
 };
 
