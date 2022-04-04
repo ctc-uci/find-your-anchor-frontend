@@ -87,8 +87,13 @@ const CSVViewTable = ({ rows }) => {
     if (nextError) {
       editRow(e, nextError);
     } else {
+      // fix date for each row
+      formDatas.forEach((formData, index) => {
+        formDatas[index].date = formatDate(new Date(formData.date));
+      });
+
       await FYABackend.post('/anchorBox/boxes', formDatas);
-      navigate('/');
+      navigate('/admin');
     }
   };
 

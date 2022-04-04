@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { usePapaParse } from 'react-papaparse';
 import PropTypes from 'prop-types';
-import { FYABackend } from '../../common/utils';
+import { formatDate, FYABackend } from '../../common/utils';
 
 import UploadModalContent from './UploadModalContent/UploadModalContent';
 import SuccessModalContent from './SuccessModalContent/SuccessModalContent';
@@ -87,11 +87,17 @@ const UploadCSV = ({ isOpen, onClose }) => {
 
   const addToMap = async e => {
     e.preventDefault();
+    // fix date for each row
+    formDatas.forEach((formData, index) => {
+      formDatas[index].date = formatDate(new Date(formData.date));
+    });
+
     await FYABackend.post('/anchorBox/boxes', formDatas, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
+
     onCloseModal();
     navigate('/admin');
   };

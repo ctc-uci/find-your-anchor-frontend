@@ -7,8 +7,7 @@ import styles from './CSVDropZone.module.css';
 import DropZoneIcon from '../../../assets/upload.png';
 
 function CSVDropZone({ setFile }) {
-  const { getRootProps, getInputProps, acceptedFiles, open } = useDropzone({
-    noClick: true,
+  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     noKeyboard: true,
     accept: 'text/csv',
     maxFiles: 1,
@@ -52,11 +51,8 @@ function CSVDropZone({ setFile }) {
           <input {...getInputProps()} />
           <div className={styles['upload-icon']} />
           <img src={DropZoneIcon} alt="Icon" className={styles['dropzone-icon']} />
-          <div>
-            <button type="button" className={styles['file-selector']} onClick={open}>
-              Click
-            </button>
-            <span className={styles['dropzone-text']}>/drag file to upload</span>
+          <div className={styles['dropzone-text']}>
+            <span className={styles['dropzone-click-text']}>Click</span>/drag file to upload
           </div>
         </div>
       ) : (

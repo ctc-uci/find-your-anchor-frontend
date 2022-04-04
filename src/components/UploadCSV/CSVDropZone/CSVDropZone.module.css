@@ -25,17 +25,8 @@
   color: black;
 }
 
-.dropzone-support-text {
-  font-size: 0.8rem;
-}
-
-.file-selector {
-  border: none;
-  background-color: transparent;
-  color: black;
+.dropzone-click-text {
   text-decoration: underline;
-  font-size: 1rem;
-  cursor: pointer;
 }
 
 .files-list {
