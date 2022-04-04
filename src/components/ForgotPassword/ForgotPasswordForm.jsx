@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Heading, Text } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import styles from './ForgotPasswordForm.module.css';
 import TextInput from '../Inputs/TextInput';
-import { sendPasswordReset } from '../../common/auth_utils';
 import { FYABackend } from '../../common/utils';
+import { auth, getCurrentUser, sendPasswordReset } from '../../common/auth_utils';
 
 // Check if user exists in the database
 const userExists = async email => {
@@ -47,7 +47,24 @@ const ForgotPasswordForm = () => {
     delayError: 750,
   });
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(async () => {
+    const authenticated = await getCurrentUser(auth);
+    setIsAuthenticated(authenticated);
+    setIsLoading(false);
+  }, []);
+
+  if (isLoading) {
+    return <h1>LOADING...</h1>;
+  }
+
+  // Redirects user to dashboard if they are logged in.
+  if (isAuthenticated) {
+    return <Navigate to="/" />;
+  }
 
   const onSubmit = async data => {
     try {
