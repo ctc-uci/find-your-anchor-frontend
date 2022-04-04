@@ -162,26 +162,6 @@ const ExportCSVForm = ({ formID }) => {
       }
     });
 
-    if (data.sortBy === 'ascend-box-num') {
-      res.data.sort((a, b) => a.box_id - b.box_id);
-    } else if (data.sortBy === 'descend-box-num') {
-      res.data.sort((a, b) => b.box_id - a.box_id);
-    } else if (data.sortBy === 'ascend-zip-code') {
-      res.data.sort((a, b) => a.zip_code - b.zip_code);
-    } else if (data.sortBy === 'descend-zip-code') {
-      res.data.sort((a, b) => b.zip_code - a.zip_code);
-    } else {
-      res.data.sort((a, b) => {
-        if (a.date > b.date) {
-          return 1;
-        }
-        if (a.date < b.date) {
-          return -1;
-        }
-        return 0;
-      });
-    }
-
     navigate('/export-csv-preview', { state: { rows: res.data } });
   };
 
