@@ -156,12 +156,6 @@ const ExportCSVForm = ({ formID }) => {
       },
     });
 
-    res.data.forEach((element, index) => {
-      if (element.date.length !== 10) {
-        res.data[index].date = `0${element.date}`;
-      }
-    });
-
     navigate('/export-csv-preview', { state: { rows: res.data } });
   };
 
