@@ -51,7 +51,6 @@ const ForgotPasswordForm = () => {
 
   const onSubmit = async data => {
     try {
-      // console.log(userExists(data.email));
       await sendPasswordReset(data.email);
       navigate('/login');
       // TODO: add toast component to confirm email has been sent (see Figma)
