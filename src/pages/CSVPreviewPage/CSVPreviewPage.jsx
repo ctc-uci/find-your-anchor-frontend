@@ -11,8 +11,6 @@ import ExportSuccessModal from '../../components/ExportCSV/ExportSuccessModal/Ex
 const CSVPreviewPage = () => {
   const { state } = useLocation();
 
-  console.log(state);
-
   const {
     isOpen: isUploadCSVOpenModal,
     onOpen: onUploadCSVOpenModal,
