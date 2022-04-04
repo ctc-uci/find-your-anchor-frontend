@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ChakraProvider, Button, Text } from '@chakra-ui/react';
 import ExportCSVForm from '../../components/ExportCSV/ExportCSVForm/ExportCSVForm';
 import styles from './ExportCSV.module.css';
@@ -6,8 +6,6 @@ import styles from './ExportCSV.module.css';
 const ExportCSV = () => {
   // Used to connect submit button outside form
   const formID = 'export-csv-form';
-
-  const [formValues, setFormValues] = useState([]);
 
   return (
     <ChakraProvider>
@@ -17,7 +15,6 @@ const ExportCSV = () => {
             <Text fontSize="3xl" className={styles['header-title']}>
               Export CSV
             </Text>
-            <Text fontSize="lg">{formValues.length} boxes</Text>
           </div>
           <div className={styles['button-section']}>
             <Button
@@ -39,7 +36,7 @@ const ExportCSV = () => {
           </div>
         </div>
         <div className={styles['export-csv-content']}>
-          <ExportCSVForm formID={formID} setFormValues={setFormValues} />
+          <ExportCSVForm formID={formID} />
         </div>
       </div>
     </ChakraProvider>

@@ -60,7 +60,7 @@ const schema = yup
   })
   .required();
 
-const ExportCSVForm = ({ formID, setFormValues }) => {
+const ExportCSVForm = ({ formID }) => {
   const navigate = useNavigate();
 
   const {
@@ -181,8 +181,6 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
         return 0;
       });
     }
-
-    setFormValues(res.data);
 
     navigate('/export-csv-preview', { state: { rows: res.data } });
   };
@@ -407,7 +405,6 @@ const ExportCSVForm = ({ formID, setFormValues }) => {
 
 ExportCSVForm.propTypes = {
   formID: PropTypes.string.isRequired,
-  setFormValues: PropTypes.func.isRequired,
 };
 
 export default ExportCSVForm;
