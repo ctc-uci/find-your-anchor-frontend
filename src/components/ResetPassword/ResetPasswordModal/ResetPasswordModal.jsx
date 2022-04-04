@@ -11,8 +11,13 @@ const ResetPasswordModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    // TODO: remove the close button on the modal
-    <CommonModal isOpen={isOpen} onClose={closeModal} modalClassName={styles.modal}>
+    <CommonModal
+      isOpen={isOpen}
+      onClose={closeModal}
+      modalClassName={styles.modal}
+      showCloseButton={false}
+      closeOnOverlayClick={false}
+    >
       <div className={styles['reset-password-modal-content']}>
         <CheckCircleIcon w={24} h={24} color="#345E80" />
         <ResetPasswordModalContent />

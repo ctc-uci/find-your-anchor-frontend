@@ -6,6 +6,7 @@ import { Button, Heading, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import styles from './ForgotPasswordForm.module.css';
 import TextInput from '../Inputs/TextInput';
+import { sendPasswordReset } from '../../common/auth_utils';
 
 const schema = yup.object({
   email: yup
@@ -26,9 +27,13 @@ const ForgotPasswordForm = () => {
 
   const navigate = useNavigate();
 
-  const onSubmit = data => {
-    // eslint-disable-next-line no-alert
-    alert(JSON.stringify(data));
+  const onSubmit = async data => {
+    try {
+      await sendPasswordReset(data.email);
+      navigate('/login');
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   const returnToLogin = () => {
