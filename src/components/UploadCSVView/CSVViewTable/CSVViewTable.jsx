@@ -88,7 +88,7 @@ const CSVViewTable = ({ rows }) => {
       editRow(e, nextError);
     } else {
       await FYABackend.post('/boxForm/boxes', formDatas);
-      navigate('/');
+      navigate('/admin');
     }
   };
 
