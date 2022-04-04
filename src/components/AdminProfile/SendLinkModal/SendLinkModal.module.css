@@ -1,0 +1,31 @@
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  text-align: center;
+}
+
+.modal-one-input {
+  text-align: center;
+  margin: 2em 0 1em 0;
+}
+
+.error-message {
+  color: red;
+}
+
+.modal-one-button {
+  align-self: flex-end;
+}
+
+.checkmark {
+  height: 125px;
+  width: 125px;
+  margin-bottom: 20px;
+}
+
+.modal-two-button {
+  margin-top: 1em;
+}

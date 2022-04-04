@@ -1,53 +1,99 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { ChakraProvider, Button, useDisclosure } from '@chakra-ui/react';
 import UploadCSV from '../UploadCSV/UploadCSV';
 
 import styles from './NavBar.module.css';
 import FYALogo from '../../assets/fya-logo.png';
-import PlaceHolderPFP from '../../assets/placeholder_pfp.svg';
+
+import { FYABackend } from '../../common/utils';
+import { getCurrentUser, auth } from '../../common/auth_utils';
 
 const NavBar = ({ isAdmin }) => {
+  const [initials, setInitials] = useState('');
+
   const {
     isOpen: isUploadCSVOpenModal,
     onOpen: onUploadCSVOpenModal,
     onClose: onCloseUploadCSVOpenModal,
   } = useDisclosure();
 
+  const getUserInitials = async () => {
+    const user = await getCurrentUser(auth);
+    const backendUser = await FYABackend.get(`/users/userId/${user.uid}`);
+    return (
+      (backendUser.data.user.first_name ? backendUser.data.user.first_name[0] : '') +
+      (backendUser.data.user.last_name ? backendUser.data.user.last_name[0] : '')
+    );
+  };
+
+  useEffect(async () => {
+    const temp = await getUserInitials();
+    setInitials(temp);
+  }, []);
+
   const AdminLinks = () => (
     <>
-      <Link to="/add-box-form">Add Box</Link>
+      <NavLink
+        to="/add-box-form"
+        className={navLink =>
+          navLink.isActive ? styles['nav-link-selected'] : styles['nav-link-unselected']
+        }
+      >
+        Add Box
+      </NavLink>
       <Button variant="unstyled" onClick={onUploadCSVOpenModal} className={styles['upload-button']}>
         Upload CSV
         <UploadCSV isOpen={isUploadCSVOpenModal} onClose={onCloseUploadCSVOpenModal} />
       </Button>
-      <Link to="/export-csv">Export CSV</Link>
+      <NavLink
+        to="/export-csv"
+        className={navLink =>
+          navLink.isActive ? styles['nav-link-selected'] : styles['nav-link-unselected']
+        }
+      >
+        Export CSV
+      </NavLink>
     </>
   );
 
   const UserLinks = () => (
     <>
-      <Link to="/">Relocate a Box</Link>
-      <Link to="/">Pick Up a Box</Link>
+      <NavLink
+        to="/relocate-box-form"
+        className={navLink =>
+          navLink.isActive ? styles['nav-link-selected'] : styles['nav-link-unselected']
+        }
+      >
+        Relocate a Box
+      </NavLink>
+      <NavLink
+        to="/pickup-box-form"
+        className={navLink =>
+          navLink.isActive ? styles['nav-link-selected'] : styles['nav-link-unselected']
+        }
+      >
+        Pick Up a Box
+      </NavLink>
     </>
   );
 
   return (
     <ChakraProvider>
       <div className={styles['nav-bar']}>
-        <Link to="/">
+        <NavLink to="/">
           <div className={styles['fya-logo']}>
             <img src={FYALogo} alt="Find Your Anchor Logo" />
           </div>
-        </Link>
+        </NavLink>
         <div className={styles['navbar-buttons-and-account']}>
           <div className={styles['navbar-buttons']}>{isAdmin ? <AdminLinks /> : <UserLinks />}</div>
-          <Link to="/profile">
-            <div className={styles['navbar-account']}>
-              <img className={styles['profile-picture']} src={PlaceHolderPFP} alt="Profile" />
-            </div>
-          </Link>
+          {isAdmin && (
+            <NavLink to="/profile">
+              <div className={styles['navbar-initials']}>{initials}</div>
+            </NavLink>
+          )}
         </div>
       </div>
     </ChakraProvider>
