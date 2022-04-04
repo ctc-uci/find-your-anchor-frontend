@@ -31,6 +31,7 @@ const ForgotPasswordForm = () => {
     try {
       await sendPasswordReset(data.email);
       navigate('/login');
+      // TODO: add toast component to confirm email has been sent (see Figma)
     } catch (err) {
       // TODO: replace with toast component
       console.log(err.message);
