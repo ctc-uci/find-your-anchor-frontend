@@ -14,12 +14,69 @@ import PropTypes from 'prop-types';
 import styles from './BoxInfo.module.css';
 import { FYABackend } from '../../../common/utils';
 
-const BoxInfo = ({ selectedBox, setSelectedBox }) => {
+const BoxInfo = ({
+  selectedBox,
+  setSelectedBox,
+  selectedZipCode,
+  selectedCountry,
+  setSelectedZipCode,
+  setSelectedCountry,
+  zipCodeData,
+  setZipCodeData,
+}) => {
   const [boxHistory, setBoxHistory] = useState([]);
   useEffect(async () => {
     const response = await FYABackend.get(`/boxHistory/history/${selectedBox.box_id}`);
     setBoxHistory(response.data);
   }, []);
+
+  // Deletes the currently selected box in both Anchor_Box and Box_History
+  const deleteBox = async () => {
+    try {
+      const deleteRequests = [
+        // Delete the box in Box_History
+        await FYABackend.delete(`/boxHistory/${selectedBox.box_id}`),
+        // Delete the box in Anchor_Box
+        await FYABackend.delete(`/anchorBox/${selectedBox.box_id}`),
+      ];
+      await Promise.allSettled(deleteRequests);
+      // Refetch box list
+      const anchorBoxesInZipCode = await FYABackend.get('/anchorBox', {
+        params: {
+          zipCode: selectedZipCode,
+          country: selectedCountry,
+        },
+      });
+      // If the box list is now empty, remove marker from map
+      if (anchorBoxesInZipCode.data.length === 0) {
+        setZipCodeData(
+          zipCodeData.filter(zipCodeInfo => zipCodeInfo.zip_code !== selectedBox.zip_code),
+        );
+        setSelectedZipCode(null);
+        setSelectedCountry(null);
+        // If box list is not empty, decrement the marker's label
+      } else {
+        const index = zipCodeData.findIndex(
+          zipCodeInfo => zipCodeInfo.zip_code === selectedBox.zip_code,
+        );
+        const newZipCodeInfo = {
+          ...zipCodeData[index],
+          box_count: zipCodeData[index].box_count - 1,
+        };
+        setZipCodeData([
+          ...zipCodeData.filter(zipCodeInfo => zipCodeInfo.zip_code !== selectedBox.zip_code),
+          newZipCodeInfo,
+        ]);
+      }
+      // Set the delete box to null
+      setSelectedBox(null);
+      // TODO: Add toast to show box deleted
+    } catch (err) {
+      // TODO: Add toast if something goes wrong
+      // eslint-disable-next-line no-console
+      console.log(err.message);
+    }
+  };
   return (
     <ChakraProvider>
       <div className={styles['box-info']}>
@@ -92,7 +149,7 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
             </>
           )}
           <div className={styles['button-div']}>
-            <Button colorScheme="red" size="md">
+            <Button colorScheme="red" size="md" onClick={deleteBox}>
               Delete Box
             </Button>
           </div>
@@ -100,6 +157,11 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
       </div>
     </ChakraProvider>
   );
+};
+
+BoxInfo.defaultProps = {
+  selectedZipCode: null,
+  selectedCountry: null,
 };
 
 BoxInfo.propTypes = {
@@ -120,5 +182,19 @@ BoxInfo.propTypes = {
     boxholder_email: PropTypes.string,
   }).isRequired,
   setSelectedBox: PropTypes.func.isRequired,
+  selectedZipCode: PropTypes.string,
+  selectedCountry: PropTypes.string,
+  setSelectedZipCode: PropTypes.func.isRequired,
+  setSelectedCountry: PropTypes.func.isRequired,
+  zipCodeData: PropTypes.arrayOf(
+    PropTypes.shape({
+      zip_code: PropTypes.string,
+      country: PropTypes.string,
+      longitude: PropTypes.number,
+      latitude: PropTypes.number,
+      box_count: PropTypes.number,
+    }),
+  ).isRequired,
+  setZipCodeData: PropTypes.func.isRequired,
 };
 export default BoxInfo;
