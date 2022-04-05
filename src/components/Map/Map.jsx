@@ -8,6 +8,16 @@ import MarkerIcon from '../../assets/MarkerIcon.svg';
 import './Map.css';
 import { FYABackend } from '../../common/utils';
 
+class MyProvider extends OpenStreetMapProvider {
+  constructor(options) {
+    super({
+      ...options,
+      searchUrl: 'http://localhost:3001/anchorBox/search',
+      // reverseUrl: 'http://localhost:3001/anchorBox/search',
+    });
+  }
+}
+
 const Map = ({
   setSelectedCountry,
   setSelectedZipCode,
@@ -38,12 +48,29 @@ const Map = ({
   }, []);
 
   // This is the SearchField component used for searching locations
-  const SearchField = () => {
+  const LocationSearchField = () => {
     const map = useMap();
 
     const searchControl = new GeoSearchControl({
       provider: new OpenStreetMapProvider(),
       searchLabel: 'Search city, zipcode, or box number',
+      showMarker: false,
+      showPopup: false,
+    });
+    useEffect(() => {
+      map.addControl(searchControl);
+      return () => map.removeControl(searchControl);
+    });
+
+    return null;
+  };
+
+  const BoxSearchField = () => {
+    const map = useMap();
+
+    const searchControl = new GeoSearchControl({
+      provider: new MyProvider(),
+      searchLabel: 'Search box number',
       showMarker: false,
       showPopup: false,
     });
@@ -94,7 +121,8 @@ const Map = ({
             </Tooltip>
           </Marker>
         ))}
-      <SearchField />
+      <LocationSearchField />
+      <BoxSearchField />
     </MapContainer>
   );
 };
