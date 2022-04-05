@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,6 +6,7 @@ import { Button, Heading, Text } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './ForgotPasswordForm.module.css';
 import TextInput from '../Inputs/TextInput';
+import ForgotPasswordConfirmation from './ForgotPasswordConfirmation/ForgotPasswordConfirmation';
 
 const schema = yup.object({
   email: yup
@@ -24,11 +25,14 @@ const ForgotPasswordForm = () => {
     delayError: 750,
   });
 
+  const [openConfirmation, setOpenConfirmation] = useState(false);
+
   const navigate = useNavigate();
 
   const onSubmit = data => {
     // eslint-disable-next-line no-alert
     alert(JSON.stringify(data));
+    setOpenConfirmation(true);
   };
 
   const returnToLogin = () => {
@@ -61,6 +65,7 @@ const ForgotPasswordForm = () => {
           <Button className={styles['send-email-button']} type="submit" size="md">
             Send Email
           </Button>
+          <ForgotPasswordConfirmation isOpen={openConfirmation} />
         </div>
         <Link className={styles['return-to-login-link']} to="/login">
           Return to Login

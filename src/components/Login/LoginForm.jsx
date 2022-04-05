@@ -77,22 +77,12 @@ const LoginForm = ({ cookies, redirectLink }) => {
           placeholder="name@findyouranchor.us"
           title="FYA Email Address"
         />
-        <div className={styles['password-input']}>
-          <PasswordInput
-            register={register('password')}
-            error={errors?.password}
-            title="Password"
-            showForgotPassword
-          />
-        </div>
-        <div className={styles['password-input-mobile']}>
-          <PasswordInput
-            className={styles['password-input-mobile']}
-            register={register('password')}
-            error={errors?.password}
-            title="Password"
-          />
-        </div>
+        <PasswordInput
+          register={register('password')}
+          error={errors?.password}
+          title="Password"
+          showForgotPassword
+        />
         <Button className={styles['login-button']} type="submit" size="md">
           Log In
         </Button>

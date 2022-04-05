@@ -1,0 +1,40 @@
+.confirmation-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: white;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  left: 0;
+  top: 0;
+}
+
+.logo {
+  height: auto;
+  margin-top: 12.5px;
+  margin-left: 12.5px;
+  align-self: flex-start;
+  display: block;
+}
+
+.logo-mobile {
+  width: 50px;
+  height: auto;
+  margin-top: 12.5px;
+  margin-left: 12.5px;
+  align-self: flex-start;
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .logo {
+    display: none;
+  }
+
+  .logo-mobile {
+    display: block;
+  }
+}

@@ -22,16 +22,6 @@
   padding-bottom: 5%;
 }
 
-.password-input {
-  width: 100%;
-  display: block;
-}
-
-.password-input-mobile {
-  width: 100%;
-  display: none;
-}
-
 .forgot-password {
   color: #3182ce;
   text-decoration: underline;
@@ -41,14 +31,6 @@
 }
 
 @media screen and (max-width: 768px) {
-  .password-input {
-    display: none;
-  }
-
-  .password-input-mobile {
-    display: block;
-  }
-
   .forgot-password {
     display: block;
   }

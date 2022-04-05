@@ -1,12 +1,12 @@
-import { React } from 'react';
+import { React, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Heading, useDisclosure } from '@chakra-ui/react';
+import { Button, Heading } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './ResetPasswordForm.module.css';
 import PasswordInput from '../Inputs/PasswordInput';
-import ResetPasswordModal from './ResetPasswordModal/ResetPasswordModal';
+import ResetPasswordConfirmation from './ResetPasswordConfirmation/ResetPasswordConfirmation';
 
 const schema = yup.object({
   newPassword: yup
@@ -29,11 +29,7 @@ const ResetPasswordForm = () => {
     delayError: 750,
   });
 
-  const {
-    isOpen: isOpenResetModal,
-    onOpen: onOpenResetModal,
-    onClose: onCloseResetModal,
-  } = useDisclosure();
+  const [openConfirmation, setOpenConfirmation] = useState(false);
 
   const navigate = useNavigate();
 
@@ -52,7 +48,7 @@ const ResetPasswordForm = () => {
     resetPassword();
     // eslint-disable-next-line no-alert
     alert(JSON.stringify(data));
-    onOpenResetModal();
+    setOpenConfirmation(true);
   };
 
   return (
@@ -80,7 +76,7 @@ const ResetPasswordForm = () => {
           <Button className={styles['reset-password-button']} type="submit" size="md" align="right">
             Reset Password
           </Button>
-          <ResetPasswordModal isOpen={isOpenResetModal} onClose={onCloseResetModal} />
+          <ResetPasswordConfirmation isOpen={openConfirmation} />
         </div>
         <Link className={styles['return-to-login-link']} to="/login">
           Return to Login
