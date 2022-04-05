@@ -3,6 +3,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import styles from './AuthPageLayout.module.css';
 import FYALogo from '../../assets/fya-text-logo.svg';
+import FYALogoMobile from '../../assets/fya-logo-large.svg';
 
 const AuthPageLayout = ({ children }) => {
   return (
@@ -16,7 +17,9 @@ const AuthPageLayout = ({ children }) => {
             <div className={styles['auth-form-component']}>{children}</div>
           </div>
         </div>
-        <div className={styles.banner} />
+        <div className={styles.banner}>
+          <img src={FYALogoMobile} className={styles['logo-mobile']} alt="logo" />
+        </div>
       </div>
     </ChakraProvider>
   );

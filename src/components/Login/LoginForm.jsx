@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { PropTypes, instanceOf } from 'prop-types';
 import * as yup from 'yup';
@@ -76,15 +77,28 @@ const LoginForm = ({ cookies, redirectLink }) => {
           placeholder="name@findyouranchor.us"
           title="FYA Email Address"
         />
-        <PasswordInput
-          register={register('password')}
-          error={errors?.password}
-          title="Password"
-          showForgotPassword
-        />
+        <div className={styles['password-input']}>
+          <PasswordInput
+            register={register('password')}
+            error={errors?.password}
+            title="Password"
+            showForgotPassword
+          />
+        </div>
+        <div className={styles['password-input-mobile']}>
+          <PasswordInput
+            className={styles['password-input-mobile']}
+            register={register('password')}
+            error={errors?.password}
+            title="Password"
+          />
+        </div>
         <Button className={styles['login-button']} type="submit" size="md">
           Log In
         </Button>
+        <Link className={styles['forgot-password']} to="/forgot-password">
+          Forgot Password?
+        </Link>
       </form>
     </div>
   );

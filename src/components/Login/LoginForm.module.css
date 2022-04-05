@@ -15,8 +15,45 @@
   background-color: #345e80 !important;
   color: white;
   align-self: flex-end;
+  margin-top: 5%;
 }
 
 .form-heading {
   padding-bottom: 5%;
+}
+
+.password-input {
+  width: 100%;
+  display: block;
+}
+
+.password-input-mobile {
+  width: 100%;
+  display: none;
+}
+
+.forgot-password {
+  color: #3182ce;
+  text-decoration: underline;
+  margin-top: 5%;
+  align-self: center;
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .password-input {
+    display: none;
+  }
+
+  .password-input-mobile {
+    display: block;
+  }
+
+  .forgot-password {
+    display: block;
+  }
+
+  .login-button {
+    margin-top: 0;
+  }
 }

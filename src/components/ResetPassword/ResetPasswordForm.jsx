@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Heading, useDisclosure } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './ResetPasswordForm.module.css';
 import PasswordInput from '../Inputs/PasswordInput';
 import ResetPasswordModal from './ResetPasswordModal/ResetPasswordModal';
@@ -57,7 +57,7 @@ const ResetPasswordForm = () => {
 
   return (
     <div className={styles['reset-password-form-container']}>
-      <Heading className={styles['form-heading']}>RESET PASSWORD</Heading>
+      <Heading className={styles['form-heading']}>Reset Password</Heading>
       <form className={styles['reset-password-form']} onSubmit={handleSubmit(onSubmit)}>
         <PasswordInput
           register={register('newPassword')}
@@ -82,6 +82,9 @@ const ResetPasswordForm = () => {
           </Button>
           <ResetPasswordModal isOpen={isOpenResetModal} onClose={onCloseResetModal} />
         </div>
+        <Link className={styles['return-to-login-link']} to="/login">
+          Return to Login
+        </Link>
       </form>
     </div>
   );
