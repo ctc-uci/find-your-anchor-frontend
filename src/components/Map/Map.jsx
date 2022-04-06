@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, useMap, ZoomControl, Tooltip, Marker } from 'react-leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import Leaflet from 'leaflet';
+import MarkerClusterGroup from 'react-leaflet-markercluster';
 import PropTypes from 'prop-types';
 
 import MarkerIcon from '../../assets/MarkerIcon.svg';
@@ -76,24 +77,27 @@ const Map = ({
       />
       <ZoomControl position="bottomright" />
       {/* Map the marker data into <Marker /> components */}
-      {zipcodeData &&
-        zipcodeData.map(markerObject => (
-          <Marker
-            icon={markerIcon}
-            key={markerObject.box_id}
-            position={[markerObject.latitude, markerObject.longitude]}
-            eventHandlers={{
-              // Marker click effect
-              click: () => {
-                handleMarkerClicked(markerObject);
-              },
-            }}
-          >
-            <Tooltip interactive className="tooltip" direction="top" permanent>
-              {markerObject.box_count}
-            </Tooltip>
-          </Marker>
-        ))}
+      {zipcodeData && (
+        <MarkerClusterGroup>
+          {zipcodeData.map(markerObject => (
+            <Marker
+              icon={markerIcon}
+              key={markerObject.box_id}
+              position={[markerObject.latitude, markerObject.longitude]}
+              eventHandlers={{
+                // Marker click effect
+                click: () => {
+                  handleMarkerClicked(markerObject);
+                },
+              }}
+            >
+              <Tooltip interactive className="tooltip" direction="top" permanent>
+                {markerObject.box_count}
+              </Tooltip>
+            </Marker>
+          ))}
+        </MarkerClusterGroup>
+      )}
       <SearchField />
     </MapContainer>
   );
