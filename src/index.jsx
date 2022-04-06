@@ -16,7 +16,6 @@ import RelocateBoxFormPage from './pages/RelocateBoxForm/RelocateBoxFormPage';
 import UploadCSVView from './pages/UploadCSVView/UploadCSVView';
 import LoginPage from './pages/Login/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
-import ResetPasswordPage from './pages/ResetPasswordPage/ResetPasswordPage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -30,7 +29,6 @@ ReactDOM.render(
 
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/auth-email" element={<AuthEmail redirectPath="/" />} />
           <Route path="/" element={<App />} />
 
@@ -42,10 +40,32 @@ ReactDOM.render(
                 <ProtectedRoute path="/profile" Component={AdminProfilePage} redirectPath="/" />
               }
             />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/export-csv" element={<ExportCSV />} />
-            <Route path="/add-box-form" element={<AddBoxFormPage />} />
-            <Route path="/upload-csv-view" element={<UploadCSVView />} />
+            <Route
+              exact
+              path="/admin"
+              element={
+                <ProtectedRoute path="/profile" Component={AdminDashboard} redirectPath="/" />
+              }
+            />
+            <Route
+              exact
+              path="/export-csv"
+              element={<ProtectedRoute path="/profile" Component={ExportCSV} redirectPath="/" />}
+            />
+            <Route
+              exact
+              path="/add-box-form"
+              element={
+                <ProtectedRoute path="/profile" Component={AddBoxFormPage} redirectPath="/" />
+              }
+            />
+            <Route
+              exact
+              path="/upload-csv-view"
+              element={
+                <ProtectedRoute path="/profile" Component={UploadCSVView} redirectPath="/" />
+              }
+            />
           </Route>
         </Routes>
       </Router>

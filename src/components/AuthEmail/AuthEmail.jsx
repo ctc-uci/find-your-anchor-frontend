@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import ResetPassword from './ResetPassword';
+import ResetPasswordPage from '../../pages/ResetPasswordPage/ResetPasswordPage';
 import { FYABackend } from '../../common/utils';
 import RegisterPage from '../../pages/Register/RegisterPage';
 
@@ -37,7 +37,7 @@ const AuthEmail = ({ redirectPath }) => {
     return <Navigate to={redirectPath} />;
   }
 
-  return <ResetPassword code={code} />;
+  return <ResetPasswordPage code={code} />;
 };
 
 AuthEmail.propTypes = {

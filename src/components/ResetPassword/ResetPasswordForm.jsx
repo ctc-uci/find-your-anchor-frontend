@@ -1,4 +1,5 @@
 import { React } from 'react';
+import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -7,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './ResetPasswordForm.module.css';
 import PasswordInput from '../Inputs/PasswordInput';
 import ResetPasswordModal from './ResetPasswordModal/ResetPasswordModal';
+import { confirmNewPassword } from '../../common/auth_utils';
 
 const schema = yup.object({
   newPassword: yup
@@ -16,10 +18,10 @@ const schema = yup.object({
   confirmPassword: yup
     .string()
     .required('Please confirm your password')
-    .oneOf([yup.ref('newPassword'), null], 'Please confirm your password'),
+    .oneOf([yup.ref('newPassword'), null], 'Passwords must both match'),
 });
 
-const ResetPasswordForm = () => {
+const ResetPasswordForm = ({ code }) => {
   const {
     register,
     handleSubmit,
@@ -41,17 +43,17 @@ const ResetPasswordForm = () => {
     navigate('/login');
   };
 
-  // TODO: Implement reset password
-  const resetPassword = () => {
-    // Make request to reset password here
-    // eslint-disable-next-line no-console
-    console.log('password reset complete');
+  const resetPassword = async data => {
+    try {
+      await confirmNewPassword(code, data.newPassword);
+    } catch (err) {
+      // TODO: replace with toast component
+      console.log(err.message);
+    }
   };
 
   const onSubmit = data => {
-    resetPassword();
-    // eslint-disable-next-line no-alert
-    alert(JSON.stringify(data));
+    resetPassword(data);
     onOpenResetModal();
   };
 
@@ -85,6 +87,10 @@ const ResetPasswordForm = () => {
       </form>
     </div>
   );
+};
+
+ResetPasswordForm.propTypes = {
+  code: PropTypes.string.isRequired,
 };
 
 export default ResetPasswordForm;
