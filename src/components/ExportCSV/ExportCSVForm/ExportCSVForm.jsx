@@ -156,7 +156,13 @@ const ExportCSVForm = ({ formID }) => {
       },
     });
 
-    navigate('/export-csv-preview', { state: { rows: res.data } });
+    // if there are matching records
+    if (res.data.length > 0) {
+      navigate('/export-csv-preview', { state: { rows: res.data } });
+    } else {
+      // TODO: display toast component
+      console.log('no matching records');
+    }
   };
 
   return (
