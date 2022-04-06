@@ -45,6 +45,9 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const readCSV = () => {
     readRemoteFile(CSVFile, {
       complete: results => {
+        const CSVRows = [];
+        const boxNumbers = new Map();
+
         // parse each row in csv file
         for (let i = 1; i < results.data.length; i += 1) {
           const uid = uuidv4(); // used to uniquely identify each row
@@ -55,10 +58,27 @@ const UploadCSV = ({ isOpen, onClose }) => {
             zipCode: results.data[i][2],
             launchedOrganically: results.data[i][3].toLowerCase() === 'yes',
           };
+
           checkErrors(CSVRow, i);
-          setFormDatas(prevState => [...prevState, CSVRow]);
+          CSVRows.push(CSVRow);
+
+          const boxNumber = results.data[i][1];
+          if (boxNumbers.has(boxNumber)) {
+            boxNumbers.get(boxNumber).push(i);
+          } else {
+            boxNumbers.set(boxNumber, [i]);
+          }
         }
 
+        setFormDatas(CSVRows);
+        boxNumbers.forEach((lineNumbers, boxNumber) => {
+          if (lineNumbers.length > 1) {
+            setUploadErrors(prevState => [
+              ...prevState,
+              `Duplicate box number: ${boxNumber} (lines ${lineNumbers.join(', ')})`,
+            ]);
+          }
+        });
         setIsUploadingNewFile(false);
         setCSVFile();
       },
