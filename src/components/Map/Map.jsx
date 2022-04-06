@@ -35,6 +35,7 @@ const Map = ({
 
   useEffect(async () => {
     const zipCodes = await FYABackend.get('/anchorBox/locations');
+    console.log(zipCodes.data);
     setZipCodeData(zipCodes.data);
   }, []);
 
@@ -62,6 +63,19 @@ const Map = ({
     iconSize: [30, 30],
   });
 
+  const createClusterCustomIcon = cluster => {
+    let clusterCount = 0;
+    cluster.getAllChildMarkers().forEach(marker => {
+      clusterCount += +marker.options.children.props.children;
+    });
+
+    return Leaflet.divIcon({
+      html: `<span>${clusterCount}</span>`,
+      className: 'marker-cluster',
+      iconSize: Leaflet.point(40, 40, true),
+    });
+  };
+
   return (
     <MapContainer
       whenCreated={setMapState}
@@ -77,27 +91,31 @@ const Map = ({
       />
       <ZoomControl position="bottomright" />
       {/* Map the marker data into <Marker /> components */}
-      {zipcodeData && (
-        <MarkerClusterGroup>
-          {zipcodeData.map(markerObject => (
-            <Marker
-              icon={markerIcon}
-              key={markerObject.box_id}
-              position={[markerObject.latitude, markerObject.longitude]}
-              eventHandlers={{
-                // Marker click effect
-                click: () => {
-                  handleMarkerClicked(markerObject);
-                },
-              }}
-            >
-              <Tooltip interactive className="tooltip" direction="top" permanent>
-                {markerObject.box_count}
-              </Tooltip>
-            </Marker>
-          ))}
-        </MarkerClusterGroup>
-      )}
+      {zipcodeData &&
+        Object.values(zipcodeData).map((locations, index) => {
+          return (
+            /* eslint-disable react/no-array-index-key */
+            <MarkerClusterGroup iconCreateFunction={createClusterCustomIcon} key={index}>
+              {locations.map(markerObject => (
+                <Marker
+                  icon={markerIcon}
+                  key={markerObject.box_id}
+                  position={[markerObject.latitude, markerObject.longitude]}
+                  eventHandlers={{
+                    // Marker click effect
+                    click: () => {
+                      handleMarkerClicked(markerObject);
+                    },
+                  }}
+                >
+                  <Tooltip interactive className="tooltip" direction="top" permanent>
+                    {markerObject.box_count}
+                  </Tooltip>
+                </Marker>
+              ))}
+            </MarkerClusterGroup>
+          );
+        })}
       <SearchField />
     </MapContainer>
   );
