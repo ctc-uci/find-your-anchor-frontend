@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+// import App from './App';
 import ProtectedRoute from './common/ProtectedRoute';
 import Layout from './components/Layout/Layout';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
@@ -32,7 +32,15 @@ ReactDOM.render(
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/auth-email" element={<AuthEmail redirectPath="/" />} />
-          <Route path="/" element={<App />} />
+          <Route
+            path="/"
+            element={
+              <>
+                <Layout />
+                <AdminDashboard isAdmin={false} />
+              </>
+            }
+          />
 
           <Route element={<Layout isAdmin />}>
             <Route

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { ChakraProvider, Button } from '@chakra-ui/react';
+import PropTypes from 'prop-types';
 import styles from './AdminDashboard.module.css';
 import Map from '../../components/Map/Map';
 import BoxApproval from '../../components/BoxApproval/BoxApproval';
 import AdminMarkerInfo from '../../components/AdminMarkerInfo/AdminMarkerInfo';
 
-const AdminDashboard = () => {
+const AdminDashboard = ({ isAdmin }) => {
   // This state determines whether or not to show the admin approval (left) side bar
   const [showReview, setShowReview] = useState(false);
   // This state contains the currently selected zip code (set when a user clicks on a map pin)
@@ -48,16 +49,17 @@ const AdminDashboard = () => {
               setUpdateBoxListSwitch={setUpdateBoxListSwitch}
             />
           </div>
-
-          <Button
-            colorScheme="blue"
-            className={`${styles['review-submission-button']} ${
-              showReview ? styles['show-review'] : ''
-            }`}
-            onClick={() => setShowReview(true)}
-          >
-            Review Submission
-          </Button>
+          {isAdmin && (
+            <Button
+              colorScheme="blue"
+              className={`${styles['review-submission-button']} ${
+                showReview ? styles['show-review'] : ''
+              }`}
+              onClick={() => setShowReview(true)}
+            >
+              Review Submission
+            </Button>
+          )}
           <div
             className={`${styles['side-bar']} ${
               selectedZipCode && selectedCountry ? styles['show-info'] : ''
@@ -78,6 +80,10 @@ const AdminDashboard = () => {
       </div>
     </ChakraProvider>
   );
+};
+
+AdminDashboard.propTypes = {
+  isAdmin: PropTypes.bool.isRequired,
 };
 
 export default AdminDashboard;
