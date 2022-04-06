@@ -17,13 +17,14 @@ import UploadCSVView from './pages/UploadCSVView/UploadCSVView';
 import LoginPage from './pages/Login/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage/ResetPasswordPage';
+import { getCurrentUser } from './common/auth_utils';
 
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
       <Router>
         <Routes>
-          <Route element={<Layout isAdmin={false} />}>
+          <Route element={<Layout isAdmin={getCurrentUser() !== null} />}>
             <Route path="/pickup-box-form" element={<PickupBoxFormPage />} />
             <Route path="/relocate-box-form" element={<RelocateBoxFormPage />} />
           </Route>
@@ -33,16 +34,17 @@ ReactDOM.render(
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/auth-email" element={<AuthEmail redirectPath="/" />} />
           <Route
+            exact
             path="/"
             element={
               <>
-                <Layout />
-                <AdminDashboard isAdmin={false} />
+                <Layout isAdmin={getCurrentUser() !== null} />
+                <AdminDashboard />
               </>
             }
           />
 
-          <Route element={<Layout isAdmin />}>
+          <Route element={<Layout isAdmin={getCurrentUser() !== null} />}>
             <Route
               exact
               path="/profile"

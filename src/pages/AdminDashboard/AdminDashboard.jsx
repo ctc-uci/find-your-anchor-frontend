@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { ChakraProvider, Button } from '@chakra-ui/react';
-import PropTypes from 'prop-types';
 import styles from './AdminDashboard.module.css';
 import Map from '../../components/Map/Map';
 import BoxApproval from '../../components/BoxApproval/BoxApproval';
 import AdminMarkerInfo from '../../components/AdminMarkerInfo/AdminMarkerInfo';
+import { getCurrentUser } from '../../common/auth_utils';
 
-const AdminDashboard = ({ isAdmin }) => {
+const AdminDashboard = () => {
   // This state determines whether or not to show the admin approval (left) side bar
   const [showReview, setShowReview] = useState(false);
   // This state contains the currently selected zip code (set when a user clicks on a map pin)
@@ -20,6 +20,7 @@ const AdminDashboard = ({ isAdmin }) => {
   // Not null: Show the full box info view
   // Null: show the box list view
   const [selectedBox, setSelectedBox] = useState(null);
+
   return (
     <ChakraProvider>
       <div className={styles['admin-dashboard-container']}>
@@ -49,7 +50,7 @@ const AdminDashboard = ({ isAdmin }) => {
               setUpdateBoxListSwitch={setUpdateBoxListSwitch}
             />
           </div>
-          {isAdmin && (
+          {getCurrentUser() !== null && (
             <Button
               colorScheme="blue"
               className={`${styles['review-submission-button']} ${
@@ -60,7 +61,7 @@ const AdminDashboard = ({ isAdmin }) => {
               Review Submission
             </Button>
           )}
-          {!isAdmin && (
+          {getCurrentUser() === null && (
             <Button colorScheme="blue" className={styles['review-submission-button']}>
               Admin Login
             </Button>
@@ -79,17 +80,13 @@ const AdminDashboard = ({ isAdmin }) => {
               updateBoxListSwitch={updateBoxListSwitch}
               setSelectedBox={setSelectedBox}
               selectedBox={selectedBox}
-              isAdmin={isAdmin}
+              isAdmin={getCurrentUser() !== null}
             />
           </div>
         </div>
       </div>
     </ChakraProvider>
   );
-};
-
-AdminDashboard.propTypes = {
-  isAdmin: PropTypes.bool.isRequired,
 };
 
 export default AdminDashboard;
