@@ -8,12 +8,12 @@ import MarkerIcon from '../../assets/MarkerIcon.svg';
 import './Map.css';
 import { FYABackend } from '../../common/utils';
 
-class MyProvider extends OpenStreetMapProvider {
+class BoxProvider extends OpenStreetMapProvider {
   constructor(options) {
     super({
       ...options,
-      searchUrl: 'http://localhost:3001/anchorBox/search',
-      // reverseUrl: 'http://localhost:3001/anchorBox/search',
+      searchUrl: 'http://localhost:3003/anchorBox/search',
+      reverseUrl: 'http://localhost:3003/anchorBox/search',
     });
   }
 }
@@ -69,8 +69,8 @@ const Map = ({
     const map = useMap();
 
     const searchControl = new GeoSearchControl({
-      provider: new MyProvider(),
-      searchLabel: 'Search box number',
+      provider: new BoxProvider(),
+      searchLabel: 'Search by box number',
       showMarker: false,
       showPopup: false,
     });
