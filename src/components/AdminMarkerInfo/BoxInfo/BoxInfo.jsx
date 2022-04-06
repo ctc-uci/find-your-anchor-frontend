@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 import styles from './BoxInfo.module.css';
 import { FYABackend } from '../../../common/utils';
 
-const BoxInfo = ({ selectedBox, setSelectedBox }) => {
+const BoxInfo = ({ selectedBox, setSelectedBox, isAdmin }) => {
   const [boxHistory, setBoxHistory] = useState([]);
   useEffect(async () => {
     const response = await FYABackend.get(`/boxHistory/history/${selectedBox.box_id}`);
@@ -37,16 +37,20 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
         <div className={styles['box-data']}>
           <img src={selectedBox.picture} alt="" className={styles['image-corners']} />
           <FormControl>
-            {/* Box name */}
-            <FormLabel htmlFor="name" className={styles['form-label']}>
-              Name
-            </FormLabel>
-            <Input isReadOnly id="name" type="name" value={selectedBox.boxholder_name} />
-            {/* Box email */}
-            <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
-              Email
-            </FormLabel>
-            <Input isReadOnly id="email" type="email" value={selectedBox.boxholder_email} />
+            {isAdmin && (
+              <>
+                {/* Box name */}
+                <FormLabel htmlFor="name" className={styles['form-label']}>
+                  Name
+                </FormLabel>
+                <Input isReadOnly id="name" type="name" value={selectedBox.boxholder_name} />
+                {/* Box email */}
+                <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
+                  Email
+                </FormLabel>
+                <Input isReadOnly id="email" type="email" value={selectedBox.boxholder_email} />
+              </>
+            )}
             {/* Box general location */}
             <FormLabel isReadOnly htmlFor="generalLocation" className={styles['form-label']}>
               General Location
@@ -91,11 +95,13 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
               </div>
             </>
           )}
-          <div className={styles['button-div']}>
-            <Button colorScheme="red" size="md">
-              Delete Box
-            </Button>
-          </div>
+          {isAdmin && (
+            <div className={styles['button-div']}>
+              <Button colorScheme="red" size="md">
+                Delete Box
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </ChakraProvider>
@@ -120,5 +126,6 @@ BoxInfo.propTypes = {
     boxholder_email: PropTypes.string,
   }).isRequired,
   setSelectedBox: PropTypes.func.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
 };
 export default BoxInfo;

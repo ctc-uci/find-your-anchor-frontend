@@ -60,6 +60,11 @@ const AdminDashboard = ({ isAdmin }) => {
               Review Submission
             </Button>
           )}
+          {!isAdmin && (
+            <Button colorScheme="blue" className={styles['review-submission-button']}>
+              Admin Login
+            </Button>
+          )}
           <div
             className={`${styles['side-bar']} ${
               selectedZipCode && selectedCountry ? styles['show-info'] : ''
@@ -74,6 +79,7 @@ const AdminDashboard = ({ isAdmin }) => {
               updateBoxListSwitch={updateBoxListSwitch}
               setSelectedBox={setSelectedBox}
               selectedBox={selectedBox}
+              isAdmin={isAdmin}
             />
           </div>
         </div>
