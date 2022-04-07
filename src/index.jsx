@@ -36,41 +36,27 @@ ReactDOM.render(
             <Route
               exact
               path="/profile"
-              element={
-                <ProtectedRoute
-                  path="/profile"
-                  Component={AdminProfilePage}
-                  redirectPath="/login"
-                />
-              }
+              element={<ProtectedRoute Component={AdminProfilePage} redirectPath="/login" />}
             />
             <Route
               exact
               path="/export-csv"
-              element={
-                <ProtectedRoute path="/profile" Component={ExportCSV} redirectPath="/login" />
-              }
+              element={<ProtectedRoute Component={ExportCSV} redirectPath="/login" />}
             />
             <Route
               exact
               path="/export-csv-preview"
-              element={
-                <ProtectedRoute path="/profile" Component={CSVPreviewPage} redirectPath="/login" />
-              }
+              element={<ProtectedRoute Component={CSVPreviewPage} redirectPath="/login" />}
             />
             <Route
               exact
               path="/add-box-form"
-              element={
-                <ProtectedRoute path="/profile" Component={AddBoxFormPage} redirectPath="/login" />
-              }
+              element={<ProtectedRoute Component={AddBoxFormPage} redirectPath="/login" />}
             />
             <Route
               exact
               path="/upload-csv-view"
-              element={
-                <ProtectedRoute path="/profile" Component={UploadCSVView} redirectPath="/login" />
-              }
+              element={<ProtectedRoute Component={UploadCSVView} redirectPath="/login" />}
             />
           </Route>
         </Routes>
