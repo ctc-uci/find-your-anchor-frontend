@@ -19,7 +19,6 @@ const Map = ({
   const [mapState, setMapState] = useState(null);
   // A list containing all unique zip codes stored in Anchor_Box
   const [zipcodeData, setZipCodeData] = useState([]);
-
   // Handles when a marker is clicked
   // 1. Updates the box list with the boxes located in the zip code (in PinInformation)
   // 2. Switches PinInformation to box list view
@@ -91,6 +90,7 @@ const Map = ({
         // Can change this url to display different tilelayers (samples: https://leaflet-extras.github.io/leaflet-providers/preview/)
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        noWrap
       />
       <ZoomControl position="bottomright" />
       {/* Map the marker data into <Marker /> components. These markers are grouped into MarkerClusterGroups by country */}
