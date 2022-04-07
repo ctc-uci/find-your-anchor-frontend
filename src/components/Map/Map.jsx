@@ -12,8 +12,8 @@ class BoxProvider extends OpenStreetMapProvider {
   constructor(options) {
     super({
       ...options,
-      searchUrl: 'http://localhost:3003/anchorBox/search',
-      reverseUrl: 'http://localhost:3003/anchorBox/search',
+      searchUrl: 'http://localhost:3001/anchorBox/search',
+      reverseUrl: 'http://localhost:3001/anchorBox/search',
     });
   }
 }
@@ -53,7 +53,7 @@ const Map = ({
 
     const searchControl = new GeoSearchControl({
       provider: new OpenStreetMapProvider(),
-      searchLabel: 'Search city, zipcode, or box number',
+      searchLabel: 'Search by location',
       showMarker: false,
       showPopup: false,
     });
@@ -74,6 +74,14 @@ const Map = ({
       showMarker: false,
       showPopup: false,
     });
+    map.on('geosearch/showlocation', async marker => {
+      const { zip_code: zipCode, display_name: boxID, country } = marker.location.raw;
+      setSelectedZipCode(zipCode);
+      setSelectedCountry(country);
+      const boxToShow = await FYABackend.get(`/anchorBox/box/${boxID}`);
+      setSelectedBox(boxToShow.data[0]);
+    });
+
     useEffect(() => {
       map.addControl(searchControl);
       return () => map.removeControl(searchControl);
