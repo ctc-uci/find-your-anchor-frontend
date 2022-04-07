@@ -20,7 +20,7 @@ import { InfoIcon } from '@chakra-ui/icons';
 import { Select } from 'chakra-react-select';
 import countryList from 'react-select-country-list';
 
-import { FYABackend, formatDate } from '../../common/utils';
+import { FYABackend, formatDate, getLatLong } from '../../common/utils';
 import {
   uploadBoxPhoto,
   validateZip,
@@ -42,7 +42,7 @@ const schema = yup
     zipCode: yup.string().isZip().required('Invalid zipcode, please enter a valid zipcode'),
     country: yup.object().shape({
       label: yup.string().required('Invalid country, please select a country'),
-      value: yup.string().required('Invalid country, please select a country'),
+      value: yup.string(),
     }),
     boxLocation: yup.string(),
     message: yup.string(),
@@ -74,6 +74,12 @@ const AddBoxForm = () => {
     formData.launchedOrganically = formData.launchedOrganically === 'yes';
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
     formData.country = formData.country.value;
+
+    const [latitude, longitude] = await getLatLong(formData.zipCode, formData.country);
+    formData.latitude = latitude;
+    formData.longitude = longitude;
+
+    console.log('formData', formData);
 
     // send form data to server
     await FYABackend.post('/anchorBox/box', formData, {
@@ -133,7 +139,7 @@ const AddBoxForm = () => {
               <Select options={countryOptions} value={value} onChange={onChange} />
             )}
           />
-          <FormErrorMessage>{errors.country?.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.country?.label.message}</FormErrorMessage>
         </FormControl>
         <br />
         <FormControl>
