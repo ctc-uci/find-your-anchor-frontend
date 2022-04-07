@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import DatePicker from 'react-datepicker';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { PropTypes } from 'prop-types';
 import { FormErrorMessage, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
-import { formatDate, FYABackend } from '../../common/utils';
-import { uploadBoxPhoto, validateZip } from '../../common/FormUtils/boxFormUtils';
+import { Select } from 'chakra-react-select';
+import countryList from 'react-select-country-list';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
+import { uploadBoxPhoto, validateZip } from '../../common/FormUtils/boxFormUtils';
+import { formatDate, FYABackend } from '../../common/utils';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../common/FormUtils/DatePicker.css';
 import styles from './PickupBoxForm.module.css';
@@ -29,6 +31,10 @@ const schema = yup
       .required('Invalid email address, please enter a valid email address')
       .typeError('Invalid email address, please enter a valid email address'),
     zipcode: yup.string().isZip().required('Invalid zipcode, please enter a valid zipcode'),
+    country: yup.object({
+      label: yup.string().required('Invalid country, please select a country'),
+      value: yup.string(),
+    }),
     picture: yup.string().url(),
   })
   .required();
@@ -47,10 +53,13 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const countryOptions = useMemo(() => countryList().getData(), []);
+
   const onSubmit = async data => {
     const formData = data;
     formData.date = formatDate(data.date);
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
+    formData.country = formData.country.value;
 
     try {
       setLoading(true);
@@ -122,6 +131,22 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
             <Input id="zipCode" placeholder="e.g. 90210" name="zipcode" {...register('zipcode')} />
             <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
           </FormControl>
+          <br />
+          <FormControl isInvalid={errors?.country}>
+            <FormLabel htmlFor="country" className={styles['required-field']}>
+              Country
+            </FormLabel>
+            <Controller
+              control={control}
+              name="country"
+              // eslint-disable-next-line no-unused-vars
+              render={({ field: { onChange, value, ref } }) => (
+                <Select options={countryOptions} value={value} onChange={onChange} />
+              )}
+            />
+            <FormErrorMessage>{errors.country?.label.message}</FormErrorMessage>
+          </FormControl>
+          <br />
         </div>
       </div>
       <div className={styles['pickup-box-info-section-right']}>

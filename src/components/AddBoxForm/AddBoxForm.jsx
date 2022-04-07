@@ -30,7 +30,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from './AddBoxForm.module.css';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 
-yup.addMethod(yup.string, 'isZip', validateZip);
+yup.addMethod(yup.object, 'isZip', validateZip);
 yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
 const schema = yup
   .object({
@@ -39,8 +39,8 @@ const schema = yup
       .date()
       .required('Invalid date, please enter a valid date')
       .typeError('Invalid date, please enter a valid date'),
-    zipCode: yup.string().isZip().required('Invalid zipcode, please enter a valid zipcode'),
-    country: yup.object().shape({
+    zipCode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),
+    country: yup.object({
       label: yup.string().required('Invalid country, please select a country'),
       value: yup.string(),
     }),
@@ -50,6 +50,7 @@ const schema = yup
     launchedOrganically: yup.string().typeError('Invalid selection'),
     picture: yup.string().url(),
   })
+  .isZip()
   .required();
 
 const AddBoxForm = () => {
@@ -63,6 +64,9 @@ const AddBoxForm = () => {
     resolver: yupResolver(schema),
     delayError: 750,
   });
+
+  console.log(errors);
+  console.log(errors['']?.message);
 
   const [files, setFiles] = useState([]);
 
