@@ -65,6 +65,7 @@
 .box-number {
   font-weight: bold;
 }
+
 .box-header {
   display: flex;
   flex-direction: row;

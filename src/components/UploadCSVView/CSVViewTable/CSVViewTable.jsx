@@ -87,7 +87,7 @@ const CSVViewTable = ({ rows }) => {
     if (nextError) {
       editRow(e, nextError);
     } else {
-      await FYABackend.post('/boxForm/boxes', formDatas);
+      await FYABackend.post('/anchorBox/boxes', formDatas);
       navigate('/');
     }
   };

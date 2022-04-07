@@ -43,8 +43,15 @@ const PickupBox = ({
   // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
   // This method is called when the approve box icon is clicked
   const approvePickupBox = async id => {
-    await FYABackend.put('/boxHistory/approveBox', {
+    await FYABackend.put('/boxHistory/update', {
       transactionID: id,
+      boxID,
+      status: 'evaluated',
+      approved: true,
+    });
+    await FYABackend.put('/anchorBox/update', {
+      boxID,
+      showOnMap: false,
     });
     const requests = [
       fetchBoxes('under review', true),
@@ -147,24 +154,24 @@ const PickupBox = ({
                   <FormLabel htmlFor="name" className={styles['form-label']}>
                     Name
                   </FormLabel>
-                  <Input isReadOnly id="name" type="name" value={boxHolderName} />
+                  <Input readOnly id="name" type="name" value={boxHolderName} />
                   {/* Box email */}
-                  <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
+                  <FormLabel readOnly htmlFor="email" className={styles['form-label']}>
                     Email
                   </FormLabel>
-                  <Input isReadOnly id="email" type="email" value={boxHolderEmail} />
+                  <Input readOnly id="email" type="email" value={boxHolderEmail} />
                   {/* Box zip code */}
                   <FormLabel htmlFor="zipCode" className={styles['form-label']}>
                     Zip Code
                   </FormLabel>
-                  <Input isReadOnly id="zipCode" type="zipCode" value={zipCode} />
+                  <Input readOnly id="zipCode" type="zipCode" value={zipCode} />
                   {/* Rejection reason text area (only show if box has been evaluated and bxo was rejected) */}
                   {status === 'evaluated' && !approved && (
                     <>
                       <FormLabel htmlFor="rejectionReason" className={styles['form-label']}>
                         Rejection Reason
                       </FormLabel>
-                      <Textarea isReadOnly value={rejectionReason} resize="vertical" />
+                      <Textarea readOnly value={rejectionReason} resize="vertical" />
                     </>
                   )}
                 </FormControl>
@@ -214,7 +221,7 @@ PickupBox.propTypes = {
   boxID: PropTypes.number.isRequired,
   boxHolderName: PropTypes.string.isRequired,
   boxHolderEmail: PropTypes.string.isRequired,
-  zipCode: PropTypes.number.isRequired,
+  zipCode: PropTypes.string.isRequired,
   picture: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,

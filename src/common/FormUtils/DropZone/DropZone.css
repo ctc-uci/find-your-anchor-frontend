@@ -6,7 +6,7 @@
   padding: 55px;
   border-radius: 5px;
   border-width: 2px;
-  border-style: dashed;
+  border-style: solid;
   border-color: #b9b9b9;
   background-color: var(--dropzone-color);
   color: #b9b9b9;
@@ -25,6 +25,12 @@
 }
 .dropzone-support-text {
   font-size: 0.8rem;
+}
+
+.dropzone-icon {
+  margin: auto;
+  font-size: 30px;
+  color: black;
 }
 
 .fileSelector {
