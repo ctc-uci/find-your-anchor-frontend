@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 import ReactDOM from 'react-dom';
@@ -31,15 +31,7 @@ ReactDOM.render(
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/auth-email" element={<AuthEmail redirectPath="/" />} />
-          <Route
-            exact
-            path="/"
-            element={
-              <>
-                <Dashboard />
-              </>
-            }
-          />
+          <Route path="/" element={<Dashboard />} />
 
           <Route element={<Layout />}>
             <Route
@@ -48,11 +40,6 @@ ReactDOM.render(
               element={
                 <ProtectedRoute path="/profile" Component={AdminProfilePage} redirectPath="/" />
               }
-            />
-            <Route
-              exact
-              path="/admin"
-              element={<ProtectedRoute path="/profile" Component={Dashboard} redirectPath="/" />}
             />
             <Route
               exact
