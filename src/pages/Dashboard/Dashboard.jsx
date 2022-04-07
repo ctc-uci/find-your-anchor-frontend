@@ -22,9 +22,7 @@ const Dashboard = () => {
   // Not null: Show the full box info view
   // Null: show the box list view
   const [selectedBox, setSelectedBox] = useState(null);
-  // This state determines whether the current user is an admin or general user
-  // false: general user
-  // true: admin
+  // This state determines whether an admin is logged in or not
   const [adminIsLoggedIn, setAdminIsLoggedIn] = useState(false);
 
   // This function is called to set isAdmin
