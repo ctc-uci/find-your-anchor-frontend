@@ -73,13 +73,23 @@ const Map = ({
       searchLabel: 'Search by box number',
       showMarker: false,
       showPopup: false,
+      updateMap: false,
     });
     map.on('geosearch/showlocation', async marker => {
-      const { zip_code: zipCode, display_name: boxID, country } = marker.location.raw;
+      const {
+        zip_code: zipCode,
+        display_name: boxID,
+        country,
+        lat: latitude,
+        lon: longitude,
+      } = marker.location.raw;
       setSelectedZipCode(zipCode);
       setSelectedCountry(country);
       const boxToShow = await FYABackend.get(`/anchorBox/box/${boxID}`);
       setSelectedBox(boxToShow.data[0]);
+      if (mapState) {
+        mapState.flyTo([latitude, longitude], 10);
+      }
     });
 
     useEffect(() => {
