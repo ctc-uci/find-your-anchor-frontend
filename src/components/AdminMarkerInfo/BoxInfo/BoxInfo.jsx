@@ -8,11 +8,13 @@ import {
   Textarea,
   Text,
   Button,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 import styles from './BoxInfo.module.css';
 import { FYABackend } from '../../../common/utils';
+import DeleteBoxModal from '../DeleteBoxModal/DeleteBoxModal';
 
 const BoxInfo = ({
   selectedBox,
@@ -25,11 +27,17 @@ const BoxInfo = ({
   setZipCodeData,
 }) => {
   const [boxHistory, setBoxHistory] = useState([]);
+
+  const {
+    isOpen: isOpenDeleteBoxModal,
+    onOpen: onOpenDeleteBoxModal,
+    onClose: onCloseDeleteBoxModal,
+  } = useDisclosure();
+
   useEffect(async () => {
     const response = await FYABackend.get(`/boxHistory/history/${selectedBox.box_id}`);
     setBoxHistory(response.data);
   }, []);
-
   // Deletes the currently selected box in both Anchor_Box and Box_History
   const deleteBox = async () => {
     try {
@@ -57,14 +65,20 @@ const BoxInfo = ({
         // If box list is not empty, decrement the marker's label
       } else {
         const index = zipCodeData.findIndex(
-          zipCodeInfo => zipCodeInfo.zip_code === selectedBox.zip_code,
+          zipCodeInfo =>
+            zipCodeInfo.zip_code === selectedBox.zip_code &&
+            zipCodeInfo.country === selectedBox.country,
         );
         const newZipCodeInfo = {
           ...zipCodeData[index],
           box_count: zipCodeData[index].box_count - 1,
         };
         setZipCodeData([
-          ...zipCodeData.filter(zipCodeInfo => zipCodeInfo.zip_code !== selectedBox.zip_code),
+          ...zipCodeData.filter(
+            zipCodeInfo =>
+              zipCodeInfo.zip_code !== selectedBox.zip_code &&
+              zipCodeInfo.country !== selectedBox.country,
+          ),
           newZipCodeInfo,
         ]);
       }
@@ -149,9 +163,14 @@ const BoxInfo = ({
             </>
           )}
           <div className={styles['button-div']}>
-            <Button colorScheme="red" size="md" onClick={deleteBox}>
+            <Button colorScheme="red" size="md" onClick={onOpenDeleteBoxModal}>
               Delete Box
             </Button>
+            <DeleteBoxModal
+              isOpen={isOpenDeleteBoxModal}
+              onClose={onCloseDeleteBoxModal}
+              deleteBox={deleteBox}
+            />
           </div>
         </div>
       </div>
