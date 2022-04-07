@@ -69,7 +69,7 @@ const Map = ({
   const clusterIcon = cluster => {
     let clusterCount = 0;
     cluster.getAllChildMarkers().forEach(marker => {
-      clusterCount += +marker.options.children.props.children;
+      clusterCount += parseInt(marker.options.children.props.children, 10);
     });
 
     return Leaflet.divIcon({
