@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
+import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -10,22 +11,28 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
   Button,
+  RadioGroup,
+  Radio,
+  Stack,
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
 
 import { FYABackend, formatDate } from '../../common/utils';
-import { uploadBoxPhoto, validateZip } from '../../common/FormUtils/boxFormUtils';
-import DropZone from '../../common/FormUtils/DropZone/DropZone';
+import {
+  uploadBoxPhoto,
+  validateZip,
+  validateBoxNumber,
+} from '../../common/FormUtils/boxFormUtils';
 import 'react-datepicker/dist/react-datepicker.css';
-import './AddBoxForm.css';
-import '../../common/FormUtils/DatePicker.css';
+import styles from './AddBoxForm.module.css';
+import DropZone from '../../common/FormUtils/DropZone/DropZone';
 
 yup.addMethod(yup.string, 'isZip', validateZip);
+yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
 const schema = yup
   .object({
-    boxNumber: yup.number().required().typeError('Invalid box number'),
+    boxNumber: yup.number().boxNotExists().required().typeError('Invalid box number'),
     date: yup
       .date()
       .required('Invalid date, please enter a valid date')
@@ -34,12 +41,13 @@ const schema = yup
     boxLocation: yup.string(),
     message: yup.string(),
     comments: yup.string(),
-    launchedOrganically: yup.bool().default(false),
+    launchedOrganically: yup.string().typeError('Invalid selection'),
     picture: yup.string().url(),
   })
   .required();
 
-const BoxForm = () => {
+const AddBoxForm = () => {
+  const navigate = useNavigate();
   const {
     register,
     control,
@@ -55,6 +63,7 @@ const BoxForm = () => {
   const onSubmit = async data => {
     const formData = data;
     formData.date = formatDate(data.date);
+    formData.launchedOrganically = formData.launchedOrganically === 'yes';
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
 
     // send form data to server
@@ -63,121 +72,150 @@ const BoxForm = () => {
         'Content-Type': 'application/json',
       },
     });
+
+    navigate('/admin');
   };
 
   return (
-    <form className="box-form" onSubmit={handleSubmit(onSubmit)}>
-      <div className="box-info-section">
-        <div className="box-info">
-          <FormControl isInvalid={errors?.date}>
-            <FormLabel htmlFor="date">Date *</FormLabel>
-            <Controller
-              control={control}
-              name="date"
-              // eslint-disable-next-line no-unused-vars
-              render={({ field: { onChange, value, ref } }) => (
-                <DatePicker
-                  placeholderText="MM/DD/YYYY"
-                  className={errors?.date ? 'date-picker date-picker-error' : 'date-picker'}
-                  type="date"
-                  selected={value}
-                  onChange={onChange}
-                />
-              )}
-            />
-            <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
-          </FormControl>
-
-          <FormControl isInvalid={errors?.boxNumber}>
-            <FormLabel htmlFor="boxNumber">Box Number *</FormLabel>
-            <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
-            <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
-          </FormControl>
-
-          <FormControl isInvalid={errors?.zipCode}>
-            <FormLabel htmlFor="zipCode">Zip Code *</FormLabel>
-            <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
-            <FormErrorMessage>{errors.zipCode?.message}</FormErrorMessage>
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="location">Box Location</FormLabel>
-            <Input
-              id="location"
-              placeholder="e.g. University Park Library"
-              name="boxLocation"
-              {...register('boxLocation')}
-            />
-          </FormControl>
-        </div>
-      </div>
-      <div className="box-message-section">
+    <form className={styles['add-box-form']} onSubmit={handleSubmit(onSubmit)}>
+      <div className={styles['add-box-info-section-left']}>
+        <FormControl isInvalid={errors?.date}>
+          <FormLabel htmlFor="date" className={styles['required-field']}>
+            Date
+          </FormLabel>
+          <Controller
+            control={control}
+            name="date"
+            // eslint-disable-next-line no-unused-vars
+            render={({ field: { onChange, value, ref } }) => (
+              <DatePicker
+                placeholderText="MM/DD/YYYY"
+                className={
+                  errors?.date
+                    ? `${styles['date-picker']} ${styles['date-picker-error']}`
+                    : `${styles['date-picker']}`
+                }
+                type="date"
+                selected={value}
+                onChange={onChange}
+              />
+            )}
+          />
+          <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
+        </FormControl>
+        <br />
+        <FormControl isInvalid={errors?.zipCode}>
+          <FormLabel htmlFor="zipCode" className={styles['required-field']}>
+            Zip Code
+          </FormLabel>
+          <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
+          <FormErrorMessage>{errors.zipCode?.message}</FormErrorMessage>
+        </FormControl>
+        <br />
         <FormControl>
           <FormLabel htmlFor="message">Message:</FormLabel>
           <Textarea
             id="message"
             placeholder="200 characters max"
             maxLength="200"
-            rows="6"
+            rows="5"
             name="message"
+            className={styles['text-area']}
             {...register('message')}
           />
         </FormControl>
-      </div>
-      <div className="box-comments-section">
+        <br />
         <FormControl>
           <FormLabel htmlFor="comments">Additional Comments (for admin purposes)</FormLabel>
           <Textarea
             id="message"
             placeholder="200 characters max"
             maxLength="200"
-            rows="6"
+            rows="5"
             name="comments"
+            className={styles['text-area']}
             {...register('comments')}
           />
         </FormControl>
+        <br />
       </div>
-      <div className="box-photo-section">
-        <FormControl>
-          <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
-          <DropZone setFiles={setFiles} />
+
+      <div className={styles['add-box-info-section-right']}>
+        <FormControl FormControl>
+          <FormLabel htmlFor="location">Box Location</FormLabel>
+          <Input
+            id="location"
+            placeholder="e.g. University Park Library"
+            name="boxLocation"
+            {...register('boxLocation')}
+          />
         </FormControl>
-      </div>
-      <div className="box-photo-preview-section">
-        <div className="box-image">
-          {files.length !== 0 && <img src={URL.createObjectURL(files[0])} alt="" />}
-        </div>
-      </div>
-      <div className="box-launched-section">
-        <div className="box-launched">
-          <FormControl>
-            <Checkbox
-              className="checkbox"
-              name="launchedOrganically"
-              {...register('launchedOrganically')}
-            />
-            <FormLabel htmlFor="isLaunched">Launched Organically?</FormLabel>
-            <div className="info-icon">
+        <br />
+        <FormControl isInvalid={errors?.boxNumber}>
+          <FormLabel htmlFor="boxNumber" className={styles['required-field']}>
+            Box Number
+          </FormLabel>
+          <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
+          <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
+        </FormControl>
+        <br />
+        <FormControl isInvalid={errors?.launchedOrganically}>
+          <div className={styles['box-launched-section']}>
+            <FormLabel htmlFor="isLaunched" className={styles['required-field']}>
+              Launched Organically?
+            </FormLabel>
+            <div className={styles['info-icon']}>
               <InfoIcon />
-              <span className="tooltiptext">
+              <span className={styles['tool-tip-text']}>
                 Organic launch means when the box is left somewhere for an individual to stumble
                 upon it.
               </span>
             </div>
-          </FormControl>
-        </div>
-        <div className="box-bottom">
-          <div className="box-buttons">
-            <Button size="md" className="cancel-button">
-              Cancel
-            </Button>
-            <Button type="submit" size="md" colorScheme="teal">
-              Add Box
-            </Button>
+            <RadioGroup defaultValue="1" className={styles['launch-org-radio']}>
+              <Stack spacing={8} direction="row">
+                <Radio
+                  name="launchedOrganically"
+                  value="yes"
+                  defaultChecked
+                  {...register('launchedOrganically')}
+                >
+                  Yes
+                </Radio>
+                <Radio name="launchedOrganically" value="no" {...register('launchedOrganically')}>
+                  No
+                </Radio>
+              </Stack>
+            </RadioGroup>
           </div>
+          <FormErrorMessage>{errors.launchedOrganically?.message}</FormErrorMessage>
+        </FormControl>
+        <br />
+        <FormControl>
+          <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
+          <DropZone setFiles={setFiles} />
+        </FormControl>
+        <div
+          className={
+            styles[
+              files.length !== 0
+                ? `${styles['add-box-photo-preview-section']}`
+                : `${styles['add-box-photo-preview-section-hidden']}`
+            ]
+          }
+        >
+          <div className={styles['box-image']}>
+            {files.length !== 0 && <img src={URL.createObjectURL(files[0])} alt="" />}
+          </div>
+        </div>
+        <br />
+        <div className={styles['submit-button']}>
+          <Button type="submit" size="md" colorScheme="teal">
+            Submit
+          </Button>
         </div>
       </div>
     </form>
   );
 };
 
-export default BoxForm;
+export default AddBoxForm;

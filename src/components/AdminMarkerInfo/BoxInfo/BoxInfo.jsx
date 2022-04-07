@@ -81,9 +81,9 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
                 </Text>
               </div>
               <div className={styles['history-graph']}>
-                <ul>
+                <ul className={styles['history-graph-items']}>
                   {boxHistory.map(box => (
-                    <li key={box.transaction_id}>
+                    <li key={box.transaction_id} className={styles['history-graph-item']}>
                       {box.general_location} {box.date}
                     </li>
                   ))}

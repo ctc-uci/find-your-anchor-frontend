@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import { ChakraProvider, Button, useDisclosure } from '@chakra-ui/react';
@@ -6,14 +6,32 @@ import UploadCSV from '../UploadCSV/UploadCSV';
 
 import styles from './NavBar.module.css';
 import FYALogo from '../../assets/fya-logo.png';
-import PlaceHolderPFP from '../../assets/placeholder_pfp.svg';
+
+import { FYABackend } from '../../common/utils';
+import { getCurrentUser, auth } from '../../common/auth_utils';
 
 const NavBar = ({ isAdmin }) => {
+  const [initials, setInitials] = useState('');
+
   const {
     isOpen: isUploadCSVOpenModal,
     onOpen: onUploadCSVOpenModal,
     onClose: onCloseUploadCSVOpenModal,
   } = useDisclosure();
+
+  const getUserInitials = async () => {
+    const user = await getCurrentUser(auth);
+    const backendUser = await FYABackend.get(`/users/userId/${user.uid}`);
+    return (
+      (backendUser.data.user.first_name ? backendUser.data.user.first_name[0] : '') +
+      (backendUser.data.user.last_name ? backendUser.data.user.last_name[0] : '')
+    );
+  };
+
+  useEffect(async () => {
+    const temp = await getUserInitials();
+    setInitials(temp);
+  }, []);
 
   const AdminLinks = () => (
     <>
@@ -73,9 +91,7 @@ const NavBar = ({ isAdmin }) => {
           <div className={styles['navbar-buttons']}>{isAdmin ? <AdminLinks /> : <UserLinks />}</div>
           {isAdmin && (
             <NavLink to="/profile">
-              <div className={styles['navbar-account']}>
-                <img className={styles['profile-picture']} src={PlaceHolderPFP} alt="Profile" />
-              </div>
+              <div className={styles['navbar-initials']}>{initials}</div>
             </NavLink>
           )}
         </div>

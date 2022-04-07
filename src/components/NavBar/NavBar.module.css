@@ -24,13 +24,19 @@
 
 .upload-button {
   font-size: 18px !important;
-  font-weight: 400 !important;  
+  font-weight: 400 !important;
 }
 
-.profile-picture {
+.navbar-initials {
   height: 48px;
   width: 48px;
   border-radius: 50%;
+  background-color: #3182ce;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
 }
 
 .nav-link-unselected {

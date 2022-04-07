@@ -4,7 +4,7 @@ import AuthPageLayout from '../../components/AuthPageLayout/AuthPageLayout';
 
 const LoginPage = () => (
   <AuthPageLayout>
-    <LoginForm />
+    <LoginForm redirectLink="/" />
   </AuthPageLayout>
 );
 

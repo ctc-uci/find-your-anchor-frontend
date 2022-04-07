@@ -13,22 +13,47 @@ import {
 } from '@chakra-ui/react';
 import Checkmark from '../../../assets/Check.png';
 import styles from './SendLinkModal.module.css';
+import { sendInviteLink } from '../../../common/auth_utils';
+import { FYABackend } from '../../../common/utils';
 
 const ModalOne = ({ count, setCount }) => {
+  const [email, setEmail] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSendLink = async e => {
+    try {
+      e.preventDefault();
+      const backendUser = await FYABackend.get(`/users/email/${email}`);
+      if (backendUser.data.user) {
+        throw new Error('This email is already in use. Please enter a new email address.');
+      }
+      await sendInviteLink(email);
+      setErrorMessage('');
+      setEmail('');
+      setCount(count + 1);
+    } catch (err) {
+      setErrorMessage(err.message);
+      console.log(errorMessage);
+    }
+  };
+
   return (
     <div className={styles['modal-content']}>
       <Text fontSize="xl" fontWeight="bold" style={{ alignSelf: 'flex-start' }}>
         Send registration link via email:
       </Text>
       <Input
-        placeholder="ex: jdoeFYA@gmail.com"
+        placeholder="e.g.: name@findyouranchor.us"
+        value={email}
         size="lg"
         color="#7D7D7D"
         bg="#F6F6F6"
         className={styles['modal-one-input']}
+        onChange={e => setEmail(e.target.value)}
       />
+      <p className={styles['error-message']}>{errorMessage}</p>
       <Button
-        onClick={() => setCount(count + 1)}
+        onClick={handleSendLink}
         color="white"
         bg="#345E80"
         iconSpacing="120px"

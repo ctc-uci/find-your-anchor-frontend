@@ -46,11 +46,11 @@
 }
 
 .tooltip {
-  background-color: #345E80;
+  background-color: #345e80;
   color: white;
   border: 0px;
 }
 
 .leaflet-tooltip-top:before {
-  border-top-color: #345E80 !important;
+  border-top-color: #345e80 !important;
 }
