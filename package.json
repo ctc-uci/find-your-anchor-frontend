@@ -1,111 +1,46 @@
 {
-  "name": "find-your-anchor-frontend",
-  "version": "0.1.0",
+  "name": "find-your-anchor-backend",
+  "version": "1.0.0",
   "private": false,
-  "dependencies": {
-    "@angular/common": "^6.0.0",
-    "@angular/core": "^6.0.0",
-    "@babel/core": "^7.0.0",
-    "@chakra-ui/icons": "^1.1.1",
-    "@chakra-ui/provider": "^1.7.7",
-    "@chakra-ui/react": "^1.8.1",
-    "@emotion/react": "^11",
-    "@emotion/styled": "^11",
-    "@hookform/resolvers": "^2.8.8",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "axios": "^0.25.0",
-    "eslint": "^7.2.0",
-    "eslint-config-airbnb": "18.2.1",
-    "eslint-config-airbnb-base": "14.2.1",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-only-warn": "^1.0.3",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.21.5",
-    "eslint-plugin-react-hooks": "^1.7.0",
-    "firebase": "^9.6.7",
-    "firebase-tools": "^10.2.2",
-    "framer-motion": "^4",
-    "is-valid-zipcode": "^1.0.3",
-    "leaflet": "^1.7.1",
-    "leaflet-color-number-markers": "^1.0.7",
-    "leaflet-geosearch": "^3.6.0",
-    "lint-staged": "^11.2.6",
-    "nanoid": "^3.3.1",
-    "papaparse": "^5.3.1",
-    "nodemailer": "^6.7.2",
-    "papaparse": "^5.3.1",
-    "prop-types": "^15.8.1",
-    "react": "^17.0.2",
-    "react-csv": "^2.2.2",
-    "react-cookie": "^4.1.1",
-    "react-datepicker": "^4.6.0",
-    "react-dom": "^17.0.2",
-    "react-dropzone": "^12.0.2",
-    "react-hook-form": "^7.27.1",
-    "react-html-email": "^3.0.0",
-    "react-icons": "^4.3.1",
-    "react-leaflet": "^3.1.0",
-    "react-papaparse": "^4.0.2",
-    "react-router": "5.2.0",
-    "react-router-dom": "^6.0.2",
-    "react-scripts": "4.0.3",
-    "testing-library": "0.0.2",
-    "use-deep-compare-effect": "^1.8.1",
-    "uuid": "^8.3.2",
-    "web-vitals": "^1.0.1",
-    "webpack": "4.44.2",
-    "yup": "^0.32.11"
-  },
-  "optionalDependencies": {
-    "babel-loader": "8.1.0"
-  },
+  "main": "app.js",
+  "repository": "git@github.com:ctc-uci/find-your-anchor-backend.git",
+  "author": "CTC <ctc@uci.edu>",
+  "license": "MIT",
+  "proxy": "http://localhost:3001",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint '**/*.{js,jsx}'",
-    "format": "prettier --write \"**/*.+(js|jsx|css)\"",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public",
-    "prepare": "husky install"
+    "start": "nodemon app.js",
+    "prepare": "husky install",
+    "lint": "eslint '**/*.js'",
+    "format": "prettier --write \"**/*.js\"",
+    "frontend": "cd frontend && yarn start",
+    "heroku-postbuild": "cd frontend && yarn && yarn run build"
   },
   "lint-staged": {
-    "*.{js,jsx}": "yarn run eslint"
+    "*.js": "yarn run eslint"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "**/*.stories.*"
-        ],
-        "rules": {
-          "import/no-anonymous-default-export": "off"
-        }
-      }
-    ]
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not op_mini all"
-  ],
-  "devDependencies": {
-    "@storybook/addon-actions": "^6.3.12",
-    "@storybook/addon-essentials": "^6.3.12",
-    "@storybook/addon-links": "^6.3.12",
-    "@storybook/node-logger": "^6.3.12",
-    "@storybook/preset-create-react-app": "^3.2.0",
-    "@storybook/react": "^6.3.12",
-    "husky": "^7.0.0",
+  "dependencies": {
+    "aws-sdk": "^2.1069.0",
+    "body-parser": "^1.19.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^10.0.0",
+    "eslint": "^8.1.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-prettier": "^4.0.0",
+    "express": "^4.17.1",
+    "express-promise-router": "^4.1.1",
+    "firebase-admin": "^10.0.2",
+    "husky": "^7.0.4",
+    "nodemailer": "^6.7.2",
+    "nodemon": "^2.0.14",
+    "pg": "^8.7.1",
+    "pg-promise": "^10.11.1",
     "prettier": "^2.4.1"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^8.3.0",
+    "lint-staged": "^11.2.6"
   }
 }

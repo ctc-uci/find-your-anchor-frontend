@@ -4,22 +4,13 @@
     "es2021": true
   },
   "extends": [
-    "airbnb",
-    "plugin:react/recommended",
+    "airbnb-base",
     "plugin:prettier/recommended"
   ],
   "parserOptions": {
-    "ecmaFeatures": {
-        "jsx": true,
-        "experimentalObjectRestSpread": true
-    },
-    "ecmaVersion": 2020,
+    "ecmaVersion": 13,
     "sourceType": "module"
   },
-  "plugins": [
-    "react"
-  ],
   "rules": {
-    "react/jsx-props-no-spreading": "off"
   }
 }
