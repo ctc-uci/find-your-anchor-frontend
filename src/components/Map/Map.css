@@ -57,7 +57,7 @@
   border: 0px;
   border-radius: 50%;
   text-align: center;
-  padding-top: 10px;
+  padding-top: 6px;
 }
 
 .leaflet-tooltip-top:before {

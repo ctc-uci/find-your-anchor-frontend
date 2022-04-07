@@ -75,7 +75,7 @@ const Map = ({
     return Leaflet.divIcon({
       html: `<span>${clusterCount}</span>`,
       className: 'marker-cluster',
-      iconSize: Leaflet.point(40, 40, true),
+      iconSize: Leaflet.point(30, 30),
     });
   };
 
