@@ -12,7 +12,6 @@ import {
   AlertDialogCloseButton,
   Textarea,
 } from '@chakra-ui/react';
-import { renderEmail } from 'react-html-email';
 import { FYABackend, sendEmail } from '../../../common/utils';
 import RejectedBoxEmail from '../../Email/EmailTemplates/RejectedBoxEmail';
 import styles from './RejectBoxPopup.module.css';
@@ -45,9 +44,7 @@ const RejectBoxPopup = ({
       sendEmail(
         boxHolderName,
         boxHolderEmail,
-        renderEmail(
-          <RejectedBoxEmail boxHolderName={boxHolderName} rejectionReason={rejectionReason} />,
-        ),
+        <RejectedBoxEmail boxHolderName={boxHolderName} rejectionReason={rejectionReason} />,
       ),
     ];
     await Promise.all(requests);

@@ -2,9 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes, { instanceOf } from 'prop-types';
 import { Text, Button, ButtonGroup } from '@chakra-ui/react';
-import styles from './DeleteAccountModal.module.css';
-import { FYABackend } from '../../../common/utils';
-import { auth, getCurrentUser, logout } from '../../../common/auth_utils';
+import styles from './LogoutModal.module.css';
+import { logout } from '../../../common/auth_utils';
 import { Cookies, withCookies } from '../../../common/cookie_utils';
 
 // TODO:
@@ -13,28 +12,24 @@ import { Cookies, withCookies } from '../../../common/cookie_utils';
 // - Implement "Return to Login page" button
 
 const ModalStepOne = ({ incrementStep, closeModal, cookies }) => {
-  const handleDelete = async () => {
+  const handleLogout = async () => {
     incrementStep();
 
-    // Delete the user.
-    const user = await getCurrentUser(auth);
-    await FYABackend.delete(`/users/${user.uid}`);
-
-    // Manually log out the user.
+    // Log out the user.
     await logout(cookies);
   };
 
   return (
     <div className={styles['step-content']}>
       <Text fontSize="2xl" fontWeight="bold" className={styles['step-text']}>
-        Are you sure you want to delete this account?
+        Are you sure you want to logout?
       </Text>
       <ButtonGroup size="lg" className={styles['step-button-group']}>
         <Button onClick={closeModal} color="white" bg="#173848">
           Cancel
         </Button>
-        <Button onClick={handleDelete} color="white" bg="#4D93B7">
-          Confirm
+        <Button onClick={handleLogout} color="white" bg="#4D93B7">
+          Logout
         </Button>
       </ButtonGroup>
     </div>
@@ -46,7 +41,7 @@ const ModalStepTwo = () => {
   return (
     <div className={styles['step-content']}>
       <Text fontSize="2xl" fontWeight="bold" className={styles['step-text']}>
-        Account has been successfully deleted!
+        Account has been successfully signed out.
       </Text>
       <Button onClick={() => navigate('/login')} size="lg" color="white" bg="#173848">
         Return to Login page
@@ -55,7 +50,7 @@ const ModalStepTwo = () => {
   );
 };
 
-const DeleteAccountModalContent = ({ modalStep, setModalStep, closeModal, cookies }) => {
+const LogoutModalContent = ({ modalStep, setModalStep, closeModal, cookies }) => {
   const incrementModalStep = () => {
     setModalStep(modalStep + 1);
   };
@@ -79,4 +74,4 @@ ModalStepOne.propTypes = {
   cookies: instanceOf(Cookies).isRequired,
 };
 
-export default withCookies(DeleteAccountModalContent);
+export default withCookies(LogoutModalContent);
