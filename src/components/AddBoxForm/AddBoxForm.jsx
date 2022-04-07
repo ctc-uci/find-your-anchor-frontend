@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import DatePicker from 'react-datepicker';
 import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
@@ -17,6 +17,8 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
+import { Select } from 'chakra-react-select';
+import countryList from 'react-select-country-list';
 
 import { FYABackend, formatDate } from '../../common/utils';
 import {
@@ -38,6 +40,10 @@ const schema = yup
       .required('Invalid date, please enter a valid date')
       .typeError('Invalid date, please enter a valid date'),
     zipCode: yup.string().isZip().required('Invalid zipcode, please enter a valid zipcode'),
+    country: yup.object().shape({
+      label: yup.string().required('Invalid country, please select a country'),
+      value: yup.string().required('Invalid country, please select a country'),
+    }),
     boxLocation: yup.string(),
     message: yup.string(),
     comments: yup.string(),
@@ -60,11 +66,14 @@ const AddBoxForm = () => {
 
   const [files, setFiles] = useState([]);
 
+  const countryOptions = useMemo(() => countryList().getData(), []);
+
   const onSubmit = async data => {
     const formData = data;
     formData.date = formatDate(data.date);
     formData.launchedOrganically = formData.launchedOrganically === 'yes';
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
+    formData.country = formData.country.value;
 
     // send form data to server
     await FYABackend.post('/anchorBox/box', formData, {
@@ -110,6 +119,21 @@ const AddBoxForm = () => {
           </FormLabel>
           <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
           <FormErrorMessage>{errors.zipCode?.message}</FormErrorMessage>
+        </FormControl>
+        <br />
+        <FormControl isInvalid={errors?.country}>
+          <FormLabel htmlFor="country" className={styles['required-field']}>
+            Country
+          </FormLabel>
+          <Controller
+            control={control}
+            name="country"
+            // eslint-disable-next-line no-unused-vars
+            render={({ field: { onChange, value, ref } }) => (
+              <Select options={countryOptions} value={value} onChange={onChange} />
+            )}
+          />
+          <FormErrorMessage>{errors.country?.message}</FormErrorMessage>
         </FormControl>
         <br />
         <FormControl>
