@@ -33,9 +33,10 @@ const Map = ({
     mapState.flyTo([markerObject.latitude, markerObject.longitude], 10);
   };
 
+  // Sets zipcodeData to be an object
+  // {country : { zipcode, country, latitude, longitude, box_count}}
   useEffect(async () => {
     const zipCodes = await FYABackend.get('/anchorBox/locations');
-    console.log(zipCodes.data);
     setZipCodeData(zipCodes.data);
   }, []);
 
@@ -57,13 +58,15 @@ const Map = ({
     return null;
   };
 
+  // This is a marker icon.
   const markerIcon = new Leaflet.Icon({
     iconUrl: MarkerIcon,
     iconRetinaUrl: MarkerIcon,
     iconSize: [30, 30],
   });
 
-  const createClusterCustomIcon = cluster => {
+  // This is a cluster icon. It sums up the box_count of all boxes of a single country.
+  const clusterIcon = cluster => {
     let clusterCount = 0;
     cluster.getAllChildMarkers().forEach(marker => {
       clusterCount += +marker.options.children.props.children;
@@ -90,12 +93,12 @@ const Map = ({
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
       <ZoomControl position="bottomright" />
-      {/* Map the marker data into <Marker /> components */}
+      {/* Map the marker data into <Marker /> components. These markers are grouped into MarkerClusterGroups by country */}
       {zipcodeData &&
         Object.values(zipcodeData).map((locations, index) => {
           return (
             /* eslint-disable react/no-array-index-key */
-            <MarkerClusterGroup iconCreateFunction={createClusterCustomIcon} key={index}>
+            <MarkerClusterGroup iconCreateFunction={clusterIcon} key={index}>
               {locations.map(markerObject => (
                 <Marker
                   icon={markerIcon}
