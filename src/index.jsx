@@ -9,7 +9,6 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import AdminProfilePage from './pages/AdminProfilePage/AdminProfilePage';
 import ExportCSV from './pages/ExportCSV/ExportCSV';
 import CSVPreviewPage from './pages/CSVPreviewPage/CSVPreviewPage';
-
 import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
 import AuthEmail from './components/AuthEmail/AuthEmail';
 import PickupBoxFormPage from './pages/PickupBoxForm/PickupBoxFormPage';
@@ -23,7 +22,7 @@ ReactDOM.render(
     <CookiesProvider>
       <Router>
         <Routes>
-          <Route element={<Layout />}>
+          <Route element={<Layout isAdmin />}>
             <Route path="/pickup-box-form" element={<PickupBoxFormPage />} />
             <Route path="/relocate-box-form" element={<RelocateBoxFormPage />} />
           </Route>
@@ -33,7 +32,7 @@ ReactDOM.render(
           <Route path="/auth-email" element={<AuthEmail redirectPath="/" />} />
           <Route path="/" element={<Dashboard />} />
 
-          <Route element={<Layout />}>
+          <Route element={<Layout isAdmin />}>
             <Route
               exact
               path="/profile"

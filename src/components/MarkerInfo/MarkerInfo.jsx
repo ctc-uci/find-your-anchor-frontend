@@ -14,7 +14,7 @@ const MarkerInfo = ({
   setSelectedBox,
   updateBoxListSwitch,
   selectedBox,
-  isAdmin,
+  adminIsLoggedIn,
 }) => {
   // This function clears the selected zip code/country states (called when the user exits out of the right side bar)
   const clearSelectedInfo = () => {
@@ -30,7 +30,11 @@ const MarkerInfo = ({
       >
         <CloseIcon boxSize={7} className={styles['close-button']} onClick={clearSelectedInfo} />
         {selectedBox ? (
-          <BoxInfo selectedBox={selectedBox} setSelectedBox={setSelectedBox} isAdmin={isAdmin} />
+          <BoxInfo
+            selectedBox={selectedBox}
+            setSelectedBox={setSelectedBox}
+            adminIsLoggedIn={adminIsLoggedIn}
+          />
         ) : (
           <BoxList
             selectedCountry={selectedCountry}
@@ -48,7 +52,7 @@ MarkerInfo.defaultProps = {
   selectedZipCode: null,
   selectedCountry: null,
   selectedBox: null,
-  isAdmin: false,
+  adminIsLoggedIn: false,
 };
 
 MarkerInfo.propTypes = {
@@ -72,7 +76,7 @@ MarkerInfo.propTypes = {
     zip_code: PropTypes.string,
   }),
   setSelectedBox: PropTypes.func.isRequired,
-  isAdmin: PropTypes.bool,
+  adminIsLoggedIn: PropTypes.bool,
 };
 
 export default MarkerInfo;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ChakraProvider, Button } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 import Map from '../../components/Map/Map';
 import BoxApproval from '../../components/BoxApproval/BoxApproval';
@@ -24,17 +25,18 @@ const Dashboard = () => {
   // This state determines whether the current user is an admin or general user
   // false: general user
   // true: admin
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminIsLoggedIn, setAdminIsLoggedIn] = useState(false);
 
   // This function is called to set isAdmin
   useEffect(async () => {
-    setIsAdmin((await getCurrentUser(auth)) !== null);
+    setAdminIsLoggedIn((await getCurrentUser(auth)) !== null);
   }, []);
 
+  const navigate = useNavigate();
   return (
     <ChakraProvider>
       <div className={styles.navbar}>
-        <NavBar isAdmin={isAdmin} />
+        <NavBar isAdmin={adminIsLoggedIn} />
       </div>
       <div className={styles['admin-dashboard-container']}>
         <div className={styles['side-bar-and-map-container']}>
@@ -63,7 +65,7 @@ const Dashboard = () => {
               setUpdateBoxListSwitch={setUpdateBoxListSwitch}
             />
           </div>
-          {isAdmin === true && (
+          {adminIsLoggedIn ? (
             <Button
               colorScheme="blue"
               className={`${styles['review-submission-button']} ${
@@ -73,9 +75,12 @@ const Dashboard = () => {
             >
               Review Submission
             </Button>
-          )}
-          {isAdmin === false && (
-            <Button colorScheme="blue" className={styles['review-submission-button']}>
+          ) : (
+            <Button
+              colorScheme="blue"
+              className={styles['review-submission-button']}
+              onClick={() => navigate('/login')}
+            >
               Admin Login
             </Button>
           )}
@@ -93,7 +98,7 @@ const Dashboard = () => {
               updateBoxListSwitch={updateBoxListSwitch}
               setSelectedBox={setSelectedBox}
               selectedBox={selectedBox}
-              isAdmin={isAdmin}
+              adminIsLoggedIn={adminIsLoggedIn}
             />
           </div>
         </div>

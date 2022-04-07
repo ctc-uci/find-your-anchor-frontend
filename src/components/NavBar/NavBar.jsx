@@ -33,7 +33,7 @@ const NavBar = ({ isAdmin }) => {
       const temp = await getUserInitials();
       setInitials(temp);
     }
-  }, []);
+  }, [isAdmin]);
 
   const AdminLinks = () => (
     <>

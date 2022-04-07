@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 import styles from './BoxInfo.module.css';
 import { FYABackend } from '../../../common/utils';
 
-const BoxInfo = ({ selectedBox, setSelectedBox, isAdmin }) => {
+const BoxInfo = ({ selectedBox, setSelectedBox, adminIsLoggedIn }) => {
   const [boxHistory, setBoxHistory] = useState([]);
   useEffect(async () => {
     const response = await FYABackend.get(`/boxHistory/history/${selectedBox.box_id}`);
@@ -37,7 +37,7 @@ const BoxInfo = ({ selectedBox, setSelectedBox, isAdmin }) => {
         <div className={styles['box-data']}>
           <img src={selectedBox.picture} alt="" className={styles['image-corners']} />
           <FormControl>
-            {isAdmin && (
+            {adminIsLoggedIn && (
               <>
                 {/* Box name */}
                 <FormLabel htmlFor="name" className={styles['form-label']}>
@@ -95,7 +95,7 @@ const BoxInfo = ({ selectedBox, setSelectedBox, isAdmin }) => {
               </div>
             </>
           )}
-          {isAdmin && (
+          {adminIsLoggedIn && (
             <div className={styles['button-div']}>
               <Button colorScheme="red" size="md">
                 Delete Box
@@ -126,6 +126,6 @@ BoxInfo.propTypes = {
     boxholder_email: PropTypes.string,
   }).isRequired,
   setSelectedBox: PropTypes.func.isRequired,
-  isAdmin: PropTypes.bool.isRequired,
+  adminIsLoggedIn: PropTypes.bool.isRequired,
 };
 export default BoxInfo;
