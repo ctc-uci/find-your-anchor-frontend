@@ -3,10 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 import ReactDOM from 'react-dom';
 import './index.css';
-// import App from './App';
 import ProtectedRoute from './common/ProtectedRoute';
 import Layout from './components/Layout/Layout';
-import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
+import Dashboard from './pages/Dashboard/Dashboard';
 import AdminProfilePage from './pages/AdminProfilePage/AdminProfilePage';
 import ExportCSV from './pages/ExportCSV/ExportCSV';
 import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
@@ -17,14 +16,13 @@ import UploadCSVView from './pages/UploadCSVView/UploadCSVView';
 import LoginPage from './pages/Login/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage/ResetPasswordPage';
-import { getCurrentUser } from './common/auth_utils';
 
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
       <Router>
         <Routes>
-          <Route element={<Layout isAdmin={getCurrentUser() !== null} />}>
+          <Route element={<Layout />}>
             <Route path="/pickup-box-form" element={<PickupBoxFormPage />} />
             <Route path="/relocate-box-form" element={<RelocateBoxFormPage />} />
           </Route>
@@ -38,13 +36,12 @@ ReactDOM.render(
             path="/"
             element={
               <>
-                <Layout isAdmin={getCurrentUser() !== null} />
-                <AdminDashboard />
+                <Dashboard />
               </>
             }
           />
 
-          <Route element={<Layout isAdmin={getCurrentUser() !== null} />}>
+          <Route element={<Layout />}>
             <Route
               exact
               path="/profile"
@@ -55,9 +52,7 @@ ReactDOM.render(
             <Route
               exact
               path="/admin"
-              element={
-                <ProtectedRoute path="/profile" Component={AdminDashboard} redirectPath="/" />
-              }
+              element={<ProtectedRoute path="/profile" Component={Dashboard} redirectPath="/" />}
             />
             <Route
               exact

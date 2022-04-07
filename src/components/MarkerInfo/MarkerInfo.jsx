@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ChakraProvider } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
-import styles from './AdminMarkerInfo.module.css';
+import styles from './MarkerInfo.module.css';
 import BoxList from './BoxList/BoxList';
 import BoxInfo from './BoxInfo/BoxInfo';
 
-const AdminMarkerInfo = ({
+const MarkerInfo = ({
   selectedCountry,
   selectedZipCode,
   setSelectedZipCode,
@@ -44,13 +44,14 @@ const AdminMarkerInfo = ({
   );
 };
 
-AdminMarkerInfo.defaultProps = {
+MarkerInfo.defaultProps = {
   selectedZipCode: null,
   selectedCountry: null,
   selectedBox: null,
+  isAdmin: false,
 };
 
-AdminMarkerInfo.propTypes = {
+MarkerInfo.propTypes = {
   selectedCountry: PropTypes.string,
   updateBoxListSwitch: PropTypes.bool.isRequired,
   setSelectedZipCode: PropTypes.func.isRequired,
@@ -71,7 +72,7 @@ AdminMarkerInfo.propTypes = {
     zip_code: PropTypes.string,
   }),
   setSelectedBox: PropTypes.func.isRequired,
-  isAdmin: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool,
 };
 
-export default AdminMarkerInfo;
+export default MarkerInfo;

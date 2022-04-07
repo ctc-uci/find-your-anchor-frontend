@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChakraProvider, Button } from '@chakra-ui/react';
-import styles from './AdminDashboard.module.css';
+import styles from './Dashboard.module.css';
 import Map from '../../components/Map/Map';
 import BoxApproval from '../../components/BoxApproval/BoxApproval';
-import AdminMarkerInfo from '../../components/AdminMarkerInfo/AdminMarkerInfo';
-import { getCurrentUser } from '../../common/auth_utils';
+import MarkerInfo from '../../components/MarkerInfo/MarkerInfo';
+import { getCurrentUser, auth } from '../../common/auth_utils';
+import NavBar from '../../components/NavBar/NavBar';
 
-const AdminDashboard = () => {
+const Dashboard = () => {
   // This state determines whether or not to show the admin approval (left) side bar
   const [showReview, setShowReview] = useState(false);
   // This state contains the currently selected zip code (set when a user clicks on a map pin)
@@ -20,9 +21,21 @@ const AdminDashboard = () => {
   // Not null: Show the full box info view
   // Null: show the box list view
   const [selectedBox, setSelectedBox] = useState(null);
+  // This state determines whether the current user is an admin or general user
+  // false: general user
+  // true: admin
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // This function is called to set isAdmin
+  useEffect(async () => {
+    setIsAdmin((await getCurrentUser(auth)) !== null);
+  }, []);
 
   return (
     <ChakraProvider>
+      <div className={styles.navbar}>
+        <NavBar isAdmin={isAdmin} />
+      </div>
       <div className={styles['admin-dashboard-container']}>
         <div className={styles['side-bar-and-map-container']}>
           <div className={`${styles['side-bar']} ${showReview ? styles['show-review'] : ''}`}>
@@ -50,7 +63,7 @@ const AdminDashboard = () => {
               setUpdateBoxListSwitch={setUpdateBoxListSwitch}
             />
           </div>
-          {getCurrentUser() !== null && (
+          {isAdmin === true && (
             <Button
               colorScheme="blue"
               className={`${styles['review-submission-button']} ${
@@ -61,7 +74,7 @@ const AdminDashboard = () => {
               Review Submission
             </Button>
           )}
-          {getCurrentUser() === null && (
+          {isAdmin === false && (
             <Button colorScheme="blue" className={styles['review-submission-button']}>
               Admin Login
             </Button>
@@ -71,7 +84,7 @@ const AdminDashboard = () => {
               selectedZipCode && selectedCountry ? styles['show-info'] : ''
             }`}
           >
-            <AdminMarkerInfo
+            <MarkerInfo
               selectedZipCode={selectedZipCode}
               selectedCountry={selectedCountry}
               setSelectedZipCode={setSelectedZipCode}
@@ -80,7 +93,7 @@ const AdminDashboard = () => {
               updateBoxListSwitch={updateBoxListSwitch}
               setSelectedBox={setSelectedBox}
               selectedBox={selectedBox}
-              isAdmin={getCurrentUser() !== null}
+              isAdmin={isAdmin}
             />
           </div>
         </div>
@@ -89,4 +102,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default Dashboard;
