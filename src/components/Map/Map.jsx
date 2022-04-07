@@ -75,6 +75,9 @@ const Map = ({
       showPopup: false,
       updateMap: false,
     });
+    // This event is triggered whenever the user selects a search result
+    // The map should zoom to the marker/zip code that contains the box
+    // and show the box's attributes on the right sidebar
     map.on('geosearch/showlocation', async marker => {
       const {
         zip_code: zipCode,
@@ -83,10 +86,13 @@ const Map = ({
         lat: latitude,
         lon: longitude,
       } = marker.location.raw;
+      // Open right side bar by setting zip code and country
       setSelectedZipCode(zipCode);
       setSelectedCountry(country);
+      // Get the box's details from the backend (guaranteed to be in backend)
       const boxToShow = await FYABackend.get(`/anchorBox/box/${boxID}`);
       setSelectedBox(boxToShow.data[0]);
+      // Zoom to the marker
       if (mapState) {
         mapState.flyTo([latitude, longitude], 10);
       }
