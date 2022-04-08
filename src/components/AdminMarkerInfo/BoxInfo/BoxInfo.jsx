@@ -58,27 +58,30 @@ const BoxInfo = ({
       // If the box list is now empty, remove marker from map
       if (anchorBoxesInZipCode.data.length === 0) {
         setZipCodeData(
-          zipCodeData.filter(zipCodeInfo => zipCodeInfo.zip_code !== selectedBox.zip_code),
+          zipCodeData.filter(
+            zipCodeInfo =>
+              zipCodeInfo.zip_code !== selectedBox.zip_code ||
+              zipCodeInfo.country !== selectedBox.country,
+          ),
         );
         setSelectedZipCode(null);
         setSelectedCountry(null);
         // If box list is not empty, decrement the marker's label
       } else {
+        // Find the marker inside zipCodeData
         const index = zipCodeData.findIndex(
           zipCodeInfo =>
             zipCodeInfo.zip_code === selectedBox.zip_code &&
             zipCodeInfo.country === selectedBox.country,
         );
+        // Decrement the marker's box_count
         const newZipCodeInfo = {
           ...zipCodeData[index],
           box_count: zipCodeData[index].box_count - 1,
         };
+        // Generate a new zipCodeData with the updated marker
         setZipCodeData([
-          ...zipCodeData.filter(
-            zipCodeInfo =>
-              zipCodeInfo.zip_code !== selectedBox.zip_code &&
-              zipCodeInfo.country !== selectedBox.country,
-          ),
+          ...zipCodeData.filter((zipCodeInfo, pos) => pos !== index),
           newZipCodeInfo,
         ]);
       }
