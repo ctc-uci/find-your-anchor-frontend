@@ -51,7 +51,6 @@ export const getLatLong = async (zipCode, country) => {
   );
   if (response.status === 200 && response.data.length > 0) {
     const { lat: latitude, lon: longitude } = response.data[0];
-    console.log([latitude, longitude]);
     return [latitude, longitude];
   }
   return [];
