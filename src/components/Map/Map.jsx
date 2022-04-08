@@ -25,6 +25,7 @@ const Map = ({
   setUpdateBoxListSwitch,
   updateBoxListSwitch,
 }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [mapState, setMapState] = useState(null);
   // A list containing all unique zip codes stored in Anchor_Box
   const [zipcodeData, setZipCodeData] = useState([]);
@@ -45,6 +46,7 @@ const Map = ({
   useEffect(async () => {
     const zipCodes = await FYABackend.get('/anchorBox/locations');
     setZipCodeData(zipCodes.data);
+    setIsLoading(false);
   }, []);
 
   // This is the SearchField component used for searching locations
@@ -87,15 +89,16 @@ const Map = ({
         lon: longitude,
       } = marker.location.raw;
       // Open right side bar by setting zip code and country
-      setSelectedZipCode(zipCode);
-      setSelectedCountry(country);
-      // Get the box's details from the backend (guaranteed to be in backend)
-      const boxToShow = await FYABackend.get(`/anchorBox/box/${boxID}`);
-      setSelectedBox(boxToShow.data[0]);
+      // This processed boolean is necessary to make sure that the code only runs once (sometimes it runs 6+ times)
+      let processed = false;
       // Zoom to the marker
-      let zoomed = false;
-      if (mapState && !zoomed) {
-        zoomed = true;
+      if (mapState && !processed) {
+        processed = true;
+        setSelectedZipCode(zipCode);
+        setSelectedCountry(country);
+        // Get the box's details from the backend (guaranteed to be in backend)
+        const boxToShow = await FYABackend.get(`/anchorBox/box/${boxID}`);
+        setSelectedBox(boxToShow.data[0]);
         mapState.flyTo([latitude, longitude], 10);
       }
     });
@@ -114,6 +117,9 @@ const Map = ({
     iconSize: [30, 30],
   });
 
+  if (isLoading) {
+    return <h1>LOADING...</h1>;
+  }
   return (
     <MapContainer
       whenCreated={setMapState}
