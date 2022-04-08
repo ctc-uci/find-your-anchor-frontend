@@ -71,6 +71,7 @@ const AddBoxForm = () => {
   });
 
   const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const countryOptions = useMemo(() => countryList().getData(), []);
 
@@ -85,14 +86,20 @@ const AddBoxForm = () => {
     formData.latitude = latitude;
     formData.longitude = longitude;
 
-    // send form data to server
-    await FYABackend.post('/anchorBox/box', formData, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    navigate('/admin');
+    try {
+      setLoading(true);
+      await FYABackend.post('/anchorBox/box', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      setLoading(false);
+      navigate('/admin');
+    } catch (err) {
+      setLoading(false);
+      // TODO: show error banner on failure
+      console.log(err.message);
+    }
   };
 
   return (
@@ -248,7 +255,13 @@ const AddBoxForm = () => {
         </div>
         <br />
         <div className={styles['submit-button']}>
-          <Button type="submit" size="md" colorScheme="teal">
+          <Button
+            type="submit"
+            size="md"
+            colorScheme="teal"
+            isLoading={loading}
+            loadingText="Submitting"
+          >
             Submit
           </Button>
         </div>
