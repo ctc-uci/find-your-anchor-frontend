@@ -16,7 +16,10 @@ import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
 import PropTypes from 'prop-types';
 import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
-import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
+import PickupBoxIcon from '../../assets/BoxIcons/PickupBoxIcon.svg';
+import ApprovedPickupIcon from '../../assets/BoxIcons/ApprovedPickupIcon.svg';
+import RejectedPickupIcon from '../../assets/BoxIcons/RejectedPickupIcon.svg';
+import PendingPickupIcon from '../../assets/BoxIcons/PendingPickupIcon.svg';
 import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
 import { FYABackend, sendEmail } from '../../common/utils';
 
@@ -34,6 +37,7 @@ const PickupBox = ({
   fetchBoxes,
   pickup,
   imageStatus,
+  admin,
 }) => {
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
@@ -68,6 +72,34 @@ const PickupBox = ({
     await fetchBoxes(status, true);
   };
 
+  // A function that changes the color of the relocation box icon depending on whether it's approved, rejected, pending, or not yet evaluated
+  const getColoredIcon = () => {
+    if (status === 'evaluated' && approved) {
+      return ApprovedPickupIcon;
+    }
+    if (status === 'evaluated' && approved === false) {
+      return RejectedPickupIcon;
+    }
+    if (status === 'pending changes') {
+      return PendingPickupIcon;
+    }
+    return PickupBoxIcon;
+  };
+
+  // A function that creates the string that identifies which admin evaluated the box
+  const getStatusMessage = () => {
+    if (status === 'evaluated' && approved) {
+      return `Approved by ${admin}`;
+    }
+    if (status === 'evaluated' && approved === false) {
+      return `Rejected by ${admin}`;
+    }
+    if (status === 'pending changes') {
+      return `Pending Review by ${admin}`;
+    }
+    return '';
+  };
+
   return (
     <ChakraProvider>
       <div
@@ -80,7 +112,7 @@ const PickupBox = ({
             {/* Pickup box ID and date */}
             <h3>
               <AccordionButton className={styles['accordion-button']}>
-                <img src={PickupBoxIcon} alt="" />
+                <img src={getColoredIcon()} alt="" />
                 <div className={styles['title-div']}>
                   <p className={styles.title}>
                     <p className={styles['box-number']}>Box #{boxID}</p>
@@ -94,6 +126,7 @@ const PickupBox = ({
             </h3>
             {/* Box details */}
             <AccordionPanel className={styles['accordion-panel']} pb={4}>
+              <h4>{getStatusMessage()}</h4>
               <div className={styles['box-details']}>
                 {(status !== 'evaluated' || imageStatus !== 'rejected') && picture && (
                   <img
@@ -224,6 +257,7 @@ PickupBox.propTypes = {
   pickup: PropTypes.bool.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
   imageStatus: PropTypes.string.isRequired,
+  admin: PropTypes.string.isRequired,
 };
 
 export default PickupBox;

@@ -15,9 +15,13 @@ import {
 
 import { BsFillArrowRightCircleFill, BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
 import PropTypes from 'prop-types';
-import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
-import SaveChangesIcon from '../BoxIcons/SaveChangesIcon.svg';
+import RelocateBoxIcon from '../../assets/BoxIcons/RelocateBoxIcon.svg';
+import PendingRelocationIcon from '../../assets/BoxIcons/PendingRelocationIcon.svg';
+import RejectedRelocationIcon from '../../assets/BoxIcons/RejectedRelocationIcon.svg';
+import ApprovedRelocationIcon from '../../assets/BoxIcons/ApprovedRelocationIcon.svg';
+import SaveChangesIcon from '../../assets/BoxIcons/SaveChangesIcon.svg';
 import { FYABackend, getLatLong, sendEmail } from '../../common/utils';
+import { auth, getCurrentUser } from '../../common/auth_utils';
 import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
@@ -42,6 +46,7 @@ const RelocationBox = ({
   pickup,
   launchedOrganically,
   imageStatus,
+  admin,
 }) => {
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
@@ -89,6 +94,8 @@ const RelocationBox = ({
 
   // A function that approves a relocation box submission and updates the backend state accordingly and then refetches all boxes (boxes can be approved from any tab)
   const approveRelocationBox = async () => {
+    const user = await getCurrentUser(auth);
+    console.log(user);
     await FYABackend.put('/boxHistory/update', {
       transactionID,
       boxID,
@@ -153,6 +160,34 @@ const RelocationBox = ({
     }
   };
 
+  // A function that changes the color of the relocation box icon depending on whether it's approved, rejected, pending, or not yet evaluated
+  const getColoredIcon = () => {
+    if (status === 'evaluated' && approved) {
+      return ApprovedRelocationIcon;
+    }
+    if (status === 'evaluated' && approved === false) {
+      return RejectedRelocationIcon;
+    }
+    if (status === 'pending changes') {
+      return PendingRelocationIcon;
+    }
+    return RelocateBoxIcon;
+  };
+
+  // A function that creates the string that identifies which admin evaluated the box
+  const getStatusMessage = () => {
+    if (status === 'evaluated' && approved) {
+      return `Approved by ${admin}`;
+    }
+    if (status === 'evaluated' && approved === false) {
+      return `Rejected by ${admin}`;
+    }
+    if (status === 'pending changes') {
+      return `Pending Review by ${admin}`;
+    }
+    return '';
+  };
+
   return (
     <ChakraProvider>
       <div
@@ -168,7 +203,7 @@ const RelocationBox = ({
               <AccordionButton className={styles['accordion-button']}>
                 {/* Relocation box icon */}
                 <div className={styles['picture-div']}>
-                  <img src={RelocateBoxIcon} alt=" " />
+                  <img src={getColoredIcon()} alt=" " width="100%" height="auto" />
                 </div>
                 {/* Box Number & date */}
                 <div className={styles['title-div']}>
@@ -182,8 +217,10 @@ const RelocationBox = ({
                 </div>
               </AccordionButton>
             </h3>
+
             {/* Box picture */}
             <AccordionPanel pb={4} className={styles['accordion-panel']}>
+              <h4>{getStatusMessage()}</h4>
               <div className={styles['box-details']}>
                 {(status !== 'evaluated' || imageStatus !== 'rejected') && picture && (
                   <img
@@ -461,6 +498,7 @@ RelocationBox.propTypes = {
   pickup: PropTypes.bool.isRequired,
   launchedOrganically: PropTypes.bool.isRequired,
   imageStatus: PropTypes.string.isRequired,
+  admin: PropTypes.string.isRequired,
 };
 
 export default RelocationBox;

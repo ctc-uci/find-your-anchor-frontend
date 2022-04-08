@@ -5,8 +5,8 @@ import PickupBox from '../PickupBox/PickupBox';
 import RelocationBox from '../RelocationBox/RelocationBox';
 import styles from './BoxApproval.module.css';
 import { FYABackend } from '../../common/utils';
-import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
-import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
+import PickupBoxIcon from '../../assets/BoxIcons/PickupBoxIcon.svg';
+import RelocateBoxIcon from '../../assets/BoxIcons/RelocateBoxIcon.svg';
 
 const BoxApproval = () => {
   // display relocation boxes under review
@@ -63,6 +63,7 @@ const BoxApproval = () => {
       pickup={boxData.pickup}
       launchedOrganically={boxData.launched_organically}
       imageStatus={boxData.image_status}
+      admin={boxData.admin}
     />
   );
 
@@ -83,6 +84,7 @@ const BoxApproval = () => {
       pickup={boxData.pickup}
       fetchBoxes={fetchBoxes}
       imageStatus={boxData.image_status}
+      admin={boxData.admin}
     />
   );
 
