@@ -81,17 +81,15 @@ const AddBoxForm = () => {
     formData.launchedOrganically = formData.launchedOrganically === 'yes';
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
     formData.country = formData.country.value;
-
     const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
-    formData.latitude = latitude;
-    formData.longitude = longitude;
 
     try {
       setLoading(true);
-      await FYABackend.post('/anchorBox/box', formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      /* eslint-disable object-shorthand */
+      await FYABackend.post('/anchorBox/box', {
+        ...formData,
+        latitude: latitude,
+        longitude: longitude,
       });
       setLoading(false);
       navigate('/admin');
@@ -136,7 +134,7 @@ const AddBoxForm = () => {
           </FormLabel>
           <Input id="zipcode" placeholder="e.g. 90210" name="zipcode" {...register('zipcode')} />
           {/* display an error if there is no zipcode */}
-          <FormErrorMessage>{errors.zipCode?.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
           {/* display an error if zipcode does not exist in country */}
           {errors['']?.message !== 'zip validated' && (
             <FormErrorMessage>{errors['']?.message}</FormErrorMessage>
