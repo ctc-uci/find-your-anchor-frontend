@@ -9,6 +9,8 @@ import Layout from './components/Layout/Layout';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import AdminProfilePage from './pages/AdminProfilePage/AdminProfilePage';
 import ExportCSV from './pages/ExportCSV/ExportCSV';
+import CSVPreviewPage from './pages/CSVPreviewPage/CSVPreviewPage';
+
 import AddBoxFormPage from './pages/AddBoxForm/AddBoxFormPage';
 import AuthEmail from './components/AuthEmail/AuthEmail';
 import PickupBoxFormPage from './pages/PickupBoxForm/PickupBoxFormPage';
@@ -16,7 +18,6 @@ import RelocateBoxFormPage from './pages/RelocateBoxForm/RelocateBoxFormPage';
 import UploadCSVView from './pages/UploadCSVView/UploadCSVView';
 import LoginPage from './pages/Login/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
-import ResetPasswordPage from './pages/ResetPasswordPage/ResetPasswordPage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -30,10 +31,8 @@ ReactDOM.render(
 
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/auth-email" element={<AuthEmail redirectPath="/" />} />
           <Route path="/" element={<App />} />
-
           <Route element={<Layout isAdmin />}>
             <Route
               exact
@@ -53,6 +52,13 @@ ReactDOM.render(
               exact
               path="/export-csv"
               element={<ProtectedRoute path="/profile" Component={ExportCSV} redirectPath="/" />}
+            />
+            <Route
+              exact
+              path="/export-csv-preview"
+              element={
+                <ProtectedRoute path="/profile" Component={CSVPreviewPage} redirectPath="/" />
+              }
             />
             <Route
               exact
