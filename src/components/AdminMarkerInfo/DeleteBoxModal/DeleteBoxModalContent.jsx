@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button } from '@chakra-ui/react';
 import styles from './DeleteBoxModalContent.module.css';
 
 const DeleteBoxModalContent = ({ deleteBox }) => (
@@ -10,12 +11,12 @@ const DeleteBoxModalContent = ({ deleteBox }) => (
     </div>
     <div className={styles.buttons}>
       {/* TODO: DELETE LAST TRANSACTION BUTTON FUNCTIONALITY */}
-      <button type="button" className={styles['delete-last-transaction-button']}>
+      <Button type="button" fontWeight="semibold">
         Delete Last Transaction
-      </button>
-      <button type="button" className={styles['delete-entire-box-button']} onClick={deleteBox}>
+      </Button>
+      <Button type="button" onClick={deleteBox} colorScheme="red" fontWeight="semibold">
         Delete Entire Box
-      </button>
+      </Button>
     </div>
   </div>
 );
