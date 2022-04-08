@@ -14,7 +14,6 @@ import {
 } from '@chakra-ui/react';
 
 import { BsFillArrowRightCircleFill, BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
-import { renderEmail } from 'react-html-email';
 import PropTypes from 'prop-types';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 import SaveChangesIcon from '../BoxIcons/SaveChangesIcon.svg';
@@ -119,7 +118,7 @@ const RelocationBox = ({
       sendEmail(
         boxHolderNameState,
         boxHolderEmailState,
-        renderEmail(<ApprovedBoxEmail boxHolderName={boxHolderName} />),
+        <ApprovedBoxEmail boxHolderName={boxHolderName} />,
       ),
     ];
     await Promise.all(requests);

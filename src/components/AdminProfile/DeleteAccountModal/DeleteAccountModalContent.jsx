@@ -1,18 +1,29 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+import PropTypes, { instanceOf } from 'prop-types';
 import { Text, Button, ButtonGroup } from '@chakra-ui/react';
 import styles from './DeleteAccountModal.module.css';
+import { FYABackend } from '../../../common/utils';
+import { auth, getCurrentUser, logout } from '../../../common/auth_utils';
+import { Cookies, withCookies } from '../../../common/cookie_utils';
 
 // TODO:
 // - Button colors should be added to ChakraProvider using extendTheme
 //   This should fix the button highlight color, which is currently white
 // - Implement "Return to Login page" button
 
-const ModalStepOne = ({ incrementStep, closeModal, deleteAccount }) => {
-  const handleDelete = () => {
+const ModalStepOne = ({ incrementStep, closeModal, cookies }) => {
+  const handleDelete = async () => {
     incrementStep();
-    deleteAccount();
+
+    // Delete the user.
+    const user = await getCurrentUser(auth);
+    await FYABackend.delete(`/users/${user.uid}`);
+
+    // Manually log out the user.
+    await logout(cookies);
   };
+
   return (
     <div className={styles['step-content']}>
       <Text fontSize="2xl" fontWeight="bold" className={styles['step-text']}>
@@ -30,18 +41,21 @@ const ModalStepOne = ({ incrementStep, closeModal, deleteAccount }) => {
   );
 };
 
-const ModalStepTwo = () => (
-  <div className={styles['step-content']}>
-    <Text fontSize="2xl" fontWeight="bold" className={styles['step-text']}>
-      Account has been successfully deleted!
-    </Text>
-    <Button size="lg" color="white" bg="#173848">
-      Return to Login page
-    </Button>
-  </div>
-);
+const ModalStepTwo = () => {
+  const navigate = useNavigate();
+  return (
+    <div className={styles['step-content']}>
+      <Text fontSize="2xl" fontWeight="bold" className={styles['step-text']}>
+        Account has been successfully deleted!
+      </Text>
+      <Button onClick={() => navigate('/login')} size="lg" color="white" bg="#173848">
+        Return to Login page
+      </Button>
+    </div>
+  );
+};
 
-const DeleteAccountModalContent = ({ modalStep, setModalStep, closeModal, deleteAccount }) => {
+const DeleteAccountModalContent = ({ modalStep, setModalStep, closeModal, cookies }) => {
   const incrementModalStep = () => {
     setModalStep(modalStep + 1);
   };
@@ -51,7 +65,7 @@ const DeleteAccountModalContent = ({ modalStep, setModalStep, closeModal, delete
       key=""
       incrementStep={incrementModalStep}
       closeModal={closeModal}
-      deleteAccount={deleteAccount}
+      cookies={cookies}
     />,
     <ModalStepTwo key="" />,
   ];
@@ -62,7 +76,7 @@ const DeleteAccountModalContent = ({ modalStep, setModalStep, closeModal, delete
 ModalStepOne.propTypes = {
   incrementStep: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  deleteAccount: PropTypes.func.isRequired,
+  cookies: instanceOf(Cookies).isRequired,
 };
 
-export default DeleteAccountModalContent;
+export default withCookies(DeleteAccountModalContent);

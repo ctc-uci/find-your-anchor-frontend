@@ -5,15 +5,6 @@ import DeleteAccountModalContent from './DeleteAccountModalContent';
 import styles from './DeleteAccountModal.module.css';
 import FYALogo from '../../../assets/fya-logo-large.svg';
 
-// TODO:
-// - Implement deleteAccount
-
-const deleteAccount = () => {
-  // Make request to delete account here
-  // eslint-disable-next-line no-console
-  console.log('account deleted');
-};
-
 const DeleteAccountModal = ({ isOpen, onClose }) => {
   const [modalStep, setModalStep] = useState(0);
 
@@ -23,14 +14,19 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <CommonModal isOpen={isOpen} onClose={closeModal} modalClassName={styles.modal}>
+    <CommonModal
+      isOpen={isOpen}
+      onClose={closeModal}
+      modalClassName={styles.modal}
+      showCloseButton={modalStep === 0}
+      closeOnOverlayClick={modalStep === 0}
+    >
       <div className={styles['delete-modal-content']}>
         <img src={FYALogo} alt="Logo" className={styles['fya-logo']} />
         <DeleteAccountModalContent
           modalStep={modalStep}
           setModalStep={setModalStep}
           closeModal={closeModal}
-          deleteAccount={deleteAccount}
         />
       </div>
     </CommonModal>

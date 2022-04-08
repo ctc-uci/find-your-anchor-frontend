@@ -36,7 +36,8 @@
   border-radius: 10px;
 }
 
-.image-functionality, .message-functionality {
+.image-functionality,
+.message-functionality {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -59,9 +60,9 @@
 }
 
 .status-message {
-  float:left;
+  float: left;
   padding: 1%;
-  width:100%;
+  width: 100%;
   text-align: left;
   margin-left: 1%;
 }
@@ -74,23 +75,27 @@
   color: red;
 }
 
-.approval-button, .rejection-button {
+.approval-button,
+.rejection-button {
   float: left;
   margin: 2% 2% 0% 0%;
 }
 
-.image-functionality-wrapper, .message-functionality-wrapper {
+.image-functionality-wrapper,
+.message-functionality-wrapper {
   display: flex;
   width: 100%;
 }
 
-.image-approved-button, .message-approved-button {
-  float:right;
+.image-approved-button,
+.message-approved-button {
+  float: right;
   margin: 2% 0% 2% 2%;
 }
 
-.image-rejected-button, .message-rejected-button {
-  float:right;
+.image-rejected-button,
+.message-rejected-button {
+  float: right;
   margin: 2% 1% 2% 2%;
 }
 

@@ -144,8 +144,9 @@
   justify-content: space-between;
 }
 
-.approval-button, .rejection-button {
-  float:left;
+.approval-button,
+.rejection-button {
+  float: left;
   margin: 2% 2% 0% 0%;
 }
 
@@ -158,9 +159,9 @@
 }
 
 .status-message {
-  float:left;
+  float: left;
   padding: 1%;
-  width:100%;
+  width: 100%;
   text-align: left;
   margin-left: 1%;
 }
@@ -174,11 +175,11 @@
 }
 
 .image-approved-button {
-  float:right;
+  float: right;
   margin: 2% 0% 2% 2%;
 }
 
 .image-rejected-button {
-  float:right;
+  float: right;
   margin: 2% 1% 2% 2%;
 }
