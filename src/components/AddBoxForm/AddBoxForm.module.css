@@ -1,0 +1,117 @@
+* {
+  box-sizing: border-box;
+}
+
+.add-box-form {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 3%;
+}
+
+/* textarea section */
+.text-area {
+  resize: none;
+}
+
+/* launched organically section */
+.box-launched-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.box-launched-section label {
+  margin: 0;
+}
+
+span.chakra-checkbox__control {
+  background-color: #eee;
+}
+
+.launch-org-radio {
+  padding-left: 30px;
+}
+
+.info-icon {
+  margin-bottom: 2px;
+  position: relative;
+}
+
+/* tooltip */
+.info-icon:hover .tool-tip-text {
+  visibility: visible;
+}
+
+.info-icon .tool-tip-text {
+  visibility: hidden;
+  /* tooltip styling */
+  width: 200px;
+  border-radius: 5px;
+  text-align: center;
+  background-color: black;
+  color: white;
+  padding: 5px;
+  /* position the tooltip */
+  font-size: 0.7rem;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
+  position: absolute;
+  z-index: 1;
+  top: 150%;
+  left: 50%;
+  margin-left: -105px;
+}
+
+.info-icon .tool-tip-text::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+}
+
+.submit-button {
+  float: right;
+  margin: 5% 0;
+}
+
+.required-field::after {
+  content: ' *';
+  color: red;
+}
+
+/* date picker */
+.date-picker {
+  font-size: 15px;
+  height: 2.5rem;
+  width: 100%;
+  border: 1px solid rgb(226, 232, 240);
+  border-radius: 0.375rem;
+  padding-left: 1rem;
+}
+
+.date-picker-error {
+  border: 2.5px solid #ea6565;
+}
+
+.box-image img {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.add-box-photo-preview-section {
+  height: 50%;
+}
+
+.add-box-photo-preview-section-hidden {
+  display: none;
+}
+
+.add-box-info-section-left,
+.add-box-info-section-right {
+  width: 40%;
+}

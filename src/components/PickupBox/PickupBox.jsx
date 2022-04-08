@@ -13,7 +13,6 @@ import {
 } from '@chakra-ui/react';
 
 import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
-import { renderEmail } from 'react-html-email';
 import PropTypes from 'prop-types';
 import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
@@ -35,7 +34,6 @@ const PickupBox = ({
   rejectionReason,
   fetchBoxes,
   pickup,
-  toast,
   imageStatus,
 }) => {
   // A state for determining whether or not the rejectBoxPopup is open
@@ -59,31 +57,26 @@ const PickupBox = ({
 
   const approvePickupBox = async id => {
     try {
-      const boxId = id;
-      CustomToast(toast, {
-        icon: 'success',
-        title: `Box # Approved`,
-        message: '',
-        toastPosition: 'bottom-right',
+      await FYABackend.put('/boxHistory/update', {
+        transactionID: id,
+        boxID,
+        status: 'evaluated',
+        approved: true,
       });
-      FYABackend.put('/boxHistory/approveBox', {
-        boxID: boxId,
-      }).then(async () => {
-        await fetchBoxes('under review', true);
-        await FYABackend.put('/boxHistory/approveBox', {
-          transactionID: id,
-        });
-        const requests = [
-          fetchBoxes('under review', true),
-          sendEmail(
-            boxHolderName,
-            boxHolderEmail,
-            renderEmail(<ApprovedBoxEmail boxHolderName={boxHolderName} />),
-          ),
-        ];
-        await Promise.all(requests);
-        showToast();
+      await FYABackend.put('/anchorBox/update', {
+        boxID,
+        showOnMap: false,
       });
+      const requests = [
+        fetchBoxes('under review', true),
+        sendEmail(
+          boxHolderName,
+          boxHolderEmail,
+          <ApprovedBoxEmail boxHolderName={boxHolderName} />,
+        ),
+      ];
+      await Promise.all(requests);
+      showToast();
     } catch (err) {
       errorToast();
     }
@@ -179,24 +172,24 @@ const PickupBox = ({
                   <FormLabel htmlFor="name" className={styles['form-label']}>
                     Name
                   </FormLabel>
-                  <Input isReadOnly id="name" type="name" value={boxHolderName} />
+                  <Input readOnly id="name" type="name" value={boxHolderName} />
                   {/* Box email */}
-                  <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
+                  <FormLabel readOnly htmlFor="email" className={styles['form-label']}>
                     Email
                   </FormLabel>
-                  <Input isReadOnly id="email" type="email" value={boxHolderEmail} />
+                  <Input readOnly id="email" type="email" value={boxHolderEmail} />
                   {/* Box zip code */}
                   <FormLabel htmlFor="zipCode" className={styles['form-label']}>
                     Zip Code
                   </FormLabel>
-                  <Input isReadOnly id="zipCode" type="zipCode" value={zipCode} />
+                  <Input readOnly id="zipCode" type="zipCode" value={zipCode} />
                   {/* Rejection reason text area (only show if box has been evaluated and bxo was rejected) */}
                   {status === 'evaluated' && !approved && (
                     <>
                       <FormLabel htmlFor="rejectionReason" className={styles['form-label']}>
                         Rejection Reason
                       </FormLabel>
-                      <Textarea isReadOnly value={rejectionReason} resize="vertical" />
+                      <Textarea readOnly value={rejectionReason} resize="vertical" />
                     </>
                   )}
                 </FormControl>
@@ -246,14 +239,13 @@ PickupBox.propTypes = {
   boxID: PropTypes.number.isRequired,
   boxHolderName: PropTypes.string.isRequired,
   boxHolderEmail: PropTypes.string.isRequired,
-  zipCode: PropTypes.number.isRequired,
+  zipCode: PropTypes.string.isRequired,
   picture: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
   rejectionReason: PropTypes.string.isRequired,
   pickup: PropTypes.bool.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
-  toast: PropTypes.func.isRequired,
   imageStatus: PropTypes.string.isRequired,
 };
 

@@ -14,12 +14,11 @@ import {
 } from '@chakra-ui/react';
 
 import { BsFillArrowRightCircleFill, BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
-import { renderEmail } from 'react-html-email';
 import PropTypes from 'prop-types';
 import CustomToast from '../../common/CustomToast/CustomToast';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 import SaveChangesIcon from '../BoxIcons/SaveChangesIcon.svg';
-import { FYABackend, sendEmail } from '../../common/utils';
+import { FYABackend, getLatLong, sendEmail } from '../../common/utils';
 import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
@@ -117,8 +116,16 @@ const RelocationBox = ({
         message: messageState,
         launchedOrganically: launchedOrganicallyState,
       });
+      // TODO: REPLACE USA WITH COUNTRY INPUT
+      let coordinates = await getLatLong(zipCode, 'USA');
+      if (coordinates.length !== 2) {
+        coordinates = [0, 0];
+      }
+
       await FYABackend.put('/boxHistory/approveBox', {
         transactionID,
+        latitude: coordinates[0],
+        longitude: coordinates[1],
       });
       const requests = [
         fetchBoxes('under review', false),
@@ -127,7 +134,7 @@ const RelocationBox = ({
         sendEmail(
           boxHolderNameState,
           boxHolderEmailState,
-          renderEmail(<ApprovedBoxEmail boxHolderName={boxHolderName} />),
+          <ApprovedBoxEmail boxHolderName={boxHolderName} />,
         ),
       ];
       await Promise.all(requests);
@@ -461,7 +468,7 @@ RelocationBox.propTypes = {
   boxID: PropTypes.number.isRequired,
   boxHolderName: PropTypes.string.isRequired,
   boxHolderEmail: PropTypes.string.isRequired,
-  zipCode: PropTypes.number.isRequired,
+  zipCode: PropTypes.string.isRequired,
   picture: PropTypes.string.isRequired,
   generalLocation: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,

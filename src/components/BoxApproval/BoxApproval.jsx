@@ -6,8 +6,6 @@ import PickupBox from '../PickupBox/PickupBox';
 import RelocationBox from '../RelocationBox/RelocationBox';
 import styles from './BoxApproval.module.css';
 import { FYABackend } from '../../common/utils';
-import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
-import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 
@@ -50,7 +48,7 @@ const BoxApproval = ({ toast }) => {
   // Maps a single box to a RelocationBox component
   const mapDataToRelocationBox = boxData => (
     <RelocationBox
-      key={boxData.box_id}
+      key={boxData.transaction_id}
       transactionID={boxData.transaction_id}
       boxID={boxData.box_id}
       boxHolderName={boxData.boxholder_name}
@@ -77,7 +75,7 @@ const BoxApproval = ({ toast }) => {
   const mapDataToPickupBox = boxData => (
     <PickupBox
       transactionID={boxData.transaction_id}
-      key={boxData.box_id}
+      key={boxData.transaction_id}
       boxID={boxData.box_id}
       boxHolderName={boxData.boxholder_name}
       boxHolderEmail={boxData.boxholder_email}
@@ -133,11 +131,7 @@ const BoxApproval = ({ toast }) => {
                 <div>
                   {relocationBoxesEvaluated.map(boxData => mapDataToRelocationBox(boxData))}
                 </div>
-                <div>
-                  {pickupBoxesEvaluated.map(boxData => mapDataToPickupBox(boxData))}
-                  <RejectBoxPopup />
-                  <RequestChangesPopup />
-                </div>
+                <div>{pickupBoxesEvaluated.map(boxData => mapDataToPickupBox(boxData))}</div>
               </TabPanel>
             </TabPanels>
           </div>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import isValidZipcode from 'is-valid-zipcode';
-import CustomToast from './CustomToast/CustomToast';
+import { renderEmail } from 'react-html-email';
 
 const baseURL = 'http://localhost:3001';
 
@@ -18,6 +18,8 @@ FYABackend.interceptors.response.use(
     return Promise.reject(error.response);
   },
 );
+
+// Reference auth_utils.js for an additional auth interceptor.
 
 export const isValidZip = zip => {
   const countries = [
@@ -54,23 +56,26 @@ export const formatDate = value => {
   return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
 };
 
-export const showToast = (toastType, toastTitle, toastMessage, toastPosition) => {
-  return CustomToast({
-    icon: toastType,
-    title: toastTitle,
-    message: toastMessage,
-    position: toastPosition,
-  });
-};
 export const sendEmail = async (name, email, messageHtml) => {
   const response = await FYABackend.post('/nodemailer/send', {
     name,
     email,
-    messageHtml,
+    messageHtml: renderEmail(messageHtml),
   });
   if (response.status === 200) {
     alert('Email sent, awesome!');
   } else {
     alert('Oops, something went wrong. Try again');
   }
+};
+
+export const getLatLong = async (zipCode, country) => {
+  const response = await axios.get(
+    `https://nominatim.openstreetmap.org/search?postalcode=${zipCode}&country=${country}&format=json`,
+  );
+  if (response.status === 200 && response.data.length > 0) {
+    const { lat: latitude, lon: longitude } = response.data[0];
+    return [latitude, longitude];
+  }
+  return [];
 };

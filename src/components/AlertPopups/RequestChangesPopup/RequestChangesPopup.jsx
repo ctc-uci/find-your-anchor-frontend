@@ -12,7 +12,6 @@ import {
   AlertDialogCloseButton,
   Textarea,
 } from '@chakra-ui/react';
-import { renderEmail } from 'react-html-email';
 import CustomToast from '../../../common/CustomToast/CustomToast';
 import styles from './RequestChangesPopup.module.css';
 import { FYABackend, sendEmail } from '../../../common/utils';
@@ -50,19 +49,17 @@ const RequestChangesPopup = ({
         boxID,
         status: 'pending changes',
         changesRequested,
-      }).then(() => {});
+      });
       const requests = [
         fetchBoxes('under review', false),
         fetchBoxes('pending changes', false),
         sendEmail(
           boxHolderName,
           boxHolderEmail,
-          renderEmail(
-            <PendingChangesBoxEmail
-              boxHolderName={boxHolderName}
-              changesRequested={changesRequested}
-            />,
-          ),
+          <PendingChangesBoxEmail
+            boxHolderName={boxHolderName}
+            changesRequested={changesRequested}
+          />,
         ),
       ];
       await Promise.all(requests);

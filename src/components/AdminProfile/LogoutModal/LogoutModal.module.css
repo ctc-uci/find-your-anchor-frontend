@@ -1,0 +1,35 @@
+.modal {
+  display: flex;
+}
+
+.logout-modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.logout-modal-content .fya-logo {
+  height: 125px;
+  width: 125px;
+  margin-bottom: 20px;
+}
+
+.logout-modal-content .step-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logout-modal-content .step-text {
+  text-align: center;
+  margin: 0px 60px 40px;
+}
+
+.logout-modal-content .step-button-group {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
