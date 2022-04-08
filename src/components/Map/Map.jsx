@@ -93,7 +93,9 @@ const Map = ({
       const boxToShow = await FYABackend.get(`/anchorBox/box/${boxID}`);
       setSelectedBox(boxToShow.data[0]);
       // Zoom to the marker
-      if (mapState) {
+      let zoomed = false;
+      if (mapState && !zoomed) {
+        zoomed = true;
         mapState.flyTo([latitude, longitude], 10);
       }
     });
