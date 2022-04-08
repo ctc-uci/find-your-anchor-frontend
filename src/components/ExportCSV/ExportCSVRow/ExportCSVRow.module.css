@@ -9,3 +9,10 @@
   width: 10px;
   height: 10px;
 }
+
+.green-check-icon,
+.red-cross-icon {
+  position: absolute;
+  left: 80px;
+  top: 40%;
+}
