@@ -1,6 +1,5 @@
 import axios from 'axios';
 import postalCodes from 'postal-codes-js';
-// import { FYABackend, isValidZip } from '../utils';
 import { FYABackend } from '../utils';
 
 function validateZip() {
