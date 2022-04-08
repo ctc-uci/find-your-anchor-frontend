@@ -1,10 +1,33 @@
 import * as yup from 'yup';
-import { FYABackend, isValidZip } from '../../common/utils';
+import postalCodes from 'postal-codes-js';
+import countryList from 'react-select-country-list';
+import { FYABackend } from '../../common/utils';
 
-function validateZip() {
-  return this.test('isZip', function zipCheck(value) {
+// OLD CODE: to be removed
+// function validateZip() {
+//   return this.test('isZip', function zipCheck(value) {
+//     const { path, createError } = this;
+//     return isValidZip(value) ? true : createError({ path, message: 'Invalid zip code' });
+//   });
+// }
+
+function validateZipcodeInCountry() {
+  return this.test('isZipInCountry', function zipcodeAndCountryCheck({ zipCode, country }) {
     const { path, createError } = this;
-    return isValidZip(value) ? true : createError({ path, message: 'Invalid zip code' });
+    console.log(zipCode, country);
+    // convert country to its country code
+    const countryCode = countryList().getValue(country);
+    // check if country field (country must be entered in its full country name) is valid
+    if (countryCode === undefined) {
+      return createError({ path, message: 'Missing or invalid country name' });
+    }
+    // if both zip code and country fields are not empty
+    if (zipCode && country) {
+      // validate if zipcode exists in the country code
+      const isValidMessage = postalCodes.validate(countryCode, zipCode);
+      return isValidMessage === true ? true : createError({ path, message: isValidMessage });
+    }
+    return true;
   });
 }
 
@@ -18,13 +41,15 @@ function validateBoxNumber() {
   });
 }
 
-yup.addMethod(yup.string, 'isZip', validateZip);
+yup.addMethod(yup.object, 'isZipInCountry', validateZipcodeInCountry);
 yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
 export default yup
   .object({
     boxNumber: yup.number().boxNotExists().required().typeError('Missing or invalid box number'),
     date: yup.date().required().typeError('Missing or invalid date'),
-    zipCode: yup.string().isZip().required('Missing or invalid zip code'),
+    zipCode: yup.string().required('Missing zip code'),
     launchedOrganically: yup.bool().default(false),
+    country: yup.string(),
   })
+  .isZipInCountry()
   .required();
