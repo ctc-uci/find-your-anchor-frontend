@@ -4,23 +4,18 @@ import postalCodes from 'postal-codes-js';
 import { FYABackend } from '../utils';
 
 function validateZip() {
-  return this.test('isZip', function zipCheck(values) {
+  return this.test('isZipInCountry', function zipCheck({ zipcode, country }) {
     const { path, createError } = this;
-    const { zipCode, country } = values;
-    // console.log('VALIDATE ZIP: ', zipCode, country);
+
+    const isValidMessage = postalCodes.validate(country.value, zipcode);
 
     // if both zip code and country fields are not empty
-    // console.log(postalCodes.validate(country.value, zipCode));
-    if (zipCode && country.value) {
+    if (zipcode && country.value) {
       // check if the entered zipcode exists in the country
-      const isValidMessage = postalCodes.validate(country.value, zipCode);
       return isValidMessage === true ? true : createError({ path, message: isValidMessage });
     }
-    // return true;
-    // return isValidZip(value)
-    //   ? true
-    //   : createError({ path, message: 'Invalid zipcode, please enter a valid zipcode' });
-    return '';
+
+    return createError({ path, message: 'zip validated' });
   });
 }
 

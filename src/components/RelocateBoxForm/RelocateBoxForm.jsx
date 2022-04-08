@@ -22,7 +22,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '../../common/FormUtils/DatePicker.css';
 import styles from './RelocateBoxForm.module.css';
 
-yup.addMethod(yup.string, 'isZip', validateZip);
+yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 const schema = yup
   .object({
     boxholderName: yup.string().typeError('Invalid name'),
@@ -40,7 +40,7 @@ const schema = yup
       .date()
       .required('Invalid date, please enter a valid date')
       .typeError('Invalid date, please enter a valid date'),
-    zipcode: yup.string().isZip().required('Invalid zipcode, please enter a valid zipcode'),
+    zipcode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),
     country: yup.object({
       label: yup.string().required('Invalid country, please select a country'),
       value: yup.string(),
@@ -52,6 +52,7 @@ const schema = yup
     message: yup.string().typeError('Invalid message, please enter a valid message'),
     picture: yup.string().url(),
   })
+  .isZipInCountry()
   .required();
 
 const RelocateBoxForm = ({ setFormSubmitted }) => {
@@ -152,12 +153,17 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
           </FormControl>
           <br />
-          <FormControl isInvalid={errors?.zipcode}>
+          <FormControl isInvalid={errors?.zipcode || errors['']?.message.startsWith('Postal code')}>
             <FormLabel htmlFor="zipcode" className={styles['required-field']}>
               Zip Code
             </FormLabel>
-            <Input id="zipCode" placeholder="e.g. 90210" name="zipcode" {...register('zipcode')} />
+            <Input id="zipcode" placeholder="e.g. 90210" name="zipcode" {...register('zipcode')} />
+            {/* display an error if there is no zipcode */}
             <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
+            {/* display an error if zipcode does not exist in country */}
+            {errors['']?.message !== 'zip validated' && (
+              <FormErrorMessage>{errors['']?.message}</FormErrorMessage>
+            )}
           </FormControl>
           <br />
           <FormControl isInvalid={errors?.country}>

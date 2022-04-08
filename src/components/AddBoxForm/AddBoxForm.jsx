@@ -30,7 +30,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from './AddBoxForm.module.css';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 
-yup.addMethod(yup.object, 'isZip', validateZip);
+yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
 const schema = yup
   .object({
@@ -39,7 +39,7 @@ const schema = yup
       .date()
       .required('Invalid date, please enter a valid date')
       .typeError('Invalid date, please enter a valid date'),
-    zipCode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),
+    zipcode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),
     country: yup.object({
       label: yup.string().required('Invalid country, please select a country'),
       value: yup.string(),
@@ -50,7 +50,7 @@ const schema = yup
     launchedOrganically: yup.string().typeError('Invalid selection'),
     picture: yup.string().url(),
   })
-  .isZip()
+  .isZipInCountry()
   .required();
 
 const AddBoxForm = () => {
@@ -65,9 +65,6 @@ const AddBoxForm = () => {
     delayError: 750,
   });
 
-  console.log(errors);
-  console.log(errors['']?.message);
-
   const [files, setFiles] = useState([]);
 
   const countryOptions = useMemo(() => countryList().getData(), []);
@@ -79,7 +76,7 @@ const AddBoxForm = () => {
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
     formData.country = formData.country.value;
 
-    const [latitude, longitude] = await getLatLong(formData.zipCode, formData.country);
+    const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
     formData.latitude = latitude;
     formData.longitude = longitude;
 
@@ -123,12 +120,17 @@ const AddBoxForm = () => {
           <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
         </FormControl>
         <br />
-        <FormControl isInvalid={errors?.zipCode}>
-          <FormLabel htmlFor="zipCode" className={styles['required-field']}>
+        <FormControl isInvalid={errors?.zipcode || errors['']?.message.startsWith('Postal code')}>
+          <FormLabel htmlFor="zipcode" className={styles['required-field']}>
             Zip Code
           </FormLabel>
-          <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
+          <Input id="zipcode" placeholder="e.g. 90210" name="zipcode" {...register('zipcode')} />
+          {/* display an error if there is no zipcode */}
           <FormErrorMessage>{errors.zipCode?.message}</FormErrorMessage>
+          {/* display an error if zipcode does not exist in country */}
+          {errors['']?.message !== 'zip validated' && (
+            <FormErrorMessage>{errors['']?.message}</FormErrorMessage>
+          )}
         </FormControl>
         <br />
         <FormControl isInvalid={errors?.country}>
