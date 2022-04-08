@@ -34,7 +34,12 @@ yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
 const schema = yup
   .object({
-    boxNumber: yup.number().boxNotExists().required().typeError('Invalid box number'),
+    boxNumber: yup
+      .number()
+      .boxNotExists()
+      .min(1, 'Invalid box number, please enter a valid box number')
+      .required()
+      .typeError('Invalid box number'),
     date: yup
       .date()
       .required('Invalid date, please enter a valid date')
@@ -79,8 +84,6 @@ const AddBoxForm = () => {
     const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
     formData.latitude = latitude;
     formData.longitude = longitude;
-
-    console.log('formData', formData);
 
     // send form data to server
     await FYABackend.post('/anchorBox/box', formData, {
