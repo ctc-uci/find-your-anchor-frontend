@@ -76,6 +76,8 @@ const RelocationBox = ({
   // A function that updates box information in the backend and refetches all boxes that are under review or pending changes (message status can be updated in 'under review')
   // This method is called when the save button is clicked under pending changes
   const updateBoxInfo = async newStatus => {
+    const user = await getCurrentUser(auth);
+    const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
     await FYABackend.put('/boxHistory/update', {
       transactionID,
       boxID,
@@ -86,6 +88,7 @@ const RelocationBox = ({
       generalLocation: generalLocationState,
       message: messageState,
       launchedOrganically: launchedOrganicallyState,
+      admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
     });
 
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
@@ -95,7 +98,7 @@ const RelocationBox = ({
   // A function that approves a relocation box submission and updates the backend state accordingly and then refetches all boxes (boxes can be approved from any tab)
   const approveRelocationBox = async () => {
     const user = await getCurrentUser(auth);
-    console.log(user);
+    const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
     await FYABackend.put('/boxHistory/update', {
       transactionID,
       boxID,
@@ -106,6 +109,7 @@ const RelocationBox = ({
       generalLocation: generalLocationState,
       message: messageState,
       launchedOrganically: launchedOrganicallyState,
+      admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
     });
     // TODO: REPLACE USA WITH COUNTRY INPUT
     let coordinates = await getLatLong(zipCode, 'USA');

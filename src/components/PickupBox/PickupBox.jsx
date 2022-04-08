@@ -22,6 +22,7 @@ import RejectedPickupIcon from '../../assets/BoxIcons/RejectedPickupIcon.svg';
 import PendingPickupIcon from '../../assets/BoxIcons/PendingPickupIcon.svg';
 import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
 import { FYABackend, sendEmail } from '../../common/utils';
+import { auth, getCurrentUser } from '../../common/auth_utils';
 
 const PickupBox = ({
   approved,
@@ -46,11 +47,14 @@ const PickupBox = ({
   // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
   // This method is called when the approve box icon is clicked
   const approvePickupBox = async id => {
+    const user = await getCurrentUser(auth);
+    const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
     await FYABackend.put('/boxHistory/update', {
       transactionID: id,
       boxID,
       status: 'evaluated',
       approved: true,
+      admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
     });
     await FYABackend.put('/anchorBox/update', {
       boxID,
