@@ -32,6 +32,13 @@ const Map = ({
     mapState.flyTo([markerObject.latitude, markerObject.longitude], 10);
   };
 
+  // This function makes it so that when a marker cluser is clicked, the right side bar closes.
+  const handleMarkerClusterClicked = () => {
+    setSelectedCountry(null);
+    setSelectedZipCode(null);
+    setSelectedBox(null);
+  };
+
   // Sets zipcodeData to be an object
   // {country : { zipcode, country, latitude, longitude, box_count}}
   useEffect(async () => {
@@ -85,6 +92,12 @@ const Map = ({
       zoom={8}
       scrollWheelZoom
       zoomControl={false}
+      minZoom={2}
+      maxBounds={[
+        [-90, -180],
+        [90, 180],
+      ]}
+      maxBoundsViscosity={1.0}
     >
       <TileLayer
         // Can change this url to display different tilelayers (samples: https://leaflet-extras.github.io/leaflet-providers/preview/)
@@ -98,7 +111,13 @@ const Map = ({
         Object.values(zipcodeData).map((locations, index) => {
           return (
             /* eslint-disable react/no-array-index-key */
-            <MarkerClusterGroup iconCreateFunction={clusterIcon} key={index}>
+            <MarkerClusterGroup
+              iconCreateFunction={clusterIcon}
+              key={index}
+              onClick={() => {
+                handleMarkerClusterClicked();
+              }}
+            >
               {locations.map(markerObject => (
                 <Marker
                   icon={markerIcon}
