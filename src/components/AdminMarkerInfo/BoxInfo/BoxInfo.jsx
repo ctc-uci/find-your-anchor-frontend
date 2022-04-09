@@ -16,10 +16,26 @@ import { FYABackend } from '../../../common/utils';
 
 const BoxInfo = ({ selectedBox, setSelectedBox }) => {
   const [boxHistory, setBoxHistory] = useState([]);
+  const [boxHolderName, setBoxHolderName] = useState('Loading...');
+  const [boxHolderEmail, setBoxHolderEmail] = useState('Loading...');
+  const [generalLocation, setGeneralLocation] = useState('Loading...');
+  const [picture, setPicture] = useState('Loading...');
+  const [dropOffMethod, setDropOffMethod] = useState('Loading...');
+  const [message, setMessage] = useState('Loading...');
+
   useEffect(async () => {
-    const response = await FYABackend.get(`/boxHistory/history/${selectedBox.box_id}`);
-    setBoxHistory(response.data);
-  }, []);
+    const boxData = await FYABackend.get(`/anchorBox/box/${selectedBox}`);
+    setBoxHolderName(boxData.data[0].boxholder_name);
+    setBoxHolderEmail(boxData.data[0].boxholder_email);
+    setGeneralLocation(boxData.data[0].general_location);
+    setDropOffMethod(
+      boxData.data[0].launched_organically ? 'Left at Location' : 'Given to Someone',
+    );
+    setMessage(boxData.data[0].message);
+    setPicture(boxData.data[0].picture);
+    const history = await FYABackend.get(`/boxHistory/history/${selectedBox}`);
+    setBoxHistory(history.data);
+  }, [selectedBox]);
   return (
     <ChakraProvider>
       <div className={styles['box-info']}>
@@ -30,48 +46,38 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
             onClick={() => setSelectedBox(null)}
           />
           <p className={styles.title}>
-            <p className={styles['box-number']}>Box #{selectedBox.box_id}</p>
+            <p className={styles['box-number']}>Box #{selectedBox}</p>
             {selectedBox.date}
           </p>
         </div>
         <div className={styles['box-data']}>
-          <img src={selectedBox.picture} alt="" className={styles['image-corners']} />
+          <img src={picture} alt="" className={styles['image-corners']} />
           <FormControl>
             {/* Box name */}
             <FormLabel htmlFor="name" className={styles['form-label']}>
               Name
             </FormLabel>
-            <Input isReadOnly id="name" type="name" value={selectedBox.boxholder_name} />
+            <Input isReadOnly id="name" type="name" value={boxHolderName} />
             {/* Box email */}
             <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
               Email
             </FormLabel>
-            <Input isReadOnly id="email" type="email" value={selectedBox.boxholder_email} />
+            <Input isReadOnly id="email" type="email" value={boxHolderEmail} />
             {/* Box general location */}
             <FormLabel isReadOnly htmlFor="generalLocation" className={styles['form-label']}>
               General Location
             </FormLabel>
-            <Input
-              isReadOnly
-              id="generalLocation"
-              type="generalLocation"
-              value={selectedBox.general_location}
-            />
+            <Input isReadOnly id="generalLocation" type="generalLocation" value={generalLocation} />
             {/* Box drop off method */}
             <FormLabel htmlFor="dropOffMethod" className={styles['form-label']}>
               Drop Off Method
             </FormLabel>
-            <Select
-              disabled
-              placeholder={
-                selectedBox.launched_organically ? 'Left at Location' : 'Given to Someone'
-              }
-            />
+            <Select disabled placeholder={dropOffMethod} />
             {/* Box message */}
             <FormLabel htmlFor="message" className={styles['form-label']}>
               Message
             </FormLabel>
-            <Textarea isReadOnly value={selectedBox.additional_comments} resize="vertical" />
+            <Textarea isReadOnly value={message} resize="vertical" />
           </FormControl>
           {boxHistory.length > 0 && (
             <>

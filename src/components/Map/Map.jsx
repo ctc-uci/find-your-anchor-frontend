@@ -52,7 +52,6 @@ const Map = ({
   // This is the SearchField component used for searching locations
   const LocationSearchField = () => {
     const map = useMap();
-
     const searchControl = new GeoSearchControl({
       provider: new OpenStreetMapProvider(),
       searchLabel: 'Search by location',
@@ -69,14 +68,15 @@ const Map = ({
 
   const BoxSearchField = () => {
     const map = useMap();
-
     const searchControl = new GeoSearchControl({
       provider: new BoxProvider(),
       searchLabel: 'Search by box number',
       showMarker: false,
       showPopup: false,
       updateMap: false,
+      keepResult: true,
     });
+
     // This event is triggered whenever the user selects a search result
     // The map should zoom to the marker/zip code that contains the box
     // and show the box's attributes on the right sidebar
@@ -88,17 +88,12 @@ const Map = ({
         lat: latitude,
         lon: longitude,
       } = marker.location.raw;
-      // Open right side bar by setting zip code and country
-      // This processed boolean is necessary to make sure that the code only runs once (sometimes it runs 6+ times)
-      let processed = false;
-      // Zoom to the marker
-      if (mapState && !processed) {
-        processed = true;
-        setSelectedZipCode(zipCode);
-        setSelectedCountry(country);
-        // Get the box's details from the backend (guaranteed to be in backend)
-        const boxToShow = await FYABackend.get(`/anchorBox/box/${boxID}`);
-        setSelectedBox(boxToShow.data[0]);
+      setSelectedZipCode(zipCode);
+      setSelectedCountry(country);
+      // // Get the box's details from the backend (guaranteed to be in backend)
+      // const boxToShow = await FYABackend.get(`/anchorBox/box/${boxID}`);
+      setSelectedBox(boxID);
+      if (mapState) {
         mapState.flyTo([latitude, longitude], 10);
       }
     });
@@ -159,12 +154,30 @@ const Map = ({
   );
 };
 
+Map.defaultProps = {
+  selectedBox: null,
+};
+
 Map.propTypes = {
   setSelectedCountry: PropTypes.func.isRequired,
   setSelectedZipCode: PropTypes.func.isRequired,
   setUpdateBoxListSwitch: PropTypes.func.isRequired,
   setSelectedBox: PropTypes.func.isRequired,
   updateBoxListSwitch: PropTypes.bool.isRequired,
+  selectedBox: PropTypes.shape({
+    box_id: PropTypes.number,
+    additional_comments: PropTypes.string,
+    country: PropTypes.string,
+    date: PropTypes.string,
+    general_location: PropTypes.string,
+    latitude: PropTypes.number,
+    longitude: PropTypes.number,
+    message: PropTypes.string,
+    launched_organically: PropTypes.bool,
+    picture: PropTypes.string,
+    show_on_map: PropTypes.bool,
+    zip_code: PropTypes.string,
+  }),
 };
 
 export default Map;

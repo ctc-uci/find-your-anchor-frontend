@@ -43,6 +43,7 @@ const AdminDashboard = () => {
             <Map
               setSelectedZipCode={setSelectedZipCode}
               setSelectedCountry={setSelectedCountry}
+              selectedBox={selectedBox}
               setSelectedBox={setSelectedBox}
               updateBoxListSwitch={updateBoxListSwitch}
               setUpdateBoxListSwitch={setUpdateBoxListSwitch}
