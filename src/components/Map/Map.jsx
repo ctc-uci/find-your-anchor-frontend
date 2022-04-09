@@ -88,11 +88,12 @@ const Map = ({
         lat: latitude,
         lon: longitude,
       } = marker.location.raw;
+      // Open right sidebar
       setSelectedZipCode(zipCode);
       setSelectedCountry(country);
-      // // Get the box's details from the backend (guaranteed to be in backend)
-      // const boxToShow = await FYABackend.get(`/anchorBox/box/${boxID}`);
+      // Change right sidebar into BoxList view
       setSelectedBox(boxID);
+      // Fly to marker with box
       if (mapState) {
         mapState.flyTo([latitude, longitude], 10);
       }
