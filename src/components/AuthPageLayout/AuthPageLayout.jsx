@@ -5,7 +5,7 @@ import styles from './AuthPageLayout.module.css';
 import FYALogo from '../../assets/fya-text-logo.svg';
 import FYALogoMobile from '../../assets/fya-logo-large.svg';
 
-const AuthPageLayout = ({ children }) => {
+const AuthPageLayout = ({ children, backgroundImage }) => {
   return (
     <ChakraProvider>
       <div className={styles['page-container']}>
@@ -17,7 +17,7 @@ const AuthPageLayout = ({ children }) => {
             <div className={styles['auth-form-component']}>{children}</div>
           </div>
         </div>
-        <div className={styles.banner}>
+        <div className={styles.banner} style={{ backgroundImage: `url(${backgroundImage})` }}>
           <img src={FYALogoMobile} className={styles['logo-mobile']} alt="logo" />
         </div>
       </div>
@@ -27,6 +27,7 @@ const AuthPageLayout = ({ children }) => {
 
 AuthPageLayout.propTypes = {
   children: PropTypes.node.isRequired,
+  backgroundImage: PropTypes.node.isRequired,
 };
 
 export default AuthPageLayout;

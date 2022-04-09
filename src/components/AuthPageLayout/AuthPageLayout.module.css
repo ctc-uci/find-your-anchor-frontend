@@ -21,7 +21,8 @@
 
 .banner {
   flex: 1;
-  background-color: #345e80;
+  background-image: url('../../assets/login-background.svg');
+  background-size: cover;
 }
 
 .logo-container {
