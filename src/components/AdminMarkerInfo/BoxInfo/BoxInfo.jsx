@@ -24,17 +24,20 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
   const [message, setMessage] = useState('Loading...');
 
   useEffect(async () => {
-    const boxData = await FYABackend.get(`/anchorBox/box/${selectedBox}`);
-    setBoxHolderName(boxData.data[0].boxholder_name);
-    setBoxHolderEmail(boxData.data[0].boxholder_email);
-    setGeneralLocation(boxData.data[0].general_location);
-    setDropOffMethod(
-      boxData.data[0].launched_organically ? 'Left at Location' : 'Given to Someone',
-    );
-    setMessage(boxData.data[0].message);
-    setPicture(boxData.data[0].picture);
-    const history = await FYABackend.get(`/boxHistory/history/${selectedBox}`);
-    setBoxHistory(history.data);
+    if (selectedBox) {
+      console.log(selectedBox);
+      const boxData = await FYABackend.get(`/anchorBox/box/${selectedBox}`);
+      setBoxHolderName(boxData.data[0].boxholder_name);
+      setBoxHolderEmail(boxData.data[0].boxholder_email);
+      setGeneralLocation(boxData.data[0].general_location);
+      setDropOffMethod(
+        boxData.data[0].launched_organically ? 'Left at Location' : 'Given to Someone',
+      );
+      setMessage(boxData.data[0].message);
+      setPicture(boxData.data[0].picture);
+      const history = await FYABackend.get(`/boxHistory/history/${selectedBox}`);
+      setBoxHistory(history.data);
+    }
   }, [selectedBox]);
   return (
     <ChakraProvider>

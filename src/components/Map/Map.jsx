@@ -87,15 +87,18 @@ const Map = ({
         country,
         lat: latitude,
         lon: longitude,
+        custom,
       } = marker.location.raw;
-      // Open right sidebar
-      setSelectedZipCode(zipCode);
-      setSelectedCountry(country);
-      // Change right sidebar into BoxList view
-      setSelectedBox(boxID);
-      // Fly to marker with box
-      if (mapState) {
-        mapState.flyTo([latitude, longitude], 10);
+      if (custom) {
+        // Open right sidebar
+        setSelectedZipCode(zipCode);
+        setSelectedCountry(country);
+        // Change right sidebar into BoxList view
+        setSelectedBox(boxID);
+        // Fly to marker with box
+        if (mapState) {
+          mapState.flyTo([latitude, longitude], 10);
+        }
       }
     });
 
