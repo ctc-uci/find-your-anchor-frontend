@@ -89,6 +89,7 @@ const Map = ({
         lon: longitude,
         custom,
       } = marker.location.raw;
+      // Only show the right sidebar if the user searched for box number (not location)
       if (custom) {
         // Open right sidebar
         setSelectedZipCode(zipCode);
