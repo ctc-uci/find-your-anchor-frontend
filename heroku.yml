@@ -1,0 +1,9 @@
+setup:
+  # Grab Heroku env vars
+  config:
+    env_file: .env
+build:
+  docker:
+    web: Dockerfile
+run:
+  web: echo hello
