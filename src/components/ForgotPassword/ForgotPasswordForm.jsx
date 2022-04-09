@@ -8,7 +8,7 @@ import styles from './ForgotPasswordForm.module.css';
 import TextInput from '../Inputs/TextInput';
 import { FYABackend } from '../../common/utils';
 import { auth, getCurrentUser, sendPasswordReset } from '../../common/auth_utils';
-import ForgotPasswordConfirmation from './ForgotPasswordConfirmation/ForgotPasswordConfirmation';
+import CommonConfirmationPage from '../../common/CommonConfirmationPage/CommonConfirmationPage';
 
 // Check if user exists in the database
 const userExists = async email => {
@@ -72,8 +72,6 @@ const ForgotPasswordForm = () => {
     try {
       await sendPasswordReset(data.email);
       setOpenConfirmation(true);
-      // navigate('/login');
-      // TODO: add toast component to confirm email has been sent (see Figma)
     } catch (err) {
       // TODO: replace with toast component
       console.log(err.message);
@@ -110,7 +108,11 @@ const ForgotPasswordForm = () => {
           <Button className={styles['send-email-button']} type="submit" size="md">
             Send Email
           </Button>
-          <ForgotPasswordConfirmation isOpen={openConfirmation} />
+          <CommonConfirmationPage
+            isOpen={openConfirmation}
+            confirmationTitle="Email Sent"
+            confirmationText="A link to reset your password has been sent to your registered FYA email address"
+          />
         </div>
         <Link className={styles['return-to-login-link']} to="/login">
           Return to Login

@@ -8,7 +8,7 @@ import { registerWithEmailAndPassword } from '../../common/auth_utils';
 import styles from './RegisterForm.module.css';
 import TextInput from '../Inputs/TextInput';
 import PasswordInput from '../Inputs/PasswordInput';
-import RegisterConfirmation from './RegisterConfirmation/RegisterConfirmation';
+import CommonConfirmationPage from '../../common/CommonConfirmationPage/CommonConfirmationPage';
 
 const schema = yup.object({
   firstName: yup.string().required('Please enter your first name'),
@@ -81,7 +81,11 @@ const RegisterForm = ({ email }) => {
           Register
         </Button>
       </form>
-      <RegisterConfirmation isOpen={openConfirmation} />
+      <CommonConfirmationPage
+        isOpen={openConfirmation}
+        confirmationTitle="Account Registered"
+        confirmationText="You may now log in using your new account"
+      />
     </div>
   );
 };

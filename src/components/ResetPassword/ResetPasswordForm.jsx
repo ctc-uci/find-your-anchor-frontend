@@ -7,8 +7,8 @@ import { Button, Heading } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './ResetPasswordForm.module.css';
 import PasswordInput from '../Inputs/PasswordInput';
-import ResetPasswordConfirmation from './ResetPasswordConfirmation/ResetPasswordConfirmation';
 import { confirmNewPassword } from '../../common/auth_utils';
+import CommonConfirmationPage from '../../common/CommonConfirmationPage/CommonConfirmationPage';
 
 const schema = yup.object({
   newPassword: yup
@@ -78,7 +78,11 @@ const ResetPasswordForm = ({ code }) => {
           <Button className={styles['reset-password-button']} type="submit" size="md" align="right">
             Reset Password
           </Button>
-          <ResetPasswordConfirmation isOpen={openConfirmation} />
+          <CommonConfirmationPage
+            isOpen={openConfirmation}
+            confirmationTitle="Password Reset"
+            confirmationText="You may now log into your account using your new password"
+          />
         </div>
         <Link className={styles['return-to-login-link']} to="/login">
           Return to Login
