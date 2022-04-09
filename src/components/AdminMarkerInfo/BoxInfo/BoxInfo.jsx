@@ -25,7 +25,6 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
 
   useEffect(async () => {
     if (selectedBox) {
-      console.log(selectedBox);
       const boxData = await FYABackend.get(`/anchorBox/box/${selectedBox}`);
       setBoxHolderName(boxData.data[0].boxholder_name);
       setBoxHolderEmail(boxData.data[0].boxholder_email);
