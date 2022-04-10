@@ -21,7 +21,7 @@ COPY . .
 # Download backend code, move into ./backend folder
 RUN echo "Downloading from https://github.com/${GH_USER}/${GH_REPO}/archive/${GH_BRANCH}.zip"
 RUN wget "https://github.com/${GH_USER}/${GH_REPO}/archive/${GH_BRANCH}.zip" -O temp.zip; unzip ./temp.zip; rm ./temp.zip
-RUN mv ./$GH_REPO-$GH_BRANCH ./backend; rm ./$GH_REPO-$GH_BRANCH
+RUN mv ./$GH_REPO-$GH_BRANCH ./backend
 
 # Install required packages
 RUN yarn install --frozen-lockfile
