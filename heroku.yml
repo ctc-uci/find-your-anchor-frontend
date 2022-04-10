@@ -1,0 +1,13 @@
+# Grab Heroku env vars
+setup:
+  config:
+    env_file: .env
+build:
+  docker:
+    web: Dockerfile
+run:
+  web: yarn start
+  backend:
+    command:
+      - cd backend && yarn start
+    image: web

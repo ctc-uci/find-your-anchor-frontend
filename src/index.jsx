@@ -24,6 +24,7 @@ ReactDOM.render(
     <CookiesProvider>
       <Router>
         <Routes>
+          <Route path="/admin" element={<AdminDashboard />} />
           <Route element={<Layout isAdmin={false} />}>
             <Route path="/pickup-box-form" element={<PickupBoxFormPage />} />
             <Route path="/relocate-box-form" element={<RelocateBoxFormPage />} />
@@ -41,13 +42,13 @@ ReactDOM.render(
                 <ProtectedRoute path="/profile" Component={AdminProfilePage} redirectPath="/" />
               }
             />
-            <Route
+            {/* <Route
               exact
               path="/admin"
               element={
                 <ProtectedRoute path="/profile" Component={AdminDashboard} redirectPath="/" />
               }
-            />
+            /> */}
             <Route
               exact
               path="/export-csv"
