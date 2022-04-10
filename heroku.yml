@@ -8,6 +8,6 @@ build:
 release:
   image: web
   command:
-    - ./deployment-tasks.sh
+    - ./app/deployment-tasks.sh
 run:
   web: echo done
