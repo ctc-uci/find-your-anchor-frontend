@@ -1,8 +1,10 @@
 FROM node:lts-alpine
 
+# Install git
+RUN apk add --no-cache git
+
 # Run following commands in /app
 WORKDIR /app
-# RUN apk add --no-cache git
 
 # Clones frontend PR branch
 RUN git clone --branch $HEROKU_BRANCH $FRONTEND_CLONE
