@@ -12,4 +12,4 @@ WORKDIR /app
 COPY . .
 
 # Install required packages
-RUN yarn
+RUN yarn install --frozen-lockfile
