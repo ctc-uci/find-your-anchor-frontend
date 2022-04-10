@@ -1,11 +1,11 @@
+FROM node:lts-alpine
+
 # Backend github repo vars
 ARG GH_BRANCH="dev"
 ARG GH_USER="ctc-uci"
 ARG GH_REPO="find-your-anchor-backend"
 
 ENV GH_BRANCH=$GH_BRANCH GH_USER=$GH_USER GH_REPO=$GH_REPO
-
-FROM node:lts-alpine
 
 # Install git and curl
 RUN apk --no-cache add git
@@ -25,5 +25,5 @@ RUN wget "https://github.com/${GH_USER}/${GH_REPO}/archive/${GH_BRANCH}.zip" -O 
 RUN mv ./$GH_REPO-$GH_BRANCH ./backend
 
 # Install required packages
-# RUN yarn install --frozen-lockfile
-# RUN cd backend && yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile
+RUN cd backend && yarn install --frozen-lockfile
