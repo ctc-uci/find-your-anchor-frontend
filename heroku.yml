@@ -8,6 +8,6 @@ build:
 release:
   image: web
   command:
-    - ./app/deployment-tasks.sh
+    - ./deployment-tasks.sh
 run:
-  web: echo done
+  web: yarn start

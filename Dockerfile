@@ -7,5 +7,9 @@ RUN apk --no-cache add curl
 # Run following commands in /app
 WORKDIR /app
 
-# Copy deployment task script
-COPY ./deployment-tasks.sh .
+# Copy frontend code into docker container
+# includes deployment-tasks.sh
+COPY . .
+
+# Install required packages
+RUN yarn
