@@ -10,4 +10,4 @@ release:
   command:
     - ./deployment-tasks.sh
 run:
-  web: echo hello
+  web: echo done
