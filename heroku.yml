@@ -5,9 +5,9 @@ setup:
 build:
   docker:
     web: Dockerfile
-# release:
-#   image: web
-#   command:
-#     - ./deployment-tasks.sh
 run:
-  web: ls
+  web: yarn start
+  backend:
+    command:
+      - cd backend && yarn start
+    image: web
