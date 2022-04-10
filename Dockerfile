@@ -6,6 +6,9 @@ RUN apk add --no-cache git
 # Run following commands in /app
 WORKDIR /app
 
+# Print env vars
+RUN printenv
+
 # Clones frontend PR branch
 RUN git clone --branch $HEROKU_BRANCH $FRONTEND_CLONE
 
