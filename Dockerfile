@@ -3,6 +3,8 @@ ARG GH_BRANCH="dev"
 ARG GH_USER="ctc-uci"
 ARG GH_REPO="find-your-anchor-backend"
 
+ENV GH_BRANCH=$GH_BRANCH GH_USER=$GH_USER GH_REPO=$GH_REPO
+
 FROM node:lts-alpine
 
 # Install git and curl
@@ -19,8 +21,9 @@ COPY . .
 # Download backend code, move into ./backend folder
 RUN echo "Downloading from https://github.com/${GH_USER}/${GH_REPO}/archive/${GH_BRANCH}.zip"
 RUN wget "https://github.com/${GH_USER}/${GH_REPO}/archive/${GH_BRANCH}.zip" -O temp.zip; unzip ./temp.zip; rm ./temp.zip
+# RUN wget "https://github.com/ctc-uci/find-your-anchor-backend/archive/dev.zip" -O temp.zip; unzip ./temp.zip; rm ./temp.zip
 RUN mv ./$GH_REPO-$GH_BRANCH ./backend
 
 # Install required packages
-RUN yarn install --frozen-lockfile
-RUN cd backend && yarn install --frozen-lockfile
+# RUN yarn install --frozen-lockfile
+# RUN cd backend && yarn install --frozen-lockfile
