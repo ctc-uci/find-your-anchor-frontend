@@ -1,9 +1,13 @@
+# Grab Heroku env vars
 setup:
-  # Grab Heroku env vars
   config:
     env_file: .env
 build:
   docker:
     web: Dockerfile
+release:
+  image: web
+  command:
+    - ./deployment-tasks.sh
 run:
   web: echo hello
