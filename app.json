@@ -1,4 +1,4 @@
 {
   "name": "find-your-anchor",
-  "stack": "container"
+  "stack": "heroku-20"
 }
