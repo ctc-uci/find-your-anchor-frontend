@@ -10,4 +10,4 @@ release:
   command:
     - ./deployment-tasks.sh
 run:
-  web: yarn start
+  web: cd backend && yarn && yarn start
