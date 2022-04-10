@@ -5,9 +5,9 @@ setup:
 build:
   docker:
     web: Dockerfile
-release:
-  image: web
-  command:
-    - ./deployment-tasks.sh
+# release:
+#   image: web
+#   command:
+#     - ./deployment-tasks.sh
 run:
   web: ls

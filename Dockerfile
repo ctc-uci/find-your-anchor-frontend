@@ -1,3 +1,8 @@
+# Backend github repo vars
+ARG GH_BRANCH="dev"
+ARG GH_USER="ctc-uci"
+ARG GH_REPO="find-your-anchor-backend"
+
 FROM node:lts-alpine
 
 # Install git and curl
@@ -11,5 +16,10 @@ WORKDIR /app
 # includes deployment-tasks.sh
 COPY . .
 
+# Download backend code, move into ./backend folder
+RUN wget https://github.com/$GH_USER/$GH_REPO/archive/$GH_BRANCH.zip -O temp.zip; unzip ./temp.zip; rm ./temp.zip
+RUN mv ./$GH_REPO-$GH_BRANCH ./backend
+
 # Install required packages
 RUN yarn install --frozen-lockfile
+RUN cd backend && yarn install --frozen-lockfile
