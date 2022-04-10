@@ -1,6 +1,7 @@
 {
   "name": "find-your-anchor-frontend",
   "version": "0.1.0",
+  "proxy": "http://localhost:3001",
   "private": false,
   "dependencies": {
     "@angular/common": "^6.0.0",
