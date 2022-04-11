@@ -21,7 +21,6 @@
 
 .banner {
   flex: 1;
-  background-image: url('../../assets/login-background.svg');
   background-size: cover;
 }
 
