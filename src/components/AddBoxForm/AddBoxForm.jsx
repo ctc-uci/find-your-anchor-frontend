@@ -86,22 +86,23 @@ const AddBoxForm = () => {
     if (latitude === undefined && longitude === undefined) {
       // TODO: display toast component
       console.log(`Cannot find ${formData.zipcode} in country ${formData.country}`);
-    }
-    try {
-      setLoading(true);
-      /* eslint-disable object-shorthand */
-      await FYABackend.post('/anchorBox/box', {
-        ...formData,
-        latitude: latitude,
-        longitude: longitude,
-        showOnMap: true,
-      });
-      setLoading(false);
-      navigate('/admin');
-    } catch (err) {
-      setLoading(false);
-      // TODO: show error banner on failure
-      console.log(err.message);
+    } else {
+      try {
+        setLoading(true);
+        /* eslint-disable object-shorthand */
+        await FYABackend.post('/anchorBox/box', {
+          ...formData,
+          latitude: latitude,
+          longitude: longitude,
+          showOnMap: true,
+        });
+        setLoading(false);
+        navigate('/admin');
+      } catch (err) {
+        setLoading(false);
+        // TODO: show error banner on failure
+        console.log(err.message);
+      }
     }
   };
 
