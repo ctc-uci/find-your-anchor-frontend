@@ -14,7 +14,7 @@ import { FYABackend } from '../../common/utils';
 function validateZipcodeInCountry() {
   return this.test('isZipInCountry', function zipcodeAndCountryCheck({ zipCode, country }) {
     const { path, createError } = this;
-    console.log(zipCode, country);
+    // console.log(zipCode, country);
     // convert country to its country code
     const countryCode = countryList().getValue(country);
     // check if country field (country must be entered in its full country name) is valid
