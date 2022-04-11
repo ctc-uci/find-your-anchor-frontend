@@ -16,7 +16,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
-import CustomToast from '../../common/CustomToast/CustomToast';
+import ShowToast from '../../common/ShowToast/ShowToast';
 
 import { FYABackend, formatDate } from '../../common/utils';
 import {
@@ -59,13 +59,13 @@ const AddBoxForm = () => {
   });
 
   const [files, setFiles] = useState([]);
-  const showToast = CustomToast({
+  const successToast = ShowToast({
     icon: 'success',
     title: `Successfully Added Box`,
     message: '',
     toastPosition: 'bottom-right',
   });
-  const errorToast = CustomToast({
+  const errorToast = ShowToast({
     icon: 'error',
     title: `Failed to Add Box`,
     message: 'Please try again or contact an administrator',
@@ -86,7 +86,7 @@ const AddBoxForm = () => {
       });
 
       navigate('/admin');
-      showToast();
+      successToast();
     } catch (err) {
       errorToast();
     }

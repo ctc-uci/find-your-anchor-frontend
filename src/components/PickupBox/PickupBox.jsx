@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
 import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
-import CustomToast from '../../common/CustomToast/CustomToast';
+import ShowToast from '../../common/ShowToast/ShowToast';
 import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
 import { FYABackend, sendEmail } from '../../common/utils';
 
@@ -41,14 +41,14 @@ const PickupBox = ({
   const [rejectBoxPopupIsOpen, setRejectBoxPopupIsOpen] = useState(false);
   // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
   // This method is called when the approve box icon is clicked
-  const showToast = CustomToast({
+  const successToast = ShowToast({
     icon: 'success',
     title: `Box #${boxID} Approved`,
     message: '',
     toastPosition: 'bottom-right',
   });
 
-  const errorToast = CustomToast({
+  const errorToast = ShowToast({
     icon: 'error',
     title: `Failed to Approve Box #${boxID}`,
     message: '',
@@ -76,7 +76,7 @@ const PickupBox = ({
         ),
       ];
       await Promise.all(requests);
-      showToast();
+      successToast();
     } catch (err) {
       errorToast();
     }

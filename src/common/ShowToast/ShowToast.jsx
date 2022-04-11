@@ -1,13 +1,13 @@
 import React from 'react';
 import { IconButton, ChakraProvider, Heading, Text, useToast } from '@chakra-ui/react';
 import { CheckCircleIcon, CloseIcon, InfoIcon, WarningTwoIcon, Icon } from '@chakra-ui/icons';
-import styles from './CustomToast.module.css';
+import styles from './ShowToast.module.css';
 
-const CustomToast = ({ icon, title, message, toastPosition }) => {
+const ShowToast = ({ type, title, message, toastPosition }) => {
   let bgColor;
   let statusIcon;
   const toast = useToast();
-  switch (icon) {
+  switch (type) {
     case 'info':
       bgColor = '#DD6B20';
       statusIcon = InfoIcon;
@@ -71,4 +71,4 @@ const CustomToast = ({ icon, title, message, toastPosition }) => {
   };
 };
 
-export default CustomToast;
+export default ShowToast;

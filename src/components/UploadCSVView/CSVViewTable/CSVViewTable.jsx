@@ -9,7 +9,7 @@ import EditableRow from '../EditableRow/EditableRow';
 import { FYABackend, formatDate } from '../../../common/utils';
 import BoxSchema from '../../UploadCSV/UploadCSVUtils';
 
-const CSVViewTable = ({ rows }) => {
+const CSVViewTable = ({ rows, filename }) => {
   const navigate = useNavigate();
   const [csvErrors, setCsvErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -88,7 +88,12 @@ const CSVViewTable = ({ rows }) => {
       editRow(e, nextError);
     } else {
       await FYABackend.post('/anchorBox/boxes', formDatas);
-      navigate('/');
+      console.log(filename);
+      navigate(`/admin`, {
+        state: {
+          uploadedFilename: filename,
+        },
+      });
     }
   };
 
@@ -144,9 +149,12 @@ const CSVViewTable = ({ rows }) => {
     </form>
   );
 };
-
+CSVViewTable.defaultProps = {
+  filename: '',
+};
 CSVViewTable.propTypes = {
   rows: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])).isRequired,
+  filename: PropTypes.string,
 };
 
 export default CSVViewTable;

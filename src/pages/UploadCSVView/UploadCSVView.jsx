@@ -12,7 +12,7 @@ const UploadCSVView = () => {
         <Text fontSize="xl" fontWeight="500">
           {state.filename}
         </Text>
-        <CSVViewTable rows={state.rows} />
+        <CSVViewTable rows={state.rows} filename={state.filename} />
       </Flex>
     </ChakraProvider>
   );

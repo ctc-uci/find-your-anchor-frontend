@@ -12,7 +12,7 @@ import {
   AlertDialogCloseButton,
   Textarea,
 } from '@chakra-ui/react';
-import CustomToast from '../../../common/CustomToast/CustomToast';
+import ShowToast from '../../../common/ShowToast/ShowToast';
 import styles from './RequestChangesPopup.module.css';
 import { FYABackend, sendEmail } from '../../../common/utils';
 import PendingChangesBoxEmail from '../../Email/EmailTemplates/PendingChangesBoxEmail';
@@ -29,14 +29,14 @@ const RequestChangesPopup = ({
   const cancelRef = React.useRef();
   const [changesRequested, setChangesRequested] = useState('');
 
-  const showToast = CustomToast({
+  const successToast = ShowToast({
     icon: 'warning',
     title: `Changes for Box #${boxID} Requested`,
     message: 'A copy of your responses has been sent to the messenger.',
     toastPosition: 'bottom-right',
   });
 
-  const errorToast = CustomToast({
+  const errorToast = ShowToast({
     icon: 'error',
     title: `Failed to Request Changes for Box #${boxID}`,
     message: 'Please try again or contact an administrator. ',
@@ -64,7 +64,7 @@ const RequestChangesPopup = ({
       ];
       await Promise.all(requests);
       setIsOpen(false);
-      showToast();
+      successToast();
     } catch (err) {
       errorToast();
     }

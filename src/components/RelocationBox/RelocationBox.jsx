@@ -15,7 +15,7 @@ import {
 
 import { BsFillArrowRightCircleFill, BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
 import PropTypes from 'prop-types';
-import CustomToast from '../../common/CustomToast/CustomToast';
+import ShowToast from '../../common/ShowToast/ShowToast';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 import SaveChangesIcon from '../BoxIcons/SaveChangesIcon.svg';
 import { FYABackend, getLatLong, sendEmail } from '../../common/utils';
@@ -88,14 +88,14 @@ const RelocationBox = ({
     await Promise.all(requests);
   };
 
-  const showToast = CustomToast({
+  const successToast = ShowToast({
     icon: 'success',
     title: `Box #${boxID} Approved`,
     message: '',
     toastPosition: 'bottom-right',
   });
 
-  const errorToast = CustomToast({
+  const errorToast = ShowToast({
     icon: 'error',
     title: `Failed to Approve Box #${boxID}`,
     message: '',
@@ -138,7 +138,7 @@ const RelocationBox = ({
         ),
       ];
       await Promise.all(requests);
-      showToast();
+      successToast();
     } catch (err) {
       errorToast();
     }
