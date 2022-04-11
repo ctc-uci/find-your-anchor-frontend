@@ -54,6 +54,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
             date: results.data[i][0],
             zipCode: results.data[i][2],
             launchedOrganically: results.data[i][3].toLowerCase() === 'yes',
+            country: results.data[i][4],
           };
           checkErrors(CSVRow, i);
           setFormDatas(prevState => [...prevState, CSVRow]);

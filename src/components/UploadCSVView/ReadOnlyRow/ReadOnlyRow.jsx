@@ -22,6 +22,7 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow, isError }) => {
       <Td>{data.date}</Td>
       <Td>{data.boxNumber}</Td>
       <Td>{data.zipCode}</Td>
+      <Td>{data.country}</Td>
       <Td>
         {data.launchedOrganically ? (
           <CheckIcon alt="Green Check Icon" className={styles['green-check-icon']} />
@@ -52,6 +53,7 @@ ReadOnlyRow.propTypes = {
     date: PropTypes.string,
     boxNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     zipCode: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    country: PropTypes.string,
     launchedOrganically: PropTypes.bool,
   }).isRequired,
   editRow: PropTypes.func.isRequired,

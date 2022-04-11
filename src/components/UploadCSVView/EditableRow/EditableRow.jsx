@@ -30,6 +30,7 @@ const EditableRow = ({ editFormData, handleEditFormSubmit, isError }) => {
       date: editFormData.date,
       boxNumber: editFormData.boxNumber,
       zipCode: editFormData.zipCode,
+      country: editFormData.country,
       launchedOrganically: editFormData.launchedOrganically,
     },
     delayError: 750,
@@ -99,6 +100,20 @@ const EditableRow = ({ editFormData, handleEditFormSubmit, isError }) => {
         </FormControl>
       </Td>
       <Td>
+        <FormControl isInvalid={errors?.zipCode}>
+          <InputGroup>
+            <Input id="country" placeholder="e.g. 90210" name="country" {...register('country')} />
+            {errors?.country && (
+              <InputRightElement className={styles['input-right-warning']}>
+                <WarningIcon />
+              </InputRightElement>
+            )}
+            ;
+          </InputGroup>
+          <FormErrorMessage marginTop="0px">{errors.zipCode?.country}</FormErrorMessage>
+        </FormControl>
+      </Td>
+      <Td>
         <Checkbox
           className={styles['check-box']}
           name="launchedOrganically"
@@ -120,6 +135,7 @@ EditableRow.propTypes = {
     date: PropTypes.string,
     boxNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     zipCode: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    country: PropTypes.string,
     launchedOrganically: PropTypes.bool,
   }).isRequired,
   handleEditFormSubmit: PropTypes.func.isRequired,

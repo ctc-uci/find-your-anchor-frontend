@@ -108,6 +108,7 @@ const CSVViewTable = ({ rows }) => {
               <Th>Date</Th>
               <Th>Box Number</Th>
               <Th>Zip Code</Th>
+              <Th>Country</Th>
               <Th>Launched Organically</Th>
               <Th>&nbsp;</Th>
             </Tr>
