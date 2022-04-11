@@ -40,6 +40,8 @@ const EditableRow = ({ editFormData, handleEditFormSubmit, isError }) => {
     handleEditFormSubmit(editRowData);
   };
 
+  console.log(errors['']?.message);
+
   return (
     <Tr
       className={isError ? `${styles['edit-row']} ${styles['csv-error']}` : styles['edit-row']}
@@ -100,17 +102,17 @@ const EditableRow = ({ editFormData, handleEditFormSubmit, isError }) => {
         </FormControl>
       </Td>
       <Td>
-        <FormControl isInvalid={errors?.zipCode}>
+        <FormControl isInvalid={errors['']?.message}>
           <InputGroup>
             <Input id="country" placeholder="e.g. 90210" name="country" {...register('country')} />
-            {errors?.country && (
+            {errors['']?.message && (
               <InputRightElement className={styles['input-right-warning']}>
                 <WarningIcon />
               </InputRightElement>
             )}
             ;
           </InputGroup>
-          <FormErrorMessage marginTop="0px">{errors.zipCode?.country}</FormErrorMessage>
+          <FormErrorMessage marginTop="0px">{errors['']?.message}</FormErrorMessage>
         </FormControl>
       </Td>
       <Td>
