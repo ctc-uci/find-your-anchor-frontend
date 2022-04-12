@@ -116,9 +116,11 @@ const CSVViewTable = ({ rows }) => {
 
   // check if any rows have an error when page first loads
   useEffect(async () => {
+    setIsLoading(true);
     setFormData(rows);
     const errors = await checkErrors(rows);
     addErrors(errors);
+    setIsLoading(false);
   }, [rows]);
 
   return (

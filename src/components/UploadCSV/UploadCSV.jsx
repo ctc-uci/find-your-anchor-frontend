@@ -21,7 +21,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const [formDatas, setFormDatas] = useState([]);
   const [uploadErrors, setUploadErrors] = useState([]);
   const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isUploadingNewFile) {
@@ -39,37 +39,37 @@ const UploadCSV = ({ isOpen, onClose }) => {
         setUploadErrors(prevState => [...prevState, `${e.message} (line ${i})`]);
       });
     }
-    setIsLoading(false);
   };
 
   const readCSV = () => {
     readRemoteFile(CSVFile, {
-      complete: results => {
+      header: true,
+      complete: async results => {
         const CSVRows = [];
         const boxNumbers = new Map();
 
         // parse each row in csv file
-        for (let i = 1; i < results.data.length; i += 1) {
-          const uid = uuidv4(); // used to uniquely identify each row
-          const CSVRow = {
-            id: uid,
-            boxNumber: results.data[i][1],
-            date: results.data[i][0],
-            zipCode: results.data[i][2],
-            launchedOrganically: results.data[i][3].toLowerCase() === 'yes',
-            country: results.data[i][4],
-          };
-
-          checkErrors(CSVRow, i);
-          CSVRows.push(CSVRow);
-
-          const boxNumber = results.data[i][1];
-          if (boxNumbers.has(boxNumber)) {
-            boxNumbers.get(boxNumber).push(i);
-          } else {
-            boxNumbers.set(boxNumber, [i]);
-          }
-        }
+        await Promise.all(
+          results.data.map(async (row, i) => {
+            const uid = uuidv4(); // generates am id to uniquely identify each row
+            const CSVRow = {
+              id: uid,
+              boxNumber: row['Box No'],
+              date: row.Date,
+              zipCode: row['Zip Code'],
+              country: row.Country,
+              launchedOrganically: row['Launched Organically?'].toLowerCase() === 'yes',
+            };
+            await checkErrors(CSVRow, i);
+            CSVRows.push(CSVRow);
+            const boxNumber = row['Box No'];
+            if (boxNumbers.has(boxNumber)) {
+              boxNumbers.get(boxNumber).push(i);
+            } else {
+              boxNumbers.set(boxNumber, [i]);
+            }
+          }),
+        );
 
         setFormDatas(CSVRows);
         boxNumbers.forEach((lineNumbers, boxNumber) => {
@@ -80,8 +80,10 @@ const UploadCSV = ({ isOpen, onClose }) => {
             ]);
           }
         });
+
         setIsUploadingNewFile(false);
         setCSVFile();
+        setIsLoading(false);
       },
     });
   };
@@ -89,6 +91,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const onUpload = e => {
     e.preventDefault();
     if (CSVFile) {
+      setIsLoading(true);
       setCSVFilename(CSVFile.name);
       readCSV();
     }
