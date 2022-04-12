@@ -40,8 +40,6 @@ const EditableRow = ({ editFormData, handleEditFormSubmit, isError }) => {
     handleEditFormSubmit(editRowData);
   };
 
-  console.log(errors['']?.message);
-
   return (
     <Tr
       className={isError ? `${styles['edit-row']} ${styles['csv-error']}` : styles['edit-row']}

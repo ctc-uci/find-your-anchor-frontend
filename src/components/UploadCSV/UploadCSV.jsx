@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { usePapaParse } from 'react-papaparse';
 import PropTypes from 'prop-types';
-import { FYABackend } from '../../common/utils';
+import { FYABackend, getLatLong } from '../../common/utils';
 
 import UploadModalContent from './UploadModalContent/UploadModalContent';
 import SuccessModalContent from './SuccessModalContent/SuccessModalContent';
@@ -86,11 +86,18 @@ const UploadCSV = ({ isOpen, onClose }) => {
 
   const addToMap = async e => {
     e.preventDefault();
-    await FYABackend.post('/anchorBox/boxes', formDatas, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+
+    // find and set latitude and longitude for each formData
+    await Promise.allSettled(
+      formDatas.map(async (formData, index) => {
+        const [lat, long] = await getLatLong(formData.zipCode, formData.country);
+        formDatas[index].latitude = lat;
+        formDatas[index].longitude = long;
+        formDatas[index].showOnMap = true;
+      }),
+    );
+
+    await FYABackend.post('/anchorBox/boxes', formDatas);
     onCloseModal();
     navigate('/');
   };

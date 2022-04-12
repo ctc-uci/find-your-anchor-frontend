@@ -6,7 +6,7 @@ import { Button, Stack, Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
 import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../EditableRow/EditableRow';
-import { FYABackend, formatDate } from '../../../common/utils';
+import { FYABackend, formatDate, getLatLong } from '../../../common/utils';
 import BoxSchema from '../../UploadCSV/UploadCSVUtils';
 
 const CSVViewTable = ({ rows }) => {
@@ -19,6 +19,7 @@ const CSVViewTable = ({ rows }) => {
     date: '',
     boxNumber: '',
     zipCode: '',
+    country: '',
     launchedOrganically: false,
   });
 
@@ -29,6 +30,7 @@ const CSVViewTable = ({ rows }) => {
       date: data.date,
       boxNumber: data.boxNumber,
       zipCode: data.zipCode,
+      country: data.country,
       launchedOrganically: data.launchedOrganically,
     };
     setEditFormData(formValues);
@@ -41,6 +43,7 @@ const CSVViewTable = ({ rows }) => {
       date: formatDate(editRowData.date),
       boxNumber: editRowData.boxNumber,
       zipCode: editRowData.zipCode,
+      country: editRowData.country,
       launchedOrganically: editRowData.launchedOrganically,
     };
 
@@ -83,12 +86,35 @@ const CSVViewTable = ({ rows }) => {
     const errors = await checkErrors(formDatas);
     addErrors(errors);
     const nextError = errors.find(error => error !== 'success');
-    setIsLoading(false);
+
     if (nextError) {
       editRow(e, nextError);
     } else {
-      await FYABackend.post('/anchorBox/boxes', formDatas);
-      navigate('/');
+      // find and set latitude and longitude for each formData
+      try {
+        await Promise.allSettled(
+          formDatas.map(async (formData, index) => {
+            const [lat, long] = await getLatLong(formData.zipCode, formData.country);
+            formDatas[index].latitude = lat;
+            formDatas[index].longitude = long;
+            formDatas[index].showOnMap = true;
+          }),
+        );
+
+        // formDatas.forEach(formData => {
+        //   if (formData.latitude === undefined && formData.longitude === undefined) {
+        //     console.log('formData: ', formData);
+        //     editRow(e, formData);
+        //   }
+        // });
+
+        console.log(formDatas);
+        await FYABackend.post('/anchorBox/boxes', formDatas);
+        setIsLoading(false);
+        navigate('/admin');
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 

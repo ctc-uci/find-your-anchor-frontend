@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import postalCodes from 'postal-codes-js';
 import countryList from 'react-select-country-list';
 import { FYABackend } from '../../common/utils';
+// import { getLatLong } from '../../common/utils';
 
 // TO BE DELETED:
 // function validateZip() {
@@ -12,9 +13,9 @@ import { FYABackend } from '../../common/utils';
 // }
 
 function validateZipcodeInCountry() {
-  return this.test('isZipInCountry', function zipcodeAndCountryCheck({ zipCode, country }) {
+  return this.test('isZipInCountry', async function zipcodeAndCountryCheck({ zipCode, country }) {
     const { path, createError } = this;
-    console.log('ISZIPINCOUNTRY: ', zipCode, country);
+
     // convert country to its country code
     const countryCode = countryList().getValue(country);
     // check if country field (country must be entered in its full country name) is valid
@@ -25,7 +26,14 @@ function validateZipcodeInCountry() {
     if (zipCode && country) {
       // the postal-codes-js library checks if zipcode is in the valid postal code format for the country
       const isValidMessage = postalCodes.validate(countryCode, zipCode);
-      return isValidMessage === true ? true : createError({ path, message: isValidMessage });
+      // check if Nominatim API can find lat/long for zipcode
+      // const [latitude, longitude] = await getLatLong(zipCode, countryCode);
+      if (isValidMessage !== true) {
+        return createError({ path, message: `Cannot find ${zipCode} in this country` });
+      }
+      // if (isValidMessage !== true || latitude === undefined || longitude === undefined) {
+      //   return createError({ path, message: `Cannot find ${zipCode} in this country` });
+      // }
     }
     return true;
   });
