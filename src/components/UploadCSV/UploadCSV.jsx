@@ -19,6 +19,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const [CSVFile, setCSVFile] = useState(null);
   const [CSVFilename, setCSVFilename] = useState('');
   const [formDatas, setFormDatas] = useState([]);
+  const [boxNumberMap, setBoxNumberMap] = useState(new Map());
   const [uploadErrors, setUploadErrors] = useState([]);
   const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -62,11 +63,10 @@ const UploadCSV = ({ isOpen, onClose }) => {
             await checkErrors(CSVRow, i + 1);
             CSVRows.push(CSVRow);
             const boxNumber = row['Box No'];
-            if (boxNumbers.has(boxNumber)) {
-              boxNumbers.get(boxNumber).push(i + 1);
-            } else {
-              boxNumbers.set(boxNumber, [i + 1]);
+            if (!boxNumbers.has(boxNumber)) {
+              boxNumbers.set(boxNumber, new Set());
             }
+            boxNumbers.get(boxNumber).add(i + 1);
           }),
         );
 
@@ -74,16 +74,17 @@ const UploadCSV = ({ isOpen, onClose }) => {
 
         // check if there are duplicate box numbers in the same file
         boxNumbers.forEach((lineNumbers, boxNumber) => {
-          if (lineNumbers.length > 1) {
+          if (lineNumbers.size > 1) {
             setUploadErrors(prevState => [
               ...prevState,
-              `Duplicate box number: ${boxNumber} (lines ${lineNumbers.join(', ')})`,
+              `Duplicate box number: ${boxNumber} (lines ${[...lineNumbers].join(', ')})`,
             ]);
           }
         });
 
         setIsUploadingNewFile(false);
         setCSVFile();
+        setBoxNumberMap(boxNumbers);
         setIsLoading(false);
       },
     });
@@ -105,7 +106,9 @@ const UploadCSV = ({ isOpen, onClose }) => {
 
   const onEditViewFile = () => {
     onClose();
-    navigate('/upload-csv-view', { state: { rows: formDatas, filename: CSVFilename } });
+    navigate('/upload-csv-view', {
+      state: { rows: formDatas, boxNumberMap, filename: CSVFilename },
+    });
   };
 
   const addToMap = async e => {
