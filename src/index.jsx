@@ -28,6 +28,7 @@ ReactDOM.render(
           </Route>
 
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/about" />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/auth-email" element={<AuthEmail redirectPath="/" />} />
           <Route path="/" element={<Dashboard />} />

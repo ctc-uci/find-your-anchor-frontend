@@ -72,10 +72,14 @@ const BoxInfo = ({ selectedBox, setSelectedBox, adminIsLoggedIn }) => {
               }
             />
             {/* Box message */}
-            <FormLabel htmlFor="message" className={styles['form-label']}>
-              Message
-            </FormLabel>
-            <Textarea isReadOnly value={selectedBox.additional_comments} resize="vertical" />
+            {selectedBox.message && (
+              <>
+                <FormLabel htmlFor="message" className={styles['form-label']}>
+                  Message
+                </FormLabel>
+                <Textarea isReadOnly value={selectedBox.message} resize="vertical" />
+              </>
+            )}
           </FormControl>
           {boxHistory.length > 0 && (
             <>

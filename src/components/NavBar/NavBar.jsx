@@ -62,7 +62,14 @@ const NavBar = ({ isAdmin }) => {
 
   const UserLinks = () => (
     <>
-      {/* What page does the about link go to? */}
+      <NavLink
+        to="/about"
+        className={navLink =>
+          navLink.isActive ? styles['nav-link-selected'] : styles['nav-link-unselected']
+        }
+      >
+        About
+      </NavLink>
       <NavLink
         to="/relocate-box-form"
         className={navLink =>
