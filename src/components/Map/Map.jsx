@@ -30,9 +30,7 @@ const Map = ({
     // Toggle updateBoxListSwitch, which will update update the box list in the right side bar
     setUpdateBoxListSwitch(!updateBoxListSwitch);
     setSelectedBox(null);
-    console.log(mapState.getZoom());
     setZoomLevel(Math.max(mapState.getZoom(), 10));
-    console.log('ZOOMLEVEL: ', zoomLevel);
     // IMPORTANT: mapState.flyTo(xxx) must be called LAST in order to avoid a moving pin bug
     mapState.flyTo([markerObject.latitude, markerObject.longitude], zoomLevel);
   };
