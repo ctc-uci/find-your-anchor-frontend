@@ -27,7 +27,6 @@ const UploadCSV = ({ isOpen, onClose }) => {
     if (isUploadingNewFile) {
       setFormDatas([]);
       setUploadErrors([]);
-      setIsLoading(true);
     }
   }, [isUploadingNewFile]);
 
@@ -60,18 +59,20 @@ const UploadCSV = ({ isOpen, onClose }) => {
               country: row.Country,
               launchedOrganically: row['Launched Organically?'].toLowerCase() === 'yes',
             };
-            await checkErrors(CSVRow, i);
+            await checkErrors(CSVRow, i + 1);
             CSVRows.push(CSVRow);
             const boxNumber = row['Box No'];
             if (boxNumbers.has(boxNumber)) {
-              boxNumbers.get(boxNumber).push(i);
+              boxNumbers.get(boxNumber).push(i + 1);
             } else {
-              boxNumbers.set(boxNumber, [i]);
+              boxNumbers.set(boxNumber, [i + 1]);
             }
           }),
         );
 
         setFormDatas(CSVRows);
+
+        // check if there are duplicate box numbers in the same file
         boxNumbers.forEach((lineNumbers, boxNumber) => {
           if (lineNumbers.length > 1) {
             setUploadErrors(prevState => [
@@ -129,11 +130,11 @@ const UploadCSV = ({ isOpen, onClose }) => {
     <CommonModal isOpen={isOpen} onClose={onCloseModal} className={styles['common-modal']}>
       <form onSubmit={addToMap}>
         {(() => {
-          if (isUploadingNewFile) {
-            return <UploadModalContent setCSVFile={setCSVFile} onUpload={onUpload} />;
-          }
           if (isLoading) {
             return <div className={styles['loading-text']}>Uploading...</div>;
+          }
+          if (isUploadingNewFile) {
+            return <UploadModalContent setCSVFile={setCSVFile} onUpload={onUpload} />;
           }
           if (uploadErrors.length === 0) {
             return (
