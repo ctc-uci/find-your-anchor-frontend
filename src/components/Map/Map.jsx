@@ -19,6 +19,8 @@ const Map = ({
   const [mapState, setMapState] = useState(null);
   // A list containing all unique zip codes stored in Anchor_Box
   const [zipcodeData, setZipCodeData] = useState([]);
+
+  const [zoomLevel, setZoomLevel] = useState(12);
   // Handles when a marker is clicked
   // 1. Updates the box list with the boxes located in the zip code (in PinInformation)
   // 2. Switches PinInformation to box list view
@@ -28,8 +30,11 @@ const Map = ({
     // Toggle updateBoxListSwitch, which will update update the box list in the right side bar
     setUpdateBoxListSwitch(!updateBoxListSwitch);
     setSelectedBox(null);
+    console.log(mapState.getZoom());
+    setZoomLevel(Math.max(mapState.getZoom(), 10));
+    console.log('ZOOMLEVEL: ', zoomLevel);
     // IMPORTANT: mapState.flyTo(xxx) must be called LAST in order to avoid a moving pin bug
-    mapState.flyTo([markerObject.latitude, markerObject.longitude], 10);
+    mapState.flyTo([markerObject.latitude, markerObject.longitude], zoomLevel);
   };
 
   // This function makes it so that when a marker cluser is clicked, the right side bar closes.
