@@ -73,11 +73,7 @@ const CSVViewTable = ({ rows }) => {
   };
 
   const addErrors = errors => {
-    errors.forEach(error => {
-      if (error !== 'success') {
-        setCsvErrors(prevState => [...prevState, error.id]);
-      }
-    });
+    setCsvErrors(errors.filter(error => error !== 'success').map(err => err.id));
   };
 
   const addToMap = async e => {
