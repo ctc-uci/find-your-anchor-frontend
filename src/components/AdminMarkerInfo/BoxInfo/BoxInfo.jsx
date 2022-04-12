@@ -38,62 +38,6 @@ const BoxInfo = ({
     const response = await FYABackend.get(`/boxHistory/history/${selectedBox.box_id}`);
     setBoxHistory(response.data);
   }, []);
-  // Deletes the currently selected box in both Anchor_Box and Box_History
-  const deleteBox = async () => {
-    try {
-      const deleteRequests = [
-        // Delete the box in Box_History
-        await FYABackend.delete(`/boxHistory/${selectedBox.box_id}`),
-        // Delete the box in Anchor_Box
-        await FYABackend.delete(`/anchorBox/${selectedBox.box_id}`),
-      ];
-      await Promise.allSettled(deleteRequests);
-      // Refetch box list
-      const anchorBoxesInZipCode = await FYABackend.get('/anchorBox', {
-        params: {
-          zipCode: selectedZipCode,
-          country: selectedCountry,
-        },
-      });
-      // If the box list is now empty, remove marker from map
-      if (anchorBoxesInZipCode.data.length === 0) {
-        setZipCodeData(
-          zipCodeData.filter(
-            zipCodeInfo =>
-              zipCodeInfo.zip_code !== selectedBox.zip_code ||
-              zipCodeInfo.country !== selectedBox.country,
-          ),
-        );
-        setSelectedZipCode(null);
-        setSelectedCountry(null);
-        // If box list is not empty, decrement the marker's label
-      } else {
-        // Find the marker inside zipCodeData
-        const index = zipCodeData.findIndex(
-          zipCodeInfo =>
-            zipCodeInfo.zip_code === selectedBox.zip_code &&
-            zipCodeInfo.country === selectedBox.country,
-        );
-        // Decrement the marker's box_count
-        const newZipCodeInfo = {
-          ...zipCodeData[index],
-          box_count: zipCodeData[index].box_count - 1,
-        };
-        // Generate a new zipCodeData with the updated marker
-        setZipCodeData([
-          ...zipCodeData.filter((zipCodeInfo, pos) => pos !== index),
-          newZipCodeInfo,
-        ]);
-      }
-      // Set the delete box to null
-      setSelectedBox(null);
-      // TODO: Add toast to show box deleted
-    } catch (err) {
-      // TODO: Add toast if something goes wrong
-      // eslint-disable-next-line no-console
-      console.log(err.message);
-    }
-  };
   return (
     <ChakraProvider>
       <div className={styles['box-info']}>
@@ -172,7 +116,14 @@ const BoxInfo = ({
             <DeleteBoxModal
               isOpen={isOpenDeleteBoxModal}
               onClose={onCloseDeleteBoxModal}
-              deleteBox={deleteBox}
+              selectedBox={selectedBox}
+              setSelectedBox={setSelectedBox}
+              selectedZipCode={selectedZipCode}
+              selectedCountry={selectedCountry}
+              setSelectedZipCode={setSelectedZipCode}
+              setSelectedCountry={setSelectedCountry}
+              zipCodeData={zipCodeData}
+              setZipCodeData={setZipCodeData}
             />
           </div>
         </div>
