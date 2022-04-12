@@ -30,14 +30,14 @@ const RequestChangesPopup = ({
   const [changesRequested, setChangesRequested] = useState('');
 
   const successToast = ShowToast({
-    icon: 'warning',
+    type: 'warning',
     title: `Changes for Box #${boxID} Requested`,
     message: 'A copy of your responses has been sent to the messenger.',
     toastPosition: 'bottom-right',
   });
 
   const errorToast = ShowToast({
-    icon: 'error',
+    type: 'error',
     title: `Failed to Request Changes for Box #${boxID}`,
     message: 'Please try again or contact an administrator. ',
     toastPosition: 'bottom-right',

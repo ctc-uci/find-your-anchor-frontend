@@ -42,14 +42,14 @@ const PickupBox = ({
   // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
   // This method is called when the approve box icon is clicked
   const successToast = ShowToast({
-    icon: 'success',
+    type: 'success',
     title: `Box #${boxID} Approved`,
     message: '',
     toastPosition: 'bottom-right',
   });
 
   const errorToast = ShowToast({
-    icon: 'error',
+    type: 'error',
     title: `Failed to Approve Box #${boxID}`,
     message: '',
     toastPosition: 'bottom-right',

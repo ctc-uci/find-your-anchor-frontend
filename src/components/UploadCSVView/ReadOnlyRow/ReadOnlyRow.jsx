@@ -13,14 +13,14 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow, isError }) => {
     onClose: onCloseDeleteModal,
   } = useDisclosure();
   const successToast = ShowToast({
-    icon: 'success',
+    type: 'success',
     title: `Deleted Box #${data.boxNumber}`,
     message: '',
     toastPosition: 'bottom-right',
   });
 
   const errorToast = ShowToast({
-    icon: 'error',
+    type: 'error',
     title: `Failed to Delete Box #${data.boxNumber}`,
     message: '',
     toastPosition: 'bottom-right',

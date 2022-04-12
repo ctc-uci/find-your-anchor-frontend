@@ -89,14 +89,14 @@ const RelocationBox = ({
   };
 
   const successToast = ShowToast({
-    icon: 'success',
+    type: 'success',
     title: `Box #${boxID} Approved`,
     message: '',
     toastPosition: 'bottom-right',
   });
 
   const errorToast = ShowToast({
-    icon: 'error',
+    type: 'error',
     title: `Failed to Approve Box #${boxID}`,
     message: '',
     toastPosition: 'bottom-right',

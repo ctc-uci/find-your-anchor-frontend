@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import { ChakraProvider, Button } from '@chakra-ui/react';
-import { useLocation } from 'react-router-dom';
 import styles from './AdminDashboard.module.css';
 import Map from '../../components/Map/Map';
 import BoxApproval from '../../components/BoxApproval/BoxApproval';
 import AdminMarkerInfo from '../../components/AdminMarkerInfo/AdminMarkerInfo';
-import ShowToast from '../../common/ShowToast/ShowToast';
 
 const AdminDashboard = () => {
-  const { state } = useLocation();
   // This state determines whether or not to show the admin approval (left) side bar
   const [showReview, setShowReview] = useState(false);
   // This state contains the currently selected zip code (set when a user clicks on a map pin)
@@ -21,16 +18,8 @@ const AdminDashboard = () => {
   // This state determines which view to show in the right side bar (set when a user clicks on a box in the right side bar)
   // Not null: Show the full box info view
   // Null: show the box list view
-  console.log(state.filename);
-  if (state.filename !== '') {
-    ShowToast({
-      icon: 'success',
-      title: `${state.filename} added to Map`,
-      message: '',
-      toastPosition: 'bottom-left',
-    })();
-  }
   const [selectedBox, setSelectedBox] = useState(null);
+
   return (
     <ChakraProvider>
       <div className={styles['admin-dashboard-container']}>

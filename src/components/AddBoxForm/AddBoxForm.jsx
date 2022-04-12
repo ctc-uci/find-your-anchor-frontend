@@ -60,13 +60,13 @@ const AddBoxForm = () => {
 
   const [files, setFiles] = useState([]);
   const successToast = ShowToast({
-    icon: 'success',
+    type: 'success',
     title: `Successfully Added Box`,
     message: '',
     toastPosition: 'bottom-right',
   });
   const errorToast = ShowToast({
-    icon: 'error',
+    type: 'error',
     title: `Failed to Add Box`,
     message: 'Please try again or contact an administrator',
     toastPosition: 'bottom-right',

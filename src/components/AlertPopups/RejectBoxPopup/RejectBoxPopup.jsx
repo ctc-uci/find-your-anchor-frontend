@@ -12,6 +12,7 @@ import {
   AlertDialogCloseButton,
   Textarea,
 } from '@chakra-ui/react';
+import ShowToast from '../../../common/ShowToast/ShowToast';
 import { FYABackend, sendEmail } from '../../../common/utils';
 import RejectedBoxEmail from '../../Email/EmailTemplates/RejectedBoxEmail';
 import styles from './RejectBoxPopup.module.css';
@@ -28,27 +29,44 @@ const RejectBoxPopup = ({
 }) => {
   const cancelRef = React.useRef();
   const [rejectionReason, setRejectionReason] = useState('');
+  const successToast = ShowToast({
+    type: 'error',
+    title: `Box #${boxID} Rejected`,
+    message: 'A copy of your responses has been sent to the messenger.',
+    toastPosition: 'bottom-right',
+  });
 
+  const errorToast = ShowToast({
+    type: 'error',
+    title: `Failed to Reject Box #${boxID}`,
+    message: 'Please try again or contact an administrator. ',
+    toastPosition: 'bottom-right',
+  });
   const handleRejectButtonClicked = async () => {
-    await FYABackend.put('/boxHistory/update', {
-      transactionID,
-      boxID,
-      approved: false,
-      status: 'evaluated',
-      rejectionReason,
-    });
-    const requests = [
-      fetchBoxes('under review', pickup),
-      fetchBoxes('pending changes', pickup),
-      fetchBoxes('evaluated', pickup),
-      sendEmail(
-        boxHolderName,
-        boxHolderEmail,
-        <RejectedBoxEmail boxHolderName={boxHolderName} rejectionReason={rejectionReason} />,
-      ),
-    ];
-    await Promise.all(requests);
-    setIsOpen(false);
+    try {
+      await FYABackend.put('/boxHistory/update', {
+        transactionID,
+        boxID,
+        approved: false,
+        status: 'evaluated',
+        rejectionReason,
+      });
+      const requests = [
+        fetchBoxes('under review', pickup),
+        fetchBoxes('pending changes', pickup),
+        fetchBoxes('evaluated', pickup),
+        sendEmail(
+          boxHolderName,
+          boxHolderEmail,
+          <RejectedBoxEmail boxHolderName={boxHolderName} rejectionReason={rejectionReason} />,
+        ),
+      ];
+      await Promise.all(requests);
+      setIsOpen(false);
+      successToast();
+    } catch (err) {
+      errorToast();
+    }
   };
 
   return (
