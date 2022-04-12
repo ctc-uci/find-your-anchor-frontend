@@ -9,7 +9,7 @@ import { Select } from 'chakra-react-select';
 import countryList from 'react-select-country-list';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import { uploadBoxPhoto, validateZip } from '../../common/FormUtils/boxFormUtils';
-import { formatDate, FYABackend } from '../../common/utils';
+import { formatDate, FYABackend, getLatLong } from '../../common/utils';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../common/FormUtils/DatePicker.css';
 import styles from './PickupBoxForm.module.css';
@@ -62,22 +62,28 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
     formData.country = formData.country.value;
 
-    try {
-      setLoading(true);
-      await FYABackend.post('/boxHistory', {
-        ...formData,
-        pickup: true,
-        status: 'under review',
-        messageStatus: 'pending',
-        imageStatus: 'pending',
-      });
+    const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
+    if (latitude === undefined && longitude === undefined) {
+      // TODO: display toast component
+      alert(`Cannot find ${formData.zipcode} in country ${formData.country}`);
+    } else {
+      try {
+        setLoading(true);
+        await FYABackend.post('/boxHistory', {
+          ...formData,
+          pickup: true,
+          status: 'under review',
+          messageStatus: 'pending',
+          imageStatus: 'pending',
+        });
 
-      setFormSubmitted(true);
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      // TODO: show error banner on failure
-      console.log(err.message);
+        setFormSubmitted(true);
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        // TODO: show error banner on failure
+        console.log(err.message);
+      }
     }
   };
 
@@ -134,7 +140,7 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
             {/* display an error if zipcode does not exist in country */}
             {errors['']?.message !== 'zip validated' && (
-              <FormErrorMessage>{errors['']?.message}</FormErrorMessage>
+              <FormErrorMessage>{!errors.zipcode && errors['']?.message}</FormErrorMessage>
             )}
           </FormControl>
           <br />

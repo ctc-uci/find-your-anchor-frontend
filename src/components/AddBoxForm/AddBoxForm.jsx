@@ -81,11 +81,11 @@ const AddBoxForm = () => {
     formData.launchedOrganically = formData.launchedOrganically === 'yes';
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
     formData.country = formData.country.value;
-    const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
 
+    const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
     if (latitude === undefined && longitude === undefined) {
       // TODO: display toast component
-      console.log(`Cannot find ${formData.zipcode} in country ${formData.country}`);
+      alert(`Cannot find ${formData.zipcode} in country ${formData.country}`);
     } else {
       try {
         setLoading(true);
@@ -143,7 +143,7 @@ const AddBoxForm = () => {
           <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
           {/* display an error if zipcode does not exist in country */}
           {errors['']?.message !== 'zip validated' && (
-            <FormErrorMessage>{errors['']?.message}</FormErrorMessage>
+            <FormErrorMessage>{!errors.zipcode && errors['']?.message}</FormErrorMessage>
           )}
         </FormControl>
         <br />

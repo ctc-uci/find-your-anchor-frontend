@@ -15,7 +15,7 @@ import {
   Select,
 } from '@chakra-ui/react';
 import { Select as ChakraReactSelect } from 'chakra-react-select';
-import { FYABackend, formatDate } from '../../common/utils';
+import { FYABackend, formatDate, getLatLong } from '../../common/utils';
 import { uploadBoxPhoto, validateZip } from '../../common/FormUtils/boxFormUtils';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -76,23 +76,29 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
     formData.country = formData.country.value;
 
-    try {
-      setLoading(true);
-      await FYABackend.post('/boxHistory', {
-        ...formData,
-        launchedOrganically: formData.dropOffMethod === 'organic-launch',
-        pickup: false,
-        status: 'under review',
-        messageStatus: 'pending',
-        imageStatus: 'pending',
-      });
+    const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
+    if (latitude === undefined && longitude === undefined) {
+      // TODO: display toast component
+      alert(`Cannot find ${formData.zipcode} in country ${formData.country}`);
+    } else {
+      try {
+        setLoading(true);
+        await FYABackend.post('/boxHistory', {
+          ...formData,
+          launchedOrganically: formData.dropOffMethod === 'organic-launch',
+          pickup: false,
+          status: 'under review',
+          messageStatus: 'pending',
+          imageStatus: 'pending',
+        });
 
-      setFormSubmitted(true);
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      // TODO: show error banner on failure
-      console.log(err.message);
+        setFormSubmitted(true);
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        // TODO: show error banner on failure
+        console.log(err.message);
+      }
     }
   };
 
@@ -162,7 +168,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
             {/* display an error if zipcode does not exist in country */}
             {errors['']?.message !== 'zip validated' && (
-              <FormErrorMessage>{errors['']?.message}</FormErrorMessage>
+              <FormErrorMessage>{!errors.zipcode && errors['']?.message}</FormErrorMessage>
             )}
           </FormControl>
           <br />
