@@ -22,6 +22,7 @@
 .banner {
   flex: 1;
   background-size: cover;
+  background-position: center;
 }
 
 .logo-container {
@@ -53,7 +54,7 @@
 
   .auth-form-component {
     width: 90%;
-    margin: 50px 0px;
+    margin: 20px 0px;
   }
 
   .logo-container,
@@ -67,7 +68,7 @@
 
   .auth-form {
     flex: 0;
-    border-top-left-radius: 12.5px;
-    border-top-right-radius: 12.5px;
+    /* border-top-left-radius: 12.5px;
+    border-top-right-radius: 12.5px; */
   }
 }
