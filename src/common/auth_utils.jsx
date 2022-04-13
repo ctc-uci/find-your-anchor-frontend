@@ -93,9 +93,15 @@ const refreshToken = async () => {
  * @returns A boolean indicating whether or not the log in was successful
  */
 const logInWithEmailAndPassword = async (email, password, redirectPath, navigate, cookies) => {
-  await signInWithEmailAndPassword(auth, email, password);
-  cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
-  navigate(redirectPath);
+  // Check if user is stored in database before logging them in.
+  const user = await FYABackend.get(`/users/email/${email}`);
+  if (user.data.user) {
+    await signInWithEmailAndPassword(auth, email, password);
+    cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
+    navigate(redirectPath);
+  } else {
+    throw new Error(`User with email ${email} is not stored in the database.`);
+  }
 };
 
 /**
