@@ -1,0 +1,61 @@
+.template-wrapper {
+  position: relative;
+  margin-top: 100px;
+  margin-left: 100px;
+  display: flex;
+  flex-direction: column;
+  width: 800px;
+}
+
+.fya-logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.content-text, .picture {
+  padding-top: 40px;
+}
+
+.content-text {
+  width: 60%;
+}
+
+.subheader {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2E688E;
+  text-transform: uppercase;
+}
+
+.header {
+  font-size: 24px;
+  padding: 100px 0 0 0;
+  text-transform: none;
+}
+
+.content-wrapper {
+  display: flex;
+}
+
+.what-does-this-mean-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 20px 0;
+}
+
+.next-steps-wrapper {
+  margin-left: 10px;
+}
+
+.next-steps-list {
+  margin-left: 50px;
+}
+
+.important-text {
+  font-weight: 700;
+}
+
+.picture {
+  width: 200px;
+}

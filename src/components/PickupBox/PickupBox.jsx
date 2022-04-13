@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
 import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
-import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
+import AdminApprovalProcessEmail from '../Email/EmailTemplates/AdminApprovalProcessEmail';
 import { FYABackend, sendEmail } from '../../common/utils';
 
 const PickupBox = ({
@@ -54,7 +54,7 @@ const PickupBox = ({
     });
     const requests = [
       fetchBoxes('under review', true),
-      sendEmail(boxHolderName, boxHolderEmail, <ApprovedBoxEmail boxHolderName={boxHolderName} />),
+      sendEmail(boxHolderName, boxHolderEmail, <AdminApprovalProcessEmail type="approved" />),
     ];
     await Promise.all(requests);
   };

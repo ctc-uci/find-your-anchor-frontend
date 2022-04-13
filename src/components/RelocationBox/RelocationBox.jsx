@@ -18,7 +18,7 @@ import PropTypes from 'prop-types';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
 import SaveChangesIcon from '../BoxIcons/SaveChangesIcon.svg';
 import { FYABackend, getLatLong, sendEmail } from '../../common/utils';
-import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
+import AdminApprovalProcessEmail from '../Email/EmailTemplates/AdminApprovalProcessEmail';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import styles from './RelocationBox.module.css';
@@ -118,7 +118,7 @@ const RelocationBox = ({
       sendEmail(
         boxHolderNameState,
         boxHolderEmailState,
-        <ApprovedBoxEmail boxHolderName={boxHolderName} />,
+        <AdminApprovalProcessEmail type="approved" />,
       ),
     ];
     await Promise.all(requests);
