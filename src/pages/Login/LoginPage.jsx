@@ -1,7 +1,7 @@
 import React from 'react';
 import LoginForm from '../../components/Login/LoginForm';
 import AuthPageLayout from '../../components/AuthPageLayout/AuthPageLayout';
-import LoginBackground from '../../assets/login-background.svg';
+import LoginBackground from '../../assets/login-background.jpg';
 
 const LoginPage = () => (
   <AuthPageLayout backgroundImage={LoginBackground}>

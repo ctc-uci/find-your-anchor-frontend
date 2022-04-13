@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AuthPageLayout from '../../components/AuthPageLayout/AuthPageLayout';
 import RegisterForm from '../../components/Register/RegisterForm';
-import RegisterBackground from '../../assets/register-background.svg';
+import RegisterBackground from '../../assets/register-background.jpg';
 
 const RegisterPage = ({ email }) => (
   <AuthPageLayout backgroundImage={RegisterBackground}>
