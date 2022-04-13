@@ -135,9 +135,11 @@ const sendPasswordReset = async email => {
  */
 const sendInviteLink = async email => {
   const inviteId = nanoid();
-  await FYABackend.post('/adminInvite', { email, inviteId });
   const url = `http://localhost:3000/auth-email?mode=inviteUser&inviteID=${inviteId}`;
   await sendEmail(email, email, <AdminInviteEmail url={url} />);
+
+  // Add invited user to the AdminInvite table after the invite email has been sent.
+  await FYABackend.post('/adminInvite', { email, inviteId });
 };
 
 /**

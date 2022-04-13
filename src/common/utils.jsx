@@ -65,7 +65,7 @@ export const sendEmail = async (name, email, messageHtml) => {
   if (response.status === 200) {
     alert('Email sent, awesome!');
   } else {
-    alert('Oops, something went wrong. Try again');
+    throw new Error('Oops, something went wrong. Try again');
   }
 };
 
