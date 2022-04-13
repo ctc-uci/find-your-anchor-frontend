@@ -100,8 +100,8 @@ const RelocationBox = ({
       message: messageState,
       launchedOrganically: launchedOrganicallyState,
     });
-    // TODO: REPLACE USA WITH COUNTRY INPUT
-    let coordinates = await getLatLong(zipCode, 'USA');
+    // TODO: REPLACE US WITH COUNTRY INPUT
+    let coordinates = await getLatLong(zipCode, 'US');
     if (coordinates.length !== 2) {
       coordinates = [0, 0];
     }

@@ -71,7 +71,7 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
             <FormLabel htmlFor="message" className={styles['form-label']}>
               Message
             </FormLabel>
-            <Textarea isReadOnly value={selectedBox.additional_comments} resize="vertical" />
+            <Textarea isReadOnly value={selectedBox.message} resize="vertical" />
           </FormControl>
           {boxHistory.length > 0 && (
             <>
@@ -114,7 +114,6 @@ BoxInfo.propTypes = {
     message: PropTypes.string,
     launched_organically: PropTypes.bool,
     picture: PropTypes.string,
-    show_on_map: PropTypes.bool,
     zip_code: PropTypes.string,
     boxholder_name: PropTypes.string,
     boxholder_email: PropTypes.string,
