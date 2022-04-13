@@ -40,15 +40,23 @@ const BoxInfo = ({ selectedBox, setSelectedBox, adminIsLoggedIn }) => {
             {adminIsLoggedIn && (
               <>
                 {/* Box name */}
-                <FormLabel htmlFor="name" className={styles['form-label']}>
-                  Name
-                </FormLabel>
-                <Input isReadOnly id="name" type="name" value={selectedBox.boxholder_name} />
+                {selectedBox.boxholder_name && (
+                  <>
+                    <FormLabel htmlFor="name" className={styles['form-label']}>
+                      Name
+                    </FormLabel>
+                    <Input isReadOnly id="name" type="name" value={selectedBox.boxholder_name} />
+                  </>
+                )}
                 {/* Box email */}
-                <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
-                  Email
-                </FormLabel>
-                <Input isReadOnly id="email" type="email" value={selectedBox.boxholder_email} />
+                {selectedBox.boxholder_email && (
+                  <>
+                    <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
+                      Email
+                    </FormLabel>
+                    <Input isReadOnly id="email" type="email" value={selectedBox.boxholder_email} />
+                  </>
+                )}
               </>
             )}
             {/* Box general location */}
@@ -78,6 +86,14 @@ const BoxInfo = ({ selectedBox, setSelectedBox, adminIsLoggedIn }) => {
                   Message
                 </FormLabel>
                 <Textarea isReadOnly value={selectedBox.message} resize="vertical" />
+              </>
+            )}
+            {selectedBox.additional_comments && (
+              <>
+                <FormLabel htmlFor="additional comments" className={styles['form-label']}>
+                  Additional Comments
+                </FormLabel>
+                <Textarea isReadOnly value={selectedBox.additional_comments} resize="vertical" />
               </>
             )}
           </FormControl>
