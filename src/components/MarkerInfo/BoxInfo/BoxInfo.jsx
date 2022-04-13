@@ -88,7 +88,7 @@ const BoxInfo = ({ selectedBox, setSelectedBox, adminIsLoggedIn }) => {
                 <Textarea isReadOnly value={selectedBox.message} resize="vertical" />
               </>
             )}
-            {selectedBox.additional_comments && (
+            {adminIsLoggedIn && selectedBox.additional_comments && (
               <>
                 <FormLabel htmlFor="additional comments" className={styles['form-label']}>
                   Additional Comments
