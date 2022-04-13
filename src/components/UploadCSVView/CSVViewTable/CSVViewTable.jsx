@@ -9,11 +9,13 @@ import EditableRow from '../EditableRow/EditableRow';
 import { FYABackend, formatDate, getLatLong } from '../../../common/utils';
 import BoxSchema from '../../UploadCSV/UploadCSVUtils';
 
-const CSVViewTable = ({ rows }) => {
+const CSVViewTable = ({ rows, boxNumberMap }) => {
+  console.log(boxNumberMap && boxNumberMap);
   const navigate = useNavigate();
   const [csvErrors, setCsvErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [formDatas, setFormData] = useState(rows);
+  const [boxNumbers] = useState(boxNumberMap);
   const [editId, setEditId] = useState(null);
   const [editFormData, setEditFormData] = useState({
     date: '',
@@ -37,6 +39,18 @@ const CSVViewTable = ({ rows }) => {
     setEditId(data.id);
   };
 
+  const updateBoxNumberMap = (oldBoxNum, lineNum, newBoxNum) => {
+    boxNumbers.get(oldBoxNum).remove(lineNum);
+    if (boxNumbers.get(oldBoxNum).size === 0) {
+      boxNumbers.delete(oldBoxNum);
+    }
+
+    if (!boxNumbers.has(newBoxNum)) {
+      boxNumbers.set(newBoxNum, new Set());
+    }
+    boxNumbers.get(newBoxNum).add(lineNum);
+  };
+
   const handleEditFormSubmit = editRowData => {
     const editedRow = {
       id: editId,
@@ -47,10 +61,10 @@ const CSVViewTable = ({ rows }) => {
       launchedOrganically: editRowData.launchedOrganically,
     };
 
-    const newFormData = [...formDatas];
     const index = formDatas.findIndex(data => data.id === editId); // get index of the row that we are editing
-    newFormData[index] = editedRow; // update the array at index
-    setFormData(newFormData);
+    updateBoxNumberMap(formDatas[index].boxNumber, index, editRowData.boxNumber);
+    formDatas[index] = editedRow;
+    console.log(boxNumberMap);
     setEditId(null);
     setCsvErrors(csvErrors.filter(error => error !== editId)); // delete edited row from csvErrors array
   };
@@ -173,6 +187,7 @@ const CSVViewTable = ({ rows }) => {
 
 CSVViewTable.propTypes = {
   rows: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])).isRequired,
+  boxNumberMap: PropTypes.instanceOf(Map).isRequired,
 };
 
 export default CSVViewTable;
