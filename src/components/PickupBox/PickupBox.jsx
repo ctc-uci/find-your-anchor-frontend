@@ -99,7 +99,7 @@ const PickupBox = ({
                   <img
                     src={picture}
                     alt=""
-                    className={`${styles['pickup-image-corners']}
+                    className={`${styles['image-corners']}
                     ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
                     ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
                   />
