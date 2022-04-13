@@ -85,6 +85,7 @@ const CSVViewTable = ({ rows }) => {
 
     if (nextError) {
       editRow(e, nextError);
+      setIsLoading(false);
     } else {
       // find and set latitude and longitude for each formData
       try {
