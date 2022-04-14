@@ -18,6 +18,7 @@ import RelocateBoxFormPage from './pages/RelocateBoxForm/RelocateBoxFormPage';
 import UploadCSVView from './pages/UploadCSVView/UploadCSVView';
 import LoginPage from './pages/Login/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
+import AboutPage from './pages/About/AboutPage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -27,6 +28,7 @@ ReactDOM.render(
           <Route element={<Layout isAdmin={false} />}>
             <Route path="/pickup-box-form" element={<PickupBoxFormPage />} />
             <Route path="/relocate-box-form" element={<RelocateBoxFormPage />} />
+            <Route path="/about" element={<AboutPage />} />
           </Route>
 
           <Route path="/login" element={<LoginPage />} />
