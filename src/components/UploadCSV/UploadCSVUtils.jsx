@@ -40,8 +40,8 @@ function validateZipcodeInCountry() {
   });
 }
 
-function validateBoxNumber(boxNumberMap) {
-  return this.test('boxNotExists', { boxNumberMap }, async function boxCheck(value) {
+function validateBoxNumber() {
+  return this.test('boxNotExists', async function boxCheck(value) {
     const { path, createError } = this;
     const box = await FYABackend.get(`/anchorBox/box/${value}`);
     return box.data.length === 0
@@ -55,6 +55,7 @@ yup.addMethod(yup.object, 'isZipInCountry', validateZipcodeInCountry);
 yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
 export default yup
   .object({
+    // TODO: pass boxNumberMap into boxNotExists function
     boxNumber: yup.number().boxNotExists().required().typeError('Missing or invalid box number'),
     date: yup.date().required().typeError('Missing or invalid date'),
     zipCode: yup.string().required('Missing or invalid zip code'),
