@@ -47,7 +47,6 @@ const DeleteBoxModal = ({
         setSelectedCountry(null);
         // If box list is not empty, decrement the marker's label
       } else {
-        console.log(deletedBox);
         // Find the marker inside zipCodeData
         const index = zipCodeData.findIndex(
           zipCodeInfo =>
