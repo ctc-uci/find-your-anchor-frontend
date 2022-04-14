@@ -125,7 +125,7 @@ const CSVViewTable = ({ rows }) => {
 
   const handleDeleteRow = rowId => {
     setFormData(formDatas.filter(rowData => rowData.id !== rowId));
-    // TODO: page shouldn't jump to first page
+    // TODO: page shouldn't jump to first page, tried gotoPage(pageIndex)
   };
 
   const checkErrors = async CSVRows => {
