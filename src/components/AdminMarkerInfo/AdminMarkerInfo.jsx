@@ -66,7 +66,6 @@ AdminMarkerInfo.propTypes = {
     message: PropTypes.string,
     launched_organically: PropTypes.bool,
     picture: PropTypes.string,
-    show_on_map: PropTypes.bool,
     zip_code: PropTypes.string,
   }),
   setSelectedBox: PropTypes.func.isRequired,
