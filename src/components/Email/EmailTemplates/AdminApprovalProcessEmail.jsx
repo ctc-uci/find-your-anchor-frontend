@@ -6,12 +6,12 @@ import { Email } from 'react-html-email';
 // import ChangesRequestedEmailPicture from '../../../assets/ChangesRequestedEmailPicture.svg';
 // import BoxRejectedEmailPicture from '../../../assets/BoxRejectedEmailPicture.svg';
 // import FYATextLogo from '../../../assets/fya-text-logo.svg';
-import {
-  BoxApprovedEmailPicture,
-  BoxRejectedEmailPicture,
-  ChangesRequestedEmailPicture,
-  FYATextLogo,
-} from '../../../common/utils';
+// import {
+//   BoxApprovedEmailPicture,
+//   BoxRejectedEmailPicture,
+//   ChangesRequestedEmailPicture,
+//   FYATextLogo,
+// } from '../../../common/utils';
 
 const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) => {
   const headerDict = {
@@ -105,9 +105,10 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
   };
 
   const imageSourceDict = {
-    approved: BoxApprovedEmailPicture,
-    'changes requested': ChangesRequestedEmailPicture,
-    rejected: BoxRejectedEmailPicture,
+    approved: `https://s3-csv-object-test.s3.us-west-1.amazonaws.com/BoxApprovedEmailPicture.png`,
+    'changes requested':
+      'https://s3-csv-object-test.s3.us-west-1.amazonaws.com/ChangesRequestedEmailPicture.png',
+    rejected: 'https://s3-csv-object-test.s3.us-west-1.amazonaws.com/BoxRejectedEmailPicture.png',
   };
   const headerContent = headerDict[type];
   const headerSubtextContent = headerSubtextDict[type];
@@ -141,7 +142,7 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
             top: 0,
             left: 0,
           }}
-          src={FYATextLogo}
+          src="https://s3-csv-object-test.s3.us-west-1.amazonaws.com/fya-text-logo.png"
           alt="FYA logo"
         />
         <h1
@@ -205,7 +206,11 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
               </div>
             )}
           </div>
-          <img style={{ width: '200px' }} src={imageSource} alt="Approved box icon" />
+          <img
+            style={{ width: '250px', height: '211.5px' }}
+            src={imageSource}
+            alt="Approved box icon"
+          />
         </div>
       </div>
     </Email>
