@@ -19,6 +19,8 @@ const AdminDashboard = () => {
   // Not null: Show the full box info view
   // Null: show the box list view
   const [selectedBox, setSelectedBox] = useState(null);
+  // A list containing all unique zip codes stored in Anchor_Box
+  const [zipCodeData, setZipCodeData] = useState([]);
   return (
     <ChakraProvider>
       <div className={styles['admin-dashboard-container']}>
@@ -47,6 +49,8 @@ const AdminDashboard = () => {
               setSelectedBox={setSelectedBox}
               updateBoxListSwitch={updateBoxListSwitch}
               setUpdateBoxListSwitch={setUpdateBoxListSwitch}
+              zipCodeData={zipCodeData}
+              setZipCodeData={setZipCodeData}
             />
           </div>
 
@@ -73,6 +77,8 @@ const AdminDashboard = () => {
               updateBoxListSwitch={updateBoxListSwitch}
               setSelectedBox={setSelectedBox}
               selectedBox={selectedBox}
+              zipCodeData={zipCodeData}
+              setZipCodeData={setZipCodeData}
             />
           </div>
         </div>

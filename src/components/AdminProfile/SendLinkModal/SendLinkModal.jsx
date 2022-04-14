@@ -33,7 +33,6 @@ const ModalOne = ({ count, setCount }) => {
       setCount(count + 1);
     } catch (err) {
       setErrorMessage(err.message);
-      console.log(errorMessage);
     }
   };
 
