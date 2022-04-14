@@ -14,10 +14,10 @@ const Map = ({
   setSelectedBox,
   setUpdateBoxListSwitch,
   updateBoxListSwitch,
+  zipCodeData,
+  setZipCodeData,
 }) => {
   const [mapState, setMapState] = useState(null);
-  // A list containing all unique zip codes stored in Anchor_Box
-  const [zipcodeData, setZipCodeData] = useState([]);
 
   // Handles when a marker is clicked
   // 1. Updates the box list with the boxes located in the zip code (in PinInformation)
@@ -76,8 +76,8 @@ const Map = ({
       />
       <ZoomControl position="bottomright" />
       {/* Map the marker data into <Marker /> components */}
-      {zipcodeData &&
-        zipcodeData.map(markerObject => (
+      {zipCodeData &&
+        zipCodeData.map(markerObject => (
           <Marker
             icon={markerIcon}
             key={markerObject.box_id}
@@ -105,6 +105,16 @@ Map.propTypes = {
   setUpdateBoxListSwitch: PropTypes.func.isRequired,
   setSelectedBox: PropTypes.func.isRequired,
   updateBoxListSwitch: PropTypes.bool.isRequired,
+  zipCodeData: PropTypes.arrayOf(
+    PropTypes.shape({
+      zip_code: PropTypes.string,
+      country: PropTypes.string,
+      longitude: PropTypes.number,
+      latitude: PropTypes.number,
+      box_count: PropTypes.number,
+    }),
+  ).isRequired,
+  setZipCodeData: PropTypes.func.isRequired,
 };
 
 export default Map;
