@@ -12,8 +12,8 @@ class BoxProvider extends OpenStreetMapProvider {
   constructor(options) {
     super({
       ...options,
-      searchUrl: 'http://localhost:3001/anchorBox/search',
-      reverseUrl: 'http://localhost:3001/anchorBox/search',
+      searchUrl: `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/anchorBox/search`,
+      reverseUrl: `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/anchorBox/search`,
     });
   }
 }

@@ -15,13 +15,14 @@ import styles from './BoxInfo.module.css';
 import { FYABackend } from '../../../common/utils';
 
 const BoxInfo = ({ selectedBox, setSelectedBox }) => {
+  const LOADING_STRING = 'Loading...';
   const [boxHistory, setBoxHistory] = useState([]);
-  const [boxHolderName, setBoxHolderName] = useState('Loading...');
-  const [boxHolderEmail, setBoxHolderEmail] = useState('Loading...');
-  const [generalLocation, setGeneralLocation] = useState('Loading...');
-  const [picture, setPicture] = useState('Loading...');
-  const [dropOffMethod, setDropOffMethod] = useState('Loading...');
-  const [message, setMessage] = useState('Loading...');
+  const [boxHolderName, setBoxHolderName] = useState(LOADING_STRING);
+  const [boxHolderEmail, setBoxHolderEmail] = useState(LOADING_STRING);
+  const [generalLocation, setGeneralLocation] = useState(LOADING_STRING);
+  const [picture, setPicture] = useState(LOADING_STRING);
+  const [dropOffMethod, setDropOffMethod] = useState(LOADING_STRING);
+  const [message, setMessage] = useState(LOADING_STRING);
 
   useEffect(async () => {
     if (selectedBox) {
