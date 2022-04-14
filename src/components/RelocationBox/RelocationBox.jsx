@@ -14,9 +14,9 @@ import {
 } from '@chakra-ui/react';
 
 import { BsFillArrowRightCircleFill, BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
+import { RiPencilFill, RiCheckFill } from 'react-icons/ri';
 import PropTypes from 'prop-types';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
-import SaveChangesIcon from '../BoxIcons/SaveChangesIcon.svg';
 import { FYABackend, getLatLong, sendEmail } from '../../common/utils';
 import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
@@ -49,6 +49,9 @@ const RelocationBox = ({
   // A state for determining whether or not the requestChangesPopup is open
   // This state is set true when the pending changes button is clicked
   const [requestChangesPopupIsOpen, setRequestChangesPopupIsOpen] = useState(false);
+  // A state for determining whether the fields under pending changes are editable
+  // This state is set true when the edit button is clicked
+  const [editPendingChangesState, setEditPendingChangesState] = useState(false);
   // A state for the box's boxHolderName
   // This state is updated when the user edits the box holder name under pending changes
   const [boxHolderNameState, setBoxHolderNameState] = useState(boxHolderName);
@@ -184,6 +187,23 @@ const RelocationBox = ({
             </h3>
             {/* Box picture */}
             <AccordionPanel pb={4} className={styles['accordion-panel']}>
+              {status === 'pending changes' && (
+                <button
+                  type="button"
+                  style={true ? {} : { visibility: 'hidden' }}
+                  onClick={() => setEditPendingChangesState(!editPendingChangesState)}
+                >
+                  {editPendingChangesState ? (
+                    <RiCheckFill
+                      color="#38a169"
+                      size={20}
+                      onClick={async () => updateBoxInfo('pending changes')}
+                    />
+                  ) : (
+                    <RiPencilFill color="#8E8E8E" size={20} />
+                  )}
+                </button>
+              )}
               <div className={styles['box-details']}>
                 {(status !== 'evaluated' || imageStatus !== 'rejected') && picture && (
                   <img
@@ -248,7 +268,7 @@ const RelocationBox = ({
                     Name
                   </FormLabel>
                   <Input
-                    isReadOnly={status !== 'pending changes'}
+                    isReadOnly={status !== 'pending changes' || !editPendingChangesState}
                     id="name"
                     // type="text"
                     value={boxHolderNameState}
@@ -259,7 +279,7 @@ const RelocationBox = ({
                     Email
                   </FormLabel>
                   <Input
-                    isReadOnly={status !== 'pending changes'}
+                    isReadOnly={status !== 'pending changes' || !editPendingChangesState}
                     id="email"
                     type="text"
                     value={boxHolderEmailState}
@@ -270,7 +290,7 @@ const RelocationBox = ({
                     Zip Code
                   </FormLabel>
                   <Input
-                    isReadOnly={status !== 'pending changes'}
+                    isReadOnly={status !== 'pending changes' || !editPendingChangesState}
                     id="zipCode"
                     type="text"
                     value={zipCodeState}
@@ -280,7 +300,7 @@ const RelocationBox = ({
                     General Location
                   </FormLabel>
                   <Input
-                    isReadOnly={status !== 'pending changes'}
+                    isReadOnly={status !== 'pending changes' || !editPendingChangesState}
                     id="generalLocation"
                     type="text"
                     value={generalLocationState}
@@ -291,7 +311,7 @@ const RelocationBox = ({
                     Drop Off Method
                   </FormLabel>
                   <Select
-                    disabled={status !== 'pending changes'}
+                    disabled={status !== 'pending changes' || !editPendingChangesState}
                     defaultValue={launchedOrganicallyState}
                     onChange={e => setLaunchedOrganicallyState(e.target.value)}
                   >
@@ -309,7 +329,7 @@ const RelocationBox = ({
                           messageStatus === 'approved' ? `${styles['message-approved']}` : ''
                         }
                         ${messageStatus === 'rejected' ? `${styles['message-rejected']}` : ''}`}
-                        isReadOnly={status !== 'pending changes'}
+                        isReadOnly={status !== 'pending changes' || !editPendingChangesState}
                         value={messageState}
                         onChange={e => setMessageState(e.target.value)}
                       />
@@ -398,10 +418,8 @@ const RelocationBox = ({
                     {/* Pending changes (if the box is under review) or Save (if the box is under pending changes) button */}
                     <div className={styles['arrow-forward-icon']}>
                       <button type="button" onClick={async () => handleMiddleButtonClicked()}>
-                        {status === 'under review' ? (
+                        {status === 'under review' && (
                           <BsFillArrowRightCircleFill className={styles['request-changes-icon']} />
-                        ) : (
-                          <img src={SaveChangesIcon} alt="save" />
                         )}
                       </button>
                     </div>
