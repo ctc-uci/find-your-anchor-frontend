@@ -31,7 +31,7 @@ const CommonConfirmationPage = ({ isOpen, confirmationTitle, confirmationText, s
           </div>
           <Button
             className={styles['confirmation-button']}
-            onClick={() => returnToLogin()}
+            onClick={returnToLogin}
             color="white"
             bg="#345E80"
           >

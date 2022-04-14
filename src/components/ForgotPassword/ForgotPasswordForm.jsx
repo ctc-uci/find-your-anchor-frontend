@@ -98,11 +98,7 @@ const ForgotPasswordForm = () => {
           title="FYA Email Address"
         />
         <div className={styles['action-panel']}>
-          <Button
-            to="/login"
-            className={styles['return-to-login-button']}
-            onClick={() => returnToLogin()}
-          >
+          <Button to="/login" className={styles['return-to-login-button']} onClick={returnToLogin}>
             Return to Login
           </Button>
           <Button className={styles['send-email-button']} type="submit" size="md">

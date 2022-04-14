@@ -68,11 +68,7 @@ const ResetPasswordForm = ({ code }) => {
           title="Confirm New Password"
         />
         <div className={styles['action-panel']}>
-          <Button
-            to="/login"
-            className={styles['return-to-login-button']}
-            onClick={() => returnToLogin()}
-          >
+          <Button to="/login" className={styles['return-to-login-button']} onClick={returnToLogin}>
             Return to Login
           </Button>
           <Button className={styles['reset-password-button']} type="submit" size="md" align="right">
