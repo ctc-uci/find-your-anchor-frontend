@@ -49,28 +49,32 @@ const UploadCSV = ({ isOpen, onClose }) => {
         const boxNumbers = new Map();
 
         // parse each row in csv file
-        await Promise.all(
-          results.data.map(async (row, i) => {
-            const uid = uuidv4(); // generates am id to uniquely identify each row
-            const CSVRow = {
-              id: uid,
-              boxNumber: row['Box No'],
-              date: row.Date,
-              zipCode: row['Zip Code'],
-              country: row.Country,
-              launchedOrganically: row['Launched Organically?'].toLowerCase() === 'yes',
-            };
-            await checkErrors(CSVRow, i + 1);
-            CSVRows.push(CSVRow);
-            const boxNumber = row['Box No'];
-            if (!boxNumbers.has(boxNumber)) {
-              boxNumbers.set(boxNumber, new Set());
-            }
-            boxNumbers.get(boxNumber).add(i + 1);
-          }),
-        );
+        for (let i = 0; i < results.data.length; i += 1) {
+          const uid = uuidv4(); // used to uniquely identify each row
+          const row = results.data[i];
+          const boxNumber = Number(row['Box No']);
+          const CSVRow = {
+            id: uid,
+            boxNumber,
+            date: row.Date,
+            zipCode: row['Zip Code'],
+            country: row.Country,
+            launchedOrganically: row['Launched Organically?'].toLowerCase() === 'yes',
+          };
+          checkErrors(CSVRow, i + 1);
+          CSVRows.push(CSVRow);
+          if (!boxNumbers.has(boxNumber)) {
+            boxNumbers.set(boxNumber, new Set());
+          }
+          boxNumbers.get(boxNumber).add(i + 1);
+        }
+
+        setIsUploadingNewFile(false);
+        setCSVFile();
 
         setFormDatas(CSVRows);
+
+        console.log('CSVRows in UplaodCSV: ', CSVRows);
 
         // check if there are duplicate box numbers in the same file
         boxNumbers.forEach((lineNumbers, boxNumber) => {

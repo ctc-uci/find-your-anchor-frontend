@@ -10,7 +10,6 @@ import { FYABackend, formatDate, getLatLong } from '../../../common/utils';
 import BoxSchema from '../../UploadCSV/UploadCSVUtils';
 
 const CSVViewTable = ({ rows, boxNumberMap }) => {
-  console.log(boxNumberMap && boxNumberMap);
   const navigate = useNavigate();
   const [csvErrors, setCsvErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,9 +63,10 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
     };
 
     const index = formDatas.findIndex(data => data.id === editId); // get index of the row that we are editing
-    updateBoxNumberMap(formDatas[index].boxNumber, index, editRowData.boxNumber);
+    if (formDatas[index].boxNumber !== editRowData.boxNumber) {
+      updateBoxNumberMap(formDatas[index].boxNumber, index + 1, editRowData.boxNumber);
+    }
     formDatas[index] = editedRow;
-    console.log(boxNumberMap);
     setEditId(null);
     setCsvErrors(csvErrors.filter(error => error !== editId)); // delete edited row from csvErrors array
   };
@@ -79,7 +79,8 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
     return Promise.all(
       CSVRows.map(async CSVRow => {
         try {
-          await BoxSchema.validate(CSVRow);
+          // second argument is context (external variables)
+          await BoxSchema.validate(CSVRow, { context: { other: 4 } });
           return 'success';
         } catch (err) {
           return CSVRow;
