@@ -40,8 +40,8 @@ function validateZipcodeInCountry() {
   });
 }
 
-function validateBoxNumber() {
-  return this.test('boxNotExists', async function boxCheck(value) {
+function validateBoxNumber(boxNumberMap) {
+  return this.test('boxNotExists', { boxNumberMap }, async function boxCheck(value) {
     const { path, createError } = this;
     const box = await FYABackend.get(`/anchorBox/box/${value}`);
     return box.data.length === 0

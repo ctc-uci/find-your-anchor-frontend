@@ -40,7 +40,8 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
   };
 
   const updateBoxNumberMap = (oldBoxNum, lineNum, newBoxNum) => {
-    boxNumbers.get(oldBoxNum).remove(lineNum);
+    boxNumbers.get(oldBoxNum).delete(lineNum);
+
     if (boxNumbers.get(oldBoxNum).size === 0) {
       boxNumbers.delete(oldBoxNum);
     }
@@ -48,6 +49,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
     if (!boxNumbers.has(newBoxNum)) {
       boxNumbers.set(newBoxNum, new Set());
     }
+    // TODO: need to convert newBoxNum to string
     boxNumbers.get(newBoxNum).add(lineNum);
   };
 
