@@ -18,7 +18,7 @@ import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
-import { FYABackend, sendEmail } from '../../common/utils';
+import { FYABackend, getLatLong, sendEmail } from '../../common/utils';
 
 const PickupBox = ({
   approved,
@@ -48,9 +48,17 @@ const PickupBox = ({
       status: 'evaluated',
       approved: true,
     });
-    await FYABackend.put('/anchorBox/update', {
-      boxID,
-      showOnMap: false,
+
+    // TODO: REPLACE US WITH COUNTRY INPUT
+    let coordinates = await getLatLong(zipCode, 'US');
+    if (coordinates.length !== 2) {
+      coordinates = [0, 0];
+    }
+
+    await FYABackend.put('/boxHistory/approveBox', {
+      transactionID,
+      latitude: coordinates[0],
+      longitude: coordinates[1],
     });
     const requests = [
       fetchBoxes('under review', true),
