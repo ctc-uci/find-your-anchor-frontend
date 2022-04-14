@@ -202,7 +202,7 @@ const CSVViewTable = ({ rows }) => {
                     />
                   ) : (
                     <ReadOnlyRow
-                      rowData={rowData}
+                      data={rowData}
                       editRow={editRow}
                       handleDeleteRow={handleDeleteRow}
                       isError={csvErrors.includes(rowData.original.id)}
