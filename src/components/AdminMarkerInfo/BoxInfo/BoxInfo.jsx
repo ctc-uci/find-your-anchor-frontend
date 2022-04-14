@@ -122,7 +122,6 @@ BoxInfo.propTypes = {
     message: PropTypes.string,
     launched_organically: PropTypes.bool,
     picture: PropTypes.string,
-    show_on_map: PropTypes.bool,
     zip_code: PropTypes.string,
     boxholder_name: PropTypes.string,
     boxholder_email: PropTypes.string,
