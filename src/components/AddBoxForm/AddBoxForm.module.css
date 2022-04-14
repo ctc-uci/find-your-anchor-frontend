@@ -115,3 +115,38 @@ span.chakra-checkbox__control {
 .add-box-info-section-right {
   width: 40%;
 }
+
+@media screen and (max-width: 768px) {
+  .add-box-form {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .box-launched-section {
+    margin-left: 10%;
+  }
+
+  .add-box-info-section {
+    width: 80%;
+  }
+
+  .launch-radio label {
+    margin-right: 40%;
+    margin-left: 3%;
+    margin-top: 2%;
+  }
+
+  .attach-box-photo-label {
+    margin-left: 10%;
+  }
+
+  .add-box-photo-preview-section,
+  .box-image {
+    width: 80%;
+    margin: auto;
+  }
+
+  .submit-button {
+    margin-left: 60%;
+  }
+}

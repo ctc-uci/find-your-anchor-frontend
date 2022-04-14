@@ -59,3 +59,10 @@
 .file-item-span {
   color: var(--text-gray-color);
 }
+
+@media screen and (max-width: 768px) {
+  .dropzone {
+    width: 80%;
+    margin: auto;
+  }
+}

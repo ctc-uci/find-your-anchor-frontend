@@ -52,7 +52,7 @@ const DropZone = ({ setFiles }) => {
   ));
 
   return (
-    <>
+    <div className="dropzone">
       {!uploaded ? (
         <div className={dropzoneBox} {...getRootProps()}>
           <input {...getInputProps()} />
@@ -68,7 +68,7 @@ const DropZone = ({ setFiles }) => {
           <ul className="files-list">{acceptedFileItems}</ul>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
