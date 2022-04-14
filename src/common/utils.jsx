@@ -79,3 +79,14 @@ export const getLatLong = async (zipCode, country) => {
   }
   return [];
 };
+
+export const BoxApprovedEmailPicture =
+  'https://fya-dev.s3.us-west-1.amazonaws.com/BoxApprovedEmailPicture.svg';
+
+export const BoxRejectedEmailPicture =
+  'https://fya-dev.s3.us-west-1.amazonaws.com/BoxRejectedEmailPicture.svg';
+
+export const ChangesRequestedEmailPicture =
+  'https://fya-dev.s3.us-west-1.amazonaws.com/ChangesRequestedEmailPicture.svg';
+
+export const FYATextLogo = 'https://fya-dev.s3.us-west-1.amazonaws.com/fya-text-logo.svg';

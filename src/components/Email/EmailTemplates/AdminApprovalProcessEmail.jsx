@@ -2,11 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Email } from 'react-html-email';
 
-import styles from './AdminApprovalProcessEmail.module.css';
-// import BoxApprovedEmailPicture from '../../../assets/BoxApprovedEmailPicture.svg';
+// import styles from './AdminApprovalProcessEmail.module.css';
 // import ChangesRequestedEmailPicture from '../../../assets/ChangesRequestedEmailPicture.svg';
 // import BoxRejectedEmailPicture from '../../../assets/BoxRejectedEmailPicture.svg';
-import FYATextLogo from '../../../assets/fya-text-logo.svg';
+// import FYATextLogo from '../../../assets/fya-text-logo.svg';
+import {
+  BoxApprovedEmailPicture,
+  BoxRejectedEmailPicture,
+  ChangesRequestedEmailPicture,
+  FYATextLogo,
+} from '../../../common/utils';
 
 const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) => {
   const headerDict = {
@@ -99,11 +104,11 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
     rejected: [],
   };
 
-  // const imageSourceDict = {
-  //   approved: BoxApprovedEmailPicture,
-  //   'changes requested': ChangesRequestedEmailPicture,
-  //   rejected: BoxRejectedEmailPicture,
-  // };
+  const imageSourceDict = {
+    approved: BoxApprovedEmailPicture,
+    'changes requested': ChangesRequestedEmailPicture,
+    rejected: BoxRejectedEmailPicture,
+  };
   const headerContent = headerDict[type];
   const headerSubtextContent = headerSubtextDict[type];
   let nextStepsContent = [];
@@ -119,7 +124,7 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
     nextStepsContent = nextStepsDict[type];
   }
   const whatDoesThisMeanContent = whatDoesThisMeanDict[type];
-  // const imageSource = imageSourceDict[type];
+  const imageSource = imageSourceDict[type];
 
   return (
     <Email>
@@ -200,11 +205,7 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
               </div>
             )}
           </div>
-          <img
-            src="https://d26oc3sg82pgk3.cloudfront.net/files/media/edit/image/33791/square_thumb%402x.jpg"
-            className={styles.picture}
-            alt="Approved box icon"
-          />
+          <img style={{ width: '200px' }} src={imageSource} alt="Approved box icon" />
         </div>
       </div>
     </Email>

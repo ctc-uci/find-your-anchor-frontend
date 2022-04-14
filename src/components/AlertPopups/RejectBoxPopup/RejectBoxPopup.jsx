@@ -13,7 +13,7 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { FYABackend, sendEmail } from '../../../common/utils';
-import RejectedBoxEmail from '../../Email/EmailTemplates/RejectedBoxEmail';
+import AdminApprovalProcessEmail from '../../Email/EmailTemplates/AdminApprovalProcessEmail';
 import styles from './RejectBoxPopup.module.css';
 
 const RejectBoxPopup = ({
@@ -44,7 +44,7 @@ const RejectBoxPopup = ({
       sendEmail(
         boxHolderName,
         boxHolderEmail,
-        <RejectedBoxEmail boxHolderName={boxHolderName} rejectionReason={rejectionReason} />,
+        <AdminApprovalProcessEmail type="rejected" rejectionReason={rejectionReason} />,
       ),
     ];
     await Promise.all(requests);
