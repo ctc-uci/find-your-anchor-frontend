@@ -9,20 +9,23 @@ import {
   FYATextLogo,
 } from '../../../common/utils';
 
+// The type of email sent depends directly on the 'type' prop passed in ('approved', 'changes requested', or 'rejected')
+// Inline styling is necessary because it won't detect styles from a separate css page :D
 const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) => {
+  // Header text
   const headerDict = {
     approved: 'Your box launch has been approved!',
     'changes requested': 'Your box launch requires changes.',
     rejected: 'Your box launch could not be added.',
   };
-
+  // Text below the header
   const headerSubtextDict = {
     approved: '',
     'changes requested':
       "We're so close! We just need a little more information from you in order to add box to the FYA Launch Map.",
     rejected: "We're sorry, we couldn't add your box to the FYA Launch Map",
   };
-
+  // Text below "What does this mean"
   const whatDoesThisMeanDict = {
     approved: (
       <p style={{ margin: 0, color: 'black' }}>
@@ -55,7 +58,7 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
       </>
     ),
   };
-
+  // Next steps list
   const nextStepsDict = {
     approved: [
       <li key={0}>
@@ -98,12 +101,13 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
     ],
     rejected: [],
   };
-
+  // The image to show on the right of the email
   const imageSourceDict = {
     approved: BoxApprovedEmailPicture,
     'changes requested': BoxRejectedEmailPicture,
     rejected: ChangesRequestedEmailPicture,
   };
+
   const headerContent = headerDict[type];
   const headerSubtextContent = headerSubtextDict[type];
   let nextStepsContent = [];
