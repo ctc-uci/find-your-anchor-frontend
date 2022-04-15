@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
-import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -18,12 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
 
-import { FYABackend, formatDate } from '../../common/utils';
-import {
-  uploadBoxPhoto,
-  validateZip,
-  validateBoxNumber,
-} from '../../common/FormUtils/boxFormUtils';
+import { validateZip, validateBoxNumber } from '../../common/FormUtils/boxFormUtils';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './AddBoxForm.module.css';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
@@ -46,8 +41,7 @@ const schema = yup
   })
   .required();
 
-const AddBoxFormMobile = () => {
-  const navigate = useNavigate();
+const AddBoxFormMobile = ({ onSubmit, files, setFiles }) => {
   const {
     register,
     control,
@@ -57,24 +51,6 @@ const AddBoxFormMobile = () => {
     resolver: yupResolver(schema),
     delayError: 750,
   });
-
-  const [files, setFiles] = useState([]);
-
-  const onSubmit = async data => {
-    const formData = data;
-    formData.date = formatDate(data.date);
-    formData.launchedOrganically = formData.launchedOrganically === 'yes';
-    formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
-
-    // send form data to server
-    await FYABackend.post('/anchorBox/box', formData, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    navigate('/admin');
-  };
 
   return (
     <form className={styles['add-box-form']} onSubmit={handleSubmit(onSubmit)}>
@@ -217,6 +193,12 @@ const AddBoxFormMobile = () => {
       </div>
     </form>
   );
+};
+
+AddBoxFormMobile.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  files: PropTypes.isRequired,
+  setFiles: PropTypes.func.isRequired,
 };
 
 export default AddBoxFormMobile;
