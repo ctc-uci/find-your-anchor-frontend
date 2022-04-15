@@ -128,6 +128,13 @@ const PickupBoxFormMobile = ({ onSubmit, files, setFiles, loading }) => {
         </div>
       </div>
       <br />
+      <div className={styles['privacy-statement']}>
+        <h3>
+          * All personal information you provide on this form will be only used for internal
+          purposes. They will not be shared publicly.
+        </h3>
+      </div>
+      <br />
       <div className={styles['submit-button']}>
         <Button
           type="submit"

@@ -44,106 +44,119 @@ const PickupBoxFormDesktop = ({ onSubmit, files, setFiles, loading }) => {
   });
 
   return (
-    <form className={styles['pickup-box-form']} onSubmit={handleSubmit(onSubmit)}>
-      <div className={styles['pickup-box-info-section-left']}>
-        <div>
-          <FormControl isInvalid={errors?.boxholderName}>
-            <FormLabel htmlFor="boxholderName">Name</FormLabel>
-            <Input
-              id="boxholderName"
-              placeholder="John Adams"
-              name="boxholderName"
-              {...register('boxholderName')}
-            />
-            <FormErrorMessage>{errors.boxholderName?.message}</FormErrorMessage>
-          </FormControl>
-          <br />
-          <FormControl isInvalid={errors?.boxID}>
-            <FormLabel htmlFor="boxID" className={styles['required-field']}>
-              Box Number
-            </FormLabel>
-            <Input id="boxID" placeholder="12345" name="boxID" {...register('boxID')} />
-            <FormErrorMessage>{errors.boxID?.message}</FormErrorMessage>
-          </FormControl>
-          <br />
-          <FormControl isInvalid={errors?.date}>
-            <FormLabel htmlFor="date" className={styles['required-field']}>
-              Date
-            </FormLabel>
-            <Controller
-              control={control}
-              name="date"
-              // eslint-disable-next-line no-unused-vars
-              render={({ field: { onChange, value, ref } }) => (
-                <DatePicker
-                  placeholderText="MM/DD/YYYY"
-                  className={errors?.date ? 'date-picker date-picker-error' : 'date-picker'}
-                  type="date"
-                  selected={value}
-                  onChange={onChange}
-                />
-              )}
-            />
-            <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
-          </FormControl>
-          <br />
-          <FormControl isInvalid={errors?.zipcode}>
-            <FormLabel htmlFor="zipcode" className={styles['required-field']}>
-              Zip Code
-            </FormLabel>
-            <Input id="zipCode" placeholder="e.g. 90210" name="zipcode" {...register('zipcode')} />
-            <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
-          </FormControl>
-        </div>
-      </div>
-      <div className={styles['pickup-box-info-section-right']}>
-        <FormControl isInvalid={errors?.boxholderEmail}>
-          <FormLabel htmlFor="boxholderEmail" className={styles['required-field']}>
-            Email Address
-          </FormLabel>
-          <Input
-            id="boxholderEmail"
-            placeholder="name@domain.com"
-            name="boxholderEmail"
-            {...register('boxholderEmail')}
-          />
-          <FormErrorMessage>{errors.boxholderEmail?.message}</FormErrorMessage>
-        </FormControl>
-        <br />
-        <div>
-          <FormControl>
-            <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
-            <DropZone setFiles={setFiles} />
-          </FormControl>
-          <br />
-        </div>
-        <div
-          className={
-            styles[
-              files.length !== 0
-                ? 'pickup-box-photo-preview-section'
-                : 'pickup-box-photo-preview-section-hidden'
-            ]
-          }
-        >
-          <div className={styles['box-image']}>
-            {files.length !== 0 && <img src={URL.createObjectURL(files[0])} alt="" />}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className={styles['pickup-box-form']}>
+        <div className={styles['pickup-box-info-section-left']}>
+          <div>
+            <FormControl isInvalid={errors?.boxholderName}>
+              <FormLabel htmlFor="boxholderName">Name</FormLabel>
+              <Input
+                id="boxholderName"
+                placeholder="John Adams"
+                name="boxholderName"
+                {...register('boxholderName')}
+              />
+              <FormErrorMessage>{errors.boxholderName?.message}</FormErrorMessage>
+            </FormControl>
+            <br />
+            <FormControl isInvalid={errors?.boxID}>
+              <FormLabel htmlFor="boxID" className={styles['required-field']}>
+                Box Number
+              </FormLabel>
+              <Input id="boxID" placeholder="12345" name="boxID" {...register('boxID')} />
+              <FormErrorMessage>{errors.boxID?.message}</FormErrorMessage>
+            </FormControl>
+            <br />
+            <FormControl isInvalid={errors?.date}>
+              <FormLabel htmlFor="date" className={styles['required-field']}>
+                Date
+              </FormLabel>
+              <Controller
+                control={control}
+                name="date"
+                // eslint-disable-next-line no-unused-vars
+                render={({ field: { onChange, value, ref } }) => (
+                  <DatePicker
+                    placeholderText="MM/DD/YYYY"
+                    className={errors?.date ? 'date-picker date-picker-error' : 'date-picker'}
+                    type="date"
+                    selected={value}
+                    onChange={onChange}
+                  />
+                )}
+              />
+              <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
+            </FormControl>
+            <br />
+            <FormControl isInvalid={errors?.zipcode}>
+              <FormLabel htmlFor="zipcode" className={styles['required-field']}>
+                Zip Code
+              </FormLabel>
+              <Input
+                id="zipCode"
+                placeholder="e.g. 90210"
+                name="zipcode"
+                {...register('zipcode')}
+              />
+              <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
+            </FormControl>
           </div>
         </div>
-        <br />
-        <div className={styles['box-bottom']}>
-          <Button
-            type="submit"
-            size="md"
-            colorScheme="teal"
-            isLoading={loading}
-            loadingText="Submitting"
-            className={styles['submit-button']}
+        <div className={styles['pickup-box-info-section-right']}>
+          <FormControl isInvalid={errors?.boxholderEmail}>
+            <FormLabel htmlFor="boxholderEmail" className={styles['required-field']}>
+              Email Address
+            </FormLabel>
+            <Input
+              id="boxholderEmail"
+              placeholder="name@domain.com"
+              name="boxholderEmail"
+              {...register('boxholderEmail')}
+            />
+            <FormErrorMessage>{errors.boxholderEmail?.message}</FormErrorMessage>
+          </FormControl>
+          <br />
+          <div>
+            <FormControl>
+              <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
+              <DropZone setFiles={setFiles} />
+            </FormControl>
+            <br />
+          </div>
+          <div
+            className={
+              styles[
+                files.length !== 0
+                  ? 'pickup-box-photo-preview-section'
+                  : 'pickup-box-photo-preview-section-hidden'
+              ]
+            }
           >
-            Submit
-          </Button>
+            <div className={styles['box-image']}>
+              {files.length !== 0 && <img src={URL.createObjectURL(files[0])} alt="" />}
+            </div>
+          </div>
+          <br />
+          <div className={styles['box-bottom']}>
+            <Button
+              type="submit"
+              size="md"
+              colorScheme="teal"
+              isLoading={loading}
+              loadingText="Submitting"
+              className={styles['submit-button']}
+            >
+              Submit
+            </Button>
+          </div>
         </div>
       </div>
+      <br />
+      <br />
+      <h3>
+        * All personal information you provide on this form will be only used for internal purposes.
+        They will not be shared publicly.
+      </h3>
     </form>
   );
 };
