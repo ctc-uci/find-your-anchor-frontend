@@ -87,11 +87,12 @@ const RelocationBox = ({
     control,
     handleSubmit,
     getValues,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     defaultValues: boxFormData,
     resolver: yupResolver(schema),
     delayError: 750,
+    mode: 'onChange',
   });
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
@@ -102,20 +103,22 @@ const RelocationBox = ({
   // A state for determining whether the fields under pending changes are editable
   // This state is set true when the edit button is clicked
   const [editPendingChangesState, setEditPendingChangesState] = useState(false);
-  // // A state for the box's boxHolderName
-  // // This state is updated when the user edits the box holder name under pending changes
-  // const [boxHolderNameState, setBoxHolderNameState] = useState(boxHolderName);
-  // // A state for the box's boxHolderEmail
-  // // This state is updated when the user edits the box holder email under pending changes
-  // const [boxHolderEmailState, setBoxHolderEmailState] = useState(boxHolderEmail);
-  // // A state for the box's zip code
-  // // This state is updated when the user edits the zip code under pending changes
-  // const [zipCodeState, setZipCodeState] = useState(zipCode);
+  /**
+  // A state for the box's boxHolderName
+  // This state is updated when the user edits the box holder name under pending changes
+  const [boxHolderNameState, setBoxHolderNameState] = useState(boxHolderName);
+  // A state for the box's boxHolderEmail
+  // This state is updated when the user edits the box holder email under pending changes
+  const [boxHolderEmailState, setBoxHolderEmailState] = useState(boxHolderEmail);
+  // A state for the box's zip code
+  // This state is updated when the user edits the zip code under pending changes
+  const [zipCodeState, setZipCodeState] = useState(zipCode);
 
-  // //const [countryState, setCountryState] = useState(country);
-  // // A state for the box's general location
-  // // This state is updated when the user edits the general location under pending changes
-  // const [generalLocationState, setGeneralLocationState] = useState(generalLocation);
+  //const [countryState, setCountryState] = useState(country);
+  // A state for the box's general location
+  // This state is updated when the user edits the general location under pending changes
+  const [generalLocationState, setGeneralLocationState] = useState(generalLocation);
+  */
   // // A state for the box's message
   // This state is updated when the user edits the message under pending changes
   const [messageState, setMessageState] = useState(message);
@@ -261,25 +264,30 @@ const RelocationBox = ({
             </h3>
             {/* Box picture */}
             <AccordionPanel pb={4} className={styles['accordion-panel']}>
-              {status === 'pending changes' && (
-                <button
-                  type="button"
-                  style={true ? {} : { visibility: 'hidden' }}
-                  onClick={() => setEditPendingChangesState(!editPendingChangesState)}
-                >
-                  {editPendingChangesState ? (
-                    <RiCheckFill
-                      color="#38a169"
-                      size={20}
-                      onClick={() => {
-                        handleSubmit(onSubmit)();
-                      }}
-                    />
-                  ) : (
-                    <RiPencilFill color="#8E8E8E" size={20} />
-                  )}
-                </button>
-              )}
+              <div className={styles['review-header']}>
+                <h4>{status === 'pending changes' ? 'Reviewed by FYA Admin' : ''}</h4>
+                {status === 'pending changes' && (
+                  <button
+                    type="button"
+                    style={true ? {} : { visibility: 'hidden' }}
+                    onClick={() => {
+                      setEditPendingChangesState(!editPendingChangesState || !isValid);
+                    }}
+                  >
+                    {editPendingChangesState ? (
+                      <RiCheckFill
+                        color="#38a169"
+                        size={20}
+                        onClick={() => {
+                          handleSubmit(onSubmit)();
+                        }}
+                      />
+                    ) : (
+                      <RiPencilFill color="#8E8E8E" size={20} />
+                    )}
+                  </button>
+                )}
+              </div>
               <div className={styles['box-details']}>
                 {(status !== 'evaluated' || imageStatus !== 'rejected') && picture && (
                   <img
@@ -340,7 +348,7 @@ const RelocationBox = ({
                 )}
                 {/* Box Name */}
                 <form id="edit-box-form" onSubmit={handleSubmit(onSubmit)}>
-                  <FormControl>
+                  <FormControl isInvalid={errors?.name}>
                     <FormLabel htmlFor="name" className={styles['form-label']}>
                       Name
                     </FormLabel>
@@ -353,7 +361,7 @@ const RelocationBox = ({
                     <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
                   </FormControl>
                   {/* Box Email */}
-                  <FormControl>
+                  <FormControl isInvalid={errors?.email}>
                     <FormLabel htmlFor="email" className={styles['form-label']}>
                       Email
                     </FormLabel>
@@ -366,7 +374,7 @@ const RelocationBox = ({
                     <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
                   </FormControl>
                   {/* Box Zip Code */}
-                  <FormControl>
+                  <FormControl isInvalid={errors?.zipcode}>
                     <FormLabel htmlFor="zipCode" className={styles['form-label']}>
                       Zip Code
                     </FormLabel>
@@ -380,8 +388,8 @@ const RelocationBox = ({
                     <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
                   </FormControl>
                   {/* Country */}
-                  <FormControl>
-                    <FormLabel htmlFor="zipCode" className={styles['form-label']}>
+                  <FormControl isInvalid={errors?.country}>
+                    <FormLabel htmlFor="country" className={styles['form-label']}>
                       Country
                     </FormLabel>
                     <Controller
@@ -399,7 +407,7 @@ const RelocationBox = ({
                     />
                     <FormErrorMessage>{errors.boxCountry?.message}</FormErrorMessage>
                   </FormControl>
-                  <FormControl>
+                  <FormControl isInvalid={errors?.boxLocation}>
                     <FormLabel htmlFor="generalLocation" className={styles['form-label']}>
                       General Location
                     </FormLabel>
@@ -413,7 +421,7 @@ const RelocationBox = ({
                     <FormErrorMessage>{errors.boxLocation?.message}</FormErrorMessage>
                   </FormControl>
                   {/* Box's Launched Organically field */}
-                  <FormControl>
+                  <FormControl isInvalid={errors?.dropOffMethod}>
                     <FormLabel htmlFor="launchedOrganically" className={styles['form-label']}>
                       Drop Off Method
                     </FormLabel>
