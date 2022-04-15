@@ -29,13 +29,13 @@ const AddBoxForm = () => {
   };
 
   return (
-    <div className="header">
+    <>
       {isMobile ? (
         <AddBoxFormMobile onSubmit={onSubmit} files={files} setFiles={setFiles} />
       ) : (
         <AddBoxFormDesktop onSubmit={onSubmit} files={files} setFiles={setFiles} />
       )}
-    </div>
+    </>
   );
 };
 export default AddBoxForm;
