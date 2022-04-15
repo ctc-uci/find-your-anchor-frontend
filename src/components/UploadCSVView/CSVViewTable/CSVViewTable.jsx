@@ -50,6 +50,8 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
     }
     // TODO: need to convert newBoxNum to string
     boxNumbers.get(newBoxNum).add(lineNum);
+
+    console.log('updateBoxNumberMap: ', boxNumberMap);
   };
 
   const handleEditFormSubmit = editRowData => {
@@ -80,7 +82,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
       CSVRows.map(async CSVRow => {
         try {
           // second argument is context (external variables)
-          await BoxSchema.validate(CSVRow, { context: { other: 4 } });
+          await BoxSchema.validate(CSVRow, { context: boxNumberMap });
           return 'success';
         } catch (err) {
           return CSVRow;
@@ -164,6 +166,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
                       editFormData={editFormData}
                       handleEditFormSubmit={handleEditFormSubmit}
                       isError={csvErrors.includes(data.id)}
+                      boxNumberMap={boxNumberMap}
                     />
                   ) : (
                     <ReadOnlyRow

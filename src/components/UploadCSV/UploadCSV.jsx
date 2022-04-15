@@ -33,7 +33,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
 
   const checkErrors = async (CSVRow, i) => {
     try {
-      await BoxSchema.validate(CSVRow, { abortEarly: false });
+      await BoxSchema.validate(CSVRow, { abortEarly: false, context: boxNumberMap });
     } catch (err) {
       err.inner.forEach(e => {
         setUploadErrors(prevState => [...prevState, `${e.message} (line ${i})`]);
@@ -73,8 +73,6 @@ const UploadCSV = ({ isOpen, onClose }) => {
         setCSVFile();
 
         setFormDatas(CSVRows);
-
-        console.log('CSVRows in UplaodCSV: ', CSVRows);
 
         // check if there are duplicate box numbers in the same file
         boxNumbers.forEach((lineNumbers, boxNumber) => {

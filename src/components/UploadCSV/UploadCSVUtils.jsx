@@ -40,14 +40,26 @@ function validateZipcodeInCountry() {
   });
 }
 
-function validateBoxNumber(ourArgs) {
-  return this.test('boxNotExists', async function boxCheck(value) {
+function validateBoxNumber() {
+  return this.test('boxNotExists', async function boxCheck(boxNumber, option) {
     const { path, createError } = this;
-    console.log('OUR ARGS', ourArgs);
-    const box = await FYABackend.get(`/anchorBox/box/${value}`);
-    return box.data.length === 0
-      ? true
-      : createError({ path, message: `Box number ${value} already exists` });
+    const boxNumberMap = option.options.context;
+
+    console.log('boxNumberMap: ', boxNumberMap);
+
+    const box = await FYABackend.get(`/anchorBox/box/${boxNumber}`);
+
+    if (box.data.length !== 0) {
+      return createError({ path, message: `Box number ${boxNumber} already exists` });
+    }
+
+    // if box number if found on more than one row
+    if (boxNumberMap.has(boxNumber) && boxNumberMap.get(boxNumber).size > 1) {
+      return createError({ path, message: `Duplicate found: ${boxNumber}` });
+      // return createError({ path, message: `Duplicate box number: ${boxNumber} (lines ${[boxNumberMap.get(boxNumber)].join(', ')})` });
+    }
+
+    return true;
   });
 }
 
@@ -57,11 +69,7 @@ yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
 export default yup
   .object({
     // TODO: pass boxNumberMap into boxNotExists function
-    boxNumber: yup
-      .number()
-      .boxNotExists('$other')
-      .required()
-      .typeError('Missing or invalid box number'),
+    boxNumber: yup.number().boxNotExists().required().typeError('Missing or invalid box number'),
     date: yup.date().required().typeError('Missing or invalid date'),
     zipCode: yup.string().required('Missing or invalid zip code'),
     country: yup.string(),
