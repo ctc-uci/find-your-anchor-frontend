@@ -31,6 +31,8 @@ const Dashboard = () => {
   }, []);
 
   const navigate = useNavigate();
+  // A list containing all unique zip codes stored in Anchor_Box
+  const [zipCodeData, setZipCodeData] = useState([]);
   return (
     <ChakraProvider>
       <div className={styles.navbar}>
@@ -61,6 +63,8 @@ const Dashboard = () => {
               setSelectedBox={setSelectedBox}
               updateBoxListSwitch={updateBoxListSwitch}
               setUpdateBoxListSwitch={setUpdateBoxListSwitch}
+              zipCodeData={zipCodeData}
+              setZipCodeData={setZipCodeData}
             />
           </div>
           {adminIsLoggedIn ? (
@@ -97,6 +101,8 @@ const Dashboard = () => {
               setSelectedBox={setSelectedBox}
               selectedBox={selectedBox}
               adminIsLoggedIn={adminIsLoggedIn}
+              zipCodeData={zipCodeData}
+              setZipCodeData={setZipCodeData}
             />
           </div>
         </div>
