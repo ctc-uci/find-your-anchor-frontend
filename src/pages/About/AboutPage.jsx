@@ -1,13 +1,23 @@
 import React from 'react';
-import { Heading, Text, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import { Heading, Text, Tabs, TabList, TabPanels, Tab, TabPanel, Button } from '@chakra-ui/react';
 import { ChakraProvider } from '@chakra-ui/provider';
 import FriendIcon from '../../assets/about-friend-icon.svg';
 import GlobeIcon from '../../assets/about-globe-icon.svg';
 import RocketIcon from '../../assets/about-rocket-icon.svg';
 import PrivacyNoteIcon from '../../assets/about-privacy-note-icon.svg';
+import FacebookIcon from '../../assets/about-facebook-icon.svg';
+import TwitterIcon from '../../assets/about-twitter-icon.svg';
+import InstagramIcon from '../../assets/about-instagram-icon.svg';
 import styles from './AboutPage.module.css';
 
 const AboutPage = () => {
+  const navigate = useNavigate();
+
+  const navigateToLogin = () => {
+    navigate('/login');
+  };
+
   return (
     <ChakraProvider>
       <div className={styles['about-page']}>
@@ -87,7 +97,6 @@ const AboutPage = () => {
             </Text>
           </div>
         </div>
-
         <div className={styles['site-description-section']}>
           <Heading className={styles['about-heading']}>How This Works</Heading>
           <Text className={styles['about-text']}>
@@ -107,7 +116,6 @@ const AboutPage = () => {
             </strong>
           </Text>
         </div>
-
         <div className={styles['user-guide-section']}>
           <Tabs size="lg" color="gray.600">
             <TabList>
@@ -230,6 +238,35 @@ const AboutPage = () => {
               </TabPanel>
             </TabPanels>
           </Tabs>
+        </div>
+      </div>
+
+      <div className={styles.footer}>
+        <Button
+          className={styles['login-button']}
+          onClick={navigateToLogin}
+          color="white"
+          bg="#345E80"
+          size="lg"
+        >
+          Admin Login
+        </Button>
+        <Button
+          className={styles['login-button-mobile']}
+          onClick={navigateToLogin}
+          color="white"
+          bg="#345E80"
+          size="md"
+        >
+          Admin Login
+        </Button>
+        <div className={styles['social-icon-section']}>
+          <Text className={styles['social-icon-text']}>
+            <strong>Let&apos;s Connect!</strong>
+          </Text>
+          <img src={FacebookIcon} alt="" className={styles['social-icon']} />
+          <img src={TwitterIcon} alt="" className={styles['social-icon']} />
+          <img src={InstagramIcon} alt="" className={styles['social-icon']} />
         </div>
       </div>
     </ChakraProvider>
