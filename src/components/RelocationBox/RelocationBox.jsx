@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useMemo } from 'react';
 import {
   Accordion,
   AccordionItem,
@@ -8,11 +8,16 @@ import {
   ChakraProvider,
   FormControl,
   FormLabel,
+  FormErrorMessage,
   Input,
   Select,
   Textarea,
 } from '@chakra-ui/react';
-
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { Select as ReactSelect } from 'chakra-react-select';
+import countryList from 'react-select-country-list';
 import { BsFillArrowRightCircleFill, BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
 import { RiPencilFill, RiCheckFill } from 'react-icons/ri';
 import PropTypes from 'prop-types';
@@ -22,6 +27,30 @@ import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import styles from './RelocationBox.module.css';
+import { validateZip } from '../../common/FormUtils/boxFormUtils';
+
+yup.addMethod(yup.string, 'isZip', validateZip);
+const schema = yup
+  .object({
+    name: yup.string().typeError('Invalid name'),
+    email: yup
+      .string()
+      .email('Invalid email address')
+      .required('Invalid email address, please enter a valid email address')
+      .typeError('Invalid email address, please enter a valid email address'),
+    zipcode: yup.string().isZip().required('Invalid zipcode, please enter a valid zipcode'),
+    boxCountry: yup
+      .object({
+        label: yup.string().required('Invalid country, please select a country'),
+        value: yup.string(),
+      })
+      .typeError('Invalid country code'),
+    boxLocation: yup.string().typeError('Invalid location, please enter a valid location'),
+    dropOffMethod: yup
+      .string()
+      .required('Invalid drop off method, please enter a valid drop off method'),
+  })
+  .required();
 
 const RelocationBox = ({
   approved,
@@ -30,6 +59,7 @@ const RelocationBox = ({
   boxHolderName,
   boxHolderEmail,
   zipCode,
+  country,
   picture,
   generalLocation,
   message,
@@ -43,6 +73,26 @@ const RelocationBox = ({
   launchedOrganically,
   imageStatus,
 }) => {
+  const countryOptions = useMemo(() => countryList().getData(), []);
+  const boxFormData = {
+    name: boxHolderName,
+    email: boxHolderEmail,
+    zipcode: zipCode,
+    boxCountry: countryOptions.find(countryNameAndCode => countryNameAndCode.value === country),
+    boxLocation: generalLocation,
+    dropOffMethod: launchedOrganically ? 'organic-launch' : 'given-to-someone',
+  };
+  const {
+    register,
+    control,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm({
+    defaultValues: boxFormData,
+    resolver: yupResolver(schema),
+    delayError: 750,
+  });
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
   const [rejectBoxPopupIsOpen, setRejectBoxPopupIsOpen] = useState(false);
@@ -52,38 +102,61 @@ const RelocationBox = ({
   // A state for determining whether the fields under pending changes are editable
   // This state is set true when the edit button is clicked
   const [editPendingChangesState, setEditPendingChangesState] = useState(false);
-  // A state for the box's boxHolderName
-  // This state is updated when the user edits the box holder name under pending changes
-  const [boxHolderNameState, setBoxHolderNameState] = useState(boxHolderName);
-  // A state for the box's boxHolderEmail
-  // This state is updated when the user edits the box holder email under pending changes
-  const [boxHolderEmailState, setBoxHolderEmailState] = useState(boxHolderEmail);
-  // A state for the box's zip code
-  // This state is updated when the user edits the zip code under pending changes
-  const [zipCodeState, setZipCodeState] = useState(zipCode);
-  // A state for the box's general location
-  // This state is updated when the user edits the general location under pending changes
-  const [generalLocationState, setGeneralLocationState] = useState(generalLocation);
-  // A state for the box's message
+  // // A state for the box's boxHolderName
+  // // This state is updated when the user edits the box holder name under pending changes
+  // const [boxHolderNameState, setBoxHolderNameState] = useState(boxHolderName);
+  // // A state for the box's boxHolderEmail
+  // // This state is updated when the user edits the box holder email under pending changes
+  // const [boxHolderEmailState, setBoxHolderEmailState] = useState(boxHolderEmail);
+  // // A state for the box's zip code
+  // // This state is updated when the user edits the zip code under pending changes
+  // const [zipCodeState, setZipCodeState] = useState(zipCode);
+
+  // //const [countryState, setCountryState] = useState(country);
+  // // A state for the box's general location
+  // // This state is updated when the user edits the general location under pending changes
+  // const [generalLocationState, setGeneralLocationState] = useState(generalLocation);
+  // // A state for the box's message
   // This state is updated when the user edits the message under pending changes
   const [messageState, setMessageState] = useState(message);
-  // A state for the box's launched organically state
-  // This state is updated when the user edits the launched organically field under pending changes
-  const [launchedOrganicallyState, setLaunchedOrganicallyState] = useState(launchedOrganically);
+  // // A state for the box's launched organically state
+  // // This state is updated when the user edits the launched organically field under pending changes
+  // const [launchedOrganicallyState, setLaunchedOrganicallyState] = useState(launchedOrganically);
 
   // A function that updates box information in the backend and refetches all boxes that are under review or pending changes (message status can be updated in 'under review')
   // This method is called when the save button is clicked under pending changes
   const updateBoxInfo = async newStatus => {
+    const formData = getValues();
     await FYABackend.put('/boxHistory/update', {
       transactionID,
       boxID,
       status: newStatus,
-      boxHolderName: boxHolderNameState,
-      boxHolderEmail: boxHolderEmailState,
-      zipCode: zipCodeState,
-      generalLocation: generalLocationState,
+      boxHolderName: formData.name,
+      boxHolderEmail: formData.email,
+      zipCode: formData.zipcode,
+      country: formData.boxCountry.value,
+      generalLocation: formData.boxLocation,
       message: messageState,
-      launchedOrganically: launchedOrganicallyState,
+      launchedOrganically: formData.dropOffMethod === 'organic-launch',
+    });
+
+    const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
+    await Promise.all(requests);
+  };
+
+  const onSubmit = async data => {
+    const formData = data;
+    await FYABackend.put('/boxHistory/update', {
+      transactionID,
+      boxID,
+      status: 'pending changes',
+      boxHolderName: formData.name,
+      boxHolderEmail: formData.email,
+      zipCode: formData.zipcode,
+      country: formData.boxCountry.value,
+      generalLocation: formData.boxLocation,
+      message: messageState,
+      launchedOrganically: formData.dropOffMethod === 'organic-launch',
     });
 
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
@@ -92,16 +165,17 @@ const RelocationBox = ({
 
   // A function that approves a relocation box submission and updates the backend state accordingly and then refetches all boxes (boxes can be approved from any tab)
   const approveRelocationBox = async () => {
+    const formData = getValues();
     await FYABackend.put('/boxHistory/update', {
       transactionID,
       boxID,
       status,
-      boxHolderName: boxHolderNameState,
-      boxHolderEmail: boxHolderEmailState,
-      zipCode: zipCodeState,
-      generalLocation: generalLocationState,
-      message: messageState,
-      launchedOrganically: launchedOrganicallyState,
+      boxHolderName: formData.name,
+      boxHolderEmail: formData.email,
+      zipCode: formData.zipcode,
+      generalLocation: formData.boxCountry,
+      message: formData.boxMessage,
+      launchedOrganically: formData,
     });
     // TODO: REPLACE US WITH COUNTRY INPUT
     let coordinates = await getLatLong(zipCode, 'US');
@@ -119,8 +193,8 @@ const RelocationBox = ({
       fetchBoxes('pending changes', false),
       fetchBoxes('evaluated', false),
       sendEmail(
-        boxHolderNameState,
-        boxHolderEmailState,
+        getValues().name,
+        getValues().email,
         <ApprovedBoxEmail boxHolderName={boxHolderName} />,
       ),
     ];
@@ -197,7 +271,9 @@ const RelocationBox = ({
                     <RiCheckFill
                       color="#38a169"
                       size={20}
-                      onClick={async () => updateBoxInfo('pending changes')}
+                      onClick={() => {
+                        handleSubmit(onSubmit)();
+                      }}
                     />
                   ) : (
                     <RiPencilFill color="#8E8E8E" size={20} />
@@ -263,146 +339,180 @@ const RelocationBox = ({
                   </div>
                 )}
                 {/* Box Name */}
-                <FormControl>
-                  <FormLabel htmlFor="name" className={styles['form-label']}>
-                    Name
-                  </FormLabel>
-                  <Input
-                    isReadOnly={status !== 'pending changes' || !editPendingChangesState}
-                    id="name"
-                    // type="text"
-                    value={boxHolderNameState}
-                    onChange={e => setBoxHolderNameState(e.target.value)}
-                  />
+                <form id="edit-box-form" onSubmit={handleSubmit(onSubmit)}>
+                  <FormControl>
+                    <FormLabel htmlFor="name" className={styles['form-label']}>
+                      Name
+                    </FormLabel>
+                    <Input
+                      isReadOnly={status !== 'pending changes' || !editPendingChangesState}
+                      id="name"
+                      // type="text"
+                      {...register('name')}
+                    />
+                    <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+                  </FormControl>
                   {/* Box Email */}
-                  <FormLabel htmlFor="email" className={styles['form-label']}>
-                    Email
-                  </FormLabel>
-                  <Input
-                    isReadOnly={status !== 'pending changes' || !editPendingChangesState}
-                    id="email"
-                    type="text"
-                    value={boxHolderEmailState}
-                    onChange={e => setBoxHolderEmailState(e.target.value)}
-                  />
+                  <FormControl>
+                    <FormLabel htmlFor="email" className={styles['form-label']}>
+                      Email
+                    </FormLabel>
+                    <Input
+                      isReadOnly={status !== 'pending changes' || !editPendingChangesState}
+                      id="email"
+                      type="text"
+                      {...register('email')}
+                    />
+                    <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+                  </FormControl>
                   {/* Box Zip Code */}
-                  <FormLabel htmlFor="zipCode" className={styles['form-label']}>
-                    Zip Code
-                  </FormLabel>
-                  <Input
-                    isReadOnly={status !== 'pending changes' || !editPendingChangesState}
-                    id="zipCode"
-                    type="text"
-                    value={zipCodeState}
-                    onChange={e => setZipCodeState(e.target.value)}
-                  />
-                  <FormLabel htmlFor="generalLocation" className={styles['form-label']}>
-                    General Location
-                  </FormLabel>
-                  <Input
-                    isReadOnly={status !== 'pending changes' || !editPendingChangesState}
-                    id="generalLocation"
-                    type="text"
-                    value={generalLocationState}
-                    onChange={e => setGeneralLocationState(e.target.value)}
-                  />
+                  <FormControl>
+                    <FormLabel htmlFor="zipCode" className={styles['form-label']}>
+                      Zip Code
+                    </FormLabel>
+                    <Input
+                      isReadOnly={status !== 'pending changes' || !editPendingChangesState}
+                      id="zipCode"
+                      name="zipcode"
+                      type="text"
+                      {...register('zipcode')}
+                    />
+                    <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
+                  </FormControl>
+                  {/* Country */}
+                  <FormControl>
+                    <FormLabel htmlFor="zipCode" className={styles['form-label']}>
+                      Country
+                    </FormLabel>
+                    <Controller
+                      control={control}
+                      name="boxCountry"
+                      // eslint-disable-next-line no-unused-vars
+                      render={({ field: { onChange, value, ref } }) => (
+                        <ReactSelect
+                          isDisabled={status !== 'pending changes' || !editPendingChangesState}
+                          value={value}
+                          options={countryOptions}
+                          onChange={onChange}
+                        />
+                      )}
+                    />
+                    <FormErrorMessage>{errors.boxCountry?.message}</FormErrorMessage>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel htmlFor="generalLocation" className={styles['form-label']}>
+                      General Location
+                    </FormLabel>
+                    <Input
+                      isReadOnly={status !== 'pending changes' || !editPendingChangesState}
+                      id="generalLocation"
+                      type="text"
+                      name="boxLocation"
+                      {...register('boxLocation')}
+                    />
+                    <FormErrorMessage>{errors.boxLocation?.message}</FormErrorMessage>
+                  </FormControl>
                   {/* Box's Launched Organically field */}
-                  <FormLabel htmlFor="launchedOrganically" className={styles['form-label']}>
-                    Drop Off Method
-                  </FormLabel>
-                  <Select
-                    disabled={status !== 'pending changes' || !editPendingChangesState}
-                    defaultValue={launchedOrganicallyState}
-                    onChange={e => setLaunchedOrganicallyState(e.target.value)}
-                  >
-                    <option value>Dropped at Location</option>
-                    <option value={false}>Given to Someone</option>
-                  </Select>
-                  {/* Box's message (only show if the box isn't evaluated or message isn't rejected) */}
-                  {!(status === 'evaluated' && messageStatus === 'rejected') && (
-                    <>
-                      <FormLabel htmlFor="Message" className={styles['form-label']}>
-                        Message
-                      </FormLabel>
-                      <Textarea
-                        className={`${
-                          messageStatus === 'approved' ? `${styles['message-approved']}` : ''
-                        }
-                        ${messageStatus === 'rejected' ? `${styles['message-rejected']}` : ''}`}
-                        isReadOnly={status !== 'pending changes' || !editPendingChangesState}
-                        value={messageState}
-                        onChange={e => setMessageState(e.target.value)}
-                      />
-                    </>
-                  )}
-                  {/* Message button toolbar (Only show if box hasn't been evaluted yet) */}
-                  {status !== 'evaluated' && (
-                    <div className={styles['message-functionality-wrapper']}>
-                      {/* Message approved indicator (only show if message is approved) */}
-                      <div className={styles['message-functionality']}>
-                        {messageStatus === 'approved' && (
-                          <>
-                            <button type="button" className={styles['approval-button']}>
-                              <BsFillCheckCircleFill color="green" />
-                            </button>
-                            <p
-                              className={`${styles['status-message']} ${styles['approval-message']}`}
-                            >
-                              Message Approved
-                            </p>
-                          </>
-                        )}
-                        {/* Message rejected indicator (only show if message is rejected) */}
-                        {messageStatus === 'rejected' && (
-                          <>
-                            <button type="button" className={styles['rejection-button']}>
-                              <BsXCircleFill color="red" />
-                            </button>
-                            <p
-                              className={`${styles['status-message']} ${styles['rejection-message']}`}
-                            >
-                              Message Denied
-                            </p>
-                          </>
-                        )}
+                  <FormControl>
+                    <FormLabel htmlFor="launchedOrganically" className={styles['form-label']}>
+                      Drop Off Method
+                    </FormLabel>
+                    <Select
+                      disabled={status !== 'pending changes' || !editPendingChangesState}
+                      {...register('dropOffMethod')}
+                    >
+                      <option value="given-to-someone">Given to Someone</option>
+                      <option value="organic-launch">Dropped at location</option>
+                    </Select>
+                    <FormErrorMessage>{errors.dropOffMethod?.message}</FormErrorMessage>
+                  </FormControl>
+                  <FormControl>
+                    {/* Box's message (only show if the box isn't evaluated or message isn't rejected) */}
+                    {!(status === 'evaluated' && messageStatus === 'rejected') && (
+                      <>
+                        <FormLabel htmlFor="Message" className={styles['form-label']}>
+                          Message
+                        </FormLabel>
+                        <Textarea
+                          className={`${
+                            messageStatus === 'approved' ? `${styles['message-approved']}` : ''
+                          }
+                          ${messageStatus === 'rejected' ? `${styles['message-rejected']}` : ''}`}
+                          isReadOnly={status !== 'pending changes' || !editPendingChangesState}
+                          value={messageState}
+                          onChange={e => setMessageState(e.target.value)}
+                        />
+                      </>
+                    )}
+                    {/* Message button toolbar (Only show if box hasn't been evaluted yet) */}
+                    {status !== 'evaluated' && (
+                      <div className={styles['message-functionality-wrapper']}>
+                        {/* Message approved indicator (only show if message is approved) */}
+                        <div className={styles['message-functionality']}>
+                          {messageStatus === 'approved' && (
+                            <>
+                              <button type="button" className={styles['approval-button']}>
+                                <BsFillCheckCircleFill color="green" />
+                              </button>
+                              <p
+                                className={`${styles['status-message']} ${styles['approval-message']}`}
+                              >
+                                Message Approved
+                              </p>
+                            </>
+                          )}
+                          {/* Message rejected indicator (only show if message is rejected) */}
+                          {messageStatus === 'rejected' && (
+                            <>
+                              <button type="button" className={styles['rejection-button']}>
+                                <BsXCircleFill color="red" />
+                              </button>
+                              <p
+                                className={`${styles['status-message']} ${styles['rejection-message']}`}
+                              >
+                                Message Denied
+                              </p>
+                            </>
+                          )}
+                        </div>
+                        {/* Approve message button */}
+                        <button
+                          type="button"
+                          className={styles['message-approved-button']}
+                          onClick={async () => updateMessageStatus('approved')}
+                        >
+                          <BsFillCheckCircleFill color="green" />
+                        </button>
+                        {/* Reject message button */}
+                        <button
+                          type="button"
+                          className={styles['message-rejected-button']}
+                          onClick={async () => updateMessageStatus('rejected')}
+                        >
+                          <BsXCircleFill color="red" />
+                        </button>
                       </div>
-                      {/* Approve message button */}
-                      <button
-                        type="button"
-                        className={styles['message-approved-button']}
-                        onClick={async () => updateMessageStatus('approved')}
-                      >
-                        <BsFillCheckCircleFill color="green" />
-                      </button>
-                      {/* Reject message button */}
-                      <button
-                        type="button"
-                        className={styles['message-rejected-button']}
-                        onClick={async () => updateMessageStatus('rejected')}
-                      >
-                        <BsXCircleFill color="red" />
-                      </button>
-                    </div>
-                  )}
-                  {/* Changes requested text area (only show if box is under pending changes) */}
-                  {status === 'pending changes' && (
-                    <div>
-                      <FormLabel htmlFor="changesRequested" className={styles['form-label']}>
-                        Changes Requested
-                      </FormLabel>
-                      <Textarea isReadOnly value={changesRequested} resize="vertical" />
-                    </div>
-                  )}
-                  {/* Rejection reason text area (only show if box has been evaluated and bxo was rejected) */}
-                  {status === 'evaluated' && !approved && (
-                    <>
-                      <FormLabel htmlFor="rejectionReason" className={styles['form-label']}>
-                        Rejection Reason
-                      </FormLabel>
-                      <Textarea isReadOnly value={rejectionReason} resize="vertical" />
-                    </>
-                  )}
-                </FormControl>
+                    )}
+                    {/* Changes requested text area (only show if box is under pending changes) */}
+                    {status === 'pending changes' && (
+                      <div>
+                        <FormLabel htmlFor="changesRequested" className={styles['form-label']}>
+                          Changes Requested
+                        </FormLabel>
+                        <Textarea isReadOnly value={changesRequested} resize="vertical" />
+                      </div>
+                    )}
+                    {/* Rejection reason text area (only show if box has been evaluated and bxo was rejected) */}
+                    {status === 'evaluated' && !approved && (
+                      <>
+                        <FormLabel htmlFor="rejectionReason" className={styles['form-label']}>
+                          Rejection Reason
+                        </FormLabel>
+                        <Textarea isReadOnly value={rejectionReason} resize="vertical" />
+                      </>
+                    )}
+                  </FormControl>
+                </form>
                 {/* Button toolbar (only show if box hasn't been evaluated) */}
                 {status !== 'evaluated' && (
                   <div className={styles['icon-row']}>
@@ -432,8 +542,8 @@ const RelocationBox = ({
                   </div>
                 )}
                 <RequestChangesPopup
-                  boxHolderName={boxHolderNameState}
-                  boxHolderEmail={boxHolderEmail}
+                  boxHolderName={getValues().name}
+                  boxHolderEmail={getValues().email}
                   isOpen={requestChangesPopupIsOpen}
                   setIsOpen={setRequestChangesPopupIsOpen}
                   transactionID={transactionID}
@@ -442,7 +552,7 @@ const RelocationBox = ({
                   fetchBoxes={fetchBoxes}
                 />
                 <RejectBoxPopup
-                  boxHolderName={boxHolderNameState}
+                  boxHolderName={boxHolderName}
                   boxHolderEmail={boxHolderEmail}
                   isOpen={rejectBoxPopupIsOpen}
                   setIsOpen={setRejectBoxPopupIsOpen}
@@ -467,6 +577,7 @@ RelocationBox.propTypes = {
   boxHolderName: PropTypes.string.isRequired,
   boxHolderEmail: PropTypes.string.isRequired,
   zipCode: PropTypes.string.isRequired,
+  country: PropTypes.string.isRequired,
   picture: PropTypes.string.isRequired,
   generalLocation: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
