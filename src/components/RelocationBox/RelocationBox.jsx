@@ -102,28 +102,9 @@ const RelocationBox = ({
   // A state for determining whether the fields under pending changes are editable
   // This state is set true when the edit button is clicked
   const [editPendingChangesState, setEditPendingChangesState] = useState(false);
-  /**
-  // A state for the box's boxHolderName
-  // This state is updated when the user edits the box holder name under pending changes
-  const [boxHolderNameState, setBoxHolderNameState] = useState(boxHolderName);
-  // A state for the box's boxHolderEmail
-  // This state is updated when the user edits the box holder email under pending changes
-  const [boxHolderEmailState, setBoxHolderEmailState] = useState(boxHolderEmail);
-  // A state for the box's zip code
-  // This state is updated when the user edits the zip code under pending changes
-  const [zipCodeState, setZipCodeState] = useState(zipCode);
-
-  //const [countryState, setCountryState] = useState(country);
-  // A state for the box's general location
-  // This state is updated when the user edits the general location under pending changes
-  const [generalLocationState, setGeneralLocationState] = useState(generalLocation);
-  */
   // // A state for the box's message
   // This state is updated when the user edits the message under pending changes
   const [messageState, setMessageState] = useState(message);
-  // // A state for the box's launched organically state
-  // // This state is updated when the user edits the launched organically field under pending changes
-  // const [launchedOrganicallyState, setLaunchedOrganicallyState] = useState(launchedOrganically);
 
   // A function that updates box information in the backend and refetches all boxes that are under review or pending changes (message status can be updated in 'under review')
   // This method is called when the save button is clicked under pending changes
