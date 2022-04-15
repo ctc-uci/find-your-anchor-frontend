@@ -8,14 +8,32 @@ import {
   Textarea,
   Text,
   Button,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 import styles from './BoxInfo.module.css';
 import { FYABackend } from '../../../common/utils';
+import DeleteBoxModal from '../DeleteBoxModal/DeleteBoxModal';
 
-const BoxInfo = ({ selectedBox, setSelectedBox }) => {
+const BoxInfo = ({
+  selectedBox,
+  setSelectedBox,
+  selectedZipCode,
+  selectedCountry,
+  setSelectedZipCode,
+  setSelectedCountry,
+  zipCodeData,
+  setZipCodeData,
+}) => {
   const [boxHistory, setBoxHistory] = useState([]);
+
+  const {
+    isOpen: isOpenDeleteBoxModal,
+    onOpen: onOpenDeleteBoxModal,
+    onClose: onCloseDeleteBoxModal,
+  } = useDisclosure();
+
   useEffect(async () => {
     const response = await FYABackend.get(`/boxHistory/history/${selectedBox.box_id}`);
     setBoxHistory(response.data);
@@ -92,14 +110,31 @@ const BoxInfo = ({ selectedBox, setSelectedBox }) => {
             </>
           )}
           <div className={styles['button-div']}>
-            <Button colorScheme="red" size="md">
+            <Button colorScheme="red" size="md" onClick={onOpenDeleteBoxModal}>
               Delete Box
             </Button>
+            <DeleteBoxModal
+              isOpen={isOpenDeleteBoxModal}
+              onClose={onCloseDeleteBoxModal}
+              selectedBox={selectedBox}
+              setSelectedBox={setSelectedBox}
+              selectedZipCode={selectedZipCode}
+              selectedCountry={selectedCountry}
+              setSelectedZipCode={setSelectedZipCode}
+              setSelectedCountry={setSelectedCountry}
+              zipCodeData={zipCodeData}
+              setZipCodeData={setZipCodeData}
+            />
           </div>
         </div>
       </div>
     </ChakraProvider>
   );
+};
+
+BoxInfo.defaultProps = {
+  selectedZipCode: null,
+  selectedCountry: null,
 };
 
 BoxInfo.propTypes = {
@@ -119,5 +154,19 @@ BoxInfo.propTypes = {
     boxholder_email: PropTypes.string,
   }).isRequired,
   setSelectedBox: PropTypes.func.isRequired,
+  selectedZipCode: PropTypes.string,
+  selectedCountry: PropTypes.string,
+  setSelectedZipCode: PropTypes.func.isRequired,
+  setSelectedCountry: PropTypes.func.isRequired,
+  zipCodeData: PropTypes.arrayOf(
+    PropTypes.shape({
+      zip_code: PropTypes.string,
+      country: PropTypes.string,
+      longitude: PropTypes.number,
+      latitude: PropTypes.number,
+      box_count: PropTypes.number,
+    }),
+  ).isRequired,
+  setZipCodeData: PropTypes.func.isRequired,
 };
 export default BoxInfo;
