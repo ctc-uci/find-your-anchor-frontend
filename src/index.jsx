@@ -19,8 +19,6 @@ import UploadCSVView from './pages/UploadCSVView/UploadCSVView';
 import LoginPage from './pages/Login/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
 
-import AdminApprovalProcessEmail from './components/Email/EmailTemplates/AdminApprovalProcessEmail';
-
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
@@ -31,17 +29,6 @@ ReactDOM.render(
             <Route path="/relocate-box-form" element={<RelocateBoxFormPage />} />
           </Route>
 
-          <Route path="approved-email" element={<AdminApprovalProcessEmail type="approved" />} />
-          <Route
-            path="change-email"
-            element={
-              <AdminApprovalProcessEmail
-                type="changes requested"
-                changesRequested="changes requested"
-              />
-            }
-          />
-          <Route path="rejected-email" element={<AdminApprovalProcessEmail type="rejected" />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/auth-email" element={<AuthEmail redirectPath="/" />} />
