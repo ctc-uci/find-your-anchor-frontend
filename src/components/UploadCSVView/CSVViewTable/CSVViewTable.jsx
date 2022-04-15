@@ -25,6 +25,9 @@ const CSVViewTable = ({ rows }) => {
     launchedOrganically: false,
   });
 
+  const [currentPage, setCurrentPage] = useState(null);
+  const [deleted, setDeleted] = useState(false);
+
   const columns = useMemo(
     () => [
       {
@@ -76,6 +79,16 @@ const CSVViewTable = ({ rows }) => {
     usePagination,
   );
 
+  useEffect(() => {
+    setCurrentPage(pageIndex);
+  }, [pageIndex]);
+
+  useEffect(() => {
+    if (currentPage) {
+      gotoPage(currentPage);
+    }
+  }, [deleted]);
+
   // manual = editing the row by hand (not from addToMap)
   const editRow = (e, rowData, firstErrorIndex, manual) => {
     e.preventDefault();
@@ -125,7 +138,7 @@ const CSVViewTable = ({ rows }) => {
 
   const handleDeleteRow = rowId => {
     setFormData(formDatas.filter(rowData => rowData.id !== rowId));
-    // TODO: page shouldn't jump to first page, tried gotoPage(pageIndex)
+    setDeleted(!deleted);
   };
 
   const checkErrors = async CSVRows => {
