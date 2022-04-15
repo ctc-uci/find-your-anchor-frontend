@@ -264,9 +264,15 @@ const AboutPage = () => {
           <Text className={styles['social-icon-text']}>
             <strong>Let&apos;s Connect!</strong>
           </Text>
-          <img src={FacebookIcon} alt="" className={styles['social-icon']} />
-          <img src={TwitterIcon} alt="" className={styles['social-icon']} />
-          <img src={InstagramIcon} alt="" className={styles['social-icon']} />
+          <a href="https://www.facebook.com/FindYourAnchor/" target="_blank" rel="noreferrer">
+            <img src={FacebookIcon} alt="" className={styles['social-icon']} />
+          </a>
+          <a href="https://twitter.com/fyabox" target="_blank" rel="noreferrer">
+            <img src={TwitterIcon} alt="" className={styles['social-icon']} />
+          </a>
+          <a href="https://www.instagram.com/findyouranchorbox/" target="_blank" rel="noreferrer">
+            <img src={InstagramIcon} alt="" className={styles['social-icon']} />
+          </a>
         </div>
       </div>
     </ChakraProvider>
