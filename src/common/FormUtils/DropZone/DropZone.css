@@ -2,14 +2,17 @@
   --dropzone-color: #fafafa;
 }
 .dropzone-zone {
-  text-align: center;
   padding: 55px;
   border-radius: 5px;
   border-width: 2px;
   border-style: solid;
+  height: 250px;
   border-color: #b9b9b9;
   background-color: var(--dropzone-color);
   color: #b9b9b9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .dropzone-accept {

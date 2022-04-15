@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import DatePicker from 'react-datepicker';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import countryList from 'react-select-country-list';
 import * as yup from 'yup';
 import { PropTypes } from 'prop-types';
 import {
@@ -13,14 +14,15 @@ import {
   Textarea,
   Select,
 } from '@chakra-ui/react';
-import { FYABackend, formatDate } from '../../common/utils';
+import { Select as ChakraReactSelect } from 'chakra-react-select';
+import { FYABackend, formatDate, getLatLong } from '../../common/utils';
 import { uploadBoxPhoto, validateZip } from '../../common/FormUtils/boxFormUtils';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../common/FormUtils/DatePicker.css';
 import styles from './RelocateBoxForm.module.css';
 
-yup.addMethod(yup.string, 'isZip', validateZip);
+yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 const schema = yup
   .object({
     boxholderName: yup.string().typeError('Invalid name'),
@@ -38,7 +40,11 @@ const schema = yup
       .date()
       .required('Invalid date, please enter a valid date')
       .typeError('Invalid date, please enter a valid date'),
-    zipcode: yup.string().isZip().required('Invalid zipcode, please enter a valid zipcode'),
+    zipcode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),
+    country: yup.object({
+      label: yup.string().required('Invalid country, please select a country'),
+      value: yup.string(),
+    }),
     generalLocation: yup.string().typeError('Invalid location, please enter a valid location'),
     dropOffMethod: yup
       .string()
@@ -46,6 +52,7 @@ const schema = yup
     message: yup.string().typeError('Invalid message, please enter a valid message'),
     picture: yup.string().url(),
   })
+  .isZipInCountry()
   .required();
 
 const RelocateBoxForm = ({ setFormSubmitted }) => {
@@ -61,29 +68,37 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
 
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const countryOptions = useMemo(() => countryList().getData(), []);
 
   const onSubmit = async data => {
     const formData = data;
     formData.date = formatDate(data.date);
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
+    formData.country = formData.country.value;
 
-    try {
-      setLoading(true);
-      await FYABackend.post('/boxHistory', {
-        ...formData,
-        launchedOrganically: formData.dropOffMethod === 'organic-launch',
-        pickup: false,
-        status: 'under review',
-        messageStatus: 'pending',
-        imageStatus: 'pending',
-      });
+    const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
+    if (latitude === undefined && longitude === undefined) {
+      // TODO: display toast component
+      alert(`Cannot find ${formData.zipcode} in country ${formData.country}`);
+    } else {
+      try {
+        setLoading(true);
+        await FYABackend.post('/boxHistory', {
+          ...formData,
+          launchedOrganically: formData.dropOffMethod === 'organic-launch',
+          pickup: false,
+          status: 'under review',
+          messageStatus: 'pending',
+          imageStatus: 'pending',
+        });
 
-      setFormSubmitted(true);
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      // TODO: show error banner on failure
-      console.log(err.message);
+        setFormSubmitted(true);
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        // TODO: show error banner on failure
+        console.log(err.message);
+      }
     }
   };
 
@@ -144,12 +159,32 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
           </FormControl>
           <br />
-          <FormControl isInvalid={errors?.zipcode}>
+          <FormControl isInvalid={errors?.zipcode || errors['']?.message.startsWith('Postal code')}>
             <FormLabel htmlFor="zipcode" className={styles['required-field']}>
               Zip Code
             </FormLabel>
-            <Input id="zipCode" placeholder="e.g. 90210" name="zipcode" {...register('zipcode')} />
+            <Input id="zipcode" placeholder="e.g. 90210" name="zipcode" {...register('zipcode')} />
+            {/* display an error if there is no zipcode */}
             <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
+            {/* display an error if zipcode does not exist in country */}
+            {errors['']?.message !== 'zip validated' && (
+              <FormErrorMessage>{!errors.zipcode && errors['']?.message}</FormErrorMessage>
+            )}
+          </FormControl>
+          <br />
+          <FormControl isInvalid={errors?.country}>
+            <FormLabel htmlFor="country" className={styles['required-field']}>
+              Country
+            </FormLabel>
+            <Controller
+              control={control}
+              name="country"
+              // eslint-disable-next-line no-unused-vars
+              render={({ field: { onChange, value, ref } }) => (
+                <ChakraReactSelect options={countryOptions} value={value} onChange={onChange} />
+              )}
+            />
+            <FormErrorMessage>{errors.country?.label.message}</FormErrorMessage>
           </FormControl>
           <br />
           <FormControl isInvalid={errors?.generalLocation}>
