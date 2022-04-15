@@ -94,7 +94,6 @@ const AddBoxForm = () => {
           ...formData,
           latitude: latitude,
           longitude: longitude,
-          showOnMap: true,
         });
         setLoading(false);
         navigate('/admin');
