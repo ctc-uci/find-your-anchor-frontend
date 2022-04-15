@@ -29,7 +29,7 @@ import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import styles from './RelocationBox.module.css';
 import { validateZip } from '../../common/FormUtils/boxFormUtils';
 
-yup.addMethod(yup.string, 'isZip', validateZip);
+yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 const schema = yup
   .object({
     name: yup.string().typeError('Invalid name'),
@@ -38,18 +38,17 @@ const schema = yup
       .email('Invalid email address')
       .required('Invalid email address, please enter a valid email address')
       .typeError('Invalid email address, please enter a valid email address'),
-    zipcode: yup.string().isZip().required('Invalid zipcode, please enter a valid zipcode'),
-    boxCountry: yup
-      .object({
-        label: yup.string().required('Invalid country, please select a country'),
-        value: yup.string(),
-      })
-      .typeError('Invalid country code'),
+    zipcode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),
+    country: yup.object({
+      label: yup.string().required('Invalid country, please select a country'),
+      value: yup.string().required('Invalid country, please select a country'),
+    }),
     boxLocation: yup.string().typeError('Invalid location, please enter a valid location'),
     dropOffMethod: yup
       .string()
       .required('Invalid drop off method, please enter a valid drop off method'),
   })
+  .isZipInCountry()
   .required();
 
 const RelocationBox = ({
@@ -59,7 +58,7 @@ const RelocationBox = ({
   boxHolderName,
   boxHolderEmail,
   zipCode,
-  country,
+  boxCountry,
   picture,
   generalLocation,
   message,
@@ -78,7 +77,7 @@ const RelocationBox = ({
     name: boxHolderName,
     email: boxHolderEmail,
     zipcode: zipCode,
-    boxCountry: countryOptions.find(countryNameAndCode => countryNameAndCode.value === country),
+    country: countryOptions.find(countryNameAndCode => countryNameAndCode.value === boxCountry),
     boxLocation: generalLocation,
     dropOffMethod: launchedOrganically ? 'organic-launch' : 'given-to-someone',
   };
@@ -137,7 +136,7 @@ const RelocationBox = ({
       boxHolderName: formData.name,
       boxHolderEmail: formData.email,
       zipCode: formData.zipcode,
-      country: formData.boxCountry.value,
+      country: formData.country.value,
       generalLocation: formData.boxLocation,
       message: messageState,
       launchedOrganically: formData.dropOffMethod === 'organic-launch',
@@ -156,7 +155,7 @@ const RelocationBox = ({
       boxHolderName: formData.name,
       boxHolderEmail: formData.email,
       zipCode: formData.zipcode,
-      country: formData.boxCountry.value,
+      country: formData.country.value,
       generalLocation: formData.boxLocation,
       message: messageState,
       launchedOrganically: formData.dropOffMethod === 'organic-launch',
@@ -176,12 +175,13 @@ const RelocationBox = ({
       boxHolderName: formData.name,
       boxHolderEmail: formData.email,
       zipCode: formData.zipcode,
-      generalLocation: formData.boxCountry,
+      country: formData.country.value,
+      generalLocation: formData.boxLocation,
       message: formData.boxMessage,
-      launchedOrganically: formData,
+      launchedOrganically: formData.dropOffMethod === 'organic-launch',
     });
     // TODO: REPLACE US WITH COUNTRY INPUT
-    let coordinates = await getLatLong(zipCode, 'US');
+    let coordinates = await getLatLong(zipCode, formData.country.value);
     if (coordinates.length !== 2) {
       coordinates = [0, 0];
     }
@@ -374,7 +374,9 @@ const RelocationBox = ({
                     <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
                   </FormControl>
                   {/* Box Zip Code */}
-                  <FormControl isInvalid={errors?.zipcode}>
+                  <FormControl
+                    isInvalid={errors?.zipcode || errors['']?.message.startsWith('Postal code')}
+                  >
                     <FormLabel htmlFor="zipCode" className={styles['form-label']}>
                       Zip Code
                     </FormLabel>
@@ -386,6 +388,9 @@ const RelocationBox = ({
                       {...register('zipcode')}
                     />
                     <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
+                    {errors['']?.message !== 'zip validated' && (
+                      <FormErrorMessage>{!errors.zipcode && errors['']?.message}</FormErrorMessage>
+                    )}
                   </FormControl>
                   {/* Country */}
                   <FormControl isInvalid={errors?.country}>
@@ -394,7 +399,7 @@ const RelocationBox = ({
                     </FormLabel>
                     <Controller
                       control={control}
-                      name="boxCountry"
+                      name="country"
                       // eslint-disable-next-line no-unused-vars
                       render={({ field: { onChange, value, ref } }) => (
                         <ReactSelect
@@ -405,7 +410,7 @@ const RelocationBox = ({
                         />
                       )}
                     />
-                    <FormErrorMessage>{errors.boxCountry?.message}</FormErrorMessage>
+                    <FormErrorMessage>{errors.country?.label.message}</FormErrorMessage>
                   </FormControl>
                   <FormControl isInvalid={errors?.boxLocation}>
                     <FormLabel htmlFor="generalLocation" className={styles['form-label']}>
@@ -585,7 +590,7 @@ RelocationBox.propTypes = {
   boxHolderName: PropTypes.string.isRequired,
   boxHolderEmail: PropTypes.string.isRequired,
   zipCode: PropTypes.string.isRequired,
-  country: PropTypes.string.isRequired,
+  boxCountry: PropTypes.string.isRequired,
   picture: PropTypes.string.isRequired,
   generalLocation: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
