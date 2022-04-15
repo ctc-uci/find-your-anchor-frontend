@@ -22,7 +22,7 @@ ReactDOM.render(
     <CookiesProvider>
       <Router>
         <Routes>
-          <Route element={<Layout isAdmin />}>
+          <Route element={<Layout />}>
             <Route path="/pickup-box-form" element={<PickupBoxFormPage />} />
             <Route path="/relocate-box-form" element={<RelocateBoxFormPage />} />
           </Route>
