@@ -2,16 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Email } from 'react-html-email';
 
-// import styles from './AdminApprovalProcessEmail.module.css';
-// import ChangesRequestedEmailPicture from '../../../assets/ChangesRequestedEmailPicture.svg';
-// import BoxRejectedEmailPicture from '../../../assets/BoxRejectedEmailPicture.svg';
-// import FYATextLogo from '../../../assets/fya-text-logo.svg';
-// import {
-//   BoxApprovedEmailPicture,
-//   BoxRejectedEmailPicture,
-//   ChangesRequestedEmailPicture,
-//   FYATextLogo,
-// } from '../../../common/utils';
+import {
+  BoxApprovedEmailPicture,
+  BoxRejectedEmailPicture,
+  ChangesRequestedEmailPicture,
+  FYATextLogo,
+} from '../../../common/utils';
 
 const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) => {
   const headerDict = {
@@ -21,32 +17,32 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
   };
 
   const headerSubtextDict = {
-    approved: null,
-    'changes requested': (
-      <p>
-        We&rsquo;re so close! We just need a little more information from you in order to add box to
-        the FYA Launch Map.
-      </p>
-    ),
-    rejected: <p>We&rsquo;re sorry, we couldn&rsquo;t add your box to the FYA Launch Map</p>,
+    approved: '',
+    'changes requested':
+      "We're so close! We just need a little more information from you in order to add box to the FYA Launch Map.",
+    rejected: "We're sorry, we couldn't add your box to the FYA Launch Map",
   };
 
   const whatDoesThisMeanDict = {
-    approved: <p>Your box&rsquo;s journey has been added to the FYA Launch Map!</p>,
+    approved: (
+      <p style={{ margin: 0, color: 'black' }}>
+        Your box&rsquo;s journey has been added to the FYA Launch Map!
+      </p>
+    ),
     'changes requested': (
-      <p>
+      <p style={{ margin: 0, color: 'black' }}>
         We&rsquo;re missing some information to verify your box. Please follow the steps below to
         complete the process, so we can get it added to the FYA Launch Map!
       </p>
     ),
     rejected: (
       <>
-        <p>
+        <p style={{ margin: 0, color: 'black' }}>
           For some reason we were not able to verify your box and as a result, could not add it to
           the FYA Launch Map.
         </p>
         <br />
-        <p>
+        <p style={{ margin: 0, color: 'black' }}>
           If you believe this is an error and the box should be added, please email us at{' '}
           <span
             style={{
@@ -91,24 +87,22 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
       <li key={2}>Wait for a new submission confirmation email</li>,
       <li key={3}>
         Any questions? Email us at{' '}
-        <a
-          href="/"
+        <span
           style={{
             'font-weight': 700,
           }}
         >
           hello@findyouranchor.us
-        </a>
+        </span>
       </li>,
     ],
     rejected: [],
   };
 
   const imageSourceDict = {
-    approved: `https://s3-csv-object-test.s3.us-west-1.amazonaws.com/BoxApprovedEmailPicture.png`,
-    'changes requested':
-      'https://s3-csv-object-test.s3.us-west-1.amazonaws.com/ChangesRequestedEmailPicture.png',
-    rejected: 'https://s3-csv-object-test.s3.us-west-1.amazonaws.com/BoxRejectedEmailPicture.png',
+    approved: BoxApprovedEmailPicture,
+    'changes requested': BoxRejectedEmailPicture,
+    rejected: ChangesRequestedEmailPicture,
   };
   const headerContent = headerDict[type];
   const headerSubtextContent = headerSubtextDict[type];
@@ -142,7 +136,7 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
             top: 0,
             left: 0,
           }}
-          src="https://s3-csv-object-test.s3.us-west-1.amazonaws.com/fya-text-logo.png"
+          src={FYATextLogo}
           alt="FYA logo"
         />
         <h1
@@ -151,16 +145,17 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
             color: '#2E688E',
             'font-size': '24px',
             padding: '100px 0 0 0',
+            margin: 0,
           }}
         >
           {headerContent}
         </h1>
-        {headerSubtextContent}
+        <p style={{ color: 'black' }}>{headerSubtextContent}</p>
         <div style={{ display: 'flex' }}>
           <div
             style={{
               width: '60%',
-              'padding-top': '40px',
+              'padding-top': '30px',
             }}
           >
             <div
@@ -170,6 +165,7 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
             >
               <h2
                 style={{
+                  margin: 0,
                   'font-size': '18px',
                   'font-weight': 700,
                   color: '#2E688E',
@@ -181,13 +177,10 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
               {whatDoesThisMeanContent}
             </div>
             {type !== 'rejected' && (
-              <div
-                style={{
-                  'margin-left': '10px',
-                }}
-              >
+              <div>
                 <h2
                   style={{
+                    margin: 0,
                     'font-size': '18px',
                     'font-weight': 700,
                     color: '#2E688E',
@@ -197,8 +190,10 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
                   Next steps:
                 </h2>
                 <ul
-                  styles={{
-                    'margin-left': '50px',
+                  style={{
+                    margin: 0,
+                    padding: '0 0 0 20px',
+                    color: 'black',
                   }}
                 >
                   {nextStepsContent}

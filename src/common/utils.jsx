@@ -81,12 +81,12 @@ export const getLatLong = async (zipCode, country) => {
 };
 
 export const BoxApprovedEmailPicture =
-  'https://fya-dev.s3.us-west-1.amazonaws.com/BoxApprovedEmailPicture.svg';
+  'https://fya-dev.s3.us-west-1.amazonaws.com/BoxApprovedEmailPicture.png';
 
 export const BoxRejectedEmailPicture =
-  'https://fya-dev.s3.us-west-1.amazonaws.com/BoxRejectedEmailPicture.svg';
+  'https://fya-dev.s3.us-west-1.amazonaws.com/BoxRejectedEmailPicture.png';
 
 export const ChangesRequestedEmailPicture =
-  'https://fya-dev.s3.us-west-1.amazonaws.com/ChangesRequestedEmailPicture.svg';
+  'https://fya-dev.s3.us-west-1.amazonaws.com/ChangesRequestedEmailPicture.png';
 
-export const FYATextLogo = 'https://fya-dev.s3.us-west-1.amazonaws.com/fya-text-logo.svg';
+export const FYATextLogo = 'https://fya-dev.s3.us-west-1.amazonaws.com/fya-text-logo.png';
