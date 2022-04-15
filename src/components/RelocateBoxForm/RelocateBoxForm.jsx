@@ -203,7 +203,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
       <div className={styles['relocate-box-info-section-right']}>
         <FormControl className={styles['section-wrapper']}>
           <FormLabel htmlFor="drop-off-method" className={styles['required-field']}>
-            Drop Off Method
+            Launch Method
           </FormLabel>
           <Select id="drop-off-method" {...register('dropOffMethod')}>
             <option value="given-to-someone">Given to Someone</option>
