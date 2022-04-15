@@ -57,3 +57,27 @@
 .relocate-box-info-section-right {
   width: 40%;
 }
+
+@media screen and (max-width: 768px) {
+  .relocate-box-form {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .relocate-box-info-section {
+    width: 80%;
+  }
+
+  .attach-box-photo-label {
+    margin-left: 10%;
+  }
+
+  .relocate-box-photo-preview-section,
+  .box-image {
+    margin: auto;
+  }
+
+  .submit-button {
+    margin-left: 60%;
+  }
+}
