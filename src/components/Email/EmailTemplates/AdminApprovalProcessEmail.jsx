@@ -61,7 +61,7 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
       <li key={0}>
         Find your box on the Launch Map{' '}
         <a
-          href="/"
+          href={`${process.env.REACT_APP_BASE_URL}`}
           style={{
             'font-weight': 700,
           }}
@@ -76,7 +76,7 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
       <li key={1}>
         Resubmit your box request including the missing information{' '}
         <a
-          href="/"
+          href={`${process.env.REACT_APP_BASE_URL}`}
           style={{
             'font-weight': 700,
           }}
