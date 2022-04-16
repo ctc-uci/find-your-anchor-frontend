@@ -18,10 +18,18 @@ import BoxSchema from '../../UploadCSV/UploadCSVUtils';
 import styles from './EditableRow.module.css';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const EditableRow = ({ editFormData, handleEditFormSubmit, isError, boxNumberMap }) => {
+const EditableRow = ({
+  editFormData,
+  handleEditFormSubmit,
+  isError,
+  boxNumberMap,
+  updateBoxNumberMap,
+  lineNumber,
+}) => {
   const {
     register,
     control,
+    getValues,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -37,8 +45,16 @@ const EditableRow = ({ editFormData, handleEditFormSubmit, isError, boxNumberMap
     delayError: 750,
   });
 
-  const onSave = editRowData => {
-    handleEditFormSubmit(editRowData);
+  const handleEditFormSubmitError = err => {
+    // Revert update to box map if new box number causes error
+    const oldBoxNum = Number(err.boxNumber.message.split(': ')[1]);
+    updateBoxNumberMap(oldBoxNum, lineNumber, editFormData.boxNumber);
+  };
+
+  const onSave = () => {
+    const newBoxNum = Number(getValues('boxNumber'));
+    updateBoxNumberMap(editFormData.boxNumber, lineNumber, newBoxNum);
+    handleSubmit(handleEditFormSubmit, handleEditFormSubmitError)();
   };
 
   return (
@@ -122,7 +138,7 @@ const EditableRow = ({ editFormData, handleEditFormSubmit, isError, boxNumberMap
         />
       </Td>
       <Td>
-        <button type="button" onClick={handleSubmit(onSave)}>
+        <button type="button" onClick={onSave}>
           <CheckIcon alt="Check Icon" className={styles['check-icon']} />
         </button>
       </Td>
@@ -142,6 +158,8 @@ EditableRow.propTypes = {
   handleEditFormSubmit: PropTypes.func.isRequired,
   isError: PropTypes.bool.isRequired,
   boxNumberMap: PropTypes.instanceOf(Map).isRequired,
+  updateBoxNumberMap: PropTypes.func.isRequired,
+  lineNumber: PropTypes.number.isRequired,
 };
 
 export default EditableRow;

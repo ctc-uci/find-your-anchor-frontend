@@ -39,6 +39,10 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
   };
 
   const updateBoxNumberMap = (oldBoxNum, lineNum, newBoxNum) => {
+    if (Number.isNaN(oldBoxNum) || newBoxNum === 0) {
+      return;
+    }
+
     boxNumbers.get(oldBoxNum).delete(lineNum);
 
     if (boxNumbers.get(oldBoxNum).size === 0) {
@@ -50,8 +54,6 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
     }
     // TODO: need to convert newBoxNum to string
     boxNumbers.get(newBoxNum).add(lineNum);
-
-    console.log('updateBoxNumberMap: ', boxNumberMap);
   };
 
   const handleEditFormSubmit = editRowData => {
@@ -65,9 +67,6 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
     };
 
     const index = formDatas.findIndex(data => data.id === editId); // get index of the row that we are editing
-    if (formDatas[index].boxNumber !== editRowData.boxNumber) {
-      updateBoxNumberMap(formDatas[index].boxNumber, index + 1, editRowData.boxNumber);
-    }
     formDatas[index] = editedRow;
     setEditId(null);
     setCsvErrors(csvErrors.filter(error => error !== editId)); // delete edited row from csvErrors array
@@ -82,7 +81,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
       CSVRows.map(async CSVRow => {
         try {
           // second argument is context (external variables)
-          await BoxSchema.validate(CSVRow, { context: boxNumberMap });
+          await BoxSchema.validate(CSVRow, { context: boxNumbers });
           return 'success';
         } catch (err) {
           return CSVRow;
@@ -124,7 +123,6 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
         //   }
         // });
 
-        console.log(formDatas);
         await FYABackend.post('/anchorBox/boxes', formDatas);
         setIsLoading(false);
         navigate('/admin');
@@ -158,7 +156,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {formDatas.map(data => {
+            {formDatas.map((data, index) => {
               return (
                 <Fragment key={data.id}>
                   {editId === data.id ? (
@@ -166,7 +164,9 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
                       editFormData={editFormData}
                       handleEditFormSubmit={handleEditFormSubmit}
                       isError={csvErrors.includes(data.id)}
-                      boxNumberMap={boxNumberMap}
+                      boxNumberMap={boxNumbers}
+                      updateBoxNumberMap={updateBoxNumberMap}
+                      lineNumber={index + 1}
                     />
                   ) : (
                     <ReadOnlyRow
