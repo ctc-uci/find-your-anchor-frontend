@@ -45,12 +45,10 @@ function validateBoxNumber() {
     const { path, createError } = this;
     const boxNumberMap = option.options.context;
 
-    console.log('boxNumberMap: ', boxNumberMap);
-
     const box = await FYABackend.get(`/anchorBox/box/${boxNumber}`);
 
     if (box.data.length !== 0) {
-      return createError({ path, message: `Box number ${boxNumber} already exists` });
+      return createError({ path, message: `Box number already exists: ${boxNumber}` });
     }
 
     // if box number if found on more than one row
