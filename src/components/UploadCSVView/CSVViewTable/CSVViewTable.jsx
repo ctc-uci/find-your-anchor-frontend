@@ -106,9 +106,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
       try {
         // find lat/long for each formData
         const allCoordinates = await Promise.all(
-          formDatas.map(async formData => {
-            getLatLong(formData.zipCode, formData.country);
-          }),
+          formDatas.map(async formData => getLatLong(formData.zipCode, formData.country)),
         );
 
         let hasError = false;
