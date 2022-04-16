@@ -19,6 +19,7 @@ import DeleteBoxModal from '../DeleteBoxModal/DeleteBoxModal';
 const BoxInfo = ({
   selectedBox,
   setSelectedBox,
+  adminIsLoggedIn,
   selectedZipCode,
   selectedCountry,
   setSelectedZipCode,
@@ -55,16 +56,28 @@ const BoxInfo = ({
         <div className={styles['box-data']}>
           <img src={selectedBox.picture} alt="" className={styles['image-corners']} />
           <FormControl>
-            {/* Box name */}
-            <FormLabel htmlFor="name" className={styles['form-label']}>
-              Name
-            </FormLabel>
-            <Input isReadOnly id="name" type="name" value={selectedBox.boxholder_name} />
-            {/* Box email */}
-            <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
-              Email
-            </FormLabel>
-            <Input isReadOnly id="email" type="email" value={selectedBox.boxholder_email} />
+            {adminIsLoggedIn && (
+              <>
+                {/* Box name */}
+                {selectedBox.boxholder_name && (
+                  <>
+                    <FormLabel htmlFor="name" className={styles['form-label']}>
+                      Name
+                    </FormLabel>
+                    <Input isReadOnly id="name" type="name" value={selectedBox.boxholder_name} />
+                  </>
+                )}
+                {/* Box email */}
+                {selectedBox.boxholder_email && (
+                  <>
+                    <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
+                      Email
+                    </FormLabel>
+                    <Input isReadOnly id="email" type="email" value={selectedBox.boxholder_email} />
+                  </>
+                )}
+              </>
+            )}
             {/* Box general location */}
             <FormLabel isReadOnly htmlFor="generalLocation" className={styles['form-label']}>
               General Location
@@ -86,10 +99,22 @@ const BoxInfo = ({
               }
             />
             {/* Box message */}
-            <FormLabel htmlFor="message" className={styles['form-label']}>
-              Message
-            </FormLabel>
-            <Textarea isReadOnly value={selectedBox.message} resize="vertical" />
+            {selectedBox.message && (
+              <>
+                <FormLabel htmlFor="message" className={styles['form-label']}>
+                  Message
+                </FormLabel>
+                <Textarea isReadOnly value={selectedBox.message} resize="vertical" />
+              </>
+            )}
+            {adminIsLoggedIn && selectedBox.additional_comments && (
+              <>
+                <FormLabel htmlFor="additional comments" className={styles['form-label']}>
+                  Additional Comments
+                </FormLabel>
+                <Textarea isReadOnly value={selectedBox.additional_comments} resize="vertical" />
+              </>
+            )}
           </FormControl>
           {boxHistory.length > 0 && (
             <>
@@ -109,23 +134,25 @@ const BoxInfo = ({
               </div>
             </>
           )}
-          <div className={styles['button-div']}>
-            <Button colorScheme="red" size="md" onClick={onOpenDeleteBoxModal}>
-              Delete Box
-            </Button>
-            <DeleteBoxModal
-              isOpen={isOpenDeleteBoxModal}
-              onClose={onCloseDeleteBoxModal}
-              selectedBox={selectedBox}
-              setSelectedBox={setSelectedBox}
-              selectedZipCode={selectedZipCode}
-              selectedCountry={selectedCountry}
-              setSelectedZipCode={setSelectedZipCode}
-              setSelectedCountry={setSelectedCountry}
-              zipCodeData={zipCodeData}
-              setZipCodeData={setZipCodeData}
-            />
-          </div>
+          {adminIsLoggedIn && (
+            <div className={styles['button-div']}>
+              <Button colorScheme="red" size="md" onClick={onOpenDeleteBoxModal}>
+                Delete Box
+              </Button>
+              <DeleteBoxModal
+                isOpen={isOpenDeleteBoxModal}
+                onClose={onCloseDeleteBoxModal}
+                selectedBox={selectedBox}
+                setSelectedBox={setSelectedBox}
+                selectedZipCode={selectedZipCode}
+                selectedCountry={selectedCountry}
+                setSelectedZipCode={setSelectedZipCode}
+                setSelectedCountry={setSelectedCountry}
+                zipCodeData={zipCodeData}
+                setZipCodeData={setZipCodeData}
+              />
+            </div>
+          )}
         </div>
       </div>
     </ChakraProvider>
@@ -154,6 +181,7 @@ BoxInfo.propTypes = {
     boxholder_email: PropTypes.string,
   }).isRequired,
   setSelectedBox: PropTypes.func.isRequired,
+  adminIsLoggedIn: PropTypes.bool.isRequired,
   selectedZipCode: PropTypes.string,
   selectedCountry: PropTypes.string,
   setSelectedZipCode: PropTypes.func.isRequired,

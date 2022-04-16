@@ -29,9 +29,11 @@ const NavBar = ({ isAdmin }) => {
   };
 
   useEffect(async () => {
-    const temp = await getUserInitials();
-    setInitials(temp);
-  }, []);
+    if (isAdmin) {
+      const temp = await getUserInitials();
+      setInitials(temp);
+    }
+  }, [isAdmin]);
 
   const AdminLinks = () => (
     <>
@@ -61,12 +63,20 @@ const NavBar = ({ isAdmin }) => {
   const UserLinks = () => (
     <>
       <NavLink
+        to="/about"
+        className={navLink =>
+          navLink.isActive ? styles['nav-link-selected'] : styles['nav-link-unselected']
+        }
+      >
+        About
+      </NavLink>
+      <NavLink
         to="/relocate-box-form"
         className={navLink =>
           navLink.isActive ? styles['nav-link-selected'] : styles['nav-link-unselected']
         }
       >
-        Relocate a Box
+        Launch a Box
       </NavLink>
       <NavLink
         to="/pickup-box-form"
@@ -74,7 +84,7 @@ const NavBar = ({ isAdmin }) => {
           navLink.isActive ? styles['nav-link-selected'] : styles['nav-link-unselected']
         }
       >
-        Pick Up a Box
+        Found a Box
       </NavLink>
     </>
   );
