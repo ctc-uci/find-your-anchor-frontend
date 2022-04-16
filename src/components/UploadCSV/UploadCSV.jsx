@@ -82,8 +82,6 @@ const UploadCSV = ({ isOpen, onClose }) => {
           }),
         );
 
-        console.log(responses);
-
         setIsUploadingNewFile(false);
         setCSVFile();
 
