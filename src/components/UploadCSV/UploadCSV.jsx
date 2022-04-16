@@ -18,11 +18,24 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const { readRemoteFile } = usePapaParse();
   const [CSVFile, setCSVFile] = useState(null);
   const [CSVFilename, setCSVFilename] = useState('');
-  const [formDatas, setFormDatas] = useState([]);
   const [boxNumberMap, setBoxNumberMap] = useState(new Map());
   const [uploadErrors, setUploadErrors] = useState([]);
   const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [formDatas, setFormDatas] = useState([]);
+
+  // formDatas structure:
+  // [
+  //   {
+  //     id,
+  //     boxNumber,
+  //     date,
+  //     zipCode,
+  //     country,
+  //     launchedOrganically,
+  //     error
+  //   }
+  // ]
 
   useEffect(() => {
     if (isUploadingNewFile) {
@@ -88,16 +101,6 @@ const UploadCSV = ({ isOpen, onClose }) => {
         setCSVFile();
 
         setFormDatas(responses);
-
-        // check if there are duplicate box numbers in the same file
-        boxNumbers.forEach((lineNumbers, boxNumber) => {
-          if (lineNumbers.size > 1) {
-            setUploadErrors(prevState => [
-              ...prevState,
-              `Duplicate box number: ${boxNumber} (lines ${[...lineNumbers].join(', ')})`,
-            ]);
-          }
-        });
 
         setIsUploadingNewFile(false);
         setCSVFile();
