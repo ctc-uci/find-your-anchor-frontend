@@ -1,18 +1,21 @@
 /* eslint-disable prefer-object-spread */
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button, Stack, Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
+import { useTable, usePagination } from 'react-table';
+
 import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../EditableRow/EditableRow';
 import { FYABackend, formatDate, getLatLong } from '../../../common/utils';
 import BoxSchema from '../../UploadCSV/UploadCSVUtils';
+import CSVViewTablePagination from './CSVViewTablePagination';
 
 const CSVViewTable = ({ rows, boxNumberMap }) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [formDatas, setFormData] = useState(rows);
+  const [formDatas, setFormDatas] = useState(rows);
   const [boxNumbers] = useState(boxNumberMap);
   const [editId, setEditId] = useState(null);
   const [editFormData, setEditFormData] = useState({
@@ -23,19 +26,107 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
     launchedOrganically: false,
   });
 
-  const editRow = (e, data) => {
+  const [currentPage, setCurrentPage] = useState(null);
+  const [deleted, setDeleted] = useState(false);
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Box No',
+        accessor: 'boxNumber',
+      },
+      {
+        Header: 'Date',
+        accessor: 'date',
+      },
+      {
+        Header: 'Zip Code',
+        accessor: 'zipCode',
+      },
+      {
+        Header: 'Country',
+        accessor: 'country',
+      },
+      {
+        Header: 'Launched Organically',
+        accessor: 'launchedOrganically',
+      },
+      {
+        Header: 'Error',
+        accessor: 'error',
+      },
+    ],
+    [],
+  );
+
+  const data = useMemo(() => formDatas, [formDatas]);
+
+  const {
+    // getTableProps,
+    // getTableBodyProps,
+    // headerGroups,
+    prepareRow,
+    page, // Instead of using 'rows', we'll use page,
+    // which has only the rows for the active page
+
+    // The rest of these things are super handy, too ;)
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: { pageIndex: 0 },
+    },
+    usePagination,
+  );
+
+  useEffect(() => {
+    setCurrentPage(pageIndex);
+  }, [pageIndex]);
+
+  useEffect(() => {
+    if (currentPage) {
+      gotoPage(currentPage);
+    }
+  }, [deleted]);
+
+  // manual = editing the row by hand (not from addToMap)
+  const editRow = (e, rowData, firstErrorIndex, manual) => {
     e.preventDefault();
-    // store current form values for row
-    const formValues = {
-      date: data.date,
-      boxNumber: data.boxNumber,
-      zipCode: data.zipCode,
-      country: data.country,
-      launchedOrganically: data.launchedOrganically,
-      error: true,
-    };
+    // store current form values for row so that EditableRow
+    // can display these values when it first renders
+    let formValues = {};
+    if (manual) {
+      formValues = {
+        id: rowData.original.id,
+        date: rowData.values.date,
+        boxNumber: rowData.values.boxNumber,
+        zipCode: rowData.values.zipCode,
+        country: rowData.values.country,
+        launchedOrganically: rowData.values.launchedOrganically,
+      };
+      setEditId(rowData.original.id);
+    } else {
+      formValues = {
+        id: rowData.id,
+        date: rowData.date,
+        boxNumber: rowData.boxNumber,
+        zipCode: rowData.zipCode,
+        country: rowData.country,
+        launchedOrganically: rowData.launchedOrganically,
+      };
+      setEditId(rowData.id);
+      gotoPage(Math.floor(firstErrorIndex / pageSize));
+    }
     setEditFormData(formValues);
-    setEditId(data.id);
   };
 
   const updateBoxNumberMap = (oldBoxNum, lineNum, newBoxNum) => {
@@ -67,13 +158,19 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
       error: false,
     };
 
-    const index = formDatas.findIndex(data => data.id === editId); // get index of the row that we are editing
-    formDatas[index] = editedRow;
+    // update formDatas with the edited row
+    const newFormDatas = [...formDatas];
+    const index = formDatas.findIndex(rowData => rowData.id === editId); // get index of the row that we are editing
+    newFormDatas[index] = editedRow; // update the array at index
+    setFormDatas(newFormDatas);
+
+    gotoPage(pageIndex);
     setEditId(null);
   };
 
   const handleDeleteRow = rowId => {
-    setFormData(formDatas.filter(data => data.id !== rowId));
+    setFormDatas(formDatas.filter(rowData => rowData.id !== rowId));
+    setDeleted(!deleted);
   };
 
   const checkErrors = async CSVRow => {
@@ -97,11 +194,11 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
     setIsLoading(true);
 
     const processedRows = await Promise.all(formDatas.map(async formData => checkErrors(formData)));
-    const firstErrorRow = processedRows.find(row => row.error);
+    const firstErrorRowIndex = processedRows.findIndex(row => row.error);
 
-    if (firstErrorRow) {
+    if (firstErrorRowIndex !== -1) {
       setIsLoading(false);
-      editRow(e, firstErrorRow);
+      editRow(e, processedRows[firstErrorRowIndex], firstErrorRowIndex, false);
     } else {
       try {
         // find lat/long for each formData
@@ -152,24 +249,26 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {formDatas.map((data, index) => {
+            {page.map((rowData, index) => {
+              console.log('lineNumber ', index);
+              prepareRow(rowData);
               return (
-                <Fragment key={data.id}>
-                  {editId === data.id ? (
+                <Fragment key={rowData.original.id}>
+                  {editId === rowData.original.id ? (
                     <EditableRow
                       editFormData={editFormData}
                       handleEditFormSubmit={handleEditFormSubmit}
-                      isError={data.error}
+                      isError={rowData.values.error}
                       boxNumberMap={boxNumbers}
                       updateBoxNumberMap={updateBoxNumberMap}
                       lineNumber={index + 1}
                     />
                   ) : (
                     <ReadOnlyRow
-                      data={data}
+                      data={rowData}
                       editRow={editRow}
                       handleDeleteRow={handleDeleteRow}
-                      isError={data.error}
+                      isError={rowData.values.error}
                     />
                   )}
                 </Fragment>
@@ -178,6 +277,20 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
           </Tbody>
         </Table>
       </div>
+      <CSVViewTablePagination
+        pageLength={pageOptions.length}
+        pageIndex={pageIndex}
+        pageCount={pageCount}
+        pageSize={pageSize}
+        pageControl={{
+          setPageSize,
+          gotoPage,
+          nextPage,
+          previousPage,
+          canNextPage,
+          canPreviousPage,
+        }}
+      />
       <Stack direction="row" justify="right" marginTop="25px">
         <Button isLoading={isLoading} type="submit" colorScheme="teal">
           Add to Map
