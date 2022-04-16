@@ -16,26 +16,13 @@ import styles from './UploadCSV.module.css';
 const UploadCSV = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const { readRemoteFile } = usePapaParse();
+  const [formDatas, setFormDatas] = useState([]);
   const [CSVFile, setCSVFile] = useState(null);
   const [CSVFilename, setCSVFilename] = useState('');
   const [boxNumberMap, setBoxNumberMap] = useState(new Map());
   const [uploadErrors, setUploadErrors] = useState([]);
   const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [formDatas, setFormDatas] = useState([]);
-
-  // formDatas structure:
-  // [
-  //   {
-  //     id,
-  //     boxNumber,
-  //     date,
-  //     zipCode,
-  //     country,
-  //     launchedOrganically,
-  //     error
-  //   }
-  // ]
 
   useEffect(() => {
     if (isUploadingNewFile) {
@@ -85,10 +72,10 @@ const UploadCSV = ({ isOpen, onClose }) => {
 
             // add boxNumber as a key to the map and
             // the value is a set of all the lines this box number shows up on
-            if (!boxNumbers.has(boxNumber)) {
-              boxNumbers.set(boxNumber, new Set());
+            if (!boxNumberMap.has(boxNumber)) {
+              boxNumberMap.set(boxNumber, new Set());
             }
-            boxNumbers.get(boxNumber).add(i + 1);
+            boxNumberMap.get(boxNumber).add(i + 1);
 
             // validate each row in the csv file
             return checkErrors(CSVRow, i + 1);
@@ -132,6 +119,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
   };
 
   const addToMap = async e => {
+    // TODO: check if latitude and longitude are undefined for each formData
     e.preventDefault();
 
     // find and set latitude and longitude for each formData
@@ -140,9 +128,23 @@ const UploadCSV = ({ isOpen, onClose }) => {
         const [lat, long] = await getLatLong(formData.zipCode, formData.country);
         formDatas[index].latitude = lat;
         formDatas[index].longitude = long;
-        formDatas[index].showOnMap = true;
       }),
     );
+
+    // formDatas structure:
+    // [
+    //   {
+    //     id,
+    //     boxNumber,
+    //     date,
+    //     zipCode,
+    //     country,
+    //     launchedOrganically,
+    //     error,
+    //     latitude,
+    //     longitude,
+    //   }
+    // ]
 
     await FYABackend.post('/anchorBox/boxes', formDatas);
     onCloseModal();
