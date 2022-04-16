@@ -19,13 +19,6 @@ const DeleteBoxModal = ({
   // Deletes the currently selected box in both Anchor_Box and Box_History
   const deleteBox = async () => {
     try {
-      const deleteRequests = [
-        // Delete the box in Box_History
-        await FYABackend.delete(`/boxHistory/${selectedBox.box_id}`),
-        // Delete the box in Anchor_Box
-        await FYABackend.delete(`/anchorBox/${selectedBox.box_id}`),
-      ];
-      await Promise.allSettled(deleteRequests);
       // Refetch box list
       const anchorBoxesInZipCode = await FYABackend.get('/anchorBox', {
         params: {
@@ -33,13 +26,21 @@ const DeleteBoxModal = ({
           country: selectedCountry,
         },
       });
+      const deletedBox = (await FYABackend.get(`/anchorBox/box/${selectedBox}`)).data[0];
+      const deleteRequests = [
+        // Delete the box in Box_History
+        await FYABackend.delete(`/boxHistory/${selectedBox}`),
+        // Delete the box in Anchor_Box
+        await FYABackend.delete(`/anchorBox/${selectedBox}`),
+      ];
+      await Promise.allSettled(deleteRequests);
       // If the box list is now empty, remove marker from map
       if (anchorBoxesInZipCode.data.length === 0) {
         setZipCodeData(
           zipCodeData.filter(
             zipCodeInfo =>
-              zipCodeInfo.zip_code !== selectedBox.zip_code ||
-              zipCodeInfo.country !== selectedBox.country,
+              zipCodeInfo.zip_code !== deletedBox.zip_code ||
+              zipCodeInfo.country !== deletedBox.country,
           ),
         );
         setSelectedZipCode(null);
@@ -49,8 +50,8 @@ const DeleteBoxModal = ({
         // Find the marker inside zipCodeData
         const index = zipCodeData.findIndex(
           zipCodeInfo =>
-            zipCodeInfo.zip_code === selectedBox.zip_code &&
-            zipCodeInfo.country === selectedBox.country,
+            zipCodeInfo.zip_code === deletedBox.zip_code &&
+            zipCodeInfo.country === deletedBox.country,
         );
         // Decrement the marker's box_count
         const newZipCodeInfo = {
@@ -69,7 +70,7 @@ const DeleteBoxModal = ({
     } catch (err) {
       // TODO: Add toast if something goes wrong
       // eslint-disable-next-line no-console
-      console.log(err.message);
+      console.log(err);
     }
   };
   const closeModal = () => {

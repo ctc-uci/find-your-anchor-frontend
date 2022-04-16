@@ -33,7 +33,7 @@ const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox, updateBoxLi
             <Box
               key={box.box_id}
               className={styles['box-list-item']}
-              onClick={() => setSelectedBox(box)}
+              onClick={() => setSelectedBox(box.box_id)}
             >
               <div className={styles['box-list-item-text']}>
                 <p className={styles['box-number']}>Box #{box.box_id}</p>
