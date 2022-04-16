@@ -31,13 +31,23 @@ const UploadCSV = ({ isOpen, onClose }) => {
     }
   }, [isUploadingNewFile]);
 
+  // checkErrors returns an array of the CSV rows with an error property
+  // that indicates whether this row contains any invalid inputs
   const checkErrors = async (CSVRow, i) => {
     try {
       await BoxSchema.validate(CSVRow, { abortEarly: false, context: boxNumberMap });
+      return {
+        ...CSVRow,
+        error: false,
+      };
     } catch (err) {
       err.inner.forEach(e => {
         setUploadErrors(prevState => [...prevState, `${e.message} (line ${i})`]);
       });
+      return {
+        ...CSVRow,
+        error: true,
+      };
     }
   };
 
@@ -45,34 +55,39 @@ const UploadCSV = ({ isOpen, onClose }) => {
     readRemoteFile(CSVFile, {
       header: true,
       complete: async results => {
-        const CSVRows = [];
         const boxNumbers = new Map();
 
-        // parse each row in csv file
-        for (let i = 0; i < results.data.length; i += 1) {
-          const uid = uuidv4(); // used to uniquely identify each row
-          const row = results.data[i];
-          const boxNumber = Number(row['Box No']);
-          const CSVRow = {
-            id: uid,
-            boxNumber,
-            date: row.Date,
-            zipCode: row['Zip Code'],
-            country: row.Country,
-            launchedOrganically: row['Launched Organically?'].toLowerCase() === 'yes',
-          };
-          checkErrors(CSVRow, i + 1);
-          CSVRows.push(CSVRow);
-          if (!boxNumbers.has(boxNumber)) {
-            boxNumbers.set(boxNumber, new Set());
-          }
-          boxNumbers.get(boxNumber).add(i + 1);
-        }
+        const responses = await Promise.all(
+          results.data.map(async (row, i) => {
+            const uid = uuidv4(); // generates an id to uniquely identify each row
+            const boxNumber = Number(row['Box No']);
+            const CSVRow = {
+              id: uid,
+              boxNumber,
+              date: row.Date,
+              zipCode: row['Zip Code'],
+              country: row.Country,
+              launchedOrganically: row['Launched Organically?'].toLowerCase() === 'yes',
+            };
+
+            // add boxNumber as a key to the map and
+            // the value is a set of all the lines this box number shows up on
+            if (!boxNumbers.has(boxNumber)) {
+              boxNumbers.set(boxNumber, new Set());
+            }
+            boxNumbers.get(boxNumber).add(i + 1);
+
+            // validate each row in the csv file
+            return checkErrors(CSVRow, i + 1);
+          }),
+        );
+
+        console.log('RESPONSES: ', responses);
 
         setIsUploadingNewFile(false);
         setCSVFile();
 
-        setFormDatas(CSVRows);
+        setFormDatas(responses);
 
         // check if there are duplicate box numbers in the same file
         boxNumbers.forEach((lineNumbers, boxNumber) => {
