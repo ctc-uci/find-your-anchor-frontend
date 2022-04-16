@@ -93,9 +93,15 @@ const refreshToken = async () => {
  * @returns A boolean indicating whether or not the log in was successful
  */
 const logInWithEmailAndPassword = async (email, password, redirectPath, navigate, cookies) => {
-  await signInWithEmailAndPassword(auth, email, password);
-  cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
-  navigate(redirectPath);
+  // Check if user is stored in database before logging them in.
+  const user = await FYABackend.get(`/users/email/${email}`);
+  if (user.data.user) {
+    await signInWithEmailAndPassword(auth, email, password);
+    cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
+    navigate(redirectPath);
+  } else {
+    throw new Error(`User with email ${email} is not stored in the database.`);
+  }
 };
 
 /**
@@ -129,9 +135,11 @@ const sendPasswordReset = async email => {
  */
 const sendInviteLink = async email => {
   const inviteId = nanoid();
-  await FYABackend.post('/adminInvite', { email, inviteId });
   const url = `http://localhost:3000/auth-email?mode=inviteUser&inviteID=${inviteId}`;
   await sendEmail(email, email, <AdminInviteEmail url={url} />);
+
+  // Add invited user to the AdminInvite table after the invite email has been sent.
+  await FYABackend.post('/adminInvite', { email, inviteId });
 };
 
 /**

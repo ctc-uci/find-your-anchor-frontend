@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ChakraProvider } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
-import styles from './AdminMarkerInfo.module.css';
+import styles from './MarkerInfo.module.css';
 import BoxList from './BoxList/BoxList';
 import BoxInfo from './BoxInfo/BoxInfo';
 
-const AdminMarkerInfo = ({
+const MarkerInfo = ({
   selectedCountry,
   selectedZipCode,
   setSelectedZipCode,
@@ -14,6 +14,7 @@ const AdminMarkerInfo = ({
   setSelectedBox,
   updateBoxListSwitch,
   selectedBox,
+  adminIsLoggedIn,
   zipCodeData,
   setZipCodeData,
 }) => {
@@ -34,6 +35,7 @@ const AdminMarkerInfo = ({
           <BoxInfo
             selectedBox={selectedBox}
             setSelectedBox={setSelectedBox}
+            adminIsLoggedIn={adminIsLoggedIn}
             selectedZipCode={selectedZipCode}
             selectedCountry={selectedCountry}
             setSelectedZipCode={setSelectedZipCode}
@@ -54,13 +56,14 @@ const AdminMarkerInfo = ({
   );
 };
 
-AdminMarkerInfo.defaultProps = {
+MarkerInfo.defaultProps = {
   selectedZipCode: null,
   selectedCountry: null,
   selectedBox: null,
+  adminIsLoggedIn: false,
 };
 
-AdminMarkerInfo.propTypes = {
+MarkerInfo.propTypes = {
   selectedCountry: PropTypes.string,
   updateBoxListSwitch: PropTypes.bool.isRequired,
   setSelectedZipCode: PropTypes.func.isRequired,
@@ -80,6 +83,7 @@ AdminMarkerInfo.propTypes = {
     zip_code: PropTypes.string,
   }),
   setSelectedBox: PropTypes.func.isRequired,
+  adminIsLoggedIn: PropTypes.bool,
   zipCodeData: PropTypes.arrayOf(
     PropTypes.shape({
       zip_code: PropTypes.string,
@@ -92,4 +96,4 @@ AdminMarkerInfo.propTypes = {
   setZipCodeData: PropTypes.func.isRequired,
 };
 
-export default AdminMarkerInfo;
+export default MarkerInfo;

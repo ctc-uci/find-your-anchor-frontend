@@ -19,6 +19,7 @@ import DeleteBoxModal from '../DeleteBoxModal/DeleteBoxModal';
 const BoxInfo = ({
   selectedBox,
   setSelectedBox,
+  adminIsLoggedIn,
   selectedZipCode,
   selectedCountry,
   setSelectedZipCode,
@@ -26,14 +27,14 @@ const BoxInfo = ({
   zipCodeData,
   setZipCodeData,
 }) => {
-  const LOADING_STRING = 'Loading...';
   const [boxHistory, setBoxHistory] = useState([]);
-  const [boxHolderName, setBoxHolderName] = useState(LOADING_STRING);
-  const [boxHolderEmail, setBoxHolderEmail] = useState(LOADING_STRING);
-  const [generalLocation, setGeneralLocation] = useState(LOADING_STRING);
-  const [picture, setPicture] = useState(LOADING_STRING);
-  const [dropOffMethod, setDropOffMethod] = useState(LOADING_STRING);
-  const [message, setMessage] = useState(LOADING_STRING);
+  const [boxHolderName, setBoxHolderName] = useState('');
+  const [boxHolderEmail, setBoxHolderEmail] = useState('');
+  const [generalLocation, setGeneralLocation] = useState('');
+  const [picture, setPicture] = useState('');
+  const [additionalComments, setAdditionalComments] = useState('');
+  const [dropOffMethod, setDropOffMethod] = useState('');
+  const [message, setMessage] = useState('');
 
   const {
     isOpen: isOpenDeleteBoxModal,
@@ -47,6 +48,7 @@ const BoxInfo = ({
       setBoxHolderName(boxData.data[0].boxholder_name);
       setBoxHolderEmail(boxData.data[0].boxholder_email);
       setGeneralLocation(boxData.data[0].general_location);
+      setAdditionalComments(boxData.data[0].additional_comments);
       setDropOffMethod(
         boxData.data[0].launched_organically ? 'Left at Location' : 'Given to Someone',
       );
@@ -73,16 +75,20 @@ const BoxInfo = ({
         <div className={styles['box-data']}>
           <img src={picture} alt="" className={styles['image-corners']} />
           <FormControl>
-            {/* Box name */}
-            <FormLabel htmlFor="name" className={styles['form-label']}>
-              Name
-            </FormLabel>
-            <Input isReadOnly id="name" type="name" value={boxHolderName} />
-            {/* Box email */}
-            <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
-              Email
-            </FormLabel>
-            <Input isReadOnly id="email" type="email" value={boxHolderEmail} />
+            {adminIsLoggedIn && (
+              <>
+                {/* Box name */}
+                <FormLabel htmlFor="name" className={styles['form-label']}>
+                  Name
+                </FormLabel>
+                <Input isReadOnly id="name" type="name" value={boxHolderName} />
+                {/* Box email */}
+                <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
+                  Email
+                </FormLabel>
+                <Input isReadOnly id="email" type="email" value={boxHolderEmail} />
+              </>
+            )}
             {/* Box general location */}
             <FormLabel isReadOnly htmlFor="generalLocation" className={styles['form-label']}>
               General Location
@@ -94,10 +100,22 @@ const BoxInfo = ({
             </FormLabel>
             <Select disabled placeholder={dropOffMethod} />
             {/* Box message */}
-            <FormLabel htmlFor="message" className={styles['form-label']}>
-              Message
-            </FormLabel>
-            <Textarea isReadOnly value={message} resize="vertical" />
+            {message && (
+              <>
+                <FormLabel htmlFor="message" className={styles['form-label']}>
+                  Message
+                </FormLabel>
+                <Textarea isReadOnly value={message} resize="vertical" />
+              </>
+            )}
+            {adminIsLoggedIn && additionalComments && (
+              <>
+                <FormLabel htmlFor="additional comments" className={styles['form-label']}>
+                  Additional Comments
+                </FormLabel>
+                <Textarea isReadOnly value={additionalComments} resize="vertical" />
+              </>
+            )}
           </FormControl>
           {boxHistory.length > 0 && (
             <>
@@ -117,23 +135,25 @@ const BoxInfo = ({
               </div>
             </>
           )}
-          <div className={styles['button-div']}>
-            <Button colorScheme="red" size="md" onClick={onOpenDeleteBoxModal}>
-              Delete Box
-            </Button>
-            <DeleteBoxModal
-              isOpen={isOpenDeleteBoxModal}
-              onClose={onCloseDeleteBoxModal}
-              selectedBox={selectedBox}
-              setSelectedBox={setSelectedBox}
-              selectedZipCode={selectedZipCode}
-              selectedCountry={selectedCountry}
-              setSelectedZipCode={setSelectedZipCode}
-              setSelectedCountry={setSelectedCountry}
-              zipCodeData={zipCodeData}
-              setZipCodeData={setZipCodeData}
-            />
-          </div>
+          {adminIsLoggedIn && (
+            <div className={styles['button-div']}>
+              <Button colorScheme="red" size="md" onClick={onOpenDeleteBoxModal}>
+                Delete Box
+              </Button>
+              <DeleteBoxModal
+                isOpen={isOpenDeleteBoxModal}
+                onClose={onCloseDeleteBoxModal}
+                selectedBox={selectedBox}
+                setSelectedBox={setSelectedBox}
+                selectedZipCode={selectedZipCode}
+                selectedCountry={selectedCountry}
+                setSelectedZipCode={setSelectedZipCode}
+                setSelectedCountry={setSelectedCountry}
+                zipCodeData={zipCodeData}
+                setZipCodeData={setZipCodeData}
+              />
+            </div>
+          )}
         </div>
       </div>
     </ChakraProvider>
@@ -162,6 +182,7 @@ BoxInfo.propTypes = {
     boxholder_email: PropTypes.string,
   }).isRequired,
   setSelectedBox: PropTypes.func.isRequired,
+  adminIsLoggedIn: PropTypes.bool.isRequired,
   selectedZipCode: PropTypes.string,
   selectedCountry: PropTypes.string,
   setSelectedZipCode: PropTypes.func.isRequired,
