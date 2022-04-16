@@ -100,8 +100,8 @@ const RelocationBox = ({
       message: messageState,
       launchedOrganically: launchedOrganicallyState,
     });
-    // TODO: REPLACE USA WITH COUNTRY INPUT
-    let coordinates = await getLatLong(zipCode, 'USA');
+    // TODO: REPLACE US WITH COUNTRY INPUT
+    let coordinates = await getLatLong(zipCode, 'US');
     if (coordinates.length !== 2) {
       coordinates = [0, 0];
     }
@@ -189,7 +189,7 @@ const RelocationBox = ({
                   <img
                     src={picture}
                     alt=""
-                    className={`${styles['pickup-image-corners']}
+                    className={`${styles['image-corners']}
                     ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
                     ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
                   />
@@ -206,7 +206,7 @@ const RelocationBox = ({
                           <p
                             className={`${styles['status-message']} ${styles['approval-message']}`}
                           >
-                            Image Approved
+                            Photo Approved
                           </p>
                         </>
                       )}
@@ -219,7 +219,7 @@ const RelocationBox = ({
                           <p
                             className={`${styles['status-message']} ${styles['rejection-message']}`}
                           >
-                            Image Denied
+                            Photo Denied
                           </p>
                         </>
                       )}

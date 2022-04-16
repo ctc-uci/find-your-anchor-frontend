@@ -8,13 +8,11 @@ import { BsUpload } from 'react-icons/bs';
 import './DropZone.css';
 
 const DropZone = ({ setFiles }) => {
-  const { getRootProps, getInputProps, isDragAccept, isDragReject, acceptedFiles, open } =
-    useDropzone({
-      noClick: true,
-      noKeyboard: true,
-      accept: 'image/jpeg, image/jpg, image/png',
-      maxFiles: 1,
-    });
+  const { getRootProps, getInputProps, isDragAccept, isDragReject, acceptedFiles } = useDropzone({
+    noKeyboard: true,
+    accept: 'image/jpeg, image/jpg, image/png',
+    maxFiles: 1,
+  });
   const [uploaded, setUploaded] = useState(false);
 
   useEffect(() => {
@@ -56,12 +54,11 @@ const DropZone = ({ setFiles }) => {
       {!uploaded ? (
         <div className={dropzoneBox} {...getRootProps()}>
           <input {...getInputProps()} />
-          <BsUpload className="dropzone-icon" />
-          <button type="button" className="fileSelector" onClick={open}>
-            Click
-          </button>
-          <span className="dropzone-text">/drag file to upload</span>
-          <p className="dropzone-support-text">Support for jpeg, jpg, png</p>
+          <div>
+            <BsUpload className="dropzone-icon" />
+            <span className="dropzone-text">Click/drag file to upload</span>
+            <p className="dropzone-support-text">Support for jpeg, jpg, png</p>
+          </div>
         </div>
       ) : (
         <div>

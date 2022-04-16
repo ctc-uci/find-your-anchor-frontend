@@ -1,12 +1,26 @@
 import axios from 'axios';
-import { FYABackend, isValidZip } from '../utils';
+import postalCodes from 'postal-codes-js';
+import { FYABackend } from '../utils';
 
+// validateZip() uses the postal-codes-js library
+// to check if a given zipcode has the the correct
+// postal code format for a country. for example, if you
+// have 92777 as the zipcode and US as the country,
+// this function will only check that this zipcode is in
+// the correct 5-digit postal format, but the library cannot
+// actually detect if the zipcode 92777 is a real zipcode in US
 function validateZip() {
-  return this.test('isZip', function zipCheck(value) {
+  return this.test('isZipInCountry', function zipCheck({ zipcode, country }) {
     const { path, createError } = this;
-    return isValidZip(value)
-      ? true
-      : createError({ path, message: 'Invalid zipcode, please enter a valid zipcode' });
+
+    const isValidMessage = postalCodes.validate(country.value, zipcode);
+
+    // if both zip code and country fields are not empty
+    if (zipcode && country.value) {
+      return isValidMessage === true ? true : createError({ path, message: isValidMessage });
+    }
+
+    return createError({ path, message: 'zip validated' });
   });
 }
 
