@@ -32,6 +32,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
       zipCode: data.zipCode,
       country: data.country,
       launchedOrganically: data.launchedOrganically,
+      error: true,
     };
     setEditFormData(formValues);
     setEditId(data.id);
@@ -99,33 +100,39 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
     const firstErrorRow = processedRows.find(row => row.error);
 
     if (firstErrorRow) {
-      editRow(e, firstErrorRow);
       setIsLoading(false);
+      editRow(e, firstErrorRow);
     } else {
-      // find and set latitude and longitude for each formData
       try {
+        // find lat/long for each formData
         const allCoordinates = await Promise.all(
           formDatas.map(async formData => {
             getLatLong(formData.zipCode, formData.country);
           }),
         );
 
+        let hasError = false;
         formDatas.forEach((formData, index) => {
-          // if lat/long is not found for this zipcode
           if (allCoordinates[index] === undefined) {
+            // if lat/long is not found for this zipcode
             console.log('cannot find latitude for formData: ', formData);
+            hasError = true;
+            setIsLoading(false);
             editRow(e, formData);
           } else {
+            // otherwise, set lat/long for this zipcode
             const [lat, long] = allCoordinates[index];
             formDatas[index].latitude = lat;
             formDatas[index].longitude = long;
           }
         });
 
-        console.log(formDatas);
-        await FYABackend.post('/anchorBox/boxes', formDatas);
-        setIsLoading(false);
-        navigate('/admin');
+        // if none of the rows have any errors
+        if (!hasError) {
+          await FYABackend.post('/anchorBox/boxes', formDatas);
+          setIsLoading(false);
+          navigate('/admin');
+        }
       } catch (err) {
         console.log(err);
       }
