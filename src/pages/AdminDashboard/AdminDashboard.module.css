@@ -72,3 +72,13 @@
 .review-submission-button:hover .side-bar {
   display: block;
 }
+
+@media screen and (max-width: 768px) {
+  .map.one-bar-open {
+    width: 0vw;
+  }
+
+  .close-button {
+    visibility: hidden;
+  }
+}

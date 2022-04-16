@@ -16,6 +16,7 @@
   background-color: #e5e5e5;
   width: 100%;
   margin-left: 5%;
+  padding: 1%;
   height: 100px;
   padding-top: 4%;
   position: sticky;
@@ -67,3 +68,60 @@
 .pickup-box-text {
   text-align: left;
 }
+
+@media screen and (max-width: 768px) {
+  .box-approval {
+    width: 100vw;
+    padding: 1%;
+    height: 95vh;
+    background-color: #e5e5e5;
+    position: relative;
+  }
+
+  .request-changes-row {
+    display: flex;
+    width: 30%;
+    float: right;
+  }
+
+  .relocate-box-row {
+    width: 30%;
+    float: right;
+  }
+
+  .pickup-box-row {
+    width: 30%;
+    float: left;
+  }
+
+  .request-changes-icon {
+    float: left;
+    color: #dd6b20;
+  }
+
+  .relocate-box-icon {
+    width: 16px;
+    float: left;
+  }
+
+  .pickup-box-icon {
+    width: 16px;
+    float: left;
+  }
+
+  .legend {
+    background-color: #e5e5e5;
+    width: 100%;
+    margin-left: 5%;
+    padding: 1%;
+    height: 5vh;
+    position: sticky;
+    bottom: 0;
+  }
+  .box-list {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 85vh;
+  }
+}
+
