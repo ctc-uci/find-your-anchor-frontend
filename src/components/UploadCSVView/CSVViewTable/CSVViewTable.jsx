@@ -8,8 +8,9 @@ import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../EditableRow/EditableRow';
 import { FYABackend, formatDate } from '../../../common/utils';
 import BoxSchema from '../../UploadCSV/UploadCSVUtils';
+import ShowToast from '../../../common/ShowToast/ShowToast';
 
-const CSVViewTable = ({ rows }) => {
+const CSVViewTable = ({ rows, filename }) => {
   const navigate = useNavigate();
   const [csvErrors, setCsvErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +21,12 @@ const CSVViewTable = ({ rows }) => {
     boxNumber: '',
     zipCode: '',
     launchedOrganically: false,
+  });
+  const successToast = ShowToast({
+    type: 'success',
+    title: `${filename} Successfully Uploaded`,
+    message: '',
+    toastPosition: 'bottom-left',
   });
 
   const editRow = (e, data) => {
@@ -90,6 +97,7 @@ const CSVViewTable = ({ rows }) => {
       await FYABackend.post('/anchorBox/boxes', formDatas);
 
       navigate(`/admin`);
+      successToast();
     }
   };
 
@@ -146,8 +154,12 @@ const CSVViewTable = ({ rows }) => {
   );
 };
 
+CSVViewTable.defaultProps = {
+  filename: '',
+};
 CSVViewTable.propTypes = {
   rows: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])).isRequired,
+  filename: PropTypes.string,
 };
 
 export default CSVViewTable;
