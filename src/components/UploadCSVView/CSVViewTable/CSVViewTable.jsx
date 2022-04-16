@@ -1,5 +1,5 @@
 /* eslint-disable prefer-object-spread */
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button, Stack, Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
@@ -11,7 +11,6 @@ import BoxSchema from '../../UploadCSV/UploadCSVUtils';
 
 const CSVViewTable = ({ rows, boxNumberMap }) => {
   const navigate = useNavigate();
-  const [csvErrors, setCsvErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [formDatas, setFormData] = useState(rows);
   const [boxNumbers] = useState(boxNumberMap);
@@ -52,7 +51,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
     if (!boxNumbers.has(newBoxNum)) {
       boxNumbers.set(newBoxNum, new Set());
     }
-    // TODO: need to convert newBoxNum to string
+
     boxNumbers.get(newBoxNum).add(lineNum);
   };
 
@@ -64,65 +63,66 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
       zipCode: editRowData.zipCode,
       country: editRowData.country,
       launchedOrganically: editRowData.launchedOrganically,
+      error: false,
     };
 
     const index = formDatas.findIndex(data => data.id === editId); // get index of the row that we are editing
     formDatas[index] = editedRow;
     setEditId(null);
-    setCsvErrors(csvErrors.filter(error => error !== editId)); // delete edited row from csvErrors array
   };
 
   const handleDeleteRow = rowId => {
     setFormData(formDatas.filter(data => data.id !== rowId));
   };
 
-  const checkErrors = async CSVRows => {
-    return Promise.all(
-      CSVRows.map(async CSVRow => {
-        try {
-          // second argument is context (external variables)
-          await BoxSchema.validate(CSVRow, { context: boxNumbers });
-          return 'success';
-        } catch (err) {
-          return CSVRow;
-        }
-      }),
-    );
-  };
-
-  const addErrors = errors => {
-    setCsvErrors(errors.filter(error => error !== 'success').map(err => err.id));
+  const checkErrors = async CSVRow => {
+    try {
+      // the context allows us to pass extra arguments (i.e. boxNumberMap) to yup validation
+      await BoxSchema.validate(CSVRow, { context: boxNumbers });
+      return {
+        ...CSVRow,
+        error: false,
+      };
+    } catch (err) {
+      return {
+        ...CSVRow,
+        error: true,
+      };
+    }
   };
 
   const addToMap = async e => {
     e.preventDefault();
     setIsLoading(true);
-    const errors = await checkErrors(formDatas);
-    addErrors(errors);
-    const nextError = errors.find(error => error !== 'success');
 
-    if (nextError) {
-      editRow(e, nextError);
+    const processedRows = await Promise.all(formDatas.map(async formData => checkErrors(formData)));
+    const firstErrorRow = processedRows.find(row => row.error);
+
+    if (firstErrorRow) {
+      editRow(e, firstErrorRow);
       setIsLoading(false);
     } else {
       // find and set latitude and longitude for each formData
       try {
-        await Promise.allSettled(
-          formDatas.map(async (formData, index) => {
-            const [lat, long] = await getLatLong(formData.zipCode, formData.country);
-            formDatas[index].latitude = lat;
-            formDatas[index].longitude = long;
-            formDatas[index].showOnMap = true;
+        const allCoordinates = await Promise.all(
+          formDatas.map(async formData => {
+            getLatLong(formData.zipCode, formData.country);
           }),
         );
 
-        // formDatas.forEach(formData => {
-        //   if (formData.latitude === undefined && formData.longitude === undefined) {
-        //     console.log('formData: ', formData);
-        //     editRow(e, formData);
-        //   }
-        // });
+        formDatas.forEach((formData, index) => {
+          // if lat/long is not found for this zipcode
+          if (allCoordinates[index] === undefined) {
+            console.log('cannot find latitude for formData: ', formData);
+            editRow(e, formData);
+          } else {
+            const [lat, long] = allCoordinates[index];
+            formDatas[index].latitude = lat;
+            formDatas[index].longitude = long;
+          }
+        });
 
+        console.log(formDatas);
         await FYABackend.post('/anchorBox/boxes', formDatas);
         setIsLoading(false);
         navigate('/admin');
@@ -131,15 +131,6 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
       }
     }
   };
-
-  // check if any rows have an error when page first loads
-  useEffect(async () => {
-    setIsLoading(true);
-    setFormData(rows);
-    const errors = await checkErrors(rows);
-    addErrors(errors);
-    setIsLoading(false);
-  }, [rows]);
 
   return (
     <form onSubmit={addToMap} className={styles['csv-table-form']}>
@@ -163,7 +154,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
                     <EditableRow
                       editFormData={editFormData}
                       handleEditFormSubmit={handleEditFormSubmit}
-                      isError={csvErrors.includes(data.id)}
+                      isError={data.error}
                       boxNumberMap={boxNumbers}
                       updateBoxNumberMap={updateBoxNumberMap}
                       lineNumber={index + 1}
@@ -173,7 +164,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
                       data={data}
                       editRow={editRow}
                       handleDeleteRow={handleDeleteRow}
-                      isError={csvErrors.includes(data.id)}
+                      isError={data.error}
                     />
                   )}
                 </Fragment>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import {
   Input,
@@ -45,15 +45,18 @@ const EditableRow = ({
     delayError: 750,
   });
 
-  const handleEditFormSubmitError = err => {
+  // useRef is similar to useState, but allows us change
+  // values without having to re-render the component
+  const boxNumRef = useRef(null);
+
+  const handleEditFormSubmitError = () => {
     // Revert update to box map if new box number causes error
-    const oldBoxNum = Number(err.boxNumber.message.split(': ')[1]);
-    updateBoxNumberMap(oldBoxNum, lineNumber, editFormData.boxNumber);
+    updateBoxNumberMap(boxNumRef.current, lineNumber, editFormData.boxNumber);
   };
 
   const onSave = () => {
-    const newBoxNum = Number(getValues('boxNumber'));
-    updateBoxNumberMap(editFormData.boxNumber, lineNumber, newBoxNum);
+    boxNumRef.current = Number(getValues('boxNumber'));
+    updateBoxNumberMap(editFormData.boxNumber, lineNumber, boxNumRef.current);
     handleSubmit(handleEditFormSubmit, handleEditFormSubmitError)();
   };
 

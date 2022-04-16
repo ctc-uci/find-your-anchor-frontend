@@ -33,9 +33,9 @@ const UploadCSV = ({ isOpen, onClose }) => {
 
   // checkErrors returns an array of the CSV rows with an error property
   // that indicates whether this row contains any invalid inputs
-  const checkErrors = async (CSVRow, i) => {
+  const checkErrors = async (CSVRow, i, boxNumbers) => {
     try {
-      await BoxSchema.validate(CSVRow, { abortEarly: false, context: boxNumberMap });
+      await BoxSchema.validate(CSVRow, { abortEarly: false, context: boxNumbers });
       return {
         ...CSVRow,
         error: false,
@@ -72,22 +72,32 @@ const UploadCSV = ({ isOpen, onClose }) => {
 
             // add boxNumber as a key to the map and
             // the value is a set of all the lines this box number shows up on
-            if (!boxNumberMap.has(boxNumber)) {
-              boxNumberMap.set(boxNumber, new Set());
+            if (!boxNumbers.has(boxNumber)) {
+              boxNumbers.set(boxNumber, new Set());
             }
-            boxNumberMap.get(boxNumber).add(i + 1);
+            boxNumbers.get(boxNumber).add(i + 1);
 
             // validate each row in the csv file
-            return checkErrors(CSVRow, i + 1);
+            return checkErrors(CSVRow, i + 1, boxNumbers);
           }),
         );
 
-        console.log('RESPONSES: ', responses);
+        console.log(responses);
 
         setIsUploadingNewFile(false);
         setCSVFile();
 
         setFormDatas(responses);
+
+        // check if there are duplicate box numbers in the same file
+        boxNumbers.forEach((lineNumbers, boxNumber) => {
+          if (lineNumbers.size > 1) {
+            setUploadErrors(prevState => [
+              ...prevState,
+              `Duplicate box number: ${boxNumber} (lines ${[...lineNumbers].join(', ')})`,
+            ]);
+          }
+        });
 
         setIsUploadingNewFile(false);
         setCSVFile();
