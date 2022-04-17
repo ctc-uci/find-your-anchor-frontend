@@ -23,8 +23,8 @@ ReactDOM.render(
       <Router>
         <Routes>
           <Route element={<Layout />}>
-            <Route path="/pickup-box-form" element={<PickupBoxFormPage />} />
-            <Route path="/relocate-box-form" element={<RelocateBoxFormPage />} />
+            <Route path="/found-box-form" element={<PickupBoxFormPage />} />
+            <Route path="/launch-box-form" element={<RelocateBoxFormPage />} />
           </Route>
 
           <Route path="/login" element={<LoginPage />} />
