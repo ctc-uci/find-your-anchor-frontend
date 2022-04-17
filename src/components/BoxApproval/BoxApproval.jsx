@@ -50,6 +50,7 @@ const BoxApproval = () => {
       boxHolderName={boxData.boxholder_name}
       boxHolderEmail={boxData.boxholder_email}
       zipCode={boxData.zip_code}
+      boxCountry={boxData.country}
       picture={boxData.picture}
       generalLocation={boxData.general_location}
       message={boxData.message}
@@ -75,6 +76,7 @@ const BoxApproval = () => {
       boxHolderName={boxData.boxholder_name}
       boxHolderEmail={boxData.boxholder_email}
       zipCode={boxData.zip_code}
+      country={boxData.country}
       picture={boxData.picture}
       date={boxData.date}
       status={boxData.status}
