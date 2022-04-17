@@ -161,8 +161,8 @@ const RelocationBox = ({
       message: formData.boxMessage,
       launchedOrganically: formData.dropOffMethod === 'organic-launch',
     });
-    // TODO: REPLACE US WITH COUNTRY INPUT
-    let coordinates = await getLatLong(zipCode, formData.country.value);
+    // Just in case the country value is null so it doesnt break, we can remove it once we clear the DB and have correct data
+    let coordinates = await getLatLong(zipCode, formData.country.value || 'US');
     if (coordinates.length !== 2) {
       coordinates = [0, 0];
     }
@@ -176,11 +176,7 @@ const RelocationBox = ({
       fetchBoxes('under review', false),
       fetchBoxes('pending changes', false),
       fetchBoxes('evaluated', false),
-      sendEmail(
-        getValues().name,
-        getValues().email,
-        <ApprovedBoxEmail boxHolderName={boxHolderName} />,
-      ),
+      sendEmail(formData.name, formData.email, <ApprovedBoxEmail boxHolderName={boxHolderName} />),
     ];
     await Promise.all(requests);
   };
@@ -256,13 +252,7 @@ const RelocationBox = ({
                     }}
                   >
                     {editPendingChangesState ? (
-                      <RiCheckFill
-                        color="#38a169"
-                        size={20}
-                        onClick={() => {
-                          handleSubmit(onSubmit)();
-                        }}
-                      />
+                      <RiCheckFill color="#38a169" size={20} onClick={handleSubmit(onSubmit)} />
                     ) : (
                       <RiPencilFill color="#8E8E8E" size={20} />
                     )}
@@ -336,7 +326,7 @@ const RelocationBox = ({
                     <Input
                       isReadOnly={status !== 'pending changes' || !editPendingChangesState}
                       id="name"
-                      // type="text"
+                      type="text"
                       {...register('name')}
                     />
                     <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
