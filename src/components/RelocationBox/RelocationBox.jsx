@@ -274,7 +274,7 @@ const RelocationBox = ({
                   <img
                     src={picture}
                     alt=""
-                    className={`${styles['pickup-image-corners']}
+                    className={`${styles['image-corners']}
                     ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
                     ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
                   />
@@ -291,7 +291,7 @@ const RelocationBox = ({
                           <p
                             className={`${styles['status-message']} ${styles['approval-message']}`}
                           >
-                            Image Approved
+                            Photo Approved
                           </p>
                         </>
                       )}
@@ -304,7 +304,7 @@ const RelocationBox = ({
                           <p
                             className={`${styles['status-message']} ${styles['rejection-message']}`}
                           >
-                            Image Denied
+                            Photo Denied
                           </p>
                         </>
                       )}
