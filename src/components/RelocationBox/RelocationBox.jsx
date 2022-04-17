@@ -318,7 +318,7 @@ const RelocationBox = ({
                   </div>
                 )}
                 {/* Box Name */}
-                <form id="edit-box-form" onSubmit={handleSubmit(onSubmit)}>
+                <form className={styles['edit-box-form']} onSubmit={handleSubmit(onSubmit)}>
                   <FormControl isInvalid={errors?.name}>
                     <FormLabel htmlFor="name" className={styles['form-label']}>
                       Name
