@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Td, Tr, useDisclosure } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
@@ -19,10 +19,11 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow, isError }) => {
     toastPosition: 'bottom-right',
   });
 
+  const [toastError, setToastError] = useState('');
   const errorToast = ShowToast({
     type: 'error',
     title: `Failed to Delete Box #${data.boxNumber}`,
-    message: '',
+    message: toastError(),
     toastPosition: 'bottom-right',
   });
   const onDelete = () => {
@@ -31,6 +32,7 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow, isError }) => {
       onCloseDeleteModal();
       successToast();
     } catch (err) {
+      setToastError(err.message);
       errorToast();
     }
   };

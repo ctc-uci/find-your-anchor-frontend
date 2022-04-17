@@ -59,16 +59,18 @@ const AddBoxForm = () => {
   });
 
   const [files, setFiles] = useState([]);
+  const [toastError, setToastError] = useState('');
   const successToast = ShowToast({
     type: 'success',
     title: `Successfully Added Box`,
     message: '',
     toastPosition: 'bottom-right',
   });
+
   const errorToast = ShowToast({
     type: 'error',
     title: `Failed to Add Box`,
-    message: 'Please try again or contact an administrator',
+    message: toastError(),
     toastPosition: 'bottom-right',
   });
   const onSubmit = async data => {
@@ -88,6 +90,7 @@ const AddBoxForm = () => {
       navigate('/admin');
       successToast();
     } catch (err) {
+      setToastError(err.message);
       errorToast();
     }
   };

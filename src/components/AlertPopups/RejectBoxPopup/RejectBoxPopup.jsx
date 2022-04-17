@@ -36,10 +36,11 @@ const RejectBoxPopup = ({
     toastPosition: 'bottom-right',
   });
 
+  const [toastError, setToastError] = useState('');
   const errorToast = ShowToast({
     type: 'error',
     title: `Failed to Reject Box #${boxID}`,
-    message: 'Please try again or contact an administrator. ',
+    message: toastError(),
     toastPosition: 'bottom-right',
   });
   const handleRejectButtonClicked = async () => {
@@ -65,6 +66,7 @@ const RejectBoxPopup = ({
       setIsOpen(false);
       successToast();
     } catch (err) {
+      setToastError(err.message);
       errorToast();
     }
   };

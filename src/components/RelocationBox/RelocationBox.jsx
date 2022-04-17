@@ -95,10 +95,11 @@ const RelocationBox = ({
     toastPosition: 'bottom-right',
   });
 
+  const [toastError, setToastError] = useState('');
   const errorToast = ShowToast({
     type: 'error',
     title: `Failed to Approve Box #${boxID}`,
-    message: '',
+    message: toastError(),
     toastPosition: 'bottom-right',
   });
 
@@ -140,6 +141,7 @@ const RelocationBox = ({
       await Promise.all(requests);
       successToast();
     } catch (err) {
+      setToastError(err.message);
       errorToast();
     }
   };

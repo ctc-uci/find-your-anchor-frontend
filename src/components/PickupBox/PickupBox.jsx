@@ -48,10 +48,11 @@ const PickupBox = ({
     toastPosition: 'bottom-right',
   });
 
+  const [toastError, setToastError] = useState('');
   const errorToast = ShowToast({
     type: 'error',
     title: `Failed to Approve Box #${boxID}`,
-    message: '',
+    message: toastError(),
     toastPosition: 'bottom-right',
   });
 
@@ -78,6 +79,7 @@ const PickupBox = ({
       await Promise.all(requests);
       successToast();
     } catch (err) {
+      setToastError(err.message);
       errorToast();
     }
   };
