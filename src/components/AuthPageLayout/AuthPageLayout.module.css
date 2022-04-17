@@ -2,10 +2,12 @@
   display: flex;
   flex-direction: row;
   min-height: 100%;
+  background-color: #345e80;
 }
 
 .auth-form {
   flex: 1;
+  background-color: white;
 }
 
 .auth-container {
@@ -19,7 +21,8 @@
 
 .banner {
   flex: 1;
-  background-color: #345e80;
+  background-size: cover;
+  background-position: center;
 }
 
 .logo-container {
@@ -33,4 +36,37 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.logo-mobile {
+  width: 50px;
+  height: auto;
+  margin-top: 12.5px;
+  margin-left: 12.5px;
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .page-container {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .auth-form-component {
+    width: 90%;
+    margin: 20px 0px;
+  }
+
+  .logo-container,
+  .logo {
+    display: none;
+  }
+
+  .logo-mobile {
+    display: block;
+  }
+
+  .auth-form {
+    flex: 0;
+  }
 }

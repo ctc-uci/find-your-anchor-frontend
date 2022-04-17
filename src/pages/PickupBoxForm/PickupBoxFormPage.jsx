@@ -13,7 +13,7 @@ const PickupBoxFormPage = () => {
         <BoxFormConfirmation pickup />
       ) : (
         <div>
-          <h1 className={styles['pickup-box-form-title']}>Pick Up Box</h1>
+          <h1 className={styles['pickup-box-form-title']}>Found Box</h1>
           <PickupBoxForm setFormSubmitted={setSubmitted} />
         </div>
       )}

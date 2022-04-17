@@ -15,8 +15,27 @@
   background-color: #345e80 !important;
   color: white;
   align-self: flex-end;
+  margin-top: 5%;
 }
 
 .form-heading {
   padding-bottom: 5%;
+}
+
+.forgot-password {
+  color: #3182ce;
+  text-decoration: underline;
+  margin-top: 5%;
+  align-self: center;
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .forgot-password {
+    display: block;
+  }
+
+  .login-button {
+    margin-top: 0;
+  }
 }
