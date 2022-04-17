@@ -22,11 +22,6 @@
   align-items: center;
 }
 
-.upload-button {
-  font-size: 18px !important;
-  font-weight: 400 !important;
-}
-
 .navbar-initials {
   height: 48px;
   width: 48px;
@@ -46,4 +41,25 @@
 
 .nav-link-selected {
   color: #126893;
+}
+/* @media (min-width: 768px) {
+  .hamburger-icon {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-initials {
+    display: none;
+  }
+  .navbar-buttons {
+    display: none;
+  }
+} */
+.nav-link {
+  font-size: 1em !important;
+  font-family: var(--chakra-fonts-body) !important;
+}
+.nav-modal {
+  border-radius: 0px !important;
 }
