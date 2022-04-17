@@ -109,7 +109,7 @@ const AddBoxForm = () => {
           longitude: longitude,
         });
         setLoading(false);
-        navigate('/admin');
+        navigate('/');
         successToast();
       } catch (err) {
         setLoading(false);
