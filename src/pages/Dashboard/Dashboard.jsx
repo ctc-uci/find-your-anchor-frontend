@@ -60,6 +60,7 @@ const Dashboard = () => {
             <Map
               setSelectedZipCode={setSelectedZipCode}
               setSelectedCountry={setSelectedCountry}
+              selectedBox={selectedBox}
               setSelectedBox={setSelectedBox}
               updateBoxListSwitch={updateBoxListSwitch}
               setUpdateBoxListSwitch={setUpdateBoxListSwitch}

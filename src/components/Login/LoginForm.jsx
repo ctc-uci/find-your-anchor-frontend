@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { PropTypes, instanceOf } from 'prop-types';
 import * as yup from 'yup';
@@ -84,6 +85,9 @@ const LoginForm = ({ cookies, redirectLink }) => {
         <Button className={styles['login-button']} type="submit" size="md">
           Log In
         </Button>
+        <Link className={styles['forgot-password']} to="/forgot-password">
+          Forgot Password?
+        </Link>
       </form>
     </div>
   );
