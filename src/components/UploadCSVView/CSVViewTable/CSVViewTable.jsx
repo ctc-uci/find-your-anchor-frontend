@@ -130,7 +130,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
   };
 
   const updateBoxNumberMap = (oldBoxNum, lineNum, newBoxNum) => {
-    if (Number.isNaN(oldBoxNum) || newBoxNum === 0) {
+    if (Number.isNaN(oldBoxNum) || newBoxNum === 0 || oldBoxNum === newBoxNum) {
       return;
     }
 
@@ -250,7 +250,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
           </Thead>
           <Tbody>
             {page.map((rowData, index) => {
-              console.log('lineNumber ', index);
+              console.log('lineNumber ', pageIndex * 10 + index);
               prepareRow(rowData);
               return (
                 <Fragment key={rowData.original.id}>

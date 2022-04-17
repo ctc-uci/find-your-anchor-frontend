@@ -2,15 +2,6 @@ import * as yup from 'yup';
 import postalCodes from 'postal-codes-js';
 import countryList from 'react-select-country-list';
 import { FYABackend } from '../../common/utils';
-// TO BE DELETED: import { FYABackend, getLatLong } from '../../common/utils';
-
-// TO BE DELETED:
-// function validateZip() {
-//   return this.test('isZip', function zipCheck(value) {
-//     const { path, createError } = this;
-//     return isValidZip(value) ? true : createError({ path, message: 'Invalid zip code' });
-//   });
-// }
 
 function validateZipcodeInCountry() {
   return this.test('isZipInCountry', async function zipcodeAndCountryCheck({ zipCode, country }) {
@@ -30,11 +21,6 @@ function validateZipcodeInCountry() {
       if (isValidMessage !== true) {
         return createError({ path, message: `Cannot find ${zipCode} in this country` });
       }
-      // TO BE DELETED:
-      // const [latitude, longitude] = await getLatLong(zipCode, countryCode);
-      // if (isValidMessage !== true || latitude === undefined || longitude === undefined) {
-      //   return createError({ path, message: `Cannot find ${zipCode} in this country` });
-      // }
     }
     return true;
   });

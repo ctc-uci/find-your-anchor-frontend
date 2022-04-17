@@ -87,15 +87,15 @@ const UploadCSV = ({ isOpen, onClose }) => {
 
         setFormDatas(responses);
 
-        // check if there are duplicate box numbers in the same file
-        boxNumbers.forEach((lineNumbers, boxNumber) => {
-          if (lineNumbers.size > 1) {
-            setUploadErrors(prevState => [
-              ...prevState,
-              `Duplicate box number: ${boxNumber} (lines ${[...lineNumbers].join(', ')})`,
-            ]);
-          }
-        });
+        // TO BE DELETED: display error message with the line number for box ids that are duplicates
+        // boxNumbers.forEach((lineNumbers, boxNumber) => {
+        //   if (lineNumbers.size > 1) {
+        //     setUploadErrors(prevState => [
+        //       ...prevState,
+        //       `Duplicate box number: ${boxNumber} (lines ${[...lineNumbers].join(', ')})`,
+        //     ]);
+        //   }
+        // });
 
         setIsUploadingNewFile(false);
         setCSVFile();
