@@ -85,7 +85,7 @@ const AddBoxForm = () => {
   const errorToast = ShowToast({
     type: 'error',
     title: `Failed to Add Box`,
-    message: toastError(),
+    message: toastError,
     toastPosition: 'bottom-right',
   });
   const onSubmit = async data => {

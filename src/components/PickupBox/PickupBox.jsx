@@ -53,7 +53,7 @@ const PickupBox = ({
   const errorToast = ShowToast({
     type: 'error',
     title: `Failed to Approve Box #${boxID}`,
-    message: toastError(),
+    message: toastError,
     toastPosition: 'bottom-right',
   });
 

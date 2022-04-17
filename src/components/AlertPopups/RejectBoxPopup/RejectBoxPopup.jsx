@@ -40,7 +40,7 @@ const RejectBoxPopup = ({
   const errorToast = ShowToast({
     type: 'error',
     title: `Failed to Reject Box #${boxID}`,
-    message: toastError(),
+    message: toastError,
     toastPosition: 'bottom-right',
   });
   const handleRejectButtonClicked = async () => {

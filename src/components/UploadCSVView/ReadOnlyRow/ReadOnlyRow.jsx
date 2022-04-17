@@ -23,7 +23,7 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow, isError }) => {
   const errorToast = ShowToast({
     type: 'error',
     title: `Failed to Delete Box #${data.boxNumber}`,
-    message: toastError(),
+    message: toastError,
     toastPosition: 'bottom-right',
   });
   const onDelete = () => {

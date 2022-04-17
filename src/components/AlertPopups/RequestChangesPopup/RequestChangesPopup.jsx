@@ -40,7 +40,7 @@ const RequestChangesPopup = ({
   const errorToast = ShowToast({
     type: 'error',
     title: `Failed to Request Changes for Box #${boxID}`,
-    message: toastError(),
+    message: toastError,
     toastPosition: 'bottom-right',
   });
   const handleRequestChangesClicked = async () => {
