@@ -22,7 +22,7 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
   const headerSubtextDict = {
     approved: '',
     'changes requested':
-      "We're so close! We just need a little more information from you in order to add box to the FYA Launch Map.",
+      "We're so close! We just need a little more information from you in order to add your box to the FYA Launch Map.",
     rejected: "We're sorry, we couldn't add your box to the FYA Launch Map",
   };
   // Text below "What does this mean"
@@ -104,8 +104,8 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
   // The image to show on the right of the email
   const imageSourceDict = {
     approved: BoxApprovedEmailPicture,
-    'changes requested': BoxRejectedEmailPicture,
-    rejected: ChangesRequestedEmailPicture,
+    'changes requested': ChangesRequestedEmailPicture,
+    rejected: BoxRejectedEmailPicture,
   };
 
   const headerContent = headerDict[type];

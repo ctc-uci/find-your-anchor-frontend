@@ -80,13 +80,10 @@ export const getLatLong = async (zipCode, country) => {
   return [];
 };
 
-export const BoxApprovedEmailPicture =
-  'https://fya-dev.s3.us-west-1.amazonaws.com/BoxApprovedEmailPicture.png';
+export const BoxApprovedEmailPicture = `https://${process.env.REACT_APP_S3_URL}/BoxApprovedEmailPicture.png`;
 
-export const BoxRejectedEmailPicture =
-  'https://fya-dev.s3.us-west-1.amazonaws.com/BoxRejectedEmailPicture.png';
+export const BoxRejectedEmailPicture = `https://${process.env.REACT_APP_S3_URL}/BoxRejectedEmailPicture.png`;
 
-export const ChangesRequestedEmailPicture =
-  'https://fya-dev.s3.us-west-1.amazonaws.com/ChangesRequestedEmailPicture.png';
+export const ChangesRequestedEmailPicture = `https://${process.env.REACT_APP_S3_URL}/ChangesRequestedEmailPicture.png`;
 
-export const FYATextLogo = 'https://fya-dev.s3.us-west-1.amazonaws.com/fya-text-logo.png';
+export const FYATextLogo = `https://${process.env.REACT_APP_S3_URL}/fya-text-logo.png`;
