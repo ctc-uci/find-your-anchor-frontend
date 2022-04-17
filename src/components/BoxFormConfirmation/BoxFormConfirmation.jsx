@@ -19,7 +19,7 @@ const BoxFormConfirmation = ({ pickup }) => {
         Confirmed!
       </Heading>
       <Heading className={styles['confirmation-text']} size="md" fontWeight="normal">
-        Your {pickup ? 'pickup' : 'relocation'} request has been confirmed!
+        Your {pickup ? 'found' : 'launch'} box request has been confirmed!
       </Heading>
       <Heading className={styles['confirmation-text']} size="sm" fontWeight="normal">
         Please allow 1-3 business days for your request to be reviewed. You will receive more
