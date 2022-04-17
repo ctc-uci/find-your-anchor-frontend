@@ -35,7 +35,6 @@ const LoginForm = ({ cookies, redirectLink }) => {
   });
 
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   /**
@@ -47,8 +46,8 @@ const LoginForm = ({ cookies, redirectLink }) => {
     try {
       await logInWithEmailAndPassword(e.email, e.password, '/', navigate, cookies);
     } catch (err) {
-      setErrorMessage(err.message);
-      console.log(errorMessage);
+      // TODO: replace this with toast component
+      console.log(err.message);
     }
   };
 

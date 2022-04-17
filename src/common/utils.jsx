@@ -1,5 +1,6 @@
 import axios from 'axios';
-import isValidZipcode from 'is-valid-zipcode';
+import postalCodes from 'postal-codes-js';
+import countryList from 'react-select-country-list';
 import { renderEmail } from 'react-html-email';
 
 const baseURL = 'http://localhost:3001';
@@ -19,36 +20,11 @@ FYABackend.interceptors.response.use(
   },
 );
 
-// Reference auth_utils.js for an additional auth interceptor.
-
-export const isValidZip = zip => {
-  const countries = [
-    'US',
-    'AT',
-    'BG',
-    'BR',
-    'CA',
-    'CZ',
-    'DK',
-    'FR',
-    'DE',
-    'IN',
-    'IT',
-    'IE',
-    'MA',
-    'NL',
-    'PL',
-    'PT',
-    'RO',
-    'RU',
-    'SG',
-    'SK',
-    'ES',
-    'SE',
-    'CH',
-    'GB',
-  ];
-  return countries.filter(country => isValidZipcode(zip, country)).length > 0;
+export const isValidZip = zipCode => {
+  const countries = countryList().getValues();
+  return (
+    countries.filter(countryCode => postalCodes.validate(countryCode, zipCode) === true).length > 0
+  );
 };
 
 // Converts JS Date object into string, formatted MM/DD/YYYY
@@ -65,7 +41,7 @@ export const sendEmail = async (name, email, messageHtml) => {
   if (response.status === 200) {
     alert('Email sent, awesome!');
   } else {
-    alert('Oops, something went wrong. Try again');
+    throw new Error('Oops, something went wrong. Try again');
   }
 };
 
