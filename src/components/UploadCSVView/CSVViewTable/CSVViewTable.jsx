@@ -208,12 +208,12 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
 
         let hasError = false;
         formDatas.forEach((formData, index) => {
-          if (allCoordinates[index] === undefined) {
+          if (allCoordinates[index].length === 0) {
             // if lat/long is not found for this zipcode
             console.log('cannot find latitude for formData: ', formData);
             hasError = true;
             setIsLoading(false);
-            editRow(e, formData);
+            editRow(e, formData, index, false);
           } else {
             // otherwise, set lat/long for this zipcode
             const [lat, long] = allCoordinates[index];

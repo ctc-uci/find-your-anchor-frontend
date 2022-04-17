@@ -130,33 +130,51 @@ const UploadCSV = ({ isOpen, onClose }) => {
     // TODO: check if latitude and longitude are undefined for each formData
     e.preventDefault();
 
-    // find and set latitude and longitude for each formData
-    await Promise.allSettled(
-      formDatas.map(async (formData, index) => {
-        const [lat, long] = await getLatLong(formData.zipCode, formData.country);
-        formDatas[index].latitude = lat;
-        formDatas[index].longitude = long;
-      }),
-    );
+    try {
+      // find lat/long for each formData
+      const allCoordinates = await Promise.all(
+        formDatas.map(async formData => getLatLong(formData.zipCode, formData.country)),
+      );
 
-    // formDatas structure:
-    // [
-    //   {
-    //     id,
-    //     boxNumber,
-    //     date,
-    //     zipCode,
-    //     country,
-    //     launchedOrganically,
-    //     error,
-    //     latitude,
-    //     longitude,
-    //   }
-    // ]
+      let hasError = false;
+      formDatas.forEach((formData, index) => {
+        if (allCoordinates[index].length === 0) {
+          // if lat/long is not found for this zipcode
+          alert('Cannot find latitude/longitude for zipcode. Please click Edit/View file');
+          hasError = true;
+          setIsLoading(false);
+          // editRow(e, formData);
+        } else {
+          // otherwise, set lat/long for this zipcode
+          const [lat, long] = allCoordinates[index];
+          formDatas[index].latitude = lat;
+          formDatas[index].longitude = long;
+        }
+      });
 
-    await FYABackend.post('/anchorBox/boxes', formDatas);
-    onCloseModal();
-    navigate('/');
+      // if none of the rows have any errors
+      if (!hasError) {
+        await FYABackend.post('/anchorBox/boxes', formDatas);
+        // formDatas structure:
+        // [
+        //   {
+        //     id,
+        //     boxNumber,
+        //     date,
+        //     zipCode,
+        //     country,
+        //     launchedOrganically,
+        //     error,
+        //     latitude,
+        //     longitude,
+        //   }
+        // ]
+        setIsLoading(false);
+        navigate('/admin');
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
