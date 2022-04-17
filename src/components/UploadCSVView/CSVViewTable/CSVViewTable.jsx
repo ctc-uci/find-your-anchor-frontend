@@ -130,7 +130,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
   };
 
   const updateBoxNumberMap = (oldBoxNum, lineNum, newBoxNum) => {
-    if (Number.isNaN(oldBoxNum) || newBoxNum === 0) {
+    if (oldBoxNum === 0 || newBoxNum === 0) {
       return;
     }
 
@@ -198,6 +198,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
 
     if (firstErrorRowIndex !== -1) {
       setIsLoading(false);
+      console.log('firstRowIndex: ', firstErrorRowIndex);
       editRow(e, processedRows[firstErrorRowIndex], firstErrorRowIndex, false);
     } else {
       try {
