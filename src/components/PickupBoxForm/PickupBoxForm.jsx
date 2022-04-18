@@ -176,13 +176,11 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.country?.label.message}</FormErrorMessage>
           </FormControl>
           <br />
-          <div>
-            <FormControl>
-              <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
-              <DropZone setFiles={setFiles} />
-            </FormControl>
-            <br />
-          </div>
+          <FormControl>
+            <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
+            <DropZone setFiles={setFiles} />
+          </FormControl>
+          <br />
           <div
             className={
               styles[

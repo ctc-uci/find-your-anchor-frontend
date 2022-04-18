@@ -236,12 +236,10 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
           </FormControl>
           <br />
           <br className={styles['desktop-view-line-break']} />
-          <div>
-            <FormControl>
-              <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
-              <DropZone setFiles={setFiles} />
-            </FormControl>
-          </div>
+          <FormControl>
+            <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
+            <DropZone setFiles={setFiles} />
+          </FormControl>
           <br />
           <div
             className={
@@ -255,7 +253,6 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <div className={styles['box-image']}>
               {files.length !== 0 && <img src={URL.createObjectURL(files[0])} alt="" />}
             </div>
-            <br />
             <br />
           </div>
           <div className={styles['box-bottom']}>
