@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChakraProvider, Button, Text, useDisclosure } from '@chakra-ui/react';
 import { CSVLink } from 'react-csv';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import renameProperty from '../../components/ExportCSV/ExportCSVUtils';
 import CSVPreview from '../../components/ExportCSV/CSVPreview/CSVPreview';
 
@@ -10,7 +10,6 @@ import ExportSuccessModal from '../../components/ExportCSV/ExportSuccessModal/Ex
 
 const CSVPreviewPage = () => {
   const { state } = useLocation();
-  const navigate = useNavigate();
 
   const {
     isOpen: isUploadCSVOpenModal,
@@ -39,15 +38,6 @@ const CSVPreviewPage = () => {
             <Text fontSize="lg">{state.rows.length} boxes</Text>
           </div>
           <div className={styles['button-section']}>
-            <Button
-              className={styles['header-button']}
-              colorScheme="white"
-              color="black"
-              variant="outline"
-              onClick={() => navigate('/admin')}
-            >
-              Cancel
-            </Button>
             <Button className={styles['header-button']} colorScheme="teal">
               <CSVLink {...csvReport}>Export to CSV</CSVLink>
             </Button>

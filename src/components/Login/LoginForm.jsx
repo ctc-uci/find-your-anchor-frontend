@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { PropTypes, instanceOf } from 'prop-types';
 import * as yup from 'yup';
@@ -35,7 +36,6 @@ const LoginForm = ({ cookies, redirectLink }) => {
   });
 
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   /**
@@ -47,8 +47,8 @@ const LoginForm = ({ cookies, redirectLink }) => {
     try {
       await logInWithEmailAndPassword(e.email, e.password, '/', navigate, cookies);
     } catch (err) {
-      setErrorMessage(err.message);
-      console.log(errorMessage);
+      // TODO: replace this with toast component
+      console.log(err.message);
     }
   };
 
@@ -85,6 +85,9 @@ const LoginForm = ({ cookies, redirectLink }) => {
         <Button className={styles['login-button']} type="submit" size="md">
           Log In
         </Button>
+        <Link className={styles['forgot-password']} to="/forgot-password">
+          Forgot Password?
+        </Link>
       </form>
     </div>
   );

@@ -1,0 +1,75 @@
+.confirmation-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: white;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  left: 0;
+  top: 0;
+}
+
+.logo {
+  height: auto;
+  margin-top: 12.5px;
+  margin-left: 12.5px;
+  align-self: flex-start;
+  display: block;
+}
+
+.logo-mobile {
+  width: 50px;
+  height: auto;
+  margin-top: 12.5px;
+  margin-left: 12.5px;
+  align-self: flex-start;
+  display: none;
+}
+
+.confirmation-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.confirmation-icon {
+  width: 125px !important;
+  height: 125px !important;
+  padding: 5px;
+  border: 7.5px solid #345e80;
+  border-radius: 50%;
+}
+
+.confirmation-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 50px;
+}
+
+@media screen and (max-width: 768px) {
+  .logo {
+    display: none;
+  }
+
+  .logo-mobile {
+    display: block;
+  }
+
+  .confirmation-title {
+    font-size: 28px !important;
+  }
+
+  .confirmation-button {
+    position: absolute !important;
+    bottom: 60px;
+    width: 80% !important;
+  }
+}

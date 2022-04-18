@@ -11,14 +11,14 @@ import {
   Input,
   Textarea,
 } from '@chakra-ui/react';
-
+import countryList from 'react-select-country-list';
 import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
 import PropTypes from 'prop-types';
 import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
 import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
-import { FYABackend, sendEmail } from '../../common/utils';
+import { FYABackend, getLatLong, sendEmail } from '../../common/utils';
 
 const PickupBox = ({
   approved,
@@ -27,6 +27,7 @@ const PickupBox = ({
   boxHolderName,
   boxHolderEmail,
   zipCode,
+  country,
   picture,
   date,
   status,
@@ -48,9 +49,17 @@ const PickupBox = ({
       status: 'evaluated',
       approved: true,
     });
-    await FYABackend.put('/anchorBox/update', {
-      boxID,
-      showOnMap: false,
+
+    // TODO: REPLACE US WITH COUNTRY INPUT
+    let coordinates = await getLatLong(zipCode, country || 'US');
+    if (coordinates.length !== 2) {
+      coordinates = [0, 0];
+    }
+
+    await FYABackend.put('/boxHistory/approveBox', {
+      transactionID,
+      latitude: coordinates[0],
+      longitude: coordinates[1],
     });
     const requests = [
       fetchBoxes('under review', true),
@@ -99,7 +108,7 @@ const PickupBox = ({
                   <img
                     src={picture}
                     alt=""
-                    className={`${styles['pickup-image-corners']}
+                    className={`${styles['image-corners']}
                     ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
                     ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
                   />
@@ -160,6 +169,16 @@ const PickupBox = ({
                     Zip Code
                   </FormLabel>
                   <Input readOnly id="zipCode" type="zipCode" value={zipCode} />
+                  {/* Box country */}
+                  <FormLabel htmlFor="country" className={styles['form-label']}>
+                    Country
+                  </FormLabel>
+                  <Input
+                    readOnly
+                    id="country"
+                    type="country"
+                    value={country ? countryList().getLabel(country) : ''}
+                  />
                   {/* Rejection reason text area (only show if box has been evaluated and bxo was rejected) */}
                   {status === 'evaluated' && !approved && (
                     <>
@@ -217,6 +236,7 @@ PickupBox.propTypes = {
   boxHolderName: PropTypes.string.isRequired,
   boxHolderEmail: PropTypes.string.isRequired,
   zipCode: PropTypes.string.isRequired,
+  country: PropTypes.string.isRequired,
   picture: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,

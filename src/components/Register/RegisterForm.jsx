@@ -3,13 +3,12 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import PropTypes from 'prop-types';
-import { Button, Heading, useDisclosure } from '@chakra-ui/react';
+import { Button, Heading } from '@chakra-ui/react';
 import { registerWithEmailAndPassword } from '../../common/auth_utils';
 import styles from './RegisterForm.module.css';
 import TextInput from '../Inputs/TextInput';
 import PasswordInput from '../Inputs/PasswordInput';
-
-import RegisterConfirmationPopup from './RegisterConfirmationPopup/RegisterConfirmationPopup';
+import CommonConfirmationPage from '../../common/CommonConfirmationPage/CommonConfirmationPage';
 
 const schema = yup.object({
   firstName: yup.string().required('Please enter your first name'),
@@ -29,11 +28,7 @@ const RegisterForm = ({ email }) => {
     delayError: 750,
   });
 
-  const {
-    isOpen: isOpenConfirmedModal,
-    onOpen: onOpenConfirmedModal,
-    onClose: onCloseConfirmedModal,
-  } = useDisclosure();
+  const [openConfirmation, setOpenConfirmation] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState();
 
@@ -43,7 +38,7 @@ const RegisterForm = ({ email }) => {
         throw new Error("Passwords don't match");
       }
       await registerWithEmailAndPassword(e.firstName, e.lastName, email, e.password);
-      onOpenConfirmedModal();
+      setOpenConfirmation(true);
     } catch (error) {
       setErrorMessage(error.message);
       console.log(errorMessage);
@@ -86,7 +81,11 @@ const RegisterForm = ({ email }) => {
           Register
         </Button>
       </form>
-      <RegisterConfirmationPopup isOpen={isOpenConfirmedModal} onClose={onCloseConfirmedModal} />
+      <CommonConfirmationPage
+        isOpen={openConfirmation}
+        confirmationTitle="Account Registered"
+        confirmationText="You may now log in using your new account"
+      />
     </div>
   );
 };
