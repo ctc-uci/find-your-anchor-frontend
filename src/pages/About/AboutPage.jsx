@@ -1,23 +1,14 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Heading, Text, Tabs, TabList, TabPanels, Tab, TabPanel, Button } from '@chakra-ui/react';
+import { Heading, Text, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import { ChakraProvider } from '@chakra-ui/provider';
 import FriendIcon from '../../assets/about-friend-icon.svg';
 import GlobeIcon from '../../assets/about-globe-icon.svg';
 import RocketIcon from '../../assets/about-rocket-icon.svg';
 import PrivacyNoteIcon from '../../assets/about-privacy-note-icon.svg';
-import FacebookIcon from '../../assets/about-facebook-icon.svg';
-import TwitterIcon from '../../assets/about-twitter-icon.svg';
-import InstagramIcon from '../../assets/about-instagram-icon.svg';
+import Footer from '../../components/Footer/Footer';
 import styles from './AboutPage.module.css';
 
 const AboutPage = () => {
-  const navigate = useNavigate();
-
-  const navigateToLogin = () => {
-    navigate('/login');
-  };
-
   return (
     <ChakraProvider>
       <div className={styles['about-page']}>
@@ -105,6 +96,8 @@ const AboutPage = () => {
             <br />
             Find Your Anchor boxes are designed to be passed, or launched, from person to
             person.&nbsp;
+            <br className={styles['newline-mobile']} />
+            <br className={styles['newline-mobile']} />
             <strong>
               Launching (and relaunching) boxes helps us reach more people, spread more love, and
               grow this community.
@@ -161,7 +154,7 @@ const AboutPage = () => {
                   <br />
                   <strong>
                     If you&apos;d like, you can let us know where you&nbsp;
-                    <a href="/relocate-box-form" style={{ color: '#2B6CB0' }}>
+                    <a href="/launch-box-form" style={{ color: '#2B6CB0' }}>
                       launched
                     </a>
                     &nbsp;your box! All you need is a picture of the box number (located in the
@@ -203,7 +196,7 @@ const AboutPage = () => {
                 <Text>
                   <strong>
                     If you&apos;d like, you can&nbsp;
-                    <a href="/pickup-box-form" style={{ color: '#2B6CB0' }}>
+                    <a href="/found-box-form" style={{ color: '#2B6CB0' }}>
                       claim
                     </a>
                     &nbsp;this box on the map! All you need is a picture of the box number (located
@@ -240,41 +233,7 @@ const AboutPage = () => {
           </Tabs>
         </div>
       </div>
-
-      <div className={styles.footer}>
-        <Button
-          className={styles['login-button']}
-          onClick={navigateToLogin}
-          color="white"
-          bg="#345E80"
-          size="lg"
-        >
-          Admin Login
-        </Button>
-        <Button
-          className={styles['login-button-mobile']}
-          onClick={navigateToLogin}
-          color="white"
-          bg="#345E80"
-          size="md"
-        >
-          Admin Login
-        </Button>
-        <div className={styles['social-icon-section']}>
-          <Text className={styles['social-icon-text']}>
-            <strong>Let&apos;s Connect!</strong>
-          </Text>
-          <a href="https://www.facebook.com/FindYourAnchor/" target="_blank" rel="noreferrer">
-            <img src={FacebookIcon} alt="" className={styles['social-icon']} />
-          </a>
-          <a href="https://twitter.com/fyabox" target="_blank" rel="noreferrer">
-            <img src={TwitterIcon} alt="" className={styles['social-icon']} />
-          </a>
-          <a href="https://www.instagram.com/findyouranchorbox/" target="_blank" rel="noreferrer">
-            <img src={InstagramIcon} alt="" className={styles['social-icon']} />
-          </a>
-        </div>
-      </div>
+      <Footer />
     </ChakraProvider>
   );
 };
