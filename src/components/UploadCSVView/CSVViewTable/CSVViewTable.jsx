@@ -113,6 +113,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
         country: rowData.values.country,
         launchedOrganically: rowData.values.launchedOrganically,
       };
+      setEditFormData(formValues);
       setEditId(rowData.original.id);
     } else {
       formValues = {
@@ -123,10 +124,10 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
         country: rowData.country,
         launchedOrganically: rowData.launchedOrganically,
       };
+      setEditFormData(formValues);
       setEditId(rowData.id);
       gotoPage(Math.floor(firstErrorIndex / pageSize));
     }
-    setEditFormData(formValues);
   };
 
   const updateBoxNumberMap = (oldBoxNum, lineNum, newBoxNum) => {
@@ -158,8 +159,8 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
       error: false,
     };
 
-    // update formDatas with the edited row
-    const newFormDatas = [...formDatas];
+    // cannot do formDatas[index] = editedRow becuase that will not update the page
+    const newFormDatas = [...formDatas]; // update formDatas with the edited row
     const index = formDatas.findIndex(rowData => rowData.id === editId); // get index of the row that we are editing
     newFormDatas[index] = editedRow; // update the array at index
     setFormDatas(newFormDatas);
@@ -198,7 +199,6 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
 
     if (firstErrorRowIndex !== -1) {
       setIsLoading(false);
-      console.log('firstRowIndex: ', firstErrorRowIndex);
       editRow(e, processedRows[firstErrorRowIndex], firstErrorRowIndex, false);
     } else {
       try {
@@ -222,6 +222,13 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
             formDatas[index].longitude = long;
           }
         });
+
+        // // set lat/long for each formData
+        // formDatas.forEach((formData, index) => {
+        //   const [lat, long] = allCoordinates[index];
+        //   formDatas[index].latitude = lat;
+        //   formDatas[index].longitude = long;
+        // });
 
         // if none of the rows have any errors
         if (!hasError) {
