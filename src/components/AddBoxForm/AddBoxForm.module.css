@@ -149,4 +149,9 @@ span.chakra-checkbox__control {
   .submit-button {
     margin-left: 60%;
   }
+
+  .dropzone {
+    width: 80%;
+    margin: auto;
+  }
 }

@@ -170,7 +170,9 @@ const AddBoxFormMobile = ({ onSubmit, files, setFiles }) => {
         <FormLabel className={styles['attach-box-photo-label']} htmlFor="boxPhoto">
           Attach Box Photo
         </FormLabel>
-        <DropZone setFiles={setFiles} />
+        <div className={styles.dropzone}>
+          <DropZone setFiles={setFiles} />
+        </div>
       </FormControl>
       <div
         className={

@@ -58,31 +58,32 @@
   width: 40%;
 }
 
+.mobile-view-line-break {
+  display: none;
+}
+
+.privacy-statement {
+  margin-left: 3%;
+  padding-bottom: 5%;
+}
+
 @media screen and (max-width: 768px) {
   .relocate-box-form {
     flex-direction: column;
     align-items: center;
   }
 
-  .relocate-box-info-section {
+  .relocate-box-info-section-left,
+  .relocate-box-info-section-right {
     width: 80%;
-  }
-
-  .attach-box-photo-label {
-    margin-left: 10%;
-  }
-
-  .relocate-box-photo-preview-section,
-  .box-image {
-    margin: auto;
-  }
-
-  .submit-button {
-    margin-left: 60%;
   }
 
   .privacy-statement {
     margin-left: 10%;
     margin-right: 10%;
+  }
+
+  .mobile-view-line-break {
+    display: block;
   }
 }
