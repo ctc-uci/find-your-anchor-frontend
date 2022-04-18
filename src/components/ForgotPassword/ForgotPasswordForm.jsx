@@ -3,11 +3,12 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Heading, Text } from '@chakra-ui/react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import styles from './ForgotPasswordForm.module.css';
 import TextInput from '../Inputs/TextInput';
 import { FYABackend } from '../../common/utils';
 import { auth, getCurrentUser, sendPasswordReset } from '../../common/auth_utils';
+import CommonConfirmationPage from '../../common/CommonConfirmationPage/CommonConfirmationPage';
 
 // Check if user exists in the database
 const userExists = async email => {
@@ -47,6 +48,7 @@ const ForgotPasswordForm = () => {
     delayError: 750,
   });
 
+  const [openConfirmation, setOpenConfirmation] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
@@ -69,8 +71,7 @@ const ForgotPasswordForm = () => {
   const onSubmit = async data => {
     try {
       await sendPasswordReset(data.email);
-      navigate('/login');
-      // TODO: add toast component to confirm email has been sent (see Figma)
+      setOpenConfirmation(true);
     } catch (err) {
       // TODO: replace with toast component
       console.log(err.message);
@@ -83,7 +84,7 @@ const ForgotPasswordForm = () => {
 
   return (
     <div className={styles['forgot-password-form-container']}>
-      <Heading className={styles['form-heading']}>FORGOT PASSWORD</Heading>
+      <Heading className={styles['form-heading']}>Forgot Password</Heading>
       <Text className={styles['info-text']}>
         Please enter your registered FYA email address and we will send you a link to reset your
         password.
@@ -97,17 +98,21 @@ const ForgotPasswordForm = () => {
           title="FYA Email Address"
         />
         <div className={styles['action-panel']}>
-          <Button
-            to="/login"
-            className={styles['return-to-login-button']}
-            onClick={() => returnToLogin()}
-          >
+          <Button to="/login" className={styles['return-to-login-button']} onClick={returnToLogin}>
             Return to Login
           </Button>
           <Button className={styles['send-email-button']} type="submit" size="md">
             Send Email
           </Button>
+          <CommonConfirmationPage
+            isOpen={openConfirmation}
+            confirmationTitle="Email Sent"
+            confirmationText="A link to reset your password has been sent to your registered FYA email address"
+          />
         </div>
+        <Link className={styles['return-to-login-link']} to="/login">
+          Return to Login
+        </Link>
       </form>
     </div>
   );

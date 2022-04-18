@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import { useForm, Controller } from 'react-hook-form';
@@ -17,31 +17,43 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
+import { Select } from 'chakra-react-select';
+import countryList from 'react-select-country-list';
 
 import { validateZip, validateBoxNumber } from '../../common/FormUtils/boxFormUtils';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './AddBoxForm.module.css';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 
-yup.addMethod(yup.string, 'isZip', validateZip);
+yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
 const schema = yup
   .object({
-    boxNumber: yup.number().boxNotExists().required().typeError('Invalid box number'),
+    boxNumber: yup
+      .number()
+      .boxNotExists()
+      .min(1, 'Invalid box number, please enter a valid box number')
+      .required()
+      .typeError('Invalid box number'),
     date: yup
       .date()
       .required('Invalid date, please enter a valid date')
       .typeError('Invalid date, please enter a valid date'),
-    zipCode: yup.string().isZip().required('Invalid zipcode, please enter a valid zipcode'),
+    zipcode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),
+    country: yup.object({
+      label: yup.string().required('Invalid country, please select a country'),
+      value: yup.string(),
+    }),
     boxLocation: yup.string(),
     message: yup.string(),
     comments: yup.string(),
     launchedOrganically: yup.string().typeError('Invalid selection'),
     picture: yup.string().url(),
   })
+  .isZipInCountry()
   .required();
 
-const AddBoxFormDesktop = ({ onSubmit, files, setFiles }) => {
+const AddBoxFormDesktop = ({ onSubmit, files, setFiles, loading }) => {
   const {
     register,
     control,
@@ -51,6 +63,8 @@ const AddBoxFormDesktop = ({ onSubmit, files, setFiles }) => {
     resolver: yupResolver(schema),
     delayError: 750,
   });
+
+  const countryOptions = useMemo(() => countryList().getData(), []);
 
   return (
     <form className={styles['add-box-form']} onSubmit={handleSubmit(onSubmit)}>
@@ -80,12 +94,32 @@ const AddBoxFormDesktop = ({ onSubmit, files, setFiles }) => {
           <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
         </FormControl>
         <br />
-        <FormControl isInvalid={errors?.zipCode}>
-          <FormLabel htmlFor="zipCode" className={styles['required-field']}>
+        <FormControl isInvalid={errors?.zipcode || errors['']?.message.startsWith('Postal code')}>
+          <FormLabel htmlFor="zipcode" className={styles['required-field']}>
             Zip Code
           </FormLabel>
-          <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
-          <FormErrorMessage>{errors.zipCode?.message}</FormErrorMessage>
+          <Input id="zipcode" placeholder="e.g. 90210" name="zipcode" {...register('zipcode')} />
+          {/* display an error if there is no zipcode */}
+          <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
+          {/* display an error if zipcode does not exist in country */}
+          {errors['']?.message !== 'zip validated' && (
+            <FormErrorMessage>{!errors.zipcode && errors['']?.message}</FormErrorMessage>
+          )}
+        </FormControl>
+        <br />
+        <FormControl isInvalid={errors?.country}>
+          <FormLabel htmlFor="country" className={styles['required-field']}>
+            Country
+          </FormLabel>
+          <Controller
+            control={control}
+            name="country"
+            // eslint-disable-next-line no-unused-vars
+            render={({ field: { onChange, value, ref } }) => (
+              <Select options={countryOptions} value={value} onChange={onChange} />
+            )}
+          />
+          <FormErrorMessage>{errors.country?.label.message}</FormErrorMessage>
         </FormControl>
         <br />
         <FormControl>
@@ -187,7 +221,13 @@ const AddBoxFormDesktop = ({ onSubmit, files, setFiles }) => {
         </div>
         <br />
         <div className={styles['submit-button']}>
-          <Button type="submit" size="md" colorScheme="teal">
+          <Button
+            type="submit"
+            size="md"
+            colorScheme="teal"
+            isLoading={loading}
+            loadingText="Submitting"
+          >
             Submit
           </Button>
         </div>
@@ -200,6 +240,7 @@ AddBoxFormDesktop.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   files: PropTypes.isRequired,
   setFiles: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default AddBoxFormDesktop;
