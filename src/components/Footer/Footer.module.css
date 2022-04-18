@@ -1,11 +1,12 @@
 .footer {
-  padding: 10px 15px;
+  padding: 0 15px;
   border-top: 1px solid rgba(0, 0, 0, 0.09);
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
   font-size: 1.5rem;
+  height: 55px;
 }
 
 .social-icon-text {
@@ -20,7 +21,7 @@
   .footer {
     font-size: 1rem;
     justify-content: space-between;
-    padding: 15px 50px;
+    padding: 0 50px;
   }
 
   .social-icon-text {
