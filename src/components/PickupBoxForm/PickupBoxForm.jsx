@@ -176,10 +176,6 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.country?.label.message}</FormErrorMessage>
           </FormControl>
           <br />
-        </div>
-      </div>
-      <div className={styles['pickup-box-info-section-right']}>
-        <div>
           <div>
             <FormControl>
               <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>

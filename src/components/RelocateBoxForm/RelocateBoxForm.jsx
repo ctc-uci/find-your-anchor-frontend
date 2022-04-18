@@ -180,6 +180,17 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
               )}
             </FormControl>
             <br />
+            <FormControl isInvalid={errors?.generalLocation}>
+              <FormLabel htmlFor="generalLocation">General Location</FormLabel>
+              <Input
+                id="generalLocation"
+                placeholder="ex. Santa Monica Pier"
+                name="generalLocation"
+                {...register('generalLocation')}
+              />
+              <FormErrorMessage>{errors.generalLocation?.message}</FormErrorMessage>
+            </FormControl>
+            <br />
             <FormControl isInvalid={errors?.country}>
               <FormLabel htmlFor="country" className={styles['required-field']}>
                 Country
@@ -194,35 +205,13 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
               />
               <FormErrorMessage>{errors.country?.label.message}</FormErrorMessage>
             </FormControl>
-            <br />
-            <FormControl isInvalid={errors?.generalLocation}>
-              <FormLabel htmlFor="generalLocation">General Location</FormLabel>
-              <Input
-                id="generalLocation"
-                placeholder="ex. Santa Monica Pier"
-                name="generalLocation"
-                {...register('generalLocation')}
-              />
-              <FormErrorMessage>{errors.generalLocation?.message}</FormErrorMessage>
-            </FormControl>
-            <br />
-            <FormControl isInvalid={errors?.generalLocation}>
-              <FormLabel htmlFor="generalLocation">General Location</FormLabel>
-              <Input
-                id="generalLocation"
-                placeholder="ex. Santa Monica Pier"
-                name="generalLocation"
-                {...register('generalLocation')}
-              />
-              <FormErrorMessage>{errors.generalLocation?.message}</FormErrorMessage>
-            </FormControl>
           </div>
         </div>
         <br className={styles['mobile-view-line-break']} />
         <div className={styles['relocate-box-info-section-right']}>
           <FormControl className={styles['section-wrapper']}>
             <FormLabel htmlFor="drop-off-method" className={styles['required-field']}>
-              Drop Off Method
+              Launch Method
             </FormLabel>
             <Select id="drop-off-method" {...register('dropOffMethod')}>
               <option value="given-to-someone">Given to Someone</option>
@@ -231,6 +220,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.dropOffMethod?.message}</FormErrorMessage>
           </FormControl>
           <br />
+          <br className={styles['desktop-view-line-break']} />
 
           <FormControl isInvalid={errors?.message}>
             <FormLabel htmlFor="message">Message</FormLabel>
@@ -244,40 +234,43 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             />
             <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
           </FormControl>
+          <br />
+          <br className={styles['desktop-view-line-break']} />
+          <div>
+            <FormControl>
+              <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
+              <DropZone setFiles={setFiles} />
+            </FormControl>
+          </div>
+          <br />
+          <div
+            className={
+              styles[
+                files.length !== 0
+                  ? 'relocate-box-photo-preview-section'
+                  : 'relocate-box-photo-preview-section-hidden'
+              ]
+            }
+          >
+            <div className={styles['box-image']}>
+              {files.length !== 0 && <img src={URL.createObjectURL(files[0])} alt="" />}
+            </div>
+            <br />
+            <br />
+          </div>
+          <div className={styles['box-bottom']}>
+            <Button
+              type="submit"
+              size="md"
+              colorScheme="teal"
+              isLoading={loading}
+              loadingText="Submitting"
+              className={styles['submit-button']}
+            >
+              Submit
+            </Button>
+          </div>
         </div>
-      </div>
-      <div>
-        <FormControl>
-          <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
-          <DropZone setFiles={setFiles} />
-        </FormControl>
-        <br />
-      </div>
-      <div
-        className={
-          styles[
-            files.length !== 0
-              ? 'relocate-box-photo-preview-section'
-              : 'relocate-box-photo-preview-section-hidden'
-          ]
-        }
-      >
-        <div className={styles['box-image']}>
-          {files.length !== 0 && <img src={URL.createObjectURL(files[0])} alt="" />}
-        </div>
-        <br />
-      </div>
-      <div className={styles['box-bottom']}>
-        <Button
-          type="submit"
-          size="md"
-          colorScheme="teal"
-          isLoading={loading}
-          loadingText="Submitting"
-          className={styles['submit-button']}
-        >
-          Submit
-        </Button>
       </div>
       <br />
       <h3 className={styles['privacy-statement']}>

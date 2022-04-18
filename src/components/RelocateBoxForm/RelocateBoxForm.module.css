@@ -85,4 +85,8 @@
   .mobile-view-line-break {
     display: block;
   }
+
+  .desktop-view-line-break {
+    display: none;
+  }
 }

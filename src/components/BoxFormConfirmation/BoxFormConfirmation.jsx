@@ -16,7 +16,7 @@ const BoxFormConfirmation = ({ pickup }) => {
     <div className={styles['box-form-confirmation-page']}>
       <CheckCircleIcon className={styles['confirmation-check-circle']} color="#3182CE" />
       <Heading className={styles['confirmation-text']} size="xl" fontWeight="normal">
-        {pickup ? 'Pickup' : 'Relocation'} request confirmed!
+        Your {pickup ? 'found' : 'launch'} box request has been confirmed!
       </Heading>
       <Heading className={styles['confirmation-message']} size="md" fontWeight="normal">
         Please allow 1-3 business days for your request to be reviewed. You will receive more
