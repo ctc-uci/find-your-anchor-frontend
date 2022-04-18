@@ -25,7 +25,7 @@ const AddBoxForm = () => {
       },
     });
 
-    navigate('/admin');
+    navigate('/');
   };
 
   return (

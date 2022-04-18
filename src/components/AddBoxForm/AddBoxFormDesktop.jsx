@@ -102,7 +102,7 @@ const AddBoxFormDesktop = ({ onSubmit, files, setFiles }) => {
         </FormControl>
         <br />
         <FormControl>
-          <FormLabel htmlFor="comments">Additional Comments (for admin purposes)</FormLabel>
+          <FormLabel htmlFor="comments">Additional Comments</FormLabel>
           <Textarea
             id="message"
             placeholder="200 characters max"
