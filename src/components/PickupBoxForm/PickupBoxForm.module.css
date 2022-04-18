@@ -42,7 +42,6 @@
 
 .submit-button {
   float: right;
-  margin-bottom: 3%;
 }
 
 .pickup-box-photo-preview-section {
@@ -58,31 +57,31 @@
   width: 40%;
 }
 
+.mobile-view-line-break {
+  display: none;
+}
+
+.privacy-statement {
+  margin-left: 3%;
+  padding-bottom: 5%;
+}
+
 @media screen and (max-width: 768px) {
   .pickup-box-form {
     flex-direction: column;
     align-items: center;
   }
 
-  .pickup-box-info-section {
+  .pickup-box-info-section-left,
+  .pickup-box-info-section-right {
     width: 80%;
   }
-
-  .attach-box-photo-label {
-    margin-left: 10%;
-  }
-
-  .pickup-box-photo-preview-section,
-  .box-image {
-    margin: auto;
-  }
-
-  .submit-button {
-    margin-left: 60%;
-  }
-
   .privacy-statement {
     margin-left: 10%;
     margin-right: 10%;
+  }
+
+  .mobile-view-line-break {
+    display: block;
   }
 }
