@@ -33,3 +33,53 @@
   display: flex;
   justify-content: space-between;
 }
+
+@media screen and (max-width: 768px) {
+  .modal {
+    display: flex;
+  }
+
+  .delete-modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 11px 5px 10px;
+  }
+
+  .delete-modal-content .fya-logo {
+    height: 125px;
+    width: 125px;
+    margin-bottom: 20px;
+  }
+
+  .delete-modal-content .step-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .delete-modal-content .step-text {
+    text-align: center;
+    margin: 0px 60px 40px;
+  }
+
+  .delete-modal-content .step-button-group {
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    gap: 0.25em;
+    margin-top: 1.5em;
+  }
+
+  .sub-text {
+    text-align: left;
+  }
+
+  .modal-header-text {
+    text-align: left;
+    display: flex;
+    margin: 0em 59% 1em 0em;
+  }
+}
