@@ -197,6 +197,12 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
             </div>
             <br />
           </div>
+          {isMobile && (
+            <h3 className={styles['privacy-statement']}>
+              * All personal information you provide on this form will be only used for internal
+              purposes. They will not be shared publicly.
+            </h3>
+          )}
           <div className={styles['box-bottom']}>
             <Button
               type="submit"
@@ -212,10 +218,12 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
         </div>
       </div>
       <br />
-      <h3 className={styles['privacy-statement']}>
-        * All personal information you provide on this form will be only used for internal purposes.
-        They will not be shared publicly.
-      </h3>
+      {!isMobile && (
+        <h3 className={styles['privacy-statement']}>
+          * All personal information you provide on this form will be only used for internal
+          purposes. They will not be shared publicly.
+        </h3>
+      )}
     </form>
   );
 };
