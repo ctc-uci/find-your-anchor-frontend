@@ -13,6 +13,7 @@ import { formatDate, FYABackend, getLatLong } from '../../common/utils';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../common/FormUtils/DatePicker.css';
 import styles from './PickupBoxForm.module.css';
+import useMobileWidth from '../../common/useMobileWidth';
 
 yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 const schema = yup
@@ -53,6 +54,7 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
 
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const isMobile = useMobileWidth();
 
   const countryOptions = useMemo(() => countryList().getData(), []);
 
@@ -146,7 +148,7 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
             </FormControl>
           </div>
         </div>
-        <br className={styles['mobile-view-line-break']} />
+        {isMobile && <br />}
         <div className={styles['pickup-box-info-section-right']}>
           <FormControl isInvalid={errors?.zipcode || errors['']?.message.startsWith('Postal code')}>
             <FormLabel htmlFor="zipcode" className={styles['required-field']}>

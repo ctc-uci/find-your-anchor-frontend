@@ -57,10 +57,6 @@
   width: 40%;
 }
 
-.mobile-view-line-break {
-  display: none;
-}
-
 .privacy-statement {
   margin-left: 3%;
   padding-bottom: 5%;
@@ -80,13 +76,5 @@
   .privacy-statement {
     margin-left: 10%;
     margin-right: 10%;
-  }
-
-  .mobile-view-line-break {
-    display: block;
-  }
-
-  .desktop-view-line-break {
-    display: none;
   }
 }

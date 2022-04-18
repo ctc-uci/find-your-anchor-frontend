@@ -21,6 +21,7 @@ import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../common/FormUtils/DatePicker.css';
 import styles from './RelocateBoxForm.module.css';
+import useMobileWidth from '../../common/useMobileWidth';
 
 yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 const schema = yup
@@ -69,6 +70,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const countryOptions = useMemo(() => countryList().getData(), []);
+  const isMobile = useMobileWidth();
 
   const onSubmit = async data => {
     const formData = data;
@@ -207,7 +209,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             </FormControl>
           </div>
         </div>
-        <br className={styles['mobile-view-line-break']} />
+        {isMobile && <br />}
         <div className={styles['relocate-box-info-section-right']}>
           <FormControl className={styles['section-wrapper']}>
             <FormLabel htmlFor="drop-off-method" className={styles['required-field']}>
@@ -220,7 +222,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.dropOffMethod?.message}</FormErrorMessage>
           </FormControl>
           <br />
-          <br className={styles['desktop-view-line-break']} />
+          {!isMobile && <br />}
 
           <FormControl isInvalid={errors?.message}>
             <FormLabel htmlFor="message">Message</FormLabel>
@@ -235,7 +237,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
           </FormControl>
           <br />
-          <br className={styles['desktop-view-line-break']} />
+          {!isMobile && <br />}
           <FormControl>
             <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
             <DropZone setFiles={setFiles} />
