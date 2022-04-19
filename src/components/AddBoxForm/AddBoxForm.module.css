@@ -29,10 +29,6 @@ span.chakra-checkbox__control {
   background-color: #eee;
 }
 
-.launch-org-radio {
-  padding-left: 30px;
-}
-
 .info-icon {
   margin-bottom: 2px;
   position: relative;
@@ -71,6 +67,10 @@ span.chakra-checkbox__control {
   border-width: 10px;
   border-style: solid;
   border-color: transparent transparent black transparent;
+}
+
+.info-icon {
+  margin-left: 2%;
 }
 
 .submit-button {
@@ -116,6 +116,15 @@ span.chakra-checkbox__control {
   width: 40%;
 }
 
+.box-launch-label {
+  display: flex;
+  width: 50%;
+}
+
+.launch-radio label {
+  margin-right: 80%;
+}
+
 @media screen and (max-width: 768px) {
   .add-box-form {
     flex-direction: column;
@@ -123,17 +132,22 @@ span.chakra-checkbox__control {
   }
 
   .box-launched-section {
-    margin-left: 10%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
   }
 
-  .add-box-info-section {
+  .add-box-info-section-left,
+  .add-box-info-section-right {
     width: 80%;
   }
 
   .launch-radio label {
-    margin-right: 40%;
-    margin-left: 3%;
-    margin-top: 2%;
+    margin-right: 100%;
+  }
+
+  .box-launch-label {
+    width: 100%;
   }
 
   .attach-box-photo-label {
