@@ -93,13 +93,13 @@ const PickupBox = ({
   // A function that creates the string that identifies which admin evaluated the box
   const getStatusMessage = () => {
     if (status === 'evaluated' && approved) {
-      return `Approved by ${admin}`;
+      return <h4 className={styles['status-message-approved']}>Approved by {admin}</h4>;
     }
     if (status === 'evaluated' && !approved) {
-      return `Rejected by ${admin}`;
+      return <h4 className={styles['status-message-rejected']}>Rejected by {admin}</h4>;
     }
     if (status === 'pending changes') {
-      return `Pending Review by ${admin}`;
+      return <h4 className={styles['status-message-pending']}>Pending Review by {admin}</h4>;
     }
     return '';
   };
@@ -130,7 +130,7 @@ const PickupBox = ({
             </h3>
             {/* Box details */}
             <AccordionPanel className={styles['accordion-panel']} pb={4}>
-              <h4>{getStatusMessage()}</h4>
+              {getStatusMessage()}
               <div className={styles['box-details']}>
                 {(status !== 'evaluated' || imageStatus !== 'rejected') && picture && (
                   <img

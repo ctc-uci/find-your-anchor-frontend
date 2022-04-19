@@ -17,6 +17,18 @@
   margin-top: 5%;
 }
 
+.status-message-approved {
+  color: #38A169;
+}
+
+.status-message-pending {
+  color: #3182CE;
+}
+
+.status-message-rejected {
+  color: #E53E3E;
+}
+
 .image-wrapper {
   width: 100%;
   height: 100%;
