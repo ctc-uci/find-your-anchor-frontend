@@ -14,7 +14,7 @@ const BoxFormConfirmation = ({ pickup }) => {
 
   return (
     <div className={styles['box-form-confirmation-page']}>
-      <CheckCircleIcon className={styles['confirmation-check-circle']} color="#3182CE" />
+      <CheckCircleIcon className={styles['confirmation-check-circle']} color="#345E80" />
       <Heading className={styles['confirmation-text']} size="xl" fontWeight="normal">
         Your {pickup ? 'found' : 'launch'} box request has been confirmed!
       </Heading>
@@ -25,7 +25,7 @@ const BoxFormConfirmation = ({ pickup }) => {
       <Button
         className={styles['confirmation-button']}
         size="sm"
-        colorScheme="teal"
+        colorScheme="blue"
         onClick={handleBackToHome}
       >
         Back to Home

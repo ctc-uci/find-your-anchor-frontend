@@ -22,7 +22,8 @@
 
 @media screen and (max-width: 768px) {
   .box-form-confirmation-page {
-    margin-top: 40%;
+    display: flex;
+    margin-top: 35%;
   }
 
   .confirmation-text {
@@ -30,7 +31,9 @@
   }
 
   .confirmation-button {
-    margin-top: 60%;
+    position: fixed;
+    bottom: 0px;
+    margin-bottom: 10%;
   }
 
   .confirmation-message {
