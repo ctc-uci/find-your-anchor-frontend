@@ -7,7 +7,11 @@ import { PropTypes } from 'prop-types';
 import { FormErrorMessage, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import countryList from 'react-select-country-list';
-import { uploadBoxPhoto, validateZip } from '../../common/FormUtils/boxFormUtils';
+import {
+  uploadBoxPhoto,
+  validateZip,
+  validateBoxIdInAnchorBox,
+} from '../../common/FormUtils/boxFormUtils';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import { formatDate, FYABackend, getLatLong } from '../../common/utils';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -16,11 +20,13 @@ import styles from './PickupBoxForm.module.css';
 import useMobileWidth from '../../common/useMobileWidth';
 
 yup.addMethod(yup.object, 'isZipInCountry', validateZip);
+yup.addMethod(yup.number, 'boxExists', validateBoxIdInAnchorBox);
 const schema = yup
   .object({
     boxholderName: yup.string().typeError('Invalid name'),
     boxID: yup
       .number()
+      .boxExists()
       .required('Invalid box number, please enter a valid box number')
       .typeError('Invalid box number, please enter a valid box number'),
     date: yup

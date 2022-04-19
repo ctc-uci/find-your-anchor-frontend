@@ -19,8 +19,7 @@ function validateZip() {
     if (zipcode && country.value) {
       return isValidMessage === true ? true : createError({ path, message: isValidMessage });
     }
-
-    return createError({ path, message: 'zip validated' });
+    return true;
   });
 }
 
@@ -31,6 +30,16 @@ function validateBoxNumber() {
     return box.data.length === 0
       ? true
       : createError({ path, message: `Box number ${value} already exists` });
+  });
+}
+
+function validateBoxIdInAnchorBox() {
+  return this.test('boxExists', async function boxCheck(value) {
+    const { path, createError } = this;
+    const box = await FYABackend.get(`/anchorBox/box/${value.boxID}`);
+    return box.data.length !== 0
+      ? true
+      : createError({ path, message: `Box number ${value} does not exist` });
   });
 }
 
@@ -50,4 +59,4 @@ const uploadBoxPhoto = async file => {
   return imageUrl;
 };
 
-export { validateZip, validateBoxNumber, uploadBoxPhoto };
+export { validateZip, validateBoxNumber, uploadBoxPhoto, validateBoxIdInAnchorBox };

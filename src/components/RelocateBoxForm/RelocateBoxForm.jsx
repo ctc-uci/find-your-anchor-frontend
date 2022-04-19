@@ -16,7 +16,11 @@ import {
 } from '@chakra-ui/react';
 import { Select as ChakraReactSelect } from 'chakra-react-select';
 import { FYABackend, formatDate, getLatLong } from '../../common/utils';
-import { uploadBoxPhoto, validateZip } from '../../common/FormUtils/boxFormUtils';
+import {
+  uploadBoxPhoto,
+  validateZip,
+  validateBoxIdInAnchorBox,
+} from '../../common/FormUtils/boxFormUtils';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../common/FormUtils/DatePicker.css';
@@ -24,6 +28,7 @@ import styles from './RelocateBoxForm.module.css';
 import useMobileWidth from '../../common/useMobileWidth';
 
 yup.addMethod(yup.object, 'isZipInCountry', validateZip);
+yup.addMethod(yup.number, 'boxExists', validateBoxIdInAnchorBox);
 const schema = yup
   .object({
     boxholderName: yup.string().typeError('Invalid name'),
@@ -34,6 +39,7 @@ const schema = yup
       .typeError('Invalid email address, please enter a valid email address'),
     boxID: yup
       .number()
+      .boxExists()
       .min(1, 'Invalid box number, please enter a valid box number')
       .required('Invalid box number, please enter a valid box number')
       .typeError('Invalid box number, please enter a valid box number'),
@@ -133,12 +139,12 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
               <FormErrorMessage>{errors.boxholderEmail?.message}</FormErrorMessage>
             </FormControl>
             <br />
-            <FormControl isInvalid={errors?.boxID}>
+            <FormControl isInvalid={errors?.boxID || errors['']?.message.startsWith('Box')}>
               <FormLabel htmlFor="boxID" className={styles['required-field']}>
                 Box Number
               </FormLabel>
               <Input id="boxID" placeholder="12345" name="boxID" {...register('boxID')} />
-              <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
+              <FormErrorMessage>{errors.boxID?.message}</FormErrorMessage>
             </FormControl>
             <br />
             <FormControl isInvalid={errors?.date}>
