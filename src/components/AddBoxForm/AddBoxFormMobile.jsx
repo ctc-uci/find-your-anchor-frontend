@@ -197,7 +197,9 @@ const AddBoxFormMobile = ({ onSubmit, files, setFiles, loading }) => {
             </Stack>
           </RadioGroup>
         </div>
-        <FormErrorMessage>{errors.launchedOrganically?.message}</FormErrorMessage>
+        <FormErrorMessage className={styles['launch-org-message']}>
+          {errors.launchedOrganically?.message}
+        </FormErrorMessage>
       </FormControl>
       <br />
       <FormControl>

@@ -148,4 +148,8 @@ span.chakra-checkbox__control {
     width: 80%;
     margin: auto;
   }
+
+  .launch-org-message {
+    margin-left: 10%;
+  }
 }
