@@ -20,6 +20,7 @@
 .side-bar-and-map-container {
   padding: 0px;
   display: flex;
+  width: 100%;
 }
 
 .side-bar {
@@ -28,6 +29,10 @@
   height: calc(100vh - 55px);
   width: 25vw;
   z-index: 400; /* since leaflet has a high z index */
+}
+
+.test {
+  width: 25vw;
 }
 
 .side-bar.show-review,
@@ -71,4 +76,14 @@
 
 .review-submission-button:hover .side-bar {
   display: block;
+}
+
+@media only screen and (max-width: 768px) {
+  .map.one-bar-open {
+    width: 0vw;
+  }
+
+  .side-bar {
+    width: 100vw;
+  }
 }

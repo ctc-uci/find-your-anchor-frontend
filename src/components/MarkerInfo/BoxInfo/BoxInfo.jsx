@@ -10,11 +10,14 @@ import {
   Button,
   useDisclosure,
 } from '@chakra-ui/react';
+import { FaTrash } from 'react-icons/fa';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 import styles from './BoxInfo.module.css';
 import { FYABackend } from '../../../common/utils';
 import DeleteBoxModal from '../DeleteBoxModal/DeleteBoxModal';
+import launchBoxIcon from '../../../assets/launch-box-icon.svg';
+import foundBoxIcon from '../../../assets/found-box-icon.svg';
 
 const BoxInfo = ({
   selectedBox,
@@ -27,6 +30,7 @@ const BoxInfo = ({
   zipCodeData,
   setZipCodeData,
 }) => {
+  const [date, setDate] = useState('');
   const [boxHistory, setBoxHistory] = useState([]);
   const [boxHolderName, setBoxHolderName] = useState('');
   const [boxHolderEmail, setBoxHolderEmail] = useState('');
@@ -35,6 +39,7 @@ const BoxInfo = ({
   const [additionalComments, setAdditionalComments] = useState('');
   const [dropOffMethod, setDropOffMethod] = useState('');
   const [message, setMessage] = useState('');
+  const [pickup, setPickup] = useState('');
 
   const {
     isOpen: isOpenDeleteBoxModal,
@@ -45,6 +50,7 @@ const BoxInfo = ({
   useEffect(async () => {
     if (selectedBox) {
       const boxData = await FYABackend.get(`/anchorBox/box/${selectedBox}`);
+      setDate(boxData.data[0].date);
       setBoxHolderName(boxData.data[0].boxholder_name);
       setBoxHolderEmail(boxData.data[0].boxholder_email);
       setGeneralLocation(boxData.data[0].general_location);
@@ -56,6 +62,7 @@ const BoxInfo = ({
       setPicture(boxData.data[0].picture);
       const history = await FYABackend.get(`/boxHistory/history/${selectedBox}`);
       setBoxHistory(history.data);
+      setPickup(boxData.data[0].pickup);
     }
   }, [selectedBox]);
   return (
@@ -67,13 +74,25 @@ const BoxInfo = ({
             boxSize={7}
             onClick={() => setSelectedBox(null)}
           />
-          <p className={styles.title}>
-            <p className={styles['box-number']}>Box #{selectedBox}</p>
-            {selectedBox.date}
-          </p>
+          <img
+            className={styles['desktop-icon']}
+            src={pickup ? foundBoxIcon : launchBoxIcon}
+            alt="box-icon"
+          />
+          <div className={styles.title}>
+            <div className={styles['icon-number-wrapper']}>
+              <img
+                className={styles['mobile-icon']}
+                src={pickup ? foundBoxIcon : launchBoxIcon}
+                alt="box-icon"
+              />
+              <p className={styles['box-number']}>Box #{selectedBox}</p>
+            </div>
+            <div className={styles.date}>{date}</div>
+          </div>
         </div>
+        <img src={picture} alt="" className={styles.image} />
         <div className={styles['box-data']}>
-          <img src={picture} alt="" className={styles['image-corners']} />
           <FormControl>
             {adminIsLoggedIn && (
               <>
@@ -137,9 +156,17 @@ const BoxInfo = ({
           )}
           {adminIsLoggedIn && (
             <div className={styles['button-div']}>
-              <Button colorScheme="red" size="md" onClick={onOpenDeleteBoxModal}>
+              <Button
+                className={styles['desktop-delete-box-button']}
+                colorScheme="red"
+                size="md"
+                onClick={onOpenDeleteBoxModal}
+              >
                 Delete Box
               </Button>
+              {/* <img className={styles['mobile-delete-box-button']} src={FaTrash} alt="test" />
+               */}
+              <FaTrash className={styles['mobile-delete-box-button']} size="50px" />
               <DeleteBoxModal
                 isOpen={isOpenDeleteBoxModal}
                 onClose={onCloseDeleteBoxModal}

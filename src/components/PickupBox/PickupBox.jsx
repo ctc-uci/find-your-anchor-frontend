@@ -48,6 +48,7 @@ const PickupBox = ({
       boxID,
       status: 'evaluated',
       approved: true,
+      pickup,
     });
 
     // TODO: REPLACE US WITH COUNTRY INPUT

@@ -51,11 +51,12 @@ const Dashboard = () => {
               Close
             </Button>
           </div>
+          {/* <div className={styles.test}> */}
           <div
             className={`${styles.map}
-            ${showReview && !selectedZipCode ? styles['one-bar-open'] : ''}
-            ${selectedZipCode && !showReview ? styles['one-bar-open'] : ''}
-            ${selectedZipCode && showReview ? styles['two-bars-open'] : ''}`}
+              ${showReview && !selectedZipCode ? styles['one-bar-open'] : ''}
+              ${selectedZipCode && !showReview ? styles['one-bar-open'] : ''}
+              ${selectedZipCode && showReview ? styles['two-bars-open'] : ''}`}
           >
             <Map
               setSelectedZipCode={setSelectedZipCode}
@@ -107,6 +108,7 @@ const Dashboard = () => {
             />
           </div>
         </div>
+        {/* </div> */}
       </div>
     </ChakraProvider>
   );
