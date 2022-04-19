@@ -90,6 +90,10 @@ const BoxApproval = () => {
 
   // Loads all boxes under a certain status
   const loadBoxesUnderStatus = async status => {
+    if (status === 'pending changes') {
+      fetchBoxes(status, false);
+      return;
+    }
     const requests = [fetchBoxes(status, false), fetchBoxes(status, true)];
     await Promise.all(requests);
   };
