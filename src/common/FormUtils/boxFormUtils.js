@@ -36,7 +36,7 @@ function validateBoxNumber() {
 function validateBoxIdInAnchorBox() {
   return this.test('boxExists', async function boxCheck(value) {
     const { path, createError } = this;
-    const box = await FYABackend.get(`/anchorBox/box/${value.boxID}`);
+    const box = await FYABackend.get(`/anchorBox/box/${value}`);
     return box.data.length !== 0
       ? true
       : createError({ path, message: `Box number ${value} does not exist` });

@@ -139,7 +139,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
               <FormErrorMessage>{errors.boxholderEmail?.message}</FormErrorMessage>
             </FormControl>
             <br />
-            <FormControl isInvalid={errors?.boxID || errors['']?.message.startsWith('Box')}>
+            <FormControl isInvalid={errors?.boxID}>
               <FormLabel htmlFor="boxID" className={styles['required-field']}>
                 Box Number
               </FormLabel>
