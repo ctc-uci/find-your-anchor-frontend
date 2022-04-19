@@ -23,6 +23,7 @@
 
 .status-message-pending {
   color: #3182CE;
+  margin-left: 19%;
 }
 
 .status-message-rejected {
@@ -247,8 +248,7 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
 }
 
 .edit-box-form {
