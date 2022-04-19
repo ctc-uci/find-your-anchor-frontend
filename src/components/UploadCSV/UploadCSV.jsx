@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { usePapaParse } from 'react-papaparse';
+// import { PromisePool } from '@supercharge/promise-pool';
 import PropTypes from 'prop-types';
 import { FYABackend, getLatLong } from '../../common/utils';
 
@@ -57,6 +58,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
       complete: async results => {
         const boxNumbers = new Map();
 
+        // OPTION 1: use Promise.all but can only process 1000 requests
         const responses = await Promise.all(
           results.data.map(async (row, i) => {
             const uid = uuidv4(); // generates an id to uniquely identify each row
@@ -81,6 +83,34 @@ const UploadCSV = ({ isOpen, onClose }) => {
             return checkErrors(CSVRow, i + 1, boxNumbers);
           }),
         );
+
+        // OPTION 2: use promise pool to process requests in batches
+
+        // const { results, errors } = await PromisePool
+        //   .for(parsedResults.data)
+        //   .withConcurrency(1000)
+        //   .process(async (row, i) => {
+        //     const uid = uuidv4(); // generates an id to uniquely identify each row
+        //     const boxNumber = Number(row['Box No']);
+        //     const CSVRow = {
+        //       id: uid,
+        //       boxNumber,
+        //       date: row.Date,
+        //       zipCode: row['Zip Code'],
+        //       country: row.Country,
+        //       launchedOrganically: row['Launched Organically?'].toLowerCase() === 'yes',
+        //     };
+
+        //     // add boxNumber as a key to the map and
+        //     // the value is a set of all the lines this box number shows up on
+        //     if (!boxNumbers.has(boxNumber)) {
+        //       boxNumbers.set(boxNumber, new Set());
+        //     }
+        //     boxNumbers.get(boxNumber).add(i + 1);
+
+        //     // validate each row in the csv file
+        //     return checkErrors(CSVRow, i + 1, boxNumbers);
+        //   });
 
         setIsUploadingNewFile(false);
         setCSVFile();

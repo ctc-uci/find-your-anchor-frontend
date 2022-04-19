@@ -223,7 +223,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
           }
         });
 
-        // // set lat/long for each formData
+        // set lat/long for each formData
         // formDatas.forEach((formData, index) => {
         //   const [lat, long] = allCoordinates[index];
         //   formDatas[index].latitude = lat;
