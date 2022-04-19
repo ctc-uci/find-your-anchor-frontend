@@ -1,0 +1,11 @@
+.green-check-icon {
+  color: green !important;
+  width: 13px;
+  height: 10px;
+}
+
+.red-cross-icon {
+  color: red !important;
+  width: 10px;
+  height: 10px;
+}

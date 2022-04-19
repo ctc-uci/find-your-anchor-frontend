@@ -50,6 +50,7 @@ const BoxApproval = () => {
       boxHolderName={boxData.boxholder_name}
       boxHolderEmail={boxData.boxholder_email}
       zipCode={boxData.zip_code}
+      boxCountry={boxData.country}
       picture={boxData.picture}
       generalLocation={boxData.general_location}
       message={boxData.message}
@@ -76,6 +77,7 @@ const BoxApproval = () => {
       boxHolderName={boxData.boxholder_name}
       boxHolderEmail={boxData.boxholder_email}
       zipCode={boxData.zip_code}
+      country={boxData.country}
       picture={boxData.picture}
       date={boxData.date}
       status={boxData.status}
@@ -144,11 +146,11 @@ const BoxApproval = () => {
           </div>
           <div className={styles['relocate-box-row']}>
             <img className={styles['relocate-box-icon']} src={RelocateBoxIcon} alt="" />
-            <p className={styles['relocate-box-text']}>Relocated</p>
+            <p className={styles['relocate-box-text']}>Launched</p>
           </div>
           <div className={styles['pickup-box-row']}>
             <img className={styles['pickup-box-icon']} src={PickupBoxIcon} alt="" />
-            <p className={styles['pickup-box-text']}>Picked Up</p>
+            <p className={styles['pickup-box-text']}>Found a Box</p>
           </div>
         </div>
       </div>

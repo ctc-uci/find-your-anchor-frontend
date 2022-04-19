@@ -14,7 +14,7 @@ const RelocateBoxFormPage = () => {
         <BoxFormConfirmation pickup={false} />
       ) : (
         <>
-          <h1 className={styles['relocate-page-title']}>Relocate Box</h1>
+          <h1 className={styles['relocate-page-title']}>Launch Box</h1>
           <RelocateBoxForm setFormSubmitted={setSubmitted} />
         </>
       )}
