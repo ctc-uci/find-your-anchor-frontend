@@ -81,7 +81,7 @@ const PickupBox = ({
     if (status === 'evaluated' && approved) {
       return ApprovedPickupIcon;
     }
-    if (status === 'evaluated' && approved === false) {
+    if (status === 'evaluated' && !approved) {
       return RejectedPickupIcon;
     }
     if (status === 'pending changes') {
@@ -95,7 +95,7 @@ const PickupBox = ({
     if (status === 'evaluated' && approved) {
       return `Approved by ${admin}`;
     }
-    if (status === 'evaluated' && approved === false) {
+    if (status === 'evaluated' && !approved) {
       return `Rejected by ${admin}`;
     }
     if (status === 'pending changes') {
@@ -108,8 +108,8 @@ const PickupBox = ({
     <ChakraProvider>
       <div
         className={`${styles.box}
-        ${status === 'evaluated' && approved === true ? styles['box-approved'] : ''}
-        ${status === 'evaluated' && approved === false ? styles['box-rejected'] : ''}`}
+        ${status === 'evaluated' && approved ? styles['box-approved'] : ''}
+        ${status === 'evaluated' && !approved ? styles['box-rejected'] : ''}`}
       >
         <Accordion allowToggle>
           <AccordionItem>

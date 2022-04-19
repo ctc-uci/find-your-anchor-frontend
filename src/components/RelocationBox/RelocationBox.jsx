@@ -169,7 +169,7 @@ const RelocationBox = ({
     if (status === 'evaluated' && approved) {
       return ApprovedRelocationIcon;
     }
-    if (status === 'evaluated' && approved === false) {
+    if (status === 'evaluated' && !approved) {
       return RejectedRelocationIcon;
     }
     if (status === 'pending changes') {
@@ -183,7 +183,7 @@ const RelocationBox = ({
     if (status === 'evaluated' && approved) {
       return `Approved by ${admin}`;
     }
-    if (status === 'evaluated' && approved === false) {
+    if (status === 'evaluated' && !approved) {
       return `Rejected by ${admin}`;
     }
     if (status === 'pending changes') {
@@ -198,7 +198,7 @@ const RelocationBox = ({
         // Conditional classes for approved/pending changes/rejected boxes to determine background coloring
         className={`${styles.box}
         ${status === 'evaluated' && approved ? styles['box-approved'] : ''}
-        ${status === 'evaluated' && approved === false ? styles['box-rejected'] : ''}
+        ${status === 'evaluated' && !approved ? styles['box-rejected'] : ''}
         ${status === 'pending changes' ? styles['box-pending'] : ''}`}
       >
         <Accordion allowToggle>
