@@ -1,6 +1,7 @@
 import React from 'react';
 import { IconButton, ChakraProvider, Heading, Text, useToast } from '@chakra-ui/react';
 import { CheckCircleIcon, CloseIcon, InfoIcon, WarningTwoIcon, Icon } from '@chakra-ui/icons';
+import useMobileWidth from '../useMobileWidth';
 import styles from './ShowToast.module.css';
 
 const ShowToast = ({ type, title, message, toastPosition }) => {
@@ -25,10 +26,11 @@ const ShowToast = ({ type, title, message, toastPosition }) => {
       statusIcon = InfoIcon;
   }
 
+  const isMobile = useMobileWidth();
+
   return () => {
     return toast({
-      position: toastPosition,
-      duration: 3000,
+      position: isMobile ? 'top' : toastPosition,
       isClosable: true,
       render: () => (
         <ChakraProvider>
