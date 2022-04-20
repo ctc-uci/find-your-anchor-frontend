@@ -176,7 +176,12 @@ const RelocationBox = ({
       fetchBoxes('under review', false),
       fetchBoxes('pending changes', false),
       fetchBoxes('evaluated', false),
-      sendEmail(formData.name, formData.email, <AdminApprovalProcessEmail type="approved" />),
+      sendEmail(
+        formData.name,
+        formData.email,
+        <AdminApprovalProcessEmail type="approved" />,
+        'Find Your Anchor Launch Map - Update',
+      ),
     ];
     await Promise.all(requests);
   };

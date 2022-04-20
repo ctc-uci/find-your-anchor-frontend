@@ -32,11 +32,12 @@ export const formatDate = value => {
   return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
 };
 
-export const sendEmail = async (name, email, messageHtml) => {
+export const sendEmail = async (name, email, messageHtml, subject) => {
   const response = await FYABackend.post('/nodemailer/send', {
     name,
     email,
     messageHtml: renderEmail(messageHtml),
+    subject,
   });
   if (response.status === 200) {
     alert('Email sent, awesome!');

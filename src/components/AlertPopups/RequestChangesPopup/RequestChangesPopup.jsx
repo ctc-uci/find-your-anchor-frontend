@@ -42,6 +42,7 @@ const RequestChangesPopup = ({
         boxHolderName,
         boxHolderEmail,
         <AdminApprovalProcessEmail type="changes requested" changesRequested={changesRequested} />,
+        'Find Your Anchor Launch Map - Update',
       ),
     ];
     await Promise.all(requests);

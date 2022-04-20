@@ -45,6 +45,7 @@ const RejectBoxPopup = ({
         boxHolderName,
         boxHolderEmail,
         <AdminApprovalProcessEmail type="rejected" rejectionReason={rejectionReason} />,
+        'Find Your Anchor Launch Map - Update',
       ),
     ];
     await Promise.all(requests);
