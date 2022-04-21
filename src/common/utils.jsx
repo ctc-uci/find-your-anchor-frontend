@@ -64,3 +64,5 @@ export const BoxRejectedEmailPicture = `https://${process.env.REACT_APP_S3_URL}/
 export const ChangesRequestedEmailPicture = `https://${process.env.REACT_APP_S3_URL}/ChangesRequestedEmailPicture.png`;
 
 export const FYATextLogo = `https://${process.env.REACT_APP_S3_URL}/fya-text-logo.png`;
+
+export const AdminApprovalProcessEmailSubject = 'Find Your Anchor Launch Map - Update';

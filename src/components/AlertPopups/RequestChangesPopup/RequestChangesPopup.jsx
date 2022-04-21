@@ -13,7 +13,7 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import styles from './RequestChangesPopup.module.css';
-import { FYABackend, sendEmail } from '../../../common/utils';
+import { FYABackend, sendEmail, AdminApprovalProcessEmailSubject } from '../../../common/utils';
 import AdminApprovalProcessEmail from '../../Email/EmailTemplates/AdminApprovalProcessEmail';
 
 const RequestChangesPopup = ({
@@ -42,7 +42,7 @@ const RequestChangesPopup = ({
         boxHolderName,
         boxHolderEmail,
         <AdminApprovalProcessEmail type="changes requested" changesRequested={changesRequested} />,
-        'Find Your Anchor Launch Map - Update',
+        AdminApprovalProcessEmailSubject,
       ),
     ];
     await Promise.all(requests);

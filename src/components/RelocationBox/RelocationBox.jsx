@@ -22,7 +22,12 @@ import { BsFillArrowRightCircleFill, BsFillCheckCircleFill, BsXCircleFill } from
 import { RiPencilFill, RiCheckFill } from 'react-icons/ri';
 import PropTypes from 'prop-types';
 import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
-import { FYABackend, getLatLong, sendEmail } from '../../common/utils';
+import {
+  FYABackend,
+  getLatLong,
+  sendEmail,
+  AdminApprovalProcessEmailSubject,
+} from '../../common/utils';
 import AdminApprovalProcessEmail from '../Email/EmailTemplates/AdminApprovalProcessEmail';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
@@ -180,7 +185,7 @@ const RelocationBox = ({
         formData.name,
         formData.email,
         <AdminApprovalProcessEmail type="approved" />,
-        'Find Your Anchor Launch Map - Update',
+        AdminApprovalProcessEmailSubject,
       ),
     ];
     await Promise.all(requests);
