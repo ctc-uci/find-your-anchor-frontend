@@ -71,7 +71,7 @@ const NavBar = ({ isAdmin }) => {
         About
       </NavLink>
       <NavLink
-        to="/relocate-box-form"
+        to="/launch-box-form"
         className={navLink =>
           navLink.isActive ? styles['nav-link-selected'] : styles['nav-link-unselected']
         }
@@ -79,7 +79,7 @@ const NavBar = ({ isAdmin }) => {
         Launch a Box
       </NavLink>
       <NavLink
-        to="/pickup-box-form"
+        to="/found-box-form"
         className={navLink =>
           navLink.isActive ? styles['nav-link-selected'] : styles['nav-link-unselected']
         }
