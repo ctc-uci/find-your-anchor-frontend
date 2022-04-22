@@ -1,55 +1,83 @@
 import React from 'react';
+import { Flex, Text, Tooltip, IconButton, Box } from '@chakra-ui/react';
+import { ArrowLeftIcon, ArrowRightIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 
-const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageSize, pageControl }) => {
-  const { setPageSize, gotoPage, nextPage, previousPage, canNextPage, canPreviousPage } =
-    pageControl;
+const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl }) => {
+  const { gotoPage, nextPage, previousPage, canNextPage, canPreviousPage } = pageControl;
 
   return (
-    <div>
-      <button onClick={() => gotoPage(0)} disabled={!canPreviousPage} type="button">
-        {'<<'}
-      </button>{' '}
-      <button onClick={() => previousPage()} disabled={!canPreviousPage} type="button">
-        {'<'}
-      </button>{' '}
-      <button onClick={() => nextPage()} disabled={!canNextPage} type="button">
-        {'>'}
-      </button>{' '}
-      <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage} type="button">
-        {'>>'}
-      </button>{' '}
-      <span>
-        Page{' '}
-        <strong>
-          {pageIndex + 1} of {pageLength}
-        </strong>{' '}
-      </span>
-      <span>
-        | Go to page:{' '}
-        <input
-          type="number"
-          defaultValue={pageIndex + 1}
-          onChange={e => {
-            const page = e.target.value ? Number(e.target.value) - 1 : 0;
-            gotoPage(page);
-          }}
-          style={{ width: '100px' }}
-        />
-      </span>{' '}
-      <select
-        value={pageSize}
-        onChange={e => {
-          setPageSize(Number(e.target.value));
-        }}
-      >
-        {[10, 20, 30, 40, 50].map(pageSizeVal => (
-          <option key={pageSizeVal} value={pageSizeVal}>
-            Show {pageSizeVal}
-          </option>
-        ))}
-      </select>
-    </div>
+    <Box>
+      <Flex justifyContent="space-between" m={4} alignItems="center">
+        <Flex alignItems="center">
+          <Tooltip label="Previous Page">
+            <IconButton
+              background="transparent"
+              color="black"
+              icon={<ArrowLeftIcon h={6} w={6} />}
+              isDisabled={!canPreviousPage}
+              variant="noHover"
+              onClick={() => gotoPage(0)}
+            />
+          </Tooltip>
+        </Flex>
+
+        <Flex justifyContent="space-between" m={4} alignItems="center">
+          <Tooltip label="Previous Page">
+            <IconButton
+              background="transparent"
+              color="black"
+              icon={<ChevronLeftIcon h={9} w={9} />}
+              isDisabled={!canPreviousPage}
+              variant="noHover"
+              onClick={() => previousPage()}
+            />
+          </Tooltip>
+          <Text flexShrink="0" mr={8}>
+            <Text as="span">Page</Text>
+            <Text as="span" color="black">
+              {' '}
+              {pageIndex + 1} of {pageLength}
+            </Text>
+          </Text>
+          <span>
+            | Go to page:{' '}
+            <input
+              type="number"
+              defaultValue={pageIndex + 1}
+              onChange={e => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                gotoPage(page);
+              }}
+              style={{ width: '30px' }}
+            />
+          </span>{' '}
+          <Tooltip label="Next Page">
+            <IconButton
+              background="transparent"
+              color="black"
+              icon={<ChevronRightIcon h={9} w={9} />}
+              isDisabled={!canNextPage}
+              variant="noHover"
+              onClick={() => nextPage()}
+            />
+          </Tooltip>
+        </Flex>
+
+        <Flex alignItems="center">
+          <Tooltip label="Previous Page">
+            <IconButton
+              background="transparent"
+              color="black"
+              icon={<ArrowRightIcon h={6} w={6} />}
+              isDisabled={!canNextPage}
+              variant="noHover"
+              onClick={() => gotoPage(pageCount - 1)}
+            />
+          </Tooltip>
+        </Flex>
+      </Flex>
+    </Box>
   );
 };
 
@@ -57,7 +85,6 @@ CSVViewTablePagination.propTypes = {
   pageLength: PropTypes.number.isRequired,
   pageIndex: PropTypes.number.isRequired,
   pageCount: PropTypes.number.isRequired,
-  pageSize: PropTypes.number.isRequired,
   pageControl: PropTypes.exact({
     setPageSize: PropTypes.func,
     gotoPage: PropTypes.func,

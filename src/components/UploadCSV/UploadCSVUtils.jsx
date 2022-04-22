@@ -1,7 +1,6 @@
 import * as yup from 'yup';
 import postalCodes from 'postal-codes-js';
 import countryList from 'react-select-country-list';
-// import { FYABackend, getLatLong } from '../../common/utils';
 import { FYABackend } from '../../common/utils';
 
 function validateZipcodeInCountry() {

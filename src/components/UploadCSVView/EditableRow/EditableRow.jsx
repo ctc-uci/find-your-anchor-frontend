@@ -6,7 +6,7 @@ import {
   InputRightElement,
   Checkbox,
   FormControl,
-  FormErrorMessage,
+  Tooltip,
   Tr,
   Td,
 } from '@chakra-ui/react';
@@ -67,28 +67,36 @@ const EditableRow = ({
     >
       <Td>
         <FormControl isInvalid={errors?.date}>
-          <Controller
-            control={control}
-            name="date"
-            // eslint-disable-next-line no-unused-vars
-            render={({ field: { onChange, value, ref } }) => {
-              const date = new Date(value);
-              return (
-                <DatePicker
-                  placeholderText="MM/DD/YYYY"
-                  className={
-                    errors?.date
-                      ? `${styles['date-picker']} ${styles['date-picker-error']}`
-                      : styles['date-picker']
-                  }
-                  type="date"
-                  selected={Number.isNaN(Date.parse(date)) ? undefined : date}
-                  onChange={onChange}
-                />
-              );
-            }}
-          />
-          <FormErrorMessage marginTop="0px">{errors.date?.message}</FormErrorMessage>
+          <InputGroup>
+            <Controller
+              control={control}
+              name="date"
+              // eslint-disable-next-line no-unused-vars
+              render={({ field: { onChange, value, ref } }) => {
+                const date = new Date(value);
+                return (
+                  <DatePicker
+                    placeholderText="MM/DD/YYYY"
+                    className={
+                      errors?.date
+                        ? `${styles['date-picker']} ${styles['date-picker-error']}`
+                        : styles['date-picker']
+                    }
+                    type="date"
+                    selected={Number.isNaN(Date.parse(date)) ? undefined : date}
+                    onChange={onChange}
+                  />
+                );
+              }}
+            />
+            {errors?.date && (
+              <Tooltip hasArrow label={errors.date?.message} bg="red.600">
+                <InputRightElement className={styles['input-right-warning']}>
+                  <WarningIcon />
+                </InputRightElement>
+              </Tooltip>
+            )}
+          </InputGroup>
         </FormControl>
       </Td>
       <Td>
@@ -96,13 +104,14 @@ const EditableRow = ({
           <InputGroup>
             <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
             {errors?.boxNumber && (
-              <InputRightElement className={styles['input-right-warning']}>
-                <WarningIcon />
-              </InputRightElement>
+              <Tooltip hasArrow label={errors.boxNumber?.message} bg="red.600">
+                <InputRightElement className={styles['input-right-warning']}>
+                  <WarningIcon />
+                </InputRightElement>
+              </Tooltip>
             )}
             ;
           </InputGroup>
-          <FormErrorMessage marginTop="0px">{errors.boxNumber?.message}</FormErrorMessage>
         </FormControl>
       </Td>
       <Td>
@@ -110,13 +119,14 @@ const EditableRow = ({
           <InputGroup>
             <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
             {errors?.zipCode && (
-              <InputRightElement className={styles['input-right-warning']}>
-                <WarningIcon />
-              </InputRightElement>
+              <Tooltip hasArrow label={errors.zipCode?.message} bg="red.600">
+                <InputRightElement className={styles['input-right-warning']}>
+                  <WarningIcon />
+                </InputRightElement>
+              </Tooltip>
             )}
             ;
           </InputGroup>
-          <FormErrorMessage marginTop="0px">{errors.zipCode?.message}</FormErrorMessage>
         </FormControl>
       </Td>
       <Td>
@@ -124,13 +134,14 @@ const EditableRow = ({
           <InputGroup>
             <Input id="country" placeholder="e.g. 90210" name="country" {...register('country')} />
             {errors['']?.message && (
-              <InputRightElement className={styles['input-right-warning']}>
-                <WarningIcon />
-              </InputRightElement>
+              <Tooltip hasArrow label={errors['']?.message} bg="red.600">
+                <InputRightElement className={styles['input-right-warning']}>
+                  <WarningIcon />
+                </InputRightElement>
+              </Tooltip>
             )}
             ;
           </InputGroup>
-          <FormErrorMessage marginTop="0px">{errors['']?.message}</FormErrorMessage>
         </FormControl>
       </Td>
       <Td>

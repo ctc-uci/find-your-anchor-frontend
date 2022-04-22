@@ -84,48 +84,10 @@ const UploadCSV = ({ isOpen, onClose }) => {
           }),
         );
 
-        // OPTION 2: use promise pool to process requests in batches
-
-        // const { results, errors } = await PromisePool
-        //   .for(parsedResults.data)
-        //   .withConcurrency(1000)
-        //   .process(async (row, i) => {
-        //     const uid = uuidv4(); // generates an id to uniquely identify each row
-        //     const boxNumber = Number(row['Box No']);
-        //     const CSVRow = {
-        //       id: uid,
-        //       boxNumber,
-        //       date: row.Date,
-        //       zipCode: row['Zip Code'],
-        //       country: row.Country,
-        //       launchedOrganically: row['Launched Organically?'].toLowerCase() === 'yes',
-        //     };
-
-        //     // add boxNumber as a key to the map and
-        //     // the value is a set of all the lines this box number shows up on
-        //     if (!boxNumbers.has(boxNumber)) {
-        //       boxNumbers.set(boxNumber, new Set());
-        //     }
-        //     boxNumbers.get(boxNumber).add(i + 1);
-
-        //     // validate each row in the csv file
-        //     return checkErrors(CSVRow, i + 1, boxNumbers);
-        //   });
-
         setIsUploadingNewFile(false);
         setCSVFile();
 
         setFormDatas(responses);
-
-        // TO BE DELETED: display error message with the line number for box ids that are duplicates
-        // boxNumbers.forEach((lineNumbers, boxNumber) => {
-        //   if (lineNumbers.size > 1) {
-        //     setUploadErrors(prevState => [
-        //       ...prevState,
-        //       `Duplicate box number: ${boxNumber} (lines ${[...lineNumbers].join(', ')})`,
-        //     ]);
-        //   }
-        // });
 
         setIsUploadingNewFile(false);
         setCSVFile();

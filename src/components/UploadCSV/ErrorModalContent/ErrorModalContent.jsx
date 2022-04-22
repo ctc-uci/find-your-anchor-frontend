@@ -23,16 +23,12 @@ const ErrorModalContent = ({
     <div className={styles['error-modal-content']}>
       <WarningIcon alt="Icon" boxSize="70px" color="red" marginBottom="20px" />
       <Text className={styles['error-modal-text']}>Oops!</Text>
-      <p className={styles['error-modal-text']}>There was an error with the uploaded file:</p>
+      <p>
+        {' '}
+        There were <span className={styles['error-modal-red-text']}>{uploadErrors.length}</span>
+        errors with the uploaded file:{' '}
+      </p>
       <p className={styles['error-modal-file-name']}>{CSVFileName}</p>
-      <div className={styles['error-modal-errors']}>
-        {uploadErrors.map((error, index) => (
-          /* eslint-disable react/no-array-index-key */
-          <p className={styles['error-modal-message']} key={index}>
-            *{error}*
-          </p>
-        ))}
-      </div>
       <ButtonGroup className={styles['error-modal-buttons']}>
         <Button size="md" color="white" bg="#1F2F38" onClick={uploadNewFile}>
           Upload New File
