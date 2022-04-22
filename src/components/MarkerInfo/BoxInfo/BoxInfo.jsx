@@ -17,7 +17,7 @@ import Xarrow, { useXarrow } from 'react-xarrows';
 import styles from './BoxInfo.module.css';
 import { FYABackend } from '../../../common/utils';
 import DeleteBoxModal from '../DeleteBoxModal/DeleteBoxModal';
-import launchBoxIcon from '../../../assets/launch-box-icon2.svg';
+import launchBoxIcon from '../../../assets/launch-box-icon.svg';
 import foundBoxIcon from '../../../assets/found-box-icon.svg';
 import MarkerHistoryElement from '../MarkerHistoryElement/MarkerHistoryElement';
 
@@ -65,7 +65,6 @@ const BoxInfo = ({
       setPicture(boxData.data[0].picture);
       const history = await FYABackend.get(`/boxHistory/history/${selectedBox}`);
       setBoxHistory(history.data);
-      console.log(history.data);
       setPickup(boxData.data[0].pickup);
     }
   }, [selectedBox]);
@@ -185,7 +184,11 @@ const BoxInfo = ({
               </Button>
               {/* <img className={styles['mobile-delete-box-button']} src={FaTrash} alt="test" />
                */}
-              <FaTrash className={styles['mobile-delete-box-button']} size="50px" />
+              <FaTrash
+                className={styles['mobile-delete-box-button']}
+                onClick={onOpenDeleteBoxModal}
+                size="50px"
+              />
               <DeleteBoxModal
                 isOpen={isOpenDeleteBoxModal}
                 onClose={onCloseDeleteBoxModal}

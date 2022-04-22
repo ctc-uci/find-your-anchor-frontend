@@ -23,7 +23,6 @@
 
 .title {
   width: 100%;
-  /* margin-left: 10%; */
   display: flex;
   flex-direction: column;
 }
@@ -54,7 +53,7 @@
 
 .box-info .box-number {
   font-weight: bold;
-  width: 100%;
+  /* width: 100%; */
 }
 
 .button-div {
@@ -62,32 +61,6 @@
   float: right;
   margin-top: 3%;
 }
-
-/* .history-graph-items {
-  counter-reset: list;
-  border-left: 2px solid lightgrey;
-  margin: 1em;
-  padding: 0; */
-/* } */
-
-/* .history-graph-item {
-  list-style: none;
-  margin: 0 0 0.5em 0;
-  padding: 0;
-} */
-
-/* .history-graph-item:before {
-  display: inline-block;
-  width: 1.2em;
-  height: 1.2em;
-  margin: 0 0.5em 0 -0.65em;
-  border-radius: 50%;
-  content: '';
-  text-align: center;
-  background: white;
-  border: 1px solid black;
-  counter-increment: list;
-} */
 
 .history-graph {
   background-color: white;
@@ -101,18 +74,16 @@
 
 .icon-number-wrapper {
   display: flex;
-  /* width: 25%; */
 }
 
 .desktop-icon {
-  height: 30px;
+  height: 20px;
 }
 
 .mobile-delete-box-button {
   display: none;
   color: red;
   position: fixed;
-  /* right: 2%; */
   right: 2%;
   bottom: 0;
 }
@@ -146,13 +117,14 @@
   }
 
   .icon-number-wrapper {
-    width: 25%;
+    width: 50%;
   }
 
   .image {
-    margin-top: 5%;
+    border-radius: 0;
     width: 100%;
     padding: 0;
+    margin-top: 1%;
   }
 
   .desktop-delete-box-button {
