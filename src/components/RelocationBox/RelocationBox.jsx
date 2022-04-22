@@ -21,8 +21,12 @@ import countryList from 'react-select-country-list';
 import { BsFillArrowRightCircleFill, BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
 import { RiPencilFill, RiCheckFill } from 'react-icons/ri';
 import PropTypes from 'prop-types';
-import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
+import RelocateBoxIcon from '../../assets/BoxIcons/RelocateBoxIcon.svg';
+import PendingRelocationIcon from '../../assets/BoxIcons/PendingRelocationIcon.svg';
+import RejectedRelocationIcon from '../../assets/BoxIcons/RejectedRelocationIcon.svg';
+import ApprovedRelocationIcon from '../../assets/BoxIcons/ApprovedRelocationIcon.svg';
 import { FYABackend, getLatLong, sendEmail } from '../../common/utils';
+import { auth, getCurrentUser } from '../../common/auth_utils';
 import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
@@ -71,6 +75,7 @@ const RelocationBox = ({
   pickup,
   launchedOrganically,
   imageStatus,
+  admin,
 }) => {
   const countryOptions = useMemo(() => countryList().getData(), []);
   const boxFormData = {
@@ -109,6 +114,8 @@ const RelocationBox = ({
   // A function that updates box information in the backend and refetches all boxes that are under review or pending changes (message status can be updated in 'under review')
   // This method is called when the save button is clicked under pending changes
   const updateBoxInfo = async newStatus => {
+    const user = await getCurrentUser(auth);
+    const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
     const formData = getValues();
     await FYABackend.put('/boxHistory/update', {
       transactionID,
@@ -121,6 +128,7 @@ const RelocationBox = ({
       generalLocation: formData.boxLocation,
       message: messageState,
       launchedOrganically: formData.dropOffMethod === 'organic-launch',
+      admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
     });
 
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
@@ -128,6 +136,8 @@ const RelocationBox = ({
   };
 
   const onSubmit = async data => {
+    const user = await getCurrentUser(auth);
+    const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
     const formData = data;
     await FYABackend.put('/boxHistory/update', {
       transactionID,
@@ -140,6 +150,7 @@ const RelocationBox = ({
       generalLocation: formData.boxLocation,
       message: messageState,
       launchedOrganically: formData.dropOffMethod === 'organic-launch',
+      admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
     });
 
     const requests = [fetchBoxes('under review', false), fetchBoxes('pending changes', false)];
@@ -148,6 +159,8 @@ const RelocationBox = ({
 
   // A function that approves a relocation box submission and updates the backend state accordingly and then refetches all boxes (boxes can be approved from any tab)
   const approveRelocationBox = async () => {
+    const user = await getCurrentUser(auth);
+    const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
     const formData = getValues();
     await FYABackend.put('/boxHistory/update', {
       transactionID,
@@ -160,6 +173,7 @@ const RelocationBox = ({
       generalLocation: formData.boxLocation,
       message: formData.boxMessage,
       launchedOrganically: formData.dropOffMethod === 'organic-launch',
+      admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
     });
     // Just in case the country value is null so it doesnt break, we can remove it once we clear the DB and have correct data
     let coordinates = await getLatLong(zipCode, formData.country.value || 'US');
@@ -210,13 +224,41 @@ const RelocationBox = ({
     }
   };
 
+  // A function that changes the color of the relocation box icon depending on whether it's approved, rejected, pending, or not yet evaluated
+  const getColoredIcon = () => {
+    if (status === 'evaluated' && approved) {
+      return ApprovedRelocationIcon;
+    }
+    if (status === 'evaluated' && !approved) {
+      return RejectedRelocationIcon;
+    }
+    if (status === 'pending changes') {
+      return PendingRelocationIcon;
+    }
+    return RelocateBoxIcon;
+  };
+
+  // A function that creates the string that identifies which admin evaluated the box
+  const getStatusMessage = () => {
+    if (status === 'evaluated' && approved) {
+      return <h4 className={styles['status-message-approved']}>Approved by {admin}</h4>;
+    }
+    if (status === 'evaluated' && !approved) {
+      return <h4 className={styles['status-message-rejected']}>Rejected by {admin}</h4>;
+    }
+    if (status === 'pending changes') {
+      return <h4 className={styles['status-message-pending']}>Pending Review by {admin}</h4>;
+    }
+    return '';
+  };
+
   return (
     <ChakraProvider>
       <div
         // Conditional classes for approved/pending changes/rejected boxes to determine background coloring
         className={`${styles.box}
         ${status === 'evaluated' && approved ? styles['box-approved'] : ''}
-        ${status === 'evaluated' && approved === false ? styles['box-rejected'] : ''}
+        ${status === 'evaluated' && !approved ? styles['box-rejected'] : ''}
         ${status === 'pending changes' ? styles['box-pending'] : ''}`}
       >
         <Accordion allowToggle>
@@ -225,7 +267,7 @@ const RelocationBox = ({
               <AccordionButton className={styles['accordion-button']}>
                 {/* Relocation box icon */}
                 <div className={styles['picture-div']}>
-                  <img src={RelocateBoxIcon} alt=" " />
+                  <img src={getColoredIcon()} alt=" " width="100%" height="auto" />
                 </div>
                 {/* Box Number & date */}
                 <div className={styles['title-div']}>
@@ -239,14 +281,16 @@ const RelocationBox = ({
                 </div>
               </AccordionButton>
             </h3>
+
             {/* Box picture */}
             <AccordionPanel pb={4} className={styles['accordion-panel']}>
               <div className={styles['review-header']}>
-                <h4>{status === 'pending changes' ? 'Reviewed by FYA Admin' : ''}</h4>
+                {getStatusMessage()}
                 {status === 'pending changes' && (
                   <button
                     type="button"
                     style={true ? {} : { visibility: 'hidden' }}
+                    className={styles['pencil-check-icon']}
                     onClick={() => {
                       setEditPendingChangesState(!editPendingChangesState || !isValid);
                     }}
@@ -574,6 +618,7 @@ RelocationBox.propTypes = {
   pickup: PropTypes.bool.isRequired,
   launchedOrganically: PropTypes.bool.isRequired,
   imageStatus: PropTypes.string.isRequired,
+  admin: PropTypes.string.isRequired,
 };
 
 export default RelocationBox;
