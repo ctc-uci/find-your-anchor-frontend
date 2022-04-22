@@ -15,6 +15,7 @@ import {
 import { FYABackend, sendEmail, AdminApprovalProcessEmailSubject } from '../../../common/utils';
 import AdminApprovalProcessEmail from '../../Email/EmailTemplates/AdminApprovalProcessEmail';
 import styles from './RejectBoxPopup.module.css';
+import { auth, getCurrentUser } from '../../../common/auth_utils';
 
 const RejectBoxPopup = ({
   boxHolderName,
@@ -30,12 +31,15 @@ const RejectBoxPopup = ({
   const [rejectionReason, setRejectionReason] = useState('');
 
   const handleRejectButtonClicked = async () => {
+    const user = await getCurrentUser(auth);
+    const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
     await FYABackend.put('/boxHistory/update', {
       transactionID,
       boxID,
       approved: false,
       status: 'evaluated',
       rejectionReason,
+      admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
     });
     const requests = [
       fetchBoxes('under review', pickup),
