@@ -25,7 +25,9 @@ const ErrorModalContent = ({
       <Text className={styles['error-modal-text']}>Oops!</Text>
       <p>
         {' '}
-        There were <span className={styles['error-modal-red-text']}>{uploadErrors.length}</span>
+        There were <span className={styles['error-modal-red-text']}>
+          {uploadErrors.length}
+        </span>{' '}
         errors with the uploaded file:{' '}
       </p>
       <p className={styles['error-modal-file-name']}>{CSVFileName}</p>

@@ -33,14 +33,14 @@ const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl 
               onClick={() => previousPage()}
             />
           </Tooltip>
-          <Text flexShrink="0" mr={8}>
+          <Text flexShrink="0" ml={4} mr={2}>
             <Text as="span">Page</Text>
             <Text as="span" color="black">
               {' '}
               {pageIndex + 1} of {pageLength}
             </Text>
           </Text>
-          <span>
+          <Text>
             | Go to page:{' '}
             <input
               type="number"
@@ -51,7 +51,7 @@ const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl 
               }}
               style={{ width: '30px' }}
             />
-          </span>{' '}
+          </Text>{' '}
           <Tooltip label="Next Page">
             <IconButton
               background="transparent"

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Input,
@@ -46,7 +46,7 @@ const EditableRow = ({
   });
 
   // useRef is similar to useState, but allows us change
-  // values without having to re-render the component
+  // values without having to re-render the component.
   const boxNumRef = useRef(null);
 
   const handleEditFormSubmitError = () => {
@@ -59,6 +59,11 @@ const EditableRow = ({
     updateBoxNumberMap(editFormData.boxNumber, lineNumber, boxNumRef.current);
     handleSubmit(handleEditFormSubmit, handleEditFormSubmitError)();
   };
+
+  // validate inputs when EditableRow first renders
+  useEffect(() => {
+    onSave();
+  }, []);
 
   return (
     <Tr

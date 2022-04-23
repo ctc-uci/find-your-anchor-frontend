@@ -244,12 +244,13 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
 
   return (
     <form onSubmit={addToMap} className={styles['csv-table-form']}>
-      <Stack direction="row" justify="right" marginTop="25px" marginBottom="25px">
+      <Stack direction="row" justify="right" marginTop="-25px" marginBottom="25px">
         <select
           value={pageSize}
           onChange={e => {
             setPageSize(Number(e.target.value));
           }}
+          className={styles['show-pages-select']}
         >
           {[10, 20, 30, 40, 50].map(pageSizeVal => (
             <option key={pageSizeVal} value={pageSizeVal}>
@@ -257,7 +258,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
             </option>
           ))}
         </select>
-        <Button isLoading={isLoading} type="submit" colorScheme="teal">
+        <Button isLoading={isLoading} type="submit" color="white" bg="#345E80">
           Add to Map
         </Button>
       </Stack>
