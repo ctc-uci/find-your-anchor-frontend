@@ -62,14 +62,8 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
   const data = useMemo(() => formDatas, [formDatas]);
 
   const {
-    // getTableProps,
-    // getTableBodyProps,
-    // headerGroups,
     prepareRow,
-    page, // Instead of using 'rows', we'll use page,
-    // which has only the rows for the active page
-
-    // The rest of these things are super handy, too ;)
+    page, // instead of using formDatas, we'll use page, which has only the rows for the active page
     canPreviousPage,
     canNextPage,
     pageOptions,
@@ -98,7 +92,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
     }
   }, [deleted]);
 
-  // manual = editing the row by hand (not from addToMap)
+  // manual = editing the row by clicking on the Edit Icon (not from addToMap)
   const editRow = (e, rowData, firstErrorIndex, manual) => {
     e.preventDefault();
     // store current form values for row so that EditableRow
@@ -131,6 +125,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
   };
 
   const updateBoxNumberMap = (oldBoxNum, lineNum, newBoxNum) => {
+    // if either oldBoxNum or newBoxNum is empty
     if (oldBoxNum === 0 || newBoxNum === 0) {
       return;
     }
@@ -159,10 +154,10 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
       error: false,
     };
 
-    // cannot do formDatas[index] = editedRow becuase that will not update the page
-    const newFormDatas = [...formDatas]; // update formDatas with the edited row
+    // update formDatas with the edited row
+    const newFormDatas = [...formDatas];
     const index = formDatas.findIndex(rowData => rowData.id === editId); // get index of the row that we are editing
-    newFormDatas[index] = editedRow; // update the array at index
+    newFormDatas[index] = editedRow; // update the array at the index with the new edited row
     setFormDatas(newFormDatas);
 
     gotoPage(pageIndex);
@@ -176,7 +171,8 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
 
   const checkErrors = async CSVRow => {
     try {
-      // the context allows us to pass extra arguments (i.e. boxNumberMap) to yup validation
+      // the context allows us to pass extra arguments to yup validation
+      // passing boxNumbers so yup validation can use this to check if there's a duplicate box number
       await BoxSchema.validate(CSVRow, { context: boxNumbers });
       return {
         ...CSVRow,
