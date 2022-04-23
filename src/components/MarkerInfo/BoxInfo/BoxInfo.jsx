@@ -36,6 +36,8 @@ const BoxInfo = ({
   const [boxHistory, setBoxHistory] = useState([]);
   const [boxHolderName, setBoxHolderName] = useState('');
   const [boxHolderEmail, setBoxHolderEmail] = useState('');
+  const [zipCode, setZipCode] = useState('');
+  const [country, setCountry] = useState('');
   const [generalLocation, setGeneralLocation] = useState('');
   const [picture, setPicture] = useState('');
   const [additionalComments, setAdditionalComments] = useState('');
@@ -56,6 +58,8 @@ const BoxInfo = ({
       setDate(boxData.data[0].date);
       setBoxHolderName(boxData.data[0].boxholder_name);
       setBoxHolderEmail(boxData.data[0].boxholder_email);
+      setZipCode(boxData.data[0].zip_code);
+      setCountry(boxData.data[0].country);
       setGeneralLocation(boxData.data[0].general_location);
       setAdditionalComments(boxData.data[0].additional_comments);
       setDropOffMethod(
@@ -111,6 +115,16 @@ const BoxInfo = ({
                 <Input isReadOnly id="email" type="email" value={boxHolderEmail} />
               </>
             )}
+            {/* Box zip code */}
+            <FormLabel isReadOnly htmlFor="zipCode" className={styles['form-label']}>
+              Zip Code
+            </FormLabel>
+            <Input isReadOnly id="zipCode" type="zipCode" value={zipCode} />
+            {/* Box country */}
+            <FormLabel isReadOnly htmlFor="country" className={styles['form-label']}>
+              Country
+            </FormLabel>
+            <Input isReadOnly id="country" type="country" value={country} />
             {/* Box general location */}
             <FormLabel isReadOnly htmlFor="generalLocation" className={styles['form-label']}>
               General Location
