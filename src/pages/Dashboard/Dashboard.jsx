@@ -7,6 +7,7 @@ import BoxApproval from '../../components/BoxApproval/BoxApproval';
 import MarkerInfo from '../../components/MarkerInfo/MarkerInfo';
 import { getCurrentUser, auth } from '../../common/auth_utils';
 import NavBar from '../../components/NavBar/NavBar';
+import Footer from '../../components/Footer/Footer';
 
 const Dashboard = () => {
   // This state determines whether or not to show the admin approval (left) side bar
@@ -108,6 +109,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      {!adminIsLoggedIn && <Footer />}
     </ChakraProvider>
   );
 };
