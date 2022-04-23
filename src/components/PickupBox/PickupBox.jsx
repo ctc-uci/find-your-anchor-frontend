@@ -20,7 +20,7 @@ import PickupBoxIcon from '../../assets/BoxIcons/PickupBoxIcon.svg';
 import ApprovedPickupIcon from '../../assets/BoxIcons/ApprovedPickupIcon.svg';
 import RejectedPickupIcon from '../../assets/BoxIcons/RejectedPickupIcon.svg';
 import PendingPickupIcon from '../../assets/BoxIcons/PendingPickupIcon.svg';
-import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
+import AdminApprovalProcessEmail from '../Email/EmailTemplates/AdminApprovalProcessEmail';
 import { FYABackend, getLatLong, sendEmail } from '../../common/utils';
 import { auth, getCurrentUser } from '../../common/auth_utils';
 
@@ -71,7 +71,7 @@ const PickupBox = ({
     });
     const requests = [
       fetchBoxes('under review', true),
-      sendEmail(boxHolderName, boxHolderEmail, <ApprovedBoxEmail boxHolderName={boxHolderName} />),
+      sendEmail(boxHolderName, boxHolderEmail, <AdminApprovalProcessEmail type="approved" />),
     ];
     await Promise.all(requests);
   };

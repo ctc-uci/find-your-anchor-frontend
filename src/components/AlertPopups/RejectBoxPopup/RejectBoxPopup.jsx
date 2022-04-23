@@ -12,8 +12,8 @@ import {
   AlertDialogCloseButton,
   Textarea,
 } from '@chakra-ui/react';
-import { FYABackend, sendEmail } from '../../../common/utils';
-import RejectedBoxEmail from '../../Email/EmailTemplates/RejectedBoxEmail';
+import { FYABackend, sendEmail, AdminApprovalProcessEmailSubject } from '../../../common/utils';
+import AdminApprovalProcessEmail from '../../Email/EmailTemplates/AdminApprovalProcessEmail';
 import styles from './RejectBoxPopup.module.css';
 import { auth, getCurrentUser } from '../../../common/auth_utils';
 
@@ -48,7 +48,8 @@ const RejectBoxPopup = ({
       sendEmail(
         boxHolderName,
         boxHolderEmail,
-        <RejectedBoxEmail boxHolderName={boxHolderName} rejectionReason={rejectionReason} />,
+        <AdminApprovalProcessEmail type="rejected" rejectionReason={rejectionReason} />,
+        AdminApprovalProcessEmailSubject,
       ),
     ];
     await Promise.all(requests);
