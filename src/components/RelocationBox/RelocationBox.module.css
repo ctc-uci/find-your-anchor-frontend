@@ -26,7 +26,6 @@
 .status-message-pending {
   color: #3182CE;
   width: 90%;
-  /* margin-left: 19%; */
 }
 
 .status-message-rejected {
