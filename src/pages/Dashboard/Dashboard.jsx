@@ -46,6 +46,12 @@ const Dashboard = () => {
               variant="link"
               colorScheme="white"
               className={styles['close-button']}
+              paddingTop="6px"
+              paddingBottom="6px"
+              paddingLeft="12px"
+              paddingRight="12px"
+              borderRadius="6px"
+              size="md"
               onClick={() => setShowReview(false)}
             >
               Close

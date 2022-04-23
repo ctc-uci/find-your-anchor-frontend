@@ -2,24 +2,22 @@
   width: 100%;
   padding: 1%;
   height: 95vh;
-  background-color: #e5e5e5;
+  background-color: #EEF6F8;
   position: relative;
 }
 
 .box-list {
   overflow-x: hidden;
   overflow-y: scroll;
-  height: 75vh;
+  height: 78vh;
 }
 
 .legend {
-  background-color: #e5e5e5;
+  position: absolute;
+  bottom: 10px;
+  background-color: #EEF6F8;
   width: 100%;
   margin-left: 5%;
-  height: 100px;
-  padding-top: 4%;
-  position: sticky;
-  bottom: 0;
 }
 
 .request-changes-row {

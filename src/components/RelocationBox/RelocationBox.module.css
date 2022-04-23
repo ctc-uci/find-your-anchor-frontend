@@ -18,15 +18,19 @@
 }
 
 .status-message-approved {
+  align-self: center;
   color: #38A169;
+  width: 90%;
 }
 
 .status-message-pending {
   color: #3182CE;
-  margin-left: 19%;
+  width: 90%;
+  /* margin-left: 19%; */
 }
 
 .status-message-rejected {
+  width: 90%;
   color: #E53E3E;
 }
 
@@ -76,12 +80,12 @@
   float: left;
   padding: 1%;
   width: 100%;
-  text-align: left;
   margin-left: 1%;
 }
 
 .approval-message {
   color: green;
+  text-align: left;
 }
 
 .rejection-message {
@@ -91,13 +95,15 @@
 .approval-button,
 .rejection-button {
   float: left;
-  margin: 2% 2% 0% 0%;
+  margin: 0% 2% 0% 0%;
 }
 
 .image-functionality-wrapper,
 .message-functionality-wrapper {
   display: flex;
   width: 100%;
+  align-items: center;
+  margin-top: 2%;
 }
 
 .image-approved-button,
@@ -147,7 +153,8 @@
 }
 
 .pencil-check-icon {
-  margin-left: 2%;
+  position: absolute;
+  right: 70px;
 }
 
 .title {
@@ -247,7 +254,7 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .edit-box-form {

@@ -43,7 +43,9 @@
 .close-button {
   position: absolute !important;
   font-size: 18px;
-  color: #e53e3e;
+  color: white;
+  background-color: #E53E3E;
+  padding: 10px 12px;
   right: 10px;
   bottom: 10px;
   z-index: 400; /* since leaflet has a high z index */
