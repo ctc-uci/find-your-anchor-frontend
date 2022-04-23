@@ -141,16 +141,22 @@ const BoxApproval = () => {
         </Tabs>
         <div className={styles.legend}>
           <div className={styles['request-changes-row']}>
-            <BsFillArrowRightCircleFill className={styles['request-changes-icon']} />
-            <p className={styles['request-changes-text']}>Request Changes</p>
+            <div className={styles['request-changes-row-content']}>
+              <BsFillArrowRightCircleFill className={styles['request-changes-icon']} />
+              <p className={styles['request-changes-text']}>Request Changes</p>
+            </div>
           </div>
           <div className={styles['relocate-box-row']}>
-            <img className={styles['relocate-box-icon']} src={RelocateBoxIcon} alt="" />
-            <p className={styles['relocate-box-text']}>Launched</p>
+            <div className={styles['relocate-box-row-content']}>
+              <img className={styles['relocate-box-icon']} src={RelocateBoxIcon} alt="" />
+              <p className={styles['relocate-box-text']}>Launched</p>
+            </div>
           </div>
           <div className={styles['pickup-box-row']}>
-            <img className={styles['pickup-box-icon']} src={PickupBoxIcon} alt="" />
-            <p className={styles['pickup-box-text']}>Found a Box</p>
+            <div className={styles['pickup-box-row-content']}>
+              <img className={styles['pickup-box-icon']} src={PickupBoxIcon} alt="" />
+              <p className={styles['pickup-box-text']}>Found a Box</p>
+            </div>
           </div>
         </div>
       </div>

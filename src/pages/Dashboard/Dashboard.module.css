@@ -80,12 +80,16 @@
   display: block;
 }
 
-@media only screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .map.one-bar-open {
     width: 0vw;
   }
 
   .side-bar {
     width: 100vw;
+  }
+
+  .close-button {
+    visibility: hidden;
   }
 }
