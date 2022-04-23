@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
-import DatePicker from 'react-datepicker';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -20,15 +20,17 @@ import { InfoIcon } from '@chakra-ui/icons';
 import { Select } from 'chakra-react-select';
 import countryList from 'react-select-country-list';
 
-import { FYABackend, formatDate, getLatLong } from '../../common/utils';
 import {
-  uploadBoxPhoto,
   validateZip,
   validateBoxNumber,
+  uploadBoxPhoto,
 } from '../../common/FormUtils/boxFormUtils';
+import { FYABackend, formatDate, getLatLong } from '../../common/utils';
+
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './AddBoxForm.module.css';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
+import useMobileWidth from '../../common/useMobileWidth';
 
 yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
@@ -59,7 +61,11 @@ const schema = yup
   .required();
 
 const AddBoxForm = () => {
+  const isMobile = useMobileWidth();
   const navigate = useNavigate();
+  const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     control,
@@ -70,9 +76,6 @@ const AddBoxForm = () => {
     delayError: 750,
   });
 
-  const [files, setFiles] = useState([]);
-  const [loading, setLoading] = useState(false);
-
   const countryOptions = useMemo(() => countryList().getData(), []);
 
   const onSubmit = async data => {
@@ -81,8 +84,8 @@ const AddBoxForm = () => {
     formData.launchedOrganically = formData.launchedOrganically === 'yes';
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
     formData.country = formData.country.value;
-    const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
 
+    const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
     if (latitude === undefined && longitude === undefined) {
       // TODO: display toast component
       console.log(`Cannot find ${formData.zipcode} in country ${formData.country}`);
@@ -134,6 +137,23 @@ const AddBoxForm = () => {
           <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
         </FormControl>
         <br />
+        {isMobile && (
+          <>
+            <FormControl isInvalid={errors?.boxNumber}>
+              <FormLabel htmlFor="boxNumber" className={styles['required-field']}>
+                Box Number
+              </FormLabel>
+              <Input
+                id="boxNumber"
+                placeholder="12345"
+                name="boxNumber"
+                {...register('boxNumber')}
+              />
+              <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
+            </FormControl>
+            <br />
+          </>
+        )}
         <FormControl isInvalid={errors?.zipcode || errors['']?.message.startsWith('Postal code')}>
           <FormLabel htmlFor="zipcode" className={styles['required-field']}>
             Zip Code
@@ -143,7 +163,7 @@ const AddBoxForm = () => {
           <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
           {/* display an error if zipcode does not exist in country */}
           {errors['']?.message !== 'zip validated' && (
-            <FormErrorMessage>{errors['']?.message}</FormErrorMessage>
+            <FormErrorMessage>{!errors.zipcode && errors['']?.message}</FormErrorMessage>
           )}
         </FormControl>
         <br />
@@ -162,6 +182,20 @@ const AddBoxForm = () => {
           <FormErrorMessage>{errors.country?.label.message}</FormErrorMessage>
         </FormControl>
         <br />
+        {isMobile && (
+          <>
+            <FormControl FormControl>
+              <FormLabel htmlFor="location">Box Location</FormLabel>
+              <Input
+                id="location"
+                placeholder="e.g. University Park Library"
+                name="boxLocation"
+                {...register('boxLocation')}
+              />
+            </FormControl>
+            <br />
+          </>
+        )}
         <FormControl>
           <FormLabel htmlFor="message">Message:</FormLabel>
           <Textarea
@@ -176,7 +210,7 @@ const AddBoxForm = () => {
         </FormControl>
         <br />
         <FormControl>
-          <FormLabel htmlFor="comments">Additional Comments (for admin purposes)</FormLabel>
+          <FormLabel htmlFor="comments">Additional Comments</FormLabel>
           <Textarea
             id="message"
             placeholder="200 characters max"
@@ -191,51 +225,68 @@ const AddBoxForm = () => {
       </div>
 
       <div className={styles['add-box-info-section-right']}>
-        <FormControl FormControl>
-          <FormLabel htmlFor="location">Box Location</FormLabel>
-          <Input
-            id="location"
-            placeholder="e.g. University Park Library"
-            name="boxLocation"
-            {...register('boxLocation')}
-          />
-        </FormControl>
-        <br />
-        <FormControl isInvalid={errors?.boxNumber}>
-          <FormLabel htmlFor="boxNumber" className={styles['required-field']}>
-            Box Number
-          </FormLabel>
-          <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
-          <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
-        </FormControl>
-        <br />
+        {!isMobile && (
+          <>
+            <FormControl FormControl>
+              <FormLabel htmlFor="location">Box Location</FormLabel>
+              <Input
+                id="location"
+                placeholder="e.g. University Park Library"
+                name="boxLocation"
+                {...register('boxLocation')}
+              />
+            </FormControl>
+            <br />
+          </>
+        )}
+        {!isMobile && (
+          <>
+            <FormControl isInvalid={errors?.boxNumber}>
+              <FormLabel htmlFor="boxNumber" className={styles['required-field']}>
+                Box Number
+              </FormLabel>
+              <Input
+                id="boxNumber"
+                placeholder="12345"
+                name="boxNumber"
+                {...register('boxNumber')}
+              />
+              <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
+            </FormControl>
+            <br />
+          </>
+        )}
         <FormControl isInvalid={errors?.launchedOrganically}>
           <div className={styles['box-launched-section']}>
-            <FormLabel htmlFor="isLaunched" className={styles['required-field']}>
-              Launched Organically?
-            </FormLabel>
-            <div className={styles['info-icon']}>
-              <InfoIcon />
-              <span className={styles['tool-tip-text']}>
-                Organic launch means when the box is left somewhere for an individual to stumble
-                upon it.
-              </span>
+            <div className={styles['box-launch-label']}>
+              <FormLabel htmlFor="isLaunched" className={styles['required-field']}>
+                Launched Organically?
+              </FormLabel>
+              <div className={styles['info-icon']}>
+                <InfoIcon />
+                <span className={styles['tool-tip-text']}>
+                  Organic launch means when the box is left somewhere for an individual to stumble
+                  upon it.
+                </span>
+              </div>
             </div>
-            <RadioGroup defaultValue="1" className={styles['launch-org-radio']}>
-              <Stack spacing={8} direction="row">
-                <Radio
-                  name="launchedOrganically"
-                  value="yes"
-                  defaultChecked
-                  {...register('launchedOrganically')}
-                >
-                  Yes
-                </Radio>
-                <Radio name="launchedOrganically" value="no" {...register('launchedOrganically')}>
-                  No
-                </Radio>
-              </Stack>
-            </RadioGroup>
+            <div className={styles['launch-radio']}>
+              <RadioGroup defaultValue="1" className={styles['launch-org-radio']}>
+                <Stack spacing={8} direction="row">
+                  <Radio
+                    name="launchedOrganically"
+                    value="yes"
+                    defaultChecked
+                    {...register('launchedOrganically')}
+                  >
+                    Yes
+                  </Radio>
+                  <Radio name="launchedOrganically" value="no" {...register('launchedOrganically')}>
+                    No
+                  </Radio>
+                </Stack>
+              </RadioGroup>
+            </div>
           </div>
           <FormErrorMessage>{errors.launchedOrganically?.message}</FormErrorMessage>
         </FormControl>
