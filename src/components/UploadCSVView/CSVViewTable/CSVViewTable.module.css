@@ -69,3 +69,7 @@
 .csv-table * {
   font-size: 1rem;
 }
+
+.show-pages-select {
+  margin-right: 20px;
+}
