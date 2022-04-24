@@ -3,6 +3,8 @@ import { ChakraProvider, Button, Text } from '@chakra-ui/react';
 import ExportCSVForm from '../../components/ExportCSV/ExportCSVForm/ExportCSVForm';
 import styles from './ExportCSV.module.css';
 
+// import useMobileWidth from '../../common/FormUtils/useMobileWidth';
+
 const ExportCSV = () => {
   // Used to connect submit button outside form
   const formID = 'export-csv-form';

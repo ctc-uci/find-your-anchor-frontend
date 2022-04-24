@@ -1,20 +1,22 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import DatePicker from 'react-datepicker';
+// import DatePicker from 'react-datepicker';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import * as yup from 'yup';
 
 import {
   FormControl,
-  FormLabel,
-  Input,
-  Select,
+  // FormLabel,
+  // Input,
+  // Select,
   Text,
-  Radio,
-  RadioGroup,
+  // Radio,
+  // RadioGroup,
   Checkbox,
   CheckboxGroup,
   Button,
@@ -23,8 +25,9 @@ import {
   AccordionPanel,
   AccordionIcon,
   AccordionButton,
-  Box,
 } from '@chakra-ui/react';
+// import { CheckIcon } from '@chakra-ui/icons'
+import AccordionTemplate from '../../../common/CommonAccordionSelector/CommonAccordionSelector';
 import styles from './ExportCSVForm.module.css';
 import { formatDate, FYABackend } from '../../../common/utils';
 import { isValidRange, isZip, isDate } from './ExportCSVFormValidators';
@@ -73,11 +76,11 @@ const ExportCSVForm = ({ formID }) => {
     control,
     reset,
     getValues,
-    register,
+    // register,
     handleSubmit,
     setValue,
     clearErrors,
-    formState: { errors },
+    // formState: { errors },
   } = useForm({
     defaultValues: {
       sortBy: 'ascend-box-num',
@@ -174,335 +177,119 @@ const ExportCSVForm = ({ formID }) => {
   return (
     <div className={styles['csv-form-wrapper']}>
       <form id={formID} className={styles['export-csv-form']} onSubmit={handleSubmit(onSubmit)}>
-        <Accordion allowToggle>
-          <Text className={styles['csv-form-labels']}>Sort By</Text>
-          <AccordionItem>
-            {({ isExpanded }) => (
-              <>
-                <AccordionButton>
-                  {!isExpanded ? <Text>Ascending Zip Code</Text> : <></>}
-                  <AccordionIcon />
-                </AccordionButton>
-                <AccordionPanel pb={4}>
-                  <Box>Ascending Zip Code</Box>
-                  <Box>Ascending Box Number</Box>
-                </AccordionPanel>
-              </>
-            )}
-          </AccordionItem>
-        </Accordion>
+        <div className={styles['accordion-box']}>
+          <AccordionTemplate
+            headerText="Sort By"
+            options={[
+              'Ascending Box Number',
+              'Ascending Zip Code',
+              'Chronologically',
+              'Descending Box Number',
+              'Descending Zip Code',
+            ]}
+          />
+        </div>
 
-        <Accordion allowToggle>
-          <AccordionItem>
-            <AccordionButton>
-              <Text className={styles['csv-form-labels']}>Sort By</Text>
-              <AccordionIcon />
-            </AccordionButton>
-            <AccordionPanel>
-              <p> blah </p>
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
-
-        <FormControl className={styles['section-wrapper']}>
-          <Text className={styles['csv-form-labels']}>Sort By</Text>
-          <Select id="sort-by" {...register('sortBy')}>
-            <option value="ascend-box-num">Ascending Box Number</option>
-            <option value="descend-box-num">Descending Box Number</option>
-            <option value="chronologic">Chronologically</option>
-            <option value="ascend-zip-code">Ascending Zip Code</option>
-            <option value="descend-zip-code">Descending Zip Code</option>
-          </Select>
-        </FormControl>
-
-        <Accordion allowToggle>
-          <AccordionItem>
-            <AccordionButton>
-              <Text className={styles['csv-form-labels']}>Filter Options</Text>
-              <AccordionIcon />
-            </AccordionButton>
-            <AccordionPanel>
-              <Accordion allowToggle>
-                <AccordionItem>
-                  <AccordionButton>
-                    <Text>Boxes</Text>
-                    <AccordionIcon />
-                  </AccordionButton>
-                  <AccordionPanel pb={4}>All Boxes</AccordionPanel>
-                </AccordionItem>
-
-                <AccordionItem>
-                  <AccordionButton>
-                    <Text>Date</Text>
-                    <AccordionIcon />
-                  </AccordionButton>
-                  <AccordionPanel pb={4}>Test</AccordionPanel>
-                </AccordionItem>
-
-                <AccordionItem>
-                  <AccordionButton>
-                    <Text>Launch Organically?</Text>
-                    <AccordionIcon />
-                  </AccordionButton>
-                  <AccordionPanel pb={4}>Test</AccordionPanel>
-                </AccordionItem>
-
-                <AccordionItem>
-                  <AccordionButton>
-                    <Text>Zip Code</Text>
-                    <AccordionIcon />
-                  </AccordionButton>
-                  <AccordionPanel pb={4}>Test</AccordionPanel>
-                </AccordionItem>
-              </Accordion>
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
-
-        <Accordion allowToggle>
-          <AccordionItem>
-            <AccordionButton>
-              <Text className={styles['csv-form-labels']}>Box Details</Text>
-              <AccordionIcon />
-            </AccordionButton>
-            <AccordionPanel>
-              <FormControl className={styles['section-wrapper']}>
-                <div className={styles['box-detail-header']}>
-                  <Button
-                    variant="link"
-                    onClick={() => {
-                      reset({
-                        ...getValues(),
-                        boxDetails: [],
-                      });
-                    }}
-                  >
-                    Unselect All
-                  </Button>
-                </div>
-                <Controller
-                  name="boxDetails"
-                  control={control}
-                  // eslint-disable-next-line no-unused-vars
-                  render={({ field: { onChange, value, ref } }) => (
-                    <div className={styles['box-detail-checkboxes']}>
-                      <CheckboxGroup value={value} onChange={onChange}>
-                        <Checkbox value="date">Date</Checkbox>
-                        <Checkbox value="box_id">Box Number</Checkbox>
-                        <Checkbox value="zip_code">Zip Code</Checkbox>
-                        <Checkbox value="picture">Image</Checkbox>
-                        <Checkbox value="general_location">Landmarks</Checkbox>
-                        <Checkbox value="launched_organically">Launch Type</Checkbox>
-                        <Checkbox value="message">Messages</Checkbox>
-                      </CheckboxGroup>
-                    </div>
-                  )}
+        <div className={styles['accordion-box']}>
+          <Accordion allowToggle>
+            <AccordionItem>
+              <AccordionButton>
+                <Text className={styles['csv-form-labels']}>Filter Options</Text>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel>
+                <AccordionTemplate
+                  headerText="Boxes"
+                  options={['All Boxes', 'Custom']}
+                  isHeader={false}
                 />
-              </FormControl>
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
+                <AccordionTemplate
+                  headerText="Date"
+                  options={['All Boxes', 'Single Date', 'Range']}
+                  isHeader={false}
+                />
+                <AccordionTemplate
+                  headerText="Zip Code"
+                  options={['All', 'By Zip Code', 'By State']}
+                  isHeader={false}
+                />
+                <AccordionTemplate
+                  headerText="Launched Organically?"
+                  options={['Yes', 'No']}
+                  isHeader={false}
+                />
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+        </div>
 
-        <div className={styles['filter-section-wrapper']}>
-          <div className={styles['filter-option-wrapper']}>
-            <Text className={styles['csv-form-labels']}>Filter Options</Text>
-            <div className={styles['filter-choices']}>
-              <FormControl className={styles['filter-label-select']} isInvalid={errors?.sortBy}>
-                <FormLabel htmlFor="boxes">Boxes</FormLabel>
-                <div className={styles['input-drop-down']}>
-                  <Select
-                    id="boxes"
-                    className={styles['select-filter-options']}
-                    {...register('boxOption')}
-                  >
-                    <option value="boxes-all">All</option>
-                    <option value="boxes-custom">Custom</option>
-                  </Select>
-                  {watchAllFields.boxOption === 'boxes-custom' && (
-                    <Input
-                      isInvalid={errors?.boxRange}
-                      placeholder="e.g. 1-9, 6, 12"
-                      {...register('boxRange')}
-                      className={styles['custom-input']}
-                    />
-                  )}
-                  <p className={styles['error-message']}>{errors.boxRange?.message}</p>
-                </div>
-              </FormControl>
-            </div>
-            <div className={styles['filter-choices']}>
-              <FormControl className={styles['filter-label-select']} isInvalid={errors?.sortBy}>
-                <FormLabel htmlFor="date">Date</FormLabel>
-                <div className={styles['input-drop-down']}>
-                  <Select
-                    id="date"
-                    className={styles['select-filter-options']}
-                    {...register('dateOption')}
-                  >
-                    <option value="date-all">All</option>
-                    <option value="date-single">Single Day</option>
-                    <option value="date-range">Range</option>
-                  </Select>
-                  {watchAllFields.dateOption === 'date-single' && (
-                    <Controller
-                      name="singleDate"
-                      control={control}
-                      // eslint-disable-next-line no-unused-vars
-                      render={({ field: { onChange, value, ref } }) => (
-                        <DatePicker
-                          className={
-                            styles[`${errors?.singleDate ? 'date-picker-error' : 'date-picker'}`]
-                          }
-                          placeholderText="MM/DD/YYYY"
-                          type="date"
-                          selected={value}
-                          onChange={onChange}
-                        />
-                      )}
-                    />
-                  )}
-                  <p className={styles['error-message']}>{errors.singleDate?.message}</p>
-                  {watchAllFields.dateOption === 'date-range' && (
-                    <div className={styles['date-range']}>
-                      <FormControl>
-                        <FormLabel className={styles['date-range-label']} htmlFor="start-date">
-                          TESTER Start Date
-                        </FormLabel>
-                        <Controller
-                          name="startDate"
-                          control={control}
-                          // eslint-disable-next-line no-unused-vars
-                          render={({ field: { onChange, value, ref } }) => (
-                            <DatePicker
-                              className={
-                                styles[`${errors?.startDate ? 'date-picker-error' : 'date-picker'}`]
-                              }
-                              placeholderText="MM/DD/YYYY"
-                              type="date"
-                              selected={value}
-                              onChange={onChange}
-                              selectsStart
-                              startDate={watchAllFields.startDate}
-                              endDate={watchAllFields.endDate}
-                            />
-                          )}
-                        />
-                      </FormControl>
-                      <p className={styles['error-message']}>{errors.startDate?.message}</p>
-                      <FormControl>
-                        <FormLabel className={styles['date-range-label']} htmlFor="end-date">
-                          End Date
-                        </FormLabel>
-                        <Controller
-                          name="endDate"
-                          control={control}
-                          // eslint-disable-next-line no-unused-vars
-                          render={({ field: { onChange, value, ref } }) => (
-                            <DatePicker
-                              className={
-                                styles[`${errors?.endDate ? 'date-picker-error' : 'date-picker'}`]
-                              }
-                              placeholderText="MM/DD/YYYY"
-                              type="date"
-                              selected={value}
-                              onChange={onChange}
-                              selectsEnd
-                              startDate={watchAllFields.startDate}
-                              endDate={watchAllFields.endDate}
-                              minDate={watchAllFields.startDate}
-                            />
-                          )}
-                        />
-                      </FormControl>
-                      <p className={styles['error-message']}>{errors.endDate?.message}</p>
-                    </div>
-                  )}
-                </div>
-              </FormControl>
-            </div>
-            <div className={styles['filter-choices']}>
-              <FormControl className={styles['filter-label-select']} isInvalid={errors?.sortBy}>
-                <FormLabel htmlFor="zip">Zip Code</FormLabel>
-                <div className={styles['input-drop-down']}>
-                  <Select
-                    id="zip"
-                    className={styles['select-filter-options']}
-                    {...register('zipOption')}
-                  >
-                    <option value="zip-code-all">All</option>
-                    <option value="zip-code-custom">Custom</option>
-                  </Select>
-                  {watchAllFields.zipOption === 'zip-code-custom' && (
-                    <Input
-                      isInvalid={errors?.zipCode}
-                      placeholder="e.g. 96162, 91007"
-                      className={styles['custom-input']}
-                      {...register('zipCode')}
-                    />
-                  )}
-                  <p className={styles['error-message']}>{errors.zipCode?.message}</p>
-                </div>
-              </FormControl>
-            </div>
-            <div className={styles['filter-choices']}>
-              <FormControl className={styles['filter-label-select']} isInvalid={errors?.sortBy}>
-                <FormLabel htmlFor="launch-organic">Launch Organically?</FormLabel>
-                <Controller
-                  id="launch-organic"
-                  name="launchedOrganically"
-                  control={control}
-                  // eslint-disable-next-line no-unused-vars
-                  render={({ field: { onChange, value, ref } }) => (
-                    <RadioGroup
-                      className={styles['organically-radio-group']}
-                      defaultValue="yes"
-                      value={value}
-                      onChange={onChange}
+        <div className={styles['accordion-box']}>
+          <Accordion allowToggle>
+            <AccordionItem>
+              <AccordionButton>
+                <Text className={styles['csv-form-labels']}>Box Details</Text>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel>
+                <FormControl className={styles['section-wrapper']}>
+                  <div className={styles['box-detail-header']}>
+                    <Button
+                      textColor="#319795"
+                      variant="link"
+                      onClick={() => {
+                        reset({
+                          ...getValues(),
+                          boxDetails: [],
+                        });
+                      }}
                     >
-                      <Radio value="yes">Yes</Radio>
-                      <Radio value="no">No</Radio>
-                    </RadioGroup>
-                  )}
-                />
-              </FormControl>
-            </div>
-          </div>
-          <FormControl className={styles['section-wrapper']}>
-            <div className={styles['box-detail-header']}>
-              <Text className={styles['csv-form-labels']}>Box Details</Text>
-              <Button
-                variant="link"
-                onClick={() => {
-                  reset({
-                    ...getValues(),
-                    boxDetails: [],
-                  });
-                }}
-              >
-                Unselect All
-              </Button>
-            </div>
-            <Controller
-              name="boxDetails"
-              control={control}
-              // eslint-disable-next-line no-unused-vars
-              render={({ field: { onChange, value, ref } }) => (
-                <div className={styles['box-detail-checkboxes']}>
-                  <CheckboxGroup value={value} onChange={onChange}>
-                    <Checkbox value="date">Date</Checkbox>
-                    <Checkbox value="box_id">Box Number</Checkbox>
-                    <Checkbox value="zip_code">Zip Code</Checkbox>
-                    <Checkbox value="picture">Image</Checkbox>
-                    <Checkbox value="general_location">Landmarks</Checkbox>
-                    <Checkbox value="launched_organically">Launch Type</Checkbox>
-                    <Checkbox value="message">Messages</Checkbox>
-                  </CheckboxGroup>
-                </div>
-              )}
-            />
-          </FormControl>
+                      Unselect All
+                    </Button>
+                  </div>
+                  <Controller
+                    name="boxDetails"
+                    control={control}
+                    // eslint-disable-next-line no-unused-vars
+                    render={({ field: { onChange, value, ref } }) => (
+                      <div className={styles['box-detail-checkboxes']}>
+                        <CheckboxGroup value={value} onChange={onChange}>
+                          <Checkbox value="date">Date</Checkbox>
+                          <Checkbox value="box_id">Box Number</Checkbox>
+                          <Checkbox value="zip_code">Zip Code</Checkbox>
+                          <Checkbox value="picture">Image</Checkbox>
+                          <Checkbox value="general_location">Landmarks</Checkbox>
+                          <Checkbox value="launched_organically">Launch Type</Checkbox>
+                          <Checkbox value="message">Messages</Checkbox>
+                        </CheckboxGroup>
+                      </div>
+                    )}
+                  />
+                </FormControl>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+        </div>
+
+        <div className={styles['accordion-box']}>
+          <Accordion allowToggle>
+            <AccordionItem>
+              <AccordionButton>
+                <Text className={styles['csv-form-labels']}>CSV Preview</Text>
+                <AccordionIcon />
+              </AccordionButton>
+            </AccordionItem>
+          </Accordion>
         </div>
       </form>
+
+      <div className={styles['buttons-container']}>
+        <Button border="1px" borderColor="#CBD5E0" bg="white">
+          Cancel
+        </Button>
+        <Button textColor="white" bg="#345E80">
+          Export
+        </Button>
+      </div>
     </div>
   );
 };

@@ -107,6 +107,15 @@
 }
 
 @media screen and (max-width: 768px) {
+  .accordion-box {
+    border: 1px solid #CBD5E0;
+    border-radius: 6.2pt;
+  }
+
+  .accordion-items {
+    align-items: left;
+  }
+
   .csv-form-wrapper {
     flex-basis: 42%;
     width: 100%;
@@ -121,6 +130,11 @@
 
   .section-wrapper {
     width: 400px !important;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: left;
+    row-gap: 0.5em;
   }
 
   .filter-label-select {
@@ -196,7 +210,9 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    height: 100px;
+    height: auto;
+    align-items: left;
+    row-gap: 0.5em;
   }
 
   .box-detail-header {
@@ -213,5 +229,14 @@
   .error-message {
     color: red;
     font-size: 13px;
+  }
+
+  .buttons-container {
+    justify-content: center;
+    margin: 80% auto 1.4em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 1em;
   }
 }

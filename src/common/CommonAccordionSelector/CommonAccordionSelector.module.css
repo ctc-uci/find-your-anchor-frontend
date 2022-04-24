@@ -1,0 +1,11 @@
+.csv-form-labels {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 768px) {
+  .csv-form-labels {
+    font-size: 20px;
+    font-weight: 500;
+  }
+}
