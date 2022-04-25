@@ -10,7 +10,7 @@ const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl 
     <Box>
       <Flex justifyContent="space-between" m={4} alignItems="center">
         <Flex alignItems="center">
-          <Tooltip label="Previous Page">
+          <Tooltip label="First Page">
             <IconButton
               background="transparent"
               color="black"
@@ -65,7 +65,7 @@ const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl 
         </Flex>
 
         <Flex alignItems="center">
-          <Tooltip label="Previous Page">
+          <Tooltip label="Last Page">
             <IconButton
               background="transparent"
               color="black"
