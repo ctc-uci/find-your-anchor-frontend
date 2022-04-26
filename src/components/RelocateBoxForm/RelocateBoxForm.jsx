@@ -58,6 +58,7 @@ const schema = yup
       .required('Invalid drop off method, please enter a valid drop off method'),
     message: yup.string().typeError('Invalid message, please enter a valid message'),
     picture: yup.string().url(),
+    verificationPicture: yup.string().url(),
   })
   .isZipInCountry()
   .required();
@@ -83,6 +84,16 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
     const formData = data;
     formData.date = formatDate(data.date);
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
+
+    // This must be a toast error because yup validation does not check the uploaded files.
+    if (verificationFiles.length === 0) {
+      // TODO: Replace with toast component.
+      alert('Please submit a Box Number Verification Photo');
+      return;
+    }
+    formData.verificationPicture =
+      verificationFiles.length > 0 ? await uploadBoxPhoto(verificationFiles[0]) : '';
+
     formData.country = formData.country.value;
 
     const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
