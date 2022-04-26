@@ -1,38 +1,146 @@
 /* eslint-disable prefer-object-spread */
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button, Stack, Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
+import { useTable, usePagination } from 'react-table';
+
 import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../EditableRow/EditableRow';
-import { FYABackend, formatDate } from '../../../common/utils';
+import { FYABackend, formatDate, getLatLong } from '../../../common/utils';
 import BoxSchema from '../../UploadCSV/UploadCSVUtils';
+import CSVViewTablePagination from './CSVViewTablePagination';
 
-const CSVViewTable = ({ rows }) => {
+const CSVViewTable = ({ rows, boxNumberMap }) => {
   const navigate = useNavigate();
-  const [csvErrors, setCsvErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [formDatas, setFormData] = useState(rows);
+  const [formDatas, setFormDatas] = useState(rows);
+  const [boxNumbers] = useState(boxNumberMap);
   const [editId, setEditId] = useState(null);
   const [editFormData, setEditFormData] = useState({
     date: '',
     boxNumber: '',
     zipCode: '',
+    country: '',
     launchedOrganically: false,
   });
 
-  const editRow = (e, data) => {
+  const [currentPage, setCurrentPage] = useState(null);
+  const [deleted, setDeleted] = useState(false);
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Box No',
+        accessor: 'boxNumber',
+      },
+      {
+        Header: 'Date',
+        accessor: 'date',
+      },
+      {
+        Header: 'Zip Code',
+        accessor: 'zipCode',
+      },
+      {
+        Header: 'Country',
+        accessor: 'country',
+      },
+      {
+        Header: 'Launched Organically',
+        accessor: 'launchedOrganically',
+      },
+      {
+        Header: 'Error',
+        accessor: 'error',
+      },
+    ],
+    [],
+  );
+
+  const data = useMemo(() => formDatas, [formDatas]);
+
+  const {
+    prepareRow,
+    page, // instead of using formDatas, we'll use page, which has only the rows for the active page
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: { pageIndex: 0 },
+    },
+    usePagination,
+  );
+
+  useEffect(() => {
+    setCurrentPage(pageIndex);
+  }, [pageIndex]);
+
+  useEffect(() => {
+    if (currentPage) {
+      gotoPage(currentPage);
+    }
+  }, [deleted]);
+
+  // manual = editing the row by clicking on the Edit Icon (not from addToMap)
+  const editRow = (e, rowData, firstErrorIndex, manual) => {
     e.preventDefault();
-    // store current form values for row
-    const formValues = {
-      date: data.date,
-      boxNumber: data.boxNumber,
-      zipCode: data.zipCode,
-      launchedOrganically: data.launchedOrganically,
-    };
-    setEditFormData(formValues);
-    setEditId(data.id);
+    // store current form values for row so that EditableRow
+    // can display these values when it first renders
+    let formValues = {};
+    if (manual) {
+      formValues = {
+        id: rowData.original.id,
+        date: rowData.values.date,
+        boxNumber: rowData.values.boxNumber,
+        zipCode: rowData.values.zipCode,
+        country: rowData.values.country,
+        launchedOrganically: rowData.values.launchedOrganically,
+      };
+      setEditFormData(formValues);
+      setEditId(rowData.original.id);
+    } else {
+      formValues = {
+        id: rowData.id,
+        date: rowData.date,
+        boxNumber: rowData.boxNumber,
+        zipCode: rowData.zipCode,
+        country: rowData.country,
+        launchedOrganically: rowData.launchedOrganically,
+      };
+      setEditFormData(formValues);
+      setEditId(rowData.id);
+      gotoPage(Math.floor(firstErrorIndex / pageSize));
+    }
+  };
+
+  const updateBoxNumberMap = (oldBoxNum, lineNum, newBoxNum) => {
+    // if either oldBoxNum or newBoxNum is empty
+    if (oldBoxNum === 0 || newBoxNum === 0) {
+      return;
+    }
+
+    boxNumbers.get(oldBoxNum).delete(lineNum);
+
+    if (boxNumbers.get(oldBoxNum).size === 0) {
+      boxNumbers.delete(oldBoxNum);
+    }
+
+    if (!boxNumbers.has(newBoxNum)) {
+      boxNumbers.set(newBoxNum, new Set());
+    }
+
+    boxNumbers.get(newBoxNum).add(lineNum);
   };
 
   const handleEditFormSubmit = editRowData => {
@@ -41,66 +149,115 @@ const CSVViewTable = ({ rows }) => {
       date: formatDate(editRowData.date),
       boxNumber: editRowData.boxNumber,
       zipCode: editRowData.zipCode,
+      country: editRowData.country,
       launchedOrganically: editRowData.launchedOrganically,
+      error: false,
     };
 
-    const newFormData = [...formDatas];
-    const index = formDatas.findIndex(data => data.id === editId); // get index of the row that we are editing
-    newFormData[index] = editedRow; // update the array at index
-    setFormData(newFormData);
+    // update formDatas with the edited row
+    const newFormDatas = [...formDatas];
+    const index = formDatas.findIndex(rowData => rowData.id === editId); // get index of the row that we are editing
+    newFormDatas[index] = editedRow; // update the array at the index with the new edited row
+    setFormDatas(newFormDatas);
+
+    gotoPage(pageIndex);
     setEditId(null);
-    setCsvErrors(csvErrors.filter(error => error !== editId)); // delete edited row from csvErrors array
   };
 
   const handleDeleteRow = rowId => {
-    setFormData(formDatas.filter(data => data.id !== rowId));
+    setFormDatas(formDatas.filter(rowData => rowData.id !== rowId));
+    setDeleted(!deleted);
   };
 
-  const checkErrors = async CSVRows => {
-    return Promise.all(
-      CSVRows.map(async CSVRow => {
-        try {
-          await BoxSchema.validate(CSVRow);
-          return 'success';
-        } catch (err) {
-          return CSVRow;
-        }
-      }),
-    );
-  };
-
-  const addErrors = errors => {
-    errors.forEach(error => {
-      if (error !== 'success') {
-        setCsvErrors(prevState => [...prevState, error.id]);
-      }
-    });
+  const checkErrors = async CSVRow => {
+    try {
+      // the context allows us to pass extra arguments to yup validation
+      // passing boxNumbers so yup validation can use this to check if there's a duplicate box number
+      await BoxSchema.validate(CSVRow, { context: boxNumbers });
+      return {
+        ...CSVRow,
+        error: false,
+      };
+    } catch (err) {
+      return {
+        ...CSVRow,
+        error: true,
+      };
+    }
   };
 
   const addToMap = async e => {
     e.preventDefault();
     setIsLoading(true);
-    const errors = await checkErrors(formDatas);
-    addErrors(errors);
-    const nextError = errors.find(error => error !== 'success');
-    setIsLoading(false);
-    if (nextError) {
-      editRow(e, nextError);
+
+    const processedRows = await Promise.all(formDatas.map(async formData => checkErrors(formData)));
+    const firstErrorRowIndex = processedRows.findIndex(row => row.error);
+
+    if (firstErrorRowIndex !== -1) {
+      setIsLoading(false);
+      editRow(e, processedRows[firstErrorRowIndex], firstErrorRowIndex, false);
     } else {
-      await FYABackend.post('/anchorBox/boxes', formDatas);
-      navigate('/');
+      try {
+        // find lat/long for each formData
+        const allCoordinates = await Promise.all(
+          formDatas.map(async formData => getLatLong(formData.zipCode, formData.country)),
+        );
+
+        let hasError = false;
+        formDatas.forEach((formData, index) => {
+          if (allCoordinates[index].length === 0) {
+            // if lat/long is not found for this zipcode
+            console.log('cannot find latitude for formData: ', formData);
+            hasError = true;
+            setIsLoading(false);
+            editRow(e, formData, index, false);
+          } else {
+            // otherwise, set lat/long for this zipcode
+            const [lat, long] = allCoordinates[index];
+            formDatas[index].latitude = lat;
+            formDatas[index].longitude = long;
+          }
+        });
+
+        // set lat/long for each formData
+        // formDatas.forEach((formData, index) => {
+        //   const [lat, long] = allCoordinates[index];
+        //   formDatas[index].latitude = lat;
+        //   formDatas[index].longitude = long;
+        // });
+
+        // if none of the rows have any errors
+        if (!hasError) {
+          await FYABackend.post('/anchorBox/boxes', formDatas);
+          setIsLoading(false);
+          navigate('/admin');
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
-  // check if any rows have an error when page first loads
-  useEffect(async () => {
-    setFormData(rows);
-    const errors = await checkErrors(rows);
-    addErrors(errors);
-  }, [rows]);
-
   return (
     <form onSubmit={addToMap} className={styles['csv-table-form']}>
+      <Stack direction="row" justify="right" marginTop="-25px" marginBottom="25px">
+        <select
+          value={pageSize}
+          onChange={e => {
+            setPageSize(Number(e.target.value));
+          }}
+          className={styles['show-pages-select']}
+        >
+          {[10, 20, 30, 40, 50].map(pageSizeVal => (
+            <option key={pageSizeVal} value={pageSizeVal}>
+              Show {pageSizeVal}
+            </option>
+          ))}
+        </select>
+        <Button isLoading={isLoading} type="submit" color="white" bg="#345E80">
+          Add to Map
+        </Button>
+      </Stack>
       <div className={`${styles['csv-table-container']} ${styles['scrollable-div']}`}>
         <Table className={styles['csv-table']}>
           <Thead>
@@ -108,26 +265,31 @@ const CSVViewTable = ({ rows }) => {
               <Th>Date</Th>
               <Th>Box Number</Th>
               <Th>Zip Code</Th>
+              <Th>Country</Th>
               <Th>Launched Organically</Th>
               <Th>&nbsp;</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {formDatas.map(data => {
+            {page.map((rowData, index) => {
+              prepareRow(rowData);
               return (
-                <Fragment key={data.id}>
-                  {editId === data.id ? (
+                <Fragment key={rowData.original.id}>
+                  {editId === rowData.original.id ? (
                     <EditableRow
                       editFormData={editFormData}
                       handleEditFormSubmit={handleEditFormSubmit}
-                      isError={csvErrors.includes(data.id)}
+                      isError={rowData.values.error}
+                      boxNumberMap={boxNumbers}
+                      updateBoxNumberMap={updateBoxNumberMap}
+                      lineNumber={pageIndex * 10 + index + 1}
                     />
                   ) : (
                     <ReadOnlyRow
-                      data={data}
+                      data={rowData}
                       editRow={editRow}
                       handleDeleteRow={handleDeleteRow}
-                      isError={csvErrors.includes(data.id)}
+                      isError={rowData.values.error}
                     />
                   )}
                 </Fragment>
@@ -136,17 +298,27 @@ const CSVViewTable = ({ rows }) => {
           </Tbody>
         </Table>
       </div>
-      <Stack direction="row" justify="right" marginTop="25px">
-        <Button isLoading={isLoading} type="submit" colorScheme="teal">
-          Add to Map
-        </Button>
-      </Stack>
+      <CSVViewTablePagination
+        pageLength={pageOptions.length}
+        pageIndex={pageIndex}
+        pageCount={pageCount}
+        pageSize={pageSize}
+        pageControl={{
+          setPageSize,
+          gotoPage,
+          nextPage,
+          previousPage,
+          canNextPage,
+          canPreviousPage,
+        }}
+      />
     </form>
   );
 };
 
 CSVViewTable.propTypes = {
   rows: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])).isRequired,
+  boxNumberMap: PropTypes.instanceOf(Map).isRequired,
 };
 
 export default CSVViewTable;
