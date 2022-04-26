@@ -13,9 +13,10 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import ShowToast from '../../../common/ShowToast/ShowToast';
-import { FYABackend, sendEmail } from '../../../common/utils';
-import RejectedBoxEmail from '../../Email/EmailTemplates/RejectedBoxEmail';
+import { FYABackend, sendEmail, AdminApprovalProcessEmailSubject } from '../../../common/utils';
+import AdminApprovalProcessEmail from '../../Email/EmailTemplates/AdminApprovalProcessEmail';
 import styles from './RejectBoxPopup.module.css';
+import { auth, getCurrentUser } from '../../../common/auth_utils';
 
 const RejectBoxPopup = ({
   boxHolderName,
@@ -45,12 +46,15 @@ const RejectBoxPopup = ({
   });
   const handleRejectButtonClicked = async () => {
     try {
+      const user = await getCurrentUser(auth);
+      const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
       await FYABackend.put('/boxHistory/update', {
         transactionID,
         boxID,
         approved: false,
         status: 'evaluated',
         rejectionReason,
+        admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
       });
       const requests = [
         fetchBoxes('under review', pickup),
@@ -59,7 +63,8 @@ const RejectBoxPopup = ({
         sendEmail(
           boxHolderName,
           boxHolderEmail,
-          <RejectedBoxEmail boxHolderName={boxHolderName} rejectionReason={rejectionReason} />,
+          <AdminApprovalProcessEmail type="rejected" rejectionReason={rejectionReason} />,
+          AdminApprovalProcessEmailSubject,
         ),
       ];
       await Promise.all(requests);
