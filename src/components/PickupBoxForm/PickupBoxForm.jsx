@@ -59,6 +59,7 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
   });
 
   const [files, setFiles] = useState([]);
+  const [verificationFiles, setVerificationFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const isMobile = useMobileWidth();
 
@@ -132,30 +133,55 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
               <FormErrorMessage>{errors.boxID?.message}</FormErrorMessage>
             </FormControl>
             <br />
-            <FormControl isInvalid={errors?.date}>
-              <FormLabel htmlFor="date" className={styles['required-field']}>
-                Date
+            <FormControl>
+              <FormLabel htmlFor="boxVerificationPhoto" className={styles['required-field']}>
+                Box Number Verification
               </FormLabel>
-              <Controller
-                control={control}
-                name="date"
-                // eslint-disable-next-line no-unused-vars
-                render={({ field: { onChange, value, ref } }) => (
-                  <DatePicker
-                    placeholderText="MM/DD/YYYY"
-                    className={errors?.date ? 'date-picker date-picker-error' : 'date-picker'}
-                    type="date"
-                    selected={value}
-                    onChange={onChange}
-                  />
-                )}
-              />
-              <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
+              <p className={styles['verification-sub-label']}>
+                Please upload an image with the box number
+              </p>
+              <DropZone setFiles={setVerificationFiles} />
             </FormControl>
+            <div
+              className={
+                styles[
+                  verificationFiles.length !== 0
+                    ? 'pickup-box-photo-preview-section'
+                    : 'pickup-box-photo-preview-section-hidden'
+                ]
+              }
+            >
+              <div className={styles['box-image']}>
+                {verificationFiles.length !== 0 && (
+                  <img src={URL.createObjectURL(verificationFiles[0])} alt="" />
+                )}
+              </div>
+            </div>
           </div>
         </div>
         {isMobile && <br />}
         <div className={styles['pickup-box-info-section-right']}>
+          <FormControl isInvalid={errors?.date}>
+            <FormLabel htmlFor="date" className={styles['required-field']}>
+              Date
+            </FormLabel>
+            <Controller
+              control={control}
+              name="date"
+              // eslint-disable-next-line no-unused-vars
+              render={({ field: { onChange, value, ref } }) => (
+                <DatePicker
+                  placeholderText="MM/DD/YYYY"
+                  className={errors?.date ? 'date-picker date-picker-error' : 'date-picker'}
+                  type="date"
+                  selected={value}
+                  onChange={onChange}
+                />
+              )}
+            />
+            <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
+          </FormControl>
+          <br />
           <FormControl isInvalid={errors?.zipcode || errors['']?.message.startsWith('Postal code')}>
             <FormLabel htmlFor="zipcode" className={styles['required-field']}>
               Zip Code
