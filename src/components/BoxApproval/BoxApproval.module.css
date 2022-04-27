@@ -39,19 +39,20 @@
 }
 
 .request-changes-icon {
+  width: 25px;
   float: left;
   margin-right: 4%;
   color: #dd6b20;
 }
 
 .relocate-box-icon {
-  width: 16px;
+  width: 25px;
   float: left;
   margin-right: 4%;
 }
 
 .pickup-box-icon {
-  width: 16px;
+  width: 25px;
   float: left;
   margin-right: 4%;
 }

@@ -5,8 +5,8 @@ import PickupBox from '../PickupBox/PickupBox';
 import RelocationBox from '../RelocationBox/RelocationBox';
 import styles from './BoxApproval.module.css';
 import { FYABackend } from '../../common/utils';
-import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
-import RelocateBoxIcon from '../BoxIcons/RelocateBoxIcon.svg';
+import PickupBoxIcon from '../../assets/BoxIcons/PickupBoxIcon.svg';
+import RelocateBoxIcon from '../../assets/BoxIcons/RelocateBoxIcon.svg';
 
 const BoxApproval = () => {
   // display relocation boxes under review
@@ -50,6 +50,7 @@ const BoxApproval = () => {
       boxHolderName={boxData.boxholder_name}
       boxHolderEmail={boxData.boxholder_email}
       zipCode={boxData.zip_code}
+      boxCountry={boxData.country}
       picture={boxData.picture}
       generalLocation={boxData.general_location}
       message={boxData.message}
@@ -63,6 +64,7 @@ const BoxApproval = () => {
       pickup={boxData.pickup}
       launchedOrganically={boxData.launched_organically}
       imageStatus={boxData.image_status}
+      admin={boxData.admin}
     />
   );
 
@@ -75,6 +77,7 @@ const BoxApproval = () => {
       boxHolderName={boxData.boxholder_name}
       boxHolderEmail={boxData.boxholder_email}
       zipCode={boxData.zip_code}
+      country={boxData.country}
       picture={boxData.picture}
       date={boxData.date}
       status={boxData.status}
@@ -83,11 +86,16 @@ const BoxApproval = () => {
       pickup={boxData.pickup}
       fetchBoxes={fetchBoxes}
       imageStatus={boxData.image_status}
+      admin={boxData.admin}
     />
   );
 
   // Loads all boxes under a certain status
   const loadBoxesUnderStatus = async status => {
+    if (status === 'pending changes') {
+      fetchBoxes(status, false);
+      return;
+    }
     const requests = [fetchBoxes(status, false), fetchBoxes(status, true)];
     await Promise.all(requests);
   };
@@ -138,11 +146,11 @@ const BoxApproval = () => {
           </div>
           <div className={styles['relocate-box-row']}>
             <img className={styles['relocate-box-icon']} src={RelocateBoxIcon} alt="" />
-            <p className={styles['relocate-box-text']}>Relocated</p>
+            <p className={styles['relocate-box-text']}>Launched</p>
           </div>
           <div className={styles['pickup-box-row']}>
             <img className={styles['pickup-box-icon']} src={PickupBoxIcon} alt="" />
-            <p className={styles['pickup-box-text']}>Picked Up</p>
+            <p className={styles['pickup-box-text']}>Found a Box</p>
           </div>
         </div>
       </div>

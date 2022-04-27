@@ -1,0 +1,74 @@
+.adminDashboardDiv {
+  width: 100%;
+  min-height: 100%;
+}
+
+.rejectBoxPopup {
+  float: right;
+}
+
+.admin-dashboard-container {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.admin-nav-bar {
+  height: 55px;
+}
+
+.side-bar-and-map-container {
+  padding: 0px;
+  display: flex;
+}
+
+.side-bar {
+  position: relative;
+  display: none;
+  height: calc(100vh - 55px);
+  width: 25vw;
+  z-index: 400; /* since leaflet has a high z index */
+}
+
+.side-bar.show-review,
+.show-info {
+  display: block;
+}
+
+.close-button {
+  position: absolute !important;
+  font-size: 18px;
+  color: #e53e3e;
+  right: 10px;
+  bottom: 10px;
+  z-index: 400; /* since leaflet has a high z index */
+}
+
+.map {
+  height: calc(100vh - 55px - 55px);
+  width: 100vw;
+}
+
+.map.one-bar-open {
+  width: 75vw;
+}
+
+.two-bars-open {
+  width: 50vw;
+}
+
+.review-submission-button {
+  position: absolute !important;
+  left: 10px;
+  bottom: 70px;
+  z-index: 400; /* since leaflet has a high z index */
+  visibility: visible;
+}
+
+.review-submission-button.show-review {
+  visibility: hidden;
+}
+
+.review-submission-button:hover .side-bar {
+  display: block;
+}

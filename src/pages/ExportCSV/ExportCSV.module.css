@@ -1,0 +1,40 @@
+.export-csv-wrapper {
+  margin: 1em 2em;
+}
+
+.export-csv-wrapper .export-csv-header {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.export-csv-wrapper .export-csv-header .header-text {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.export-csv-wrapper .export-csv-header .header-text {
+  gap: 1em;
+}
+
+.export-csv-wrapper .button-section {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6em;
+}
+
+.export-csv-wrapper .button-section .header-button {
+  font-size: 18px !important;
+}
+
+.export-csv-wrapper .export-csv-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}

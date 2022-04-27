@@ -1,5 +1,5 @@
 .box {
-  padding: 0px 15px 15px 15px;
+  padding: 0px 15px 0px 15px;
   margin-top: 15px;
   border-radius: 10px;
   background-color: white;
@@ -15,6 +15,19 @@
 
 .form-label {
   margin-top: 5%;
+}
+
+.status-message-approved {
+  color: #38A169;
+}
+
+.status-message-pending {
+  color: #3182CE;
+  margin-left: 19%;
+}
+
+.status-message-rejected {
+  color: #E53E3E;
 }
 
 .image-wrapper {
@@ -133,6 +146,10 @@
   margin: 15px 0px;
 }
 
+.pencil-check-icon {
+  margin-left: 2%;
+}
+
 .title {
   min-height: 50px;
   float: left;
@@ -189,8 +206,8 @@
 .box-details {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   padding: 0;
   width: 90%;
 }
@@ -224,4 +241,16 @@
 .approve-box-icon {
   color: green;
   font-size: 30px;
+}
+
+
+.review-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.edit-box-form {
+  width: 100% !important;
 }

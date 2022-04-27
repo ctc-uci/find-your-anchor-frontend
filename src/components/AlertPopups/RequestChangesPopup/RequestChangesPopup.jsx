@@ -13,8 +13,9 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import styles from './RequestChangesPopup.module.css';
-import { FYABackend, sendEmail } from '../../../common/utils';
-import PendingChangesBoxEmail from '../../Email/EmailTemplates/PendingChangesBoxEmail';
+import { FYABackend, sendEmail, AdminApprovalProcessEmailSubject } from '../../../common/utils';
+import { auth, getCurrentUser } from '../../../common/auth_utils';
+import AdminApprovalProcessEmail from '../../Email/EmailTemplates/AdminApprovalProcessEmail';
 
 const RequestChangesPopup = ({
   boxHolderName,
@@ -29,11 +30,14 @@ const RequestChangesPopup = ({
   const [changesRequested, setChangesRequested] = useState('');
 
   const handleRequestChangesClicked = async () => {
+    const user = await getCurrentUser(auth);
+    const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
     await FYABackend.put('/boxHistory/update', {
       transactionID,
       boxID,
       status: 'pending changes',
       changesRequested,
+      admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
     });
     const requests = [
       fetchBoxes('under review', false),
@@ -41,10 +45,8 @@ const RequestChangesPopup = ({
       sendEmail(
         boxHolderName,
         boxHolderEmail,
-        <PendingChangesBoxEmail
-          boxHolderName={boxHolderName}
-          changesRequested={changesRequested}
-        />,
+        <AdminApprovalProcessEmail type="changes requested" changesRequested={changesRequested} />,
+        AdminApprovalProcessEmailSubject,
       ),
     ];
     await Promise.all(requests);
