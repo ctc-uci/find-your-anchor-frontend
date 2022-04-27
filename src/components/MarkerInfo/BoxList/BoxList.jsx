@@ -4,8 +4,8 @@ import { ChakraProvider, Box, Text } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import styles from './BoxList.module.css';
 import { FYABackend } from '../../../common/utils';
-import launchBoxIcon from '../../../assets/launch-box-icon.svg';
-import foundBoxIcon from '../../../assets/found-box-icon.svg';
+import launchBoxIcon from '../../../assets/BoxIcons/RelocateBoxIcon.svg';
+import foundBoxIcon from '../../../assets/BoxIcons/PickupBoxIcon.svg';
 
 const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox, updateBoxListSwitch }) => {
   // This state contains all boxes to be shown in the right side bar
@@ -48,9 +48,7 @@ const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox, updateBoxLi
                   {box.date}
                 </div>
               </div>
-              {/* <div className={styles['right-icon']}> */}
               <ChevronRightIcon boxSize={10} />
-              {/* </div> */}
             </Box>
           ))}
       </div>

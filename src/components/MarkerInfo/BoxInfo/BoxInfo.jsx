@@ -17,8 +17,8 @@ import Xarrow, { useXarrow } from 'react-xarrows';
 import styles from './BoxInfo.module.css';
 import { FYABackend } from '../../../common/utils';
 import DeleteBoxModal from '../DeleteBoxModal/DeleteBoxModal';
-import launchBoxIcon from '../../../assets/launch-box-icon.svg';
-import foundBoxIcon from '../../../assets/found-box-icon.svg';
+import launchBoxIcon from '../../../assets/BoxIcons/RelocateBoxIcon.svg';
+import foundBoxIcon from '../../../assets/BoxIcons/PickupBoxIcon.svg';
 import MarkerHistoryElement from '../MarkerHistoryElement/MarkerHistoryElement';
 
 const BoxInfo = ({

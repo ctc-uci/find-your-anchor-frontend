@@ -76,7 +76,7 @@
 }
 
 .desktop-icon {
-  height: 20px;
+  height: 30px;
 }
 
 .mobile-delete-box-button {
@@ -104,6 +104,7 @@
 
   .mobile-icon {
     display: block;
+    height: 25px;
   }
 
   .desktop-icon {

@@ -57,7 +57,6 @@ const Dashboard = () => {
               Close
             </Button>
           </div>
-          {/* <div className={styles.test}> */}
           <div
             className={`${styles.map}
               ${showReview && !selectedZipCode ? styles['one-bar-open'] : ''}
@@ -114,7 +113,6 @@ const Dashboard = () => {
             />
           </div>
         </div>
-        {/* </div> */}
       </div>
     </ChakraProvider>
   );
