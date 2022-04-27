@@ -89,6 +89,7 @@
 
 .rejection-message {
   color: red;
+  text-align: left;
 }
 
 .approval-button,

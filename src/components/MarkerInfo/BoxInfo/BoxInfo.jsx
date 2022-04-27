@@ -196,8 +196,6 @@ const BoxInfo = ({
               >
                 Delete Box
               </Button>
-              {/* <img className={styles['mobile-delete-box-button']} src={FaTrash} alt="test" />
-               */}
               <FaTrash
                 className={styles['mobile-delete-box-button']}
                 onClick={onOpenDeleteBoxModal}
