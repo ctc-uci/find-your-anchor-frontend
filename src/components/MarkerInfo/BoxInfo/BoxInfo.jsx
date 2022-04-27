@@ -35,6 +35,7 @@ const BoxInfo = ({
   const [additionalComments, setAdditionalComments] = useState('');
   const [dropOffMethod, setDropOffMethod] = useState('');
   const [message, setMessage] = useState('');
+  const [transactionToggle, setTransactionToggle] = useState(false);
 
   const {
     isOpen: isOpenDeleteBoxModal,
@@ -57,7 +58,7 @@ const BoxInfo = ({
       const history = await FYABackend.get(`/boxHistory/history/${selectedBox}`);
       setBoxHistory(history.data);
     }
-  }, [selectedBox]);
+  }, [selectedBox, transactionToggle]);
   return (
     <ChakraProvider>
       <div className={styles['box-info']}>
@@ -151,6 +152,8 @@ const BoxInfo = ({
                 setSelectedCountry={setSelectedCountry}
                 zipCodeData={zipCodeData}
                 setZipCodeData={setZipCodeData}
+                transactionToggle={transactionToggle}
+                setTransactionToggle={setTransactionToggle}
               />
             </div>
           )}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from '@chakra-ui/react';
 import styles from './DeleteBoxModalContent.module.css';
 
-const DeleteBoxModalContent = ({ deleteBox }) => (
+const DeleteBoxModalContent = ({ deleteBox, deleteTransaction }) => (
   <div className={styles['content-wrapper']}>
     <h1 className={styles.title}>Delete Box</h1>
     <div className={styles.body}>
@@ -11,7 +11,7 @@ const DeleteBoxModalContent = ({ deleteBox }) => (
     </div>
     <div className={styles.buttons}>
       {/* TODO: DELETE LAST TRANSACTION BUTTON FUNCTIONALITY */}
-      <Button type="button" fontWeight="semibold">
+      <Button type="button" fontWeight="semibold" onClick={deleteTransaction}>
         Delete Last Transaction
       </Button>
       <Button type="button" onClick={deleteBox} colorScheme="red" fontWeight="semibold">
@@ -23,6 +23,7 @@ const DeleteBoxModalContent = ({ deleteBox }) => (
 
 DeleteBoxModalContent.propTypes = {
   deleteBox: PropTypes.func.isRequired,
+  deleteTransaction: PropTypes.func.isRequired,
 };
 
 export default DeleteBoxModalContent;
