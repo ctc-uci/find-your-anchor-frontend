@@ -26,6 +26,7 @@ const Map = ({
   updateBoxListSwitch,
   zipCodeData,
   setZipCodeData,
+  setShowReview,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [mapState, setMapState] = useState(null);
@@ -34,6 +35,8 @@ const Map = ({
   // 1. Updates the box list with the boxes located in the zip code (in PinInformation)
   // 2. Switches PinInformation to box list view
   const handleMarkerClicked = markerObject => {
+    // Close the left sidebar
+    setShowReview(false);
     setSelectedCountry(markerObject.country);
     setSelectedZipCode(markerObject.zip_code);
     // Toggle updateBoxListSwitch, which will update update the box list in the right side bar
@@ -159,30 +162,12 @@ const Map = ({
   );
 };
 
-Map.defaultProps = {
-  selectedBox: null,
-};
-
 Map.propTypes = {
   setSelectedCountry: PropTypes.func.isRequired,
   setSelectedZipCode: PropTypes.func.isRequired,
   setUpdateBoxListSwitch: PropTypes.func.isRequired,
   setSelectedBox: PropTypes.func.isRequired,
   updateBoxListSwitch: PropTypes.bool.isRequired,
-  selectedBox: PropTypes.shape({
-    box_id: PropTypes.number,
-    additional_comments: PropTypes.string,
-    country: PropTypes.string,
-    date: PropTypes.string,
-    general_location: PropTypes.string,
-    latitude: PropTypes.number,
-    longitude: PropTypes.number,
-    message: PropTypes.string,
-    launched_organically: PropTypes.bool,
-    picture: PropTypes.string,
-    show_on_map: PropTypes.bool,
-    zip_code: PropTypes.string,
-  }),
   zipCodeData: PropTypes.arrayOf(
     PropTypes.shape({
       zip_code: PropTypes.string,
@@ -193,6 +178,7 @@ Map.propTypes = {
     }),
   ).isRequired,
   setZipCodeData: PropTypes.func.isRequired,
+  setShowReview: PropTypes.func.isRequired,
 };
 
 export default Map;

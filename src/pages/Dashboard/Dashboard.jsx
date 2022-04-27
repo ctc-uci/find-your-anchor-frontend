@@ -30,6 +30,13 @@ const Dashboard = () => {
     setAdminIsLoggedIn((await getCurrentUser(auth)) !== null);
   }, []);
 
+  // This function opens the left sidebar closes the right sidebar when the review submission button is clicked
+  const handleReviewSubmissionsClicked = () => {
+    setSelectedZipCode(null);
+    setSelectedCountry(null);
+    setShowReview(true);
+  };
+
   const navigate = useNavigate();
   // A list containing all unique zip codes stored in Anchor_Box
   const [zipCodeData, setZipCodeData] = useState([]);
@@ -72,6 +79,7 @@ const Dashboard = () => {
               setUpdateBoxListSwitch={setUpdateBoxListSwitch}
               zipCodeData={zipCodeData}
               setZipCodeData={setZipCodeData}
+              setShowReview={setShowReview}
             />
           </div>
           {adminIsLoggedIn ? (
@@ -80,7 +88,7 @@ const Dashboard = () => {
               className={`${styles['review-submission-button']} ${
                 showReview ? styles['show-review'] : ''
               }`}
-              onClick={() => setShowReview(true)}
+              onClick={handleReviewSubmissionsClicked}
             >
               Review Submission
             </Button>
