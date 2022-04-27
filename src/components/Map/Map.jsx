@@ -111,18 +111,19 @@ const Map = ({
       />
       <ZoomControl position="bottomright" />
       {/* Map the marker data into <Marker /> components. These markers are grouped into MarkerClusterGroups by country */}
-      {zipcodeData &&
-        Object.values(zipcodeData).map((locations, index) => {
-          return (
-            /* eslint-disable react/no-array-index-key */
-            <MarkerClusterGroup
-              iconCreateFunction={clusterIcon}
-              key={index}
-              onClick={() => {
-                handleMarkerClusterClicked();
-              }}
-            >
-              {locations.map(markerObject => (
+      <MarkerClusterGroup
+        iconCreateFunction={clusterIcon}
+        key={1}
+        onClick={() => {
+          handleMarkerClusterClicked();
+        }}
+      >
+        {zipcodeData &&
+          Object.values(zipcodeData).map(
+            locations =>
+              /* eslint-disable react/no-array-index-key */
+              // >
+              locations.map(markerObject => (
                 <Marker
                   icon={markerIcon}
                   key={markerObject.box_id}
@@ -138,10 +139,10 @@ const Map = ({
                     {markerObject.box_count}
                   </Tooltip>
                 </Marker>
-              ))}
-            </MarkerClusterGroup>
-          );
-        })}
+              )),
+            // </MarkerClusterGroup>
+          )}
+      </MarkerClusterGroup>
       <SearchField />
     </MapContainer>
   );
