@@ -37,7 +37,7 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow, isError }) => {
           onDelete={onDelete}
         />
         <button type="button" onClick={onOpenDeleteModal}>
-          <DeleteIcon alt="Edit Icon" className={styles['delete-icon']} />
+          <DeleteIcon alt="Delete Icon" className={styles['delete-icon']} />
         </button>
         <button type="button" onClick={e => editRow(e, data, -1, true)}>
           <EditIcon alt="Edit Icon" className={styles['edit-icon']} />
