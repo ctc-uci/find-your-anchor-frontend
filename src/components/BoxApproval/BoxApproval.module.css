@@ -130,6 +130,7 @@
   }
 
   .request-changes-icon {
+    width: 16px;
     float: left;
     color: #dd6b20;
   }
@@ -145,10 +146,11 @@
   }
 
   .legend {
+    display: flex;
     background-color: #EEF6F8;
     width: 100%;
     margin-left: 0;
-    font-size: 16px;
+    font-size: 12px;
     padding: 3% 0%;
     height: 5vh;
     flex-direction: row;

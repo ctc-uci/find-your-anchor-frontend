@@ -20,6 +20,7 @@ import DeleteBoxModal from '../DeleteBoxModal/DeleteBoxModal';
 import launchBoxIcon from '../../../assets/BoxIcons/RelocateBoxIcon.svg';
 import foundBoxIcon from '../../../assets/BoxIcons/PickupBoxIcon.svg';
 import MarkerHistoryElement from '../MarkerHistoryElement/MarkerHistoryElement';
+import useMobileWidth from '../../../common/useMobileWidth';
 
 const BoxInfo = ({
   selectedBox,
@@ -32,6 +33,7 @@ const BoxInfo = ({
   zipCodeData,
   setZipCodeData,
 }) => {
+  const isMobile = useMobileWidth();
   const [date, setDate] = useState('');
   const [boxHistory, setBoxHistory] = useState([]);
   const [boxHolderName, setBoxHolderName] = useState('');
@@ -81,18 +83,22 @@ const BoxInfo = ({
             boxSize={7}
             onClick={() => setSelectedBox(null)}
           />
-          <img
-            className={styles['desktop-icon']}
-            src={pickup ? foundBoxIcon : launchBoxIcon}
-            alt="box-icon"
-          />
+          {!isMobile && (
+            <img
+              className={styles['desktop-icon']}
+              src={pickup ? foundBoxIcon : launchBoxIcon}
+              alt="box-icon"
+            />
+          )}
           <div className={styles.title}>
             <div className={styles['icon-number-wrapper']}>
-              <img
-                className={styles['mobile-icon']}
-                src={pickup ? foundBoxIcon : launchBoxIcon}
-                alt="box-icon"
-              />
+              {isMobile && (
+                <img
+                  className={styles['mobile-icon']}
+                  src={pickup ? foundBoxIcon : launchBoxIcon}
+                  alt="box-icon"
+                />
+              )}
               <p className={styles['box-number']}>Box #{selectedBox}</p>
             </div>
             <div className={styles.date}>{date}</div>
@@ -188,19 +194,22 @@ const BoxInfo = ({
           )}
           {adminIsLoggedIn && (
             <div className={styles['button-div']}>
-              <Button
-                className={styles['desktop-delete-box-button']}
-                colorScheme="red"
-                size="md"
-                onClick={onOpenDeleteBoxModal}
-              >
-                Delete Box
-              </Button>
-              <FaTrash
-                className={styles['mobile-delete-box-button']}
-                onClick={onOpenDeleteBoxModal}
-                size="50px"
-              />
+              {isMobile ? (
+                <FaTrash
+                  className={styles['mobile-delete-box-button']}
+                  onClick={onOpenDeleteBoxModal}
+                  size="50px"
+                />
+              ) : (
+                <Button
+                  // className={styles['desktop-delete-box-button']}
+                  colorScheme="red"
+                  size="md"
+                  onClick={onOpenDeleteBoxModal}
+                >
+                  Delete Box
+                </Button>
+              )}
               <DeleteBoxModal
                 isOpen={isOpenDeleteBoxModal}
                 onClose={onCloseDeleteBoxModal}
