@@ -26,9 +26,14 @@ import RelocateBoxIcon from '../../assets/BoxIcons/RelocateBoxIcon.svg';
 import PendingRelocationIcon from '../../assets/BoxIcons/PendingRelocationIcon.svg';
 import RejectedRelocationIcon from '../../assets/BoxIcons/RejectedRelocationIcon.svg';
 import ApprovedRelocationIcon from '../../assets/BoxIcons/ApprovedRelocationIcon.svg';
-import { FYABackend, getLatLong, sendEmail } from '../../common/utils';
+import {
+  FYABackend,
+  getLatLong,
+  sendEmail,
+  AdminApprovalProcessEmailSubject,
+} from '../../common/utils';
+import AdminApprovalProcessEmail from '../Email/EmailTemplates/AdminApprovalProcessEmail';
 import { auth, getCurrentUser } from '../../common/auth_utils';
-import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import styles from './RelocationBox.module.css';
@@ -191,7 +196,12 @@ const RelocationBox = ({
       fetchBoxes('under review', false),
       fetchBoxes('pending changes', false),
       fetchBoxes('evaluated', false),
-      sendEmail(formData.name, formData.email, <ApprovedBoxEmail boxHolderName={boxHolderName} />),
+      sendEmail(
+        formData.name,
+        formData.email,
+        <AdminApprovalProcessEmail type="approved" />,
+        AdminApprovalProcessEmailSubject,
+      ),
     ];
     await Promise.all(requests);
   };

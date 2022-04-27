@@ -32,11 +32,12 @@ export const formatDate = value => {
   return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
 };
 
-export const sendEmail = async (name, email, messageHtml) => {
+export const sendEmail = async (name, email, messageHtml, subject) => {
   const response = await FYABackend.post('/nodemailer/send', {
     name,
     email,
     messageHtml: renderEmail(messageHtml),
+    subject,
   });
   if (response.status === 200) {
     alert('Email sent, awesome!');
@@ -55,3 +56,13 @@ export const getLatLong = async (zipCode, country) => {
   }
   return [];
 };
+
+export const BoxApprovedEmailPicture = `https://${process.env.REACT_APP_S3_URL}/BoxApprovedEmailPicture.png`;
+
+export const BoxRejectedEmailPicture = `https://${process.env.REACT_APP_S3_URL}/BoxRejectedEmailPicture.png`;
+
+export const ChangesRequestedEmailPicture = `https://${process.env.REACT_APP_S3_URL}/ChangesRequestedEmailPicture.png`;
+
+export const FYATextLogo = `https://${process.env.REACT_APP_S3_URL}/fya-text-logo.png`;
+
+export const AdminApprovalProcessEmailSubject = 'Find Your Anchor Launch Map - Update';

@@ -52,7 +52,7 @@
 }
 
 .map {
-  height: calc(100vh - 55px);
+  height: calc(100vh - 55px - 55px);
   width: 100vw;
 }
 
@@ -66,8 +66,8 @@
 
 .review-submission-button {
   position: absolute !important;
-  left: 15px;
-  bottom: 15px;
+  left: 10px;
+  bottom: 70px;
   z-index: 400; /* since leaflet has a high z index */
   visibility: visible;
 }
