@@ -25,10 +25,10 @@ const ModalStepOne = ({ incrementStep, closeModal, cookies }) => {
         Are you sure you want to logout?
       </Text>
       <ButtonGroup size="lg" className={styles['step-button-group']}>
-        <Button onClick={closeModal} color="white" bg="#173848">
+        <Button onClick={closeModal} color="#2D3748" bg="#E2E8F0">
           Cancel
         </Button>
-        <Button onClick={handleLogout} color="white" bg="#4D93B7">
+        <Button onClick={handleLogout} color="white" bg="#345E80">
           Logout
         </Button>
       </ButtonGroup>

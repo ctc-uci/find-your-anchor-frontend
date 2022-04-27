@@ -30,11 +30,11 @@ const ModalStepOne = ({ incrementStep, closeModal, cookies }) => {
         Are you sure you want to delete this account?
       </Text>
       <ButtonGroup size="lg" className={styles['step-button-group']}>
-        <Button onClick={closeModal} color="white" bg="#173848">
+        <Button onClick={closeModal} color="#2D3748" bg="#E2E8F0">
           Cancel
         </Button>
-        <Button onClick={handleDelete} color="white" bg="#4D93B7">
-          Confirm
+        <Button onClick={handleDelete} color="white" bg="#E53E3E">
+          Delete Account
         </Button>
       </ButtonGroup>
     </div>
@@ -46,10 +46,10 @@ const ModalStepTwo = () => {
   return (
     <div className={styles['step-content']}>
       <Text fontSize="2xl" fontWeight="bold" className={styles['step-text']}>
-        Account has been successfully deleted!
+        Account Successfully Deleted
       </Text>
-      <Button onClick={() => navigate('/login')} size="lg" color="white" bg="#173848">
-        Return to Login page
+      <Button onClick={() => navigate('/login')} size="lg" color="white" bg="#345E80">
+        Login
       </Button>
     </div>
   );

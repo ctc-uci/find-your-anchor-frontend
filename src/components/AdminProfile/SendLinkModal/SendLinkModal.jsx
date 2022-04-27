@@ -15,6 +15,7 @@ import Checkmark from '../../../assets/Check.png';
 import styles from './SendLinkModal.module.css';
 import { sendInviteLink } from '../../../common/auth_utils';
 import { FYABackend } from '../../../common/utils';
+import SendRegistrationLinkIcon from '../../../assets/send-registration-link-icon.svg';
 
 const ModalOne = ({ count, setCount }) => {
   const [email, setEmail] = useState('');
@@ -38,18 +39,24 @@ const ModalOne = ({ count, setCount }) => {
 
   return (
     <div className={styles['modal-content']}>
-      <Text fontSize="xl" fontWeight="bold" style={{ alignSelf: 'flex-start' }}>
-        Send registration link via email:
+      <Text fontSize="2xl" fontWeight="bold">
+        Send Registration Link
       </Text>
-      <Input
-        placeholder="e.g.: name@findyouranchor.us"
-        value={email}
-        size="lg"
-        color="#7D7D7D"
-        bg="#F6F6F6"
-        className={styles['modal-one-input']}
-        onChange={e => setEmail(e.target.value)}
-      />
+      <Text fontSize="lg">
+        Enter the recipient&apos;s email address and we&apos;ll send them a link to register
+      </Text>
+      <div className={styles['input-wrapper']}>
+        <Text>Recipient Email Address</Text>
+        <Input
+          placeholder="name@findyouranchor.us"
+          value={email}
+          size="lg"
+          color="#7D7D7D"
+          bg="#F6F6F6"
+          className={styles['modal-one-input']}
+          onChange={e => setEmail(e.target.value)}
+        />
+      </div>
       <p className={styles['error-message']}>{errorMessage}</p>
       <Button
         onClick={handleSendLink}
@@ -98,7 +105,8 @@ const SendLinkModal = ({ isOpen, onClose }) => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <div>
+            <div className={styles['send-link-modal-content']}>
+              <img src={SendRegistrationLinkIcon} className={styles['email-icon']} alt="Logo" />
               <SendLinkModalContent />
             </div>
           </ModalBody>

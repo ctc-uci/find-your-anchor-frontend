@@ -25,10 +25,11 @@
 
 .logout-modal-content .step-text {
   text-align: center;
-  margin: 0px 60px 40px;
+  margin-bottom: 40px;
 }
 
-.logout-modal-content .step-button-group {
+.logout-modal-content,
+.step-button-group {
   width: 100%;
   display: flex;
   justify-content: space-between;

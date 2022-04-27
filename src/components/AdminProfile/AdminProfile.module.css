@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 30em;
+  width: min(768px, 100%);
   margin: 0 auto;
 }
 
@@ -20,10 +20,12 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin: 2vh 0;
+  margin: 3vh 0;
   padding: 2.75em;
   border: 2px solid #e2e8f0;
+  background-color: white;
   border-radius: 22px;
+  z-index: 100;
 }
 
 .logo-wrapper {
@@ -41,6 +43,7 @@
   margin-top: 2.2vh;
   font-size: 18px;
   font-weight: bold;
+  z-index: 100;
 }
 
 .editable-input {
@@ -54,4 +57,25 @@
   display: flex;
   justify-content: flex-end;
   gap: 2em;
+  z-index: 100;
+}
+.flex-wrapper {
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.background-image {
+  background: linear-gradient(rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.65)),
+    url('../../assets/profile-background.jpg');
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  filter: blur(4px);
+  width: 100%;
+  height: 100%;
 }
