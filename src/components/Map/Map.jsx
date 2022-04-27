@@ -57,7 +57,7 @@ const Map = ({
     const map = useMap();
     const searchControl = new GeoSearchControl({
       provider: new OpenStreetMapProvider(),
-      searchLabel: 'Search by location',
+      searchLabel: 'Search city or zipcode',
       showMarker: false,
       showPopup: false,
     });
@@ -73,7 +73,7 @@ const Map = ({
     const map = useMap();
     const searchControl = new GeoSearchControl({
       provider: new BoxProvider(),
-      searchLabel: 'Search by box number',
+      searchLabel: 'Search box number',
       showMarker: false,
       showPopup: false,
       updateMap: false,
