@@ -14,10 +14,10 @@ const AboutPage = () => {
       <div className={styles['about-page']}>
         <div className={styles['welcome-section']}>
           <div>
-            <Heading className={styles['about-heading']}>
+            <Text className={styles['about-heading']} textStyle="header-1">
               Welcome to the
               <br className={styles['mobile-line-break']} /> Find Your Anchor Launch Map
-            </Heading>
+            </Text>
             <Text className={styles['about-text']}>
               We&apos;re so glad you&apos;re here! If you are here, you know our little blue boxes
               exist!
