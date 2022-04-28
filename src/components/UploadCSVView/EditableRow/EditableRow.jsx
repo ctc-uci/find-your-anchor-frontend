@@ -67,6 +67,7 @@ const EditableRow = ({
   // useRef is similar to useState, but allows us change
   // values without having to re-render the component.
   const boxNumRef = useRef(null);
+  const isFirstRender = useRef(true);
 
   const handleEditFormSubmitError = () => {
     // Revert update to box map if new box number causes error
@@ -76,12 +77,18 @@ const EditableRow = ({
   const onSave = () => {
     boxNumRef.current = Number(getValues('boxNumber'));
     updateBoxNumberMap(editFormData.boxNumber, lineNumber, boxNumRef.current);
-    handleSubmit(handleEditFormSubmit, handleEditFormSubmitError)();
+    if (isFirstRender.current) {
+      // this ensures that we are just validating the inputs and not actually editing the form
+      handleSubmit(() => null, handleEditFormSubmitError)();
+    } else {
+      handleSubmit(handleEditFormSubmit, handleEditFormSubmitError)();
+    }
   };
 
   // validate inputs when EditableRow first renders
   useEffect(() => {
     onSave();
+    isFirstRender.current = false;
   }, []);
 
   const tooltipMobileProp = {};
