@@ -50,6 +50,10 @@ const PickupBox = ({
   const approvePickupBox = async id => {
     const user = await getCurrentUser(auth);
     const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
+
+    // Retrieve date of most recent transaction.
+    const transaction = await FYABackend.get(`/boxHistory/mostRecentTransaction/${boxID}`);
+
     await FYABackend.put('/boxHistory/update', {
       transactionID: id,
       boxID,
@@ -57,18 +61,21 @@ const PickupBox = ({
       approved: true,
       admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
     });
+    if (Date.parse(transaction.data[0].mostrecentdate) <= Date.parse(date)) {
+      // TODO: REPLACE US WITH COUNTRY INPUT
+      let coordinates = await getLatLong(zipCode, country || 'US');
+      if (coordinates.length !== 2) {
+        coordinates = [0, 0];
+      }
 
-    // TODO: REPLACE US WITH COUNTRY INPUT
-    let coordinates = await getLatLong(zipCode, country || 'US');
-    if (coordinates.length !== 2) {
-      coordinates = [0, 0];
+      await FYABackend.put('/boxHistory/approveBox', {
+        transactionID,
+        latitude: coordinates[0],
+        longitude: coordinates[1],
+      });
+    } else {
+      await FYABackend.put('/boxHistory/approveBox', { transactionID, isMostRecentDate: false });
     }
-
-    await FYABackend.put('/boxHistory/approveBox', {
-      transactionID,
-      latitude: coordinates[0],
-      longitude: coordinates[1],
-    });
     const requests = [
       fetchBoxes('under review', true),
       sendEmail(boxHolderName, boxHolderEmail, <AdminApprovalProcessEmail type="approved" />),
