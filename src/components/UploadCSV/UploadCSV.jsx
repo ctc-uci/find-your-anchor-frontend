@@ -134,7 +134,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
       formDatas.forEach((formData, index) => {
         if (allCoordinates[index].length === 0) {
           // if lat/long is not found for this zipcode
-          alert('Cannot find latitude/longitude for zipcode. Please click Edit/View file');
+          alert('Cannot find latitude/longitude for zipcode. Please click View file');
           hasError = true;
           setIsLoading(false);
           // editRow(e, formData);
@@ -164,7 +164,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
         //   }
         // ]
         setIsLoading(false);
-        navigate('/admin');
+        navigate('/');
       }
     } catch (err) {
       console.log(err);
@@ -198,7 +198,6 @@ const UploadCSV = ({ isOpen, onClose }) => {
           if (uploadErrors.length === 0) {
             return (
               <SuccessModalContent
-                CSVFileName={CSVFilename}
                 setIsUploadingNewFile={setIsUploadingNewFile}
                 onEditViewFile={onEditViewFile}
               />

@@ -23,7 +23,7 @@ const CommonModal = ({
     <ChakraProvider>
       <Modal isOpen={isOpen} onClose={onClose} isCentered closeOnOverlayClick={closeOnOverlayClick}>
         <ModalOverlay />
-        <ModalContent minHeight={height} minWidth={width}>
+        <ModalContent minHeight={height} minWidth={width} borderRadius={20}>
           {showCloseButton && <ModalCloseButton />}
           <ModalBody className={modalClassName}>{children}</ModalBody>
         </ModalContent>

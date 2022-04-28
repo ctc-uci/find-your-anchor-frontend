@@ -40,7 +40,7 @@ const ErrorModalContent = ({
             Upload New File
           </Button>
           <Button size="md" color="white" bg="#345E80" onClick={viewFile}>
-            Edit/View File
+            View File
           </Button>
         </ButtonGroup>
       </div>
@@ -48,7 +48,7 @@ const ErrorModalContent = ({
   }
 
   return (
-    <Flex flexDirection="column" gap="8px">
+    <Flex flexDirection="column" gap="8px" mt={3}>
       <Flex alignItems="center" gap="10px">
         <WarningIcon alt="Warning Icon" boxSize="20px" color="red" />
         <Text className={styles['error-modal-text']}>Oops!</Text>
@@ -62,7 +62,7 @@ const ErrorModalContent = ({
       <Spacer />
       <Flex justifyContent="flex-end">
         <Button size="md" color="white" bg="#345E80" onClick={viewFile}>
-          Edit/View File
+          View File
         </Button>
       </Flex>
     </Flex>
