@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { ChakraProvider, Button, useDisclosure } from '@chakra-ui/react';
 import UploadCSV from '../UploadCSV/UploadCSV';
 
@@ -10,14 +10,26 @@ import FYALogo from '../../assets/fya-logo.png';
 import { FYABackend } from '../../common/utils';
 import { getCurrentUser, auth } from '../../common/auth_utils';
 
+import useMobileWidth from '../../common/useMobileWidth';
+
 const NavBar = ({ isAdmin }) => {
+  const isMobile = useMobileWidth();
   const [initials, setInitials] = useState('');
+  const navigate = useNavigate();
 
   const {
     isOpen: isUploadCSVOpenModal,
     onOpen: onUploadCSVOpenModal,
     onClose: onCloseUploadCSVOpenModal,
   } = useDisclosure();
+
+  const onCSVUpload = () => {
+    if (!isMobile) {
+      onUploadCSVOpenModal();
+    } else {
+      navigate('/upload-csv');
+    }
+  };
 
   const getUserInitials = async () => {
     const user = await getCurrentUser(auth);
@@ -45,7 +57,7 @@ const NavBar = ({ isAdmin }) => {
       >
         Add Box
       </NavLink>
-      <Button variant="unstyled" onClick={onUploadCSVOpenModal} className={styles['upload-button']}>
+      <Button variant="unstyled" onClick={onCSVUpload} className={styles['upload-button']}>
         Upload CSV
         <UploadCSV isOpen={isUploadCSVOpenModal} onClose={onCloseUploadCSVOpenModal} />
       </Button>

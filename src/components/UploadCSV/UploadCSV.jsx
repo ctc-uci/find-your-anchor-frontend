@@ -181,6 +181,10 @@ const UploadCSV = ({ isOpen, onClose }) => {
     commonModalProps.width = isUploadingNewFile ? '100%' : '300px';
   }
 
+  if (isMobile && isUploadingNewFile && isOpen) {
+    return <UploadModalContent setCSVFile={setCSVFile} onUpload={onUpload} />;
+  }
+
   return (
     <CommonModal {...commonModalProps}>
       <form onSubmit={addToMap}>
@@ -214,9 +218,14 @@ const UploadCSV = ({ isOpen, onClose }) => {
   );
 };
 
+UploadCSV.defaultProps = {
+  isOpen: true,
+  onClose: () => {},
+};
+
 UploadCSV.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func,
 };
 
 export default UploadCSV;
