@@ -247,7 +247,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
         if (!hasError) {
           await FYABackend.post('/anchorBox/boxes', formDatas);
           setIsLoading(false);
-          navigate('/admin');
+          navigate('/');
         }
       } catch (err) {
         console.log(err);

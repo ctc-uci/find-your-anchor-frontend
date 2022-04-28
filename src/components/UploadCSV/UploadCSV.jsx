@@ -164,7 +164,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
         //   }
         // ]
         setIsLoading(false);
-        navigate('/admin');
+        navigate('/');
       }
     } catch (err) {
       console.log(err);
