@@ -83,13 +83,13 @@ const DeleteBoxModal = ({
   const deleteTransaction = async () => {
     try {
       // Get the most recent transaction for the selected box
-      // const mostRecentTransaction = await FYABackend.get(
-      //   `/boxHistory/mostRecentTransaction/${selectedBox}`,
-      // );
+      const mostRecentTransaction = await FYABackend.get(
+        `/boxHistory/mostRecentTransaction/${selectedBox}`,
+      );
       // Delete the most recent transaction for the selected box
-      // await FYABackend.delete(
-      //   `/boxHistory/transaction/${mostRecentTransaction.data[0].transaction_id}`,
-      // );
+      await FYABackend.delete(
+        `/boxHistory/transaction/${mostRecentTransaction.data[0].transaction_id}`,
+      );
       // Get the 2nd most recent transaction for the selected box
       const nextMostRecentTransaction = await FYABackend.get(
         `/boxHistory/mostRecentTransaction/${selectedBox}`,
@@ -105,11 +105,9 @@ const DeleteBoxModal = ({
         });
         // Update boxInfo to get rid of last transaction
         setTransactionToggle(!transactionToggle);
+        // Having no 2nd most recent transaction is equivalent to deleting the box
       } else {
-        // Close the right sidebar
-        setSelectedZipCode(null);
-        setSelectedCountry(null);
-        setSelectedBox(null);
+        deleteBox();
       }
       closeModal();
     } catch (err) {
