@@ -51,8 +51,8 @@ function CSVDropZone({ setFile }) {
           <input {...getInputProps()} />
           <div className={styles['upload-icon']} />
           <img src={DropZoneIcon} alt="Icon" className={styles['dropzone-icon']} />
-          <div>
-            <span className={styles['dropzone-text']}>Click or drag to upload CSV file</span>
+          <div className={styles['dropzone-text']}>
+            <span>Click or drag to upload CSV file</span>
           </div>
         </div>
       ) : (

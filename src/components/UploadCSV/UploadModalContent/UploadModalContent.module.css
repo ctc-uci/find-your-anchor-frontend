@@ -8,9 +8,10 @@
 
 .upload-modal-title {
   color: black;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 2rem;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .upload-modal-button {
