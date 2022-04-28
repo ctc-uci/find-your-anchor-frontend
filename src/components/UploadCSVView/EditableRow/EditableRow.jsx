@@ -70,11 +70,12 @@ const EditableRow = ({
   // validate inputs when EditableRow first renders
   useEffect(() => {
     onSave();
+    console.log('editable row mounted');
   }, []);
 
   const datePickerForm = () => {
     return (
-      <FormControl isReadOnly={isReadOnly} isInvalid={errors?.date}>
+      <FormControl isInvalid={errors?.date}>
         {isMobile && <FormLabel>Date</FormLabel>}
         <InputGroup>
           <Controller
@@ -94,6 +95,7 @@ const EditableRow = ({
                   type="date"
                   selected={Number.isNaN(Date.parse(date)) ? undefined : date}
                   onChange={onChange}
+                  readOnly={isReadOnly}
                 />
               );
             }}
@@ -200,7 +202,13 @@ const EditableRow = ({
       {zipCodeForm()}
       {countryForm()}
 
-      <FormControl display="flex" gap="10px" justify="flex-start" alignItems="baseline">
+      <FormControl
+        isReadOnly={isReadOnly}
+        display="flex"
+        gap="10px"
+        justify="flex-start"
+        alignItems="baseline"
+      >
         <Checkbox name="launchedOrganically" {...register('launchedOrganically')} />
         <FormLabel>Launched Organically?</FormLabel>
       </FormControl>

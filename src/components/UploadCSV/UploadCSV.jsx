@@ -10,6 +10,7 @@ import UploadModalContent from './UploadModalContent/UploadModalContent';
 import SuccessModalContent from './SuccessModalContent/SuccessModalContent';
 import ErrorModalContent from './ErrorModalContent/ErrorModalContent';
 import CommonModal from '../../common/CommonModal/CommonModal';
+// import useMobileWidth from '../../common/useMobileWidth';
 
 import BoxSchema from './UploadCSVUtils';
 import styles from './UploadCSV.module.css';
@@ -24,6 +25,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const [uploadErrors, setUploadErrors] = useState([]);
   const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  // const isMobile = useMobileWidth();
 
   useEffect(() => {
     if (isUploadingNewFile) {
@@ -168,6 +170,10 @@ const UploadCSV = ({ isOpen, onClose }) => {
       console.log(err);
     }
   };
+
+  // if (isMobile && isUploadingNewFile) {
+  //   return <UploadModalContent setCSVFile={setCSVFile} onUpload={onUpload} />;
+  // }
 
   return (
     <CommonModal isOpen={isOpen} onClose={onCloseModal} className={styles['common-modal']}>
