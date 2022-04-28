@@ -16,3 +16,17 @@
 .upload-modal-button {
   margin-top: 20px;
 }
+
+@media screen and (max-width: 768px) {
+  .upload-modal-content {
+    height: 600px;
+  }
+
+  .upload-modal-title {
+    margin-top: 30px;
+  }
+
+  .upload-modal-button {
+    padding: 10px;
+  }
+}

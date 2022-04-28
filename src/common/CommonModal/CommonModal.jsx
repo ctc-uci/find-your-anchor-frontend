@@ -8,7 +8,6 @@ import {
   ChakraProvider,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import useMobileWidth from '../useMobileWidth';
 
 const CommonModal = ({
   isOpen,
@@ -20,21 +19,11 @@ const CommonModal = ({
   width,
   height,
 }) => {
-  const isMobile = useMobileWidth();
-  const modalContentProps = {};
-  if (!isMobile) {
-    modalContentProps.minHeight = height;
-    modalContentProps.minWidth = width;
-  } else {
-    modalContentProps.height = '200px';
-    modalContentProps.width = '300px';
-  }
-
   return (
     <ChakraProvider>
       <Modal isOpen={isOpen} onClose={onClose} isCentered closeOnOverlayClick={closeOnOverlayClick}>
         <ModalOverlay />
-        <ModalContent {...modalContentProps}>
+        <ModalContent minHeight={height} minWidth={width}>
           {showCloseButton && <ModalCloseButton />}
           <ModalBody className={modalClassName}>{children}</ModalBody>
         </ModalContent>

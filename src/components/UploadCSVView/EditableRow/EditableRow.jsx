@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
+  useDisclosure,
   Input,
   InputGroup,
   InputRightElement,
@@ -12,11 +13,12 @@ import {
   Td,
   Flex,
 } from '@chakra-ui/react';
-import { WarningIcon, CheckIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { WarningIcon, CheckIcon, DeleteIcon } from '@chakra-ui/icons';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import DatePicker from 'react-datepicker';
 import BoxSchema from '../../UploadCSV/UploadCSVUtils';
+import DeleteBoxModal from '../DeleteBoxModal/DeleteBoxModal';
 import styles from './EditableRow.module.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import useMobileWidth from '../../../common/useMobileWidth';
@@ -28,10 +30,10 @@ const EditableRow = ({
   boxNumberMap,
   updateBoxNumberMap,
   lineNumber,
-  isReadOnly = false,
-  editRow = null,
-  readData = null,
+  handleDeleteRow,
 }) => {
+  const isMobile = useMobileWidth();
+
   const {
     register,
     control,
@@ -50,7 +52,17 @@ const EditableRow = ({
     },
     delayError: 750,
   });
-  const isMobile = useMobileWidth();
+
+  const {
+    isOpen: isOpenDeleteModal,
+    onOpen: onOpenDeleteModal,
+    onClose: onCloseDeleteModal,
+  } = useDisclosure();
+
+  const onDelete = () => {
+    handleDeleteRow(editFormData.id);
+    onCloseDeleteModal();
+  };
 
   // useRef is similar to useState, but allows us change
   // values without having to re-render the component.
@@ -70,8 +82,12 @@ const EditableRow = ({
   // validate inputs when EditableRow first renders
   useEffect(() => {
     onSave();
-    console.log('editable row mounted');
   }, []);
+
+  const tooltipMobileProp = {};
+  if (isMobile) {
+    tooltipMobileProp.isOpen = true;
+  }
 
   const datePickerForm = () => {
     return (
@@ -95,13 +111,12 @@ const EditableRow = ({
                   type="date"
                   selected={Number.isNaN(Date.parse(date)) ? undefined : date}
                   onChange={onChange}
-                  readOnly={isReadOnly}
                 />
               );
             }}
           />
           {errors?.date && (
-            <Tooltip hasArrow label={errors.date?.message} bg="red.600">
+            <Tooltip hasArrow label={errors.date?.message} bg="red.600" {...tooltipMobileProp}>
               <InputRightElement className={styles['input-right-warning']}>
                 <WarningIcon />
               </InputRightElement>
@@ -114,12 +129,12 @@ const EditableRow = ({
 
   const boxNumberForm = () => {
     return (
-      <FormControl isReadOnly={isReadOnly} isInvalid={errors?.boxNumber}>
+      <FormControl isInvalid={errors?.boxNumber}>
         {isMobile && <FormLabel>Box Number</FormLabel>}
         <InputGroup>
           <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
           {errors?.boxNumber && (
-            <Tooltip hasArrow label={errors.boxNumber?.message} bg="red.600">
+            <Tooltip hasArrow label={errors.boxNumber?.message} bg="red.600" {...tooltipMobileProp}>
               <InputRightElement className={styles['input-right-warning']}>
                 <WarningIcon />
               </InputRightElement>
@@ -133,12 +148,12 @@ const EditableRow = ({
 
   const zipCodeForm = () => {
     return (
-      <FormControl isReadOnly={isReadOnly} isInvalid={errors?.zipCode}>
+      <FormControl isInvalid={errors?.zipCode}>
         {isMobile && <FormLabel>Zip Code</FormLabel>}
         <InputGroup>
           <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
           {errors?.zipCode && (
-            <Tooltip hasArrow label={errors.zipCode?.message} bg="red.600">
+            <Tooltip hasArrow label={errors.zipCode?.message} bg="red.600" {...tooltipMobileProp}>
               <InputRightElement className={styles['input-right-warning']}>
                 <WarningIcon />
               </InputRightElement>
@@ -152,12 +167,12 @@ const EditableRow = ({
 
   const countryForm = () => {
     return (
-      <FormControl isReadOnly={isReadOnly} isInvalid={errors['']?.message}>
+      <FormControl isInvalid={errors['']?.message}>
         {isMobile && <FormLabel>Country</FormLabel>}
         <InputGroup>
           <Input id="country" placeholder="e.g. 90210" name="country" {...register('country')} />
           {errors['']?.message && (
-            <Tooltip hasArrow label={errors['']?.message} bg="red.600">
+            <Tooltip hasArrow label={errors['']?.message} bg="red.600" {...tooltipMobileProp}>
               <InputRightElement className={styles['input-right-warning']}>
                 <WarningIcon />
               </InputRightElement>
@@ -187,8 +202,16 @@ const EditableRow = ({
           />
         </Td>
         <Td>
+          <DeleteBoxModal
+            isOpen={isOpenDeleteModal}
+            onClose={onCloseDeleteModal}
+            onDelete={onDelete}
+          />
           <button type="button" onClick={onSave}>
             <CheckIcon alt="Check Icon" className={styles['check-icon']} />
+          </button>
+          <button type="button" onClick={onOpenDeleteModal}>
+            <DeleteIcon alt="Delete Icon" className={styles['delete-icon']} />
           </button>
         </Td>
       </Tr>
@@ -202,28 +225,21 @@ const EditableRow = ({
       {zipCodeForm()}
       {countryForm()}
 
-      <FormControl
-        isReadOnly={isReadOnly}
-        display="flex"
-        gap="10px"
-        justify="flex-start"
-        alignItems="baseline"
-      >
+      <FormControl display="flex" gap="10px" justify="flex-start" alignItems="baseline">
         <Checkbox name="launchedOrganically" {...register('launchedOrganically')} />
         <FormLabel>Launched Organically?</FormLabel>
       </FormControl>
 
       <Flex justifyContent="flex-end" gap="30px">
-        {isReadOnly ? (
-          <button type="button" onClick={e => editRow(e, readData, -1, true)}>
-            <EditIcon w={6} h={6} alt="Edit Icon" />
-          </button>
-        ) : (
-          <button type="button" onClick={onSave}>
-            <CheckIcon color="#38A169" w={6} h={6} alt="Check Icon" />
-          </button>
-        )}
-        <button type="button">
+        <DeleteBoxModal
+          isOpen={isOpenDeleteModal}
+          onClose={onCloseDeleteModal}
+          onDelete={onDelete}
+        />
+        <button type="button" onClick={onSave}>
+          <CheckIcon color="#38A169" w={6} h={6} alt="Check Icon" />
+        </button>
+        <button type="button" onClick={onOpenDeleteModal}>
           <DeleteIcon color="#E53E3E" w={6} h={6} alt="Delete Icon" />
         </button>
       </Flex>
@@ -245,27 +261,7 @@ EditableRow.propTypes = {
   boxNumberMap: PropTypes.instanceOf(Map).isRequired,
   updateBoxNumberMap: PropTypes.func.isRequired,
   lineNumber: PropTypes.number.isRequired,
-  isReadOnly: PropTypes.bool.isRequired,
-  editRow: PropTypes.func.isRequired,
-  readData: PropTypes.shape({
-    id: PropTypes.number,
-    values: PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      date: PropTypes.string,
-      boxNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      zipCode: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      country: PropTypes.string,
-      launchedOrganically: PropTypes.bool,
-    }),
-    original: PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      date: PropTypes.string,
-      boxNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      zipCode: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      country: PropTypes.string,
-      launchedOrganically: PropTypes.bool,
-    }),
-  }).isRequired,
+  handleDeleteRow: PropTypes.func.isRequired,
 };
 
 export default EditableRow;

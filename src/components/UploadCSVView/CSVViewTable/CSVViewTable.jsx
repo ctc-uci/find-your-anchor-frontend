@@ -309,6 +309,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
                         boxNumberMap={boxNumbers}
                         updateBoxNumberMap={updateBoxNumberMap}
                         lineNumber={pageIndex * 10 + index + 1}
+                        handleDeleteRow={handleDeleteRow}
                       />
                     ) : (
                       <ReadOnlyRow
@@ -340,9 +341,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
                         <AccordionButton
                           _expanded={{ bg: 'white' }}
                           onClick={() => {
-                            if (isExpanded) {
-                              setEditId(null);
-                            }
+                            setEditId(null);
                           }}
                         >
                           <Box flex="1" textAlign="left" fontWeight="bold">
@@ -352,19 +351,24 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
                         </AccordionButton>
                       </h2>
                       <AccordionPanel pb={4}>
-                        <EditableRow
-                          editFormData={
-                            editId === rowData.original.id ? editFormData : rowData.values
-                          }
-                          handleEditFormSubmit={handleEditFormSubmit}
-                          isError={rowData.values.error}
-                          boxNumberMap={boxNumbers}
-                          updateBoxNumberMap={updateBoxNumberMap}
-                          lineNumber={pageIndex * 10 + index + 1}
-                          isReadOnly={editId !== rowData.original.id}
-                          editRow={editRow}
-                          readData={rowData}
-                        />
+                        {editId === rowData.original.id ? (
+                          <EditableRow
+                            editFormData={editFormData}
+                            handleEditFormSubmit={handleEditFormSubmit}
+                            isError={rowData.values.error}
+                            boxNumberMap={boxNumbers}
+                            updateBoxNumberMap={updateBoxNumberMap}
+                            lineNumber={pageIndex * 10 + index + 1}
+                            handleDeleteRow={handleDeleteRow}
+                          />
+                        ) : (
+                          <ReadOnlyRow
+                            data={rowData}
+                            editRow={editRow}
+                            handleDeleteRow={handleDeleteRow}
+                            isError={rowData.values.error}
+                          />
+                        )}
                       </AccordionPanel>
                     </>
                   )}

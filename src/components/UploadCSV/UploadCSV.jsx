@@ -10,7 +10,7 @@ import UploadModalContent from './UploadModalContent/UploadModalContent';
 import SuccessModalContent from './SuccessModalContent/SuccessModalContent';
 import ErrorModalContent from './ErrorModalContent/ErrorModalContent';
 import CommonModal from '../../common/CommonModal/CommonModal';
-// import useMobileWidth from '../../common/useMobileWidth';
+import useMobileWidth from '../../common/useMobileWidth';
 
 import BoxSchema from './UploadCSVUtils';
 import styles from './UploadCSV.module.css';
@@ -25,7 +25,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const [uploadErrors, setUploadErrors] = useState([]);
   const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  // const isMobile = useMobileWidth();
+  const isMobile = useMobileWidth();
 
   useEffect(() => {
     if (isUploadingNewFile) {
@@ -171,12 +171,18 @@ const UploadCSV = ({ isOpen, onClose }) => {
     }
   };
 
-  // if (isMobile && isUploadingNewFile) {
-  //   return <UploadModalContent setCSVFile={setCSVFile} onUpload={onUpload} />;
-  // }
+  const commonModalProps = {
+    isOpen,
+    onClose: onCloseModal,
+    className: styles['common-modal'],
+  };
+  if (isMobile) {
+    commonModalProps.height = isUploadingNewFile ? '100%' : '200px';
+    commonModalProps.width = isUploadingNewFile ? '100%' : '300px';
+  }
 
   return (
-    <CommonModal isOpen={isOpen} onClose={onCloseModal} className={styles['common-modal']}>
+    <CommonModal {...commonModalProps}>
       <form onSubmit={addToMap}>
         {(() => {
           if (isLoading) {
