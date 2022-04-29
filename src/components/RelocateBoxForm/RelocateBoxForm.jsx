@@ -58,6 +58,7 @@ const schema = yup
       .required('Invalid drop off method, please enter a valid drop off method'),
     message: yup.string().typeError('Invalid message, please enter a valid message'),
     picture: yup.string().url(),
+    verificationPicture: yup.string().url(),
   })
   .isZipInCountry()
   .required();
@@ -74,6 +75,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
   });
 
   const [files, setFiles] = useState([]);
+  const [verificationFiles, setVerificationFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const countryOptions = useMemo(() => countryList().getData(), []);
   const isMobile = useMobileWidth();
@@ -82,6 +84,16 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
     const formData = data;
     formData.date = formatDate(data.date);
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
+
+    // This must be a toast error because yup validation does not check the uploaded files.
+    if (verificationFiles.length === 0) {
+      // TODO: Replace with toast component.
+      alert('Please submit a Box Number Verification Photo');
+      return;
+    }
+    formData.verificationPicture =
+      verificationFiles.length > 0 ? await uploadBoxPhoto(verificationFiles[0]) : '';
+
     formData.country = formData.country.value;
 
     const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
@@ -147,6 +159,31 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
               <FormErrorMessage>{errors.boxID?.message}</FormErrorMessage>
             </FormControl>
             <br />
+            <FormControl>
+              <FormLabel htmlFor="boxVerificationPhoto" className={styles['required-field']}>
+                Box Number Verification
+              </FormLabel>
+              <p className={styles['verification-sub-label']}>
+                Please upload an image with the box number
+              </p>
+              <DropZone setFiles={setVerificationFiles} />
+            </FormControl>
+            <div
+              className={
+                styles[
+                  verificationFiles.length !== 0
+                    ? 'relocate-box-photo-preview-section'
+                    : 'relocate-box-photo-preview-section-hidden'
+                ]
+              }
+            >
+              <div className={styles['box-image']}>
+                {verificationFiles.length !== 0 && (
+                  <img src={URL.createObjectURL(verificationFiles[0])} alt="" />
+                )}
+              </div>
+            </div>
+            <br />
             <FormControl isInvalid={errors?.date}>
               <FormLabel htmlFor="date" className={styles['required-field']}>
                 Date
@@ -187,36 +224,36 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
                 <FormErrorMessage>{!errors.zipcode && errors['']?.message}</FormErrorMessage>
               )}
             </FormControl>
-            <br />
-            <FormControl isInvalid={errors?.generalLocation}>
-              <FormLabel htmlFor="generalLocation">General Location</FormLabel>
-              <Input
-                id="generalLocation"
-                placeholder="ex. Santa Monica Pier"
-                name="generalLocation"
-                {...register('generalLocation')}
-              />
-              <FormErrorMessage>{errors.generalLocation?.message}</FormErrorMessage>
-            </FormControl>
-            <br />
-            <FormControl isInvalid={errors?.country}>
-              <FormLabel htmlFor="country" className={styles['required-field']}>
-                Country
-              </FormLabel>
-              <Controller
-                control={control}
-                name="country"
-                // eslint-disable-next-line no-unused-vars
-                render={({ field: { onChange, value, ref } }) => (
-                  <ChakraReactSelect options={countryOptions} value={value} onChange={onChange} />
-                )}
-              />
-              <FormErrorMessage>{errors.country?.label.message}</FormErrorMessage>
-            </FormControl>
           </div>
         </div>
         {isMobile && <br />}
         <div className={styles['relocate-box-info-section-right']}>
+          <FormControl isInvalid={errors?.generalLocation}>
+            <FormLabel htmlFor="generalLocation">General Location</FormLabel>
+            <Input
+              id="generalLocation"
+              placeholder="ex. Santa Monica Pier"
+              name="generalLocation"
+              {...register('generalLocation')}
+            />
+            <FormErrorMessage>{errors.generalLocation?.message}</FormErrorMessage>
+          </FormControl>
+          <br />
+          <FormControl isInvalid={errors?.country}>
+            <FormLabel htmlFor="country" className={styles['required-field']}>
+              Country
+            </FormLabel>
+            <Controller
+              control={control}
+              name="country"
+              // eslint-disable-next-line no-unused-vars
+              render={({ field: { onChange, value, ref } }) => (
+                <ChakraReactSelect options={countryOptions} value={value} onChange={onChange} />
+              )}
+            />
+            <FormErrorMessage>{errors.country?.label.message}</FormErrorMessage>
+          </FormControl>
+          <br />
           <FormControl className={styles['section-wrapper']}>
             <FormLabel htmlFor="drop-off-method" className={styles['required-field']}>
               Launch Method
@@ -228,8 +265,6 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.dropOffMethod?.message}</FormErrorMessage>
           </FormControl>
           <br />
-          {!isMobile && <br />}
-
           <FormControl isInvalid={errors?.message}>
             <FormLabel htmlFor="message">Message</FormLabel>
             <Textarea
@@ -243,7 +278,6 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
           </FormControl>
           <br />
-          {!isMobile && <br />}
           <FormControl>
             <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
             <DropZone setFiles={setFiles} />

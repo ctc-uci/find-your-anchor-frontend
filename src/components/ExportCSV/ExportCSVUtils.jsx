@@ -14,6 +14,8 @@ export default function renameProperty(property) {
       return 'Launched Organically';
     case 'message':
       return 'Message';
+    case 'country':
+      return 'Country';
     default:
       return '';
   }

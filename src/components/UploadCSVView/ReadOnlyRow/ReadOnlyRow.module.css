@@ -22,6 +22,13 @@
   height: 10px;
 }
 
+.green-check-icon,
+.red-cross-icon {
+  position: absolute;
+  left: 70px;
+  top: 40%;
+}
+
 .csv-error td {
   border-top: 1px solid red;
   border-bottom: 1px solid red;
