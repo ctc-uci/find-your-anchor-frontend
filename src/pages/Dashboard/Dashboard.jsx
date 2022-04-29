@@ -64,7 +64,11 @@ const Dashboard = () => {
             />
             <BoxApproval />
           </Slide>
-          <div className={`${styles.map}`}>
+          <div
+            className={`${styles.map} ${
+              adminIsLoggedIn ? `${styles['admin-map']}` : `${styles['general-user-map']}`
+            }`}
+          >
             <Map
               setSelectedZipCode={setSelectedZipCode}
               setSelectedCountry={setSelectedCountry}
@@ -83,7 +87,7 @@ const Dashboard = () => {
           {adminIsLoggedIn ? (
             <Button
               colorScheme="blue"
-              className={styles['review-submission-button']}
+              className={`${styles['review-submission-button']} ${styles['admin-button']}`}
               ref={btnRef}
               onClick={handleReviewSubmissionsClicked}
             >
@@ -92,7 +96,7 @@ const Dashboard = () => {
           ) : (
             <Button
               colorScheme="blue"
-              className={styles['review-submission-button']}
+              className={`${styles['review-submission-button']} ${styles['general-user-button']}`}
               onClick={() => navigate('/login')}
             >
               Admin Login
@@ -117,9 +121,9 @@ const Dashboard = () => {
               />
             </Slide>
           </div>
+          {!adminIsLoggedIn && <Footer />}
         </div>
       </div>
-      {!adminIsLoggedIn && <Footer />}
     </ChakraProvider>
   );
 };
