@@ -14,6 +14,7 @@ import Footer from '../../components/Footer/Footer';
 const Dashboard = () => {
   const navigate = useNavigate();
   const { isOpen: boxApprovalIsOpen, onToggle: onBoxApprovalToggle } = useDisclosure();
+  const { isOpen: markerInfoIsOpen, onToggle: onMarkerInfoToggle } = useDisclosure();
 
   // This state contains the currently selected zip code (set when a user clicks on a map pin)
   const [selectedZipCode, setSelectedZipCode] = useState(null);
@@ -37,6 +38,7 @@ const Dashboard = () => {
   // This function opens the left sidebar closes the right sidebar when the review submission button is clicked
   const handleReviewSubmissionsClicked = () => {
     // Close right sidebar
+    if (markerInfoIsOpen) onMarkerInfoToggle();
     setSelectedZipCode(null);
     setSelectedCountry(null);
     // Toggle left sidebar
@@ -53,21 +55,15 @@ const Dashboard = () => {
       <div className={styles['admin-dashboard-container']}>
         <div className={styles['side-bar-and-map-container']}>
           <Slide className={styles['box-approval-slide']} direction="left" in={boxApprovalIsOpen}>
-            <div className={styles['close-wrapper']} align="right">
-              <IconButton
-                aria-label="Close Control Panel"
-                icon={<CloseIcon />}
-                onClick={onBoxApprovalToggle}
-                color="black"
-              />
-              <BoxApproval />
-            </div>
+            <IconButton
+              aria-label="Close Control Panel"
+              icon={<CloseIcon />}
+              onClick={onBoxApprovalToggle}
+              color="red"
+            />
+            <BoxApproval />
           </Slide>
-          <div
-            className={`${styles.map}
-            ${selectedZipCode && !boxApprovalIsOpen ? styles['one-bar-open'] : ''}
-            ${selectedZipCode && boxApprovalIsOpen ? styles['two-bars-open'] : ''}`}
-          >
+          <div className={`${styles.map}`}>
             <Map
               setSelectedZipCode={setSelectedZipCode}
               setSelectedCountry={setSelectedCountry}
@@ -79,6 +75,8 @@ const Dashboard = () => {
               setZipCodeData={setZipCodeData}
               boxApprovalIsOpen={boxApprovalIsOpen}
               onBoxApprovalToggle={onBoxApprovalToggle}
+              onMarkerInfoToggle={onMarkerInfoToggle}
+              markerInfoIsOpen={markerInfoIsOpen}
             />
           </div>
           {adminIsLoggedIn ? (
@@ -99,24 +97,24 @@ const Dashboard = () => {
               Admin Login
             </Button>
           )}
-          <div
-            className={`${styles['side-bar']} ${
-              selectedZipCode && selectedCountry ? styles['show-info'] : ''
-            }`}
-          >
-            <MarkerInfo
-              selectedZipCode={selectedZipCode}
-              selectedCountry={selectedCountry}
-              setSelectedZipCode={setSelectedZipCode}
-              setSelectedCountry={setSelectedCountry}
-              setUpdateBoxListSwitch={setUpdateBoxListSwitch}
-              updateBoxListSwitch={updateBoxListSwitch}
-              setSelectedBox={setSelectedBox}
-              selectedBox={selectedBox}
-              adminIsLoggedIn={adminIsLoggedIn}
-              zipCodeData={zipCodeData}
-              setZipCodeData={setZipCodeData}
-            />
+          <div className={`${styles['side-bar']} ${markerInfoIsOpen ? styles['show-info'] : ''}`}>
+            <Slide className={styles['marker-info-slide']} direction="right" in={markerInfoIsOpen}>
+              <MarkerInfo
+                selectedZipCode={selectedZipCode}
+                selectedCountry={selectedCountry}
+                setSelectedZipCode={setSelectedZipCode}
+                setSelectedCountry={setSelectedCountry}
+                setUpdateBoxListSwitch={setUpdateBoxListSwitch}
+                updateBoxListSwitch={updateBoxListSwitch}
+                setSelectedBox={setSelectedBox}
+                selectedBox={selectedBox}
+                adminIsLoggedIn={adminIsLoggedIn}
+                zipCodeData={zipCodeData}
+                setZipCodeData={setZipCodeData}
+                onMarkerInfoToggle={onMarkerInfoToggle}
+                markerInfoIsOpen={markerInfoIsOpen}
+              />
+            </Slide>
           </div>
         </div>
       </div>

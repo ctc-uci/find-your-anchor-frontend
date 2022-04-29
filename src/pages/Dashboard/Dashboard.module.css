@@ -28,7 +28,6 @@
   display: none;
   height: calc(100vh - 55px);
   width: 25vw;
-  z-index: 400; /* since leaflet has a high z index */
 }
 
 .side-bar.show-review,
@@ -36,23 +35,14 @@
   display: block;
 }
 
+.marker-info-slide,
 .box-approval-slide {
   width: min(100%, 500px) !important;
   z-index: 1300;
-  background-color: white;
+  background-color: #eef6f8;
   height: 100%;
   overflow-y: hidden;
-}
-
-.close-button {
-  position: absolute !important;
-  font-size: 18px;
-  color: white;
-  background-color: #e53e3e;
-  padding: 10px 12px;
-  right: 10px;
-  bottom: 10px;
-  z-index: 400; /* since leaflet has a high z index */
+  margin-top: 49px;
 }
 
 .map {
@@ -97,10 +87,8 @@
     visibility: hidden;
   }
 
+  .marker-info-slide,
   .box-approval-slide {
     width: 100vw !important;
   }
-}
-.close-wrapper {
-  width: 100%;
 }

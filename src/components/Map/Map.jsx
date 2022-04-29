@@ -28,6 +28,8 @@ const Map = ({
   setZipCodeData,
   boxApprovalIsOpen,
   onBoxApprovalToggle,
+  onMarkerInfoToggle,
+  markerInfoIsOpen,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [mapState, setMapState] = useState(null);
@@ -42,6 +44,8 @@ const Map = ({
     setSelectedZipCode(markerObject.zip_code);
     // Toggle updateBoxListSwitch, which will update update the box list in the right side bar
     setUpdateBoxListSwitch(!updateBoxListSwitch);
+    // Open the right sidebar
+    if (!markerInfoIsOpen) onMarkerInfoToggle();
     setSelectedBox(null);
     // IMPORTANT: mapState.flyTo(xxx) must be called LAST in order to avoid a moving pin bug
     mapState.flyTo([markerObject.latitude, markerObject.longitude], 10);
@@ -98,6 +102,7 @@ const Map = ({
         // Open right sidebar
         setSelectedZipCode(zipCode);
         setSelectedCountry(country);
+        if (!markerInfoIsOpen) onMarkerInfoToggle();
         // Change right sidebar into BoxList view
         setSelectedBox(boxID);
         // Fly to marker with box
@@ -181,6 +186,8 @@ Map.propTypes = {
   setZipCodeData: PropTypes.func.isRequired,
   boxApprovalIsOpen: PropTypes.bool.isRequired,
   onBoxApprovalToggle: PropTypes.func.isRequired,
+  onMarkerInfoToggle: PropTypes.bool.isRequired,
+  markerInfoIsOpen: PropTypes.func.isRequired,
 };
 
 export default Map;

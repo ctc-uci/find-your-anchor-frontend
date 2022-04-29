@@ -17,9 +17,11 @@ const MarkerInfo = ({
   adminIsLoggedIn,
   zipCodeData,
   setZipCodeData,
+  onMarkerInfoToggle,
 }) => {
   // This function clears the selected zip code/country states (called when the user exits out of the right side bar)
   const clearSelectedInfo = () => {
+    onMarkerInfoToggle();
     setSelectedZipCode(null);
     setSelectedCountry(null);
   };
@@ -82,6 +84,7 @@ MarkerInfo.propTypes = {
     }),
   ).isRequired,
   setZipCodeData: PropTypes.func.isRequired,
+  onMarkerInfoToggle: PropTypes.bool.isRequired,
 };
 
 export default MarkerInfo;
