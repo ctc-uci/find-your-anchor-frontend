@@ -8,7 +8,7 @@ const useMobileWidth = (delimit = 768) => {
   const [isMobile, setIsMobile] = useState(width);
 
   useEffect(() => {
-    setIsMobile(width < delimit);
+    setIsMobile(width <= delimit);
   }, [width]);
 
   return isMobile;
