@@ -87,10 +87,6 @@
     width: 100vw;
   }
 
-  .close-button {
-    visibility: hidden;
-  }
-
   .marker-info-slide,
   .box-approval-slide {
     width: 100vw !important;
