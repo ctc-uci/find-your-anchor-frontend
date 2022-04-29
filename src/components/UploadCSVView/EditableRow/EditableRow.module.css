@@ -1,6 +1,8 @@
 .check-box {
   background-color: white;
   transform: scale(1.2);
+  position: absolute;
+  left: 30px;
 }
 
 .edit-row input {
