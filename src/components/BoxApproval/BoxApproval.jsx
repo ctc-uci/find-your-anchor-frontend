@@ -14,27 +14,28 @@ const BoxApproval = () => {
   const [boxesUnderReview, setBoxesUnderReview] = useState([]);
   const [boxesPending, setBoxesPending] = useState([]);
   const [boxesEvaluated, setBoxesEvaluated] = useState([]);
+  const [currentStatus, setCurrentStatus] = useState('under review');
 
   const [
     paginatedUnderReviewData,
     paginatedUnderReviewIndex,
     setPaginatedUnderReviewIndex,
     totalNumberOfUnderReviewPages,
-  ] = usePaginationController(boxesUnderReview);
+  ] = usePaginationController(boxesUnderReview, 8);
 
   const [
     paginatedPendingData,
     paginatedPendingIndex,
     setPaginatedPendingIndex,
     totalNumberOfPendingPages,
-  ] = usePaginationController(boxesPending);
+  ] = usePaginationController(boxesPending, 8);
 
   const [
     paginatedEvaluatedData,
     paginatedEvaluatedIndex,
     setPaginatedEvaluatedIndex,
     totalNumberOfEvaluatedPages,
-  ] = usePaginationController(boxesEvaluated);
+  ] = usePaginationController(boxesEvaluated, 8);
 
   // Gets all Relocation/Pickup boxes according to status
   const fetchBoxes = async status => {
@@ -104,57 +105,75 @@ const BoxApproval = () => {
     await fetchBoxes('under review');
   }, []);
 
+  const handleTabClicked = status => {
+    fetchBoxes(status);
+    setCurrentStatus(status);
+  };
+
   return (
     <ChakraProvider>
       <div className={styles['box-approval']}>
-        <Tabs align="center" variant="line">
-          <div>
-            <TabList>
-              <Tab onClick={async () => fetchBoxes('under review')}>Under Review</Tab>
-              <Tab onClick={async () => fetchBoxes('pending changes')}>Pending Changes</Tab>
-              <Tab onClick={async () => fetchBoxes('evaluated')}>Evaluated</Tab>
-            </TabList>
-          </div>
-          <div className={styles['box-list']}>
-            <TabPanels>
-              {/* 'Under Review' section */}
-              <TabPanel>{paginatedUnderReviewData.map(boxData => mapDataToBox(boxData))}</TabPanel>
-              {/* 'Pending Changes' section */}
-              <TabPanel>{paginatedPendingData.map(boxData => mapDataToBox(boxData))}</TabPanel>
-              {/* 'Evaluated' section */}
-              <TabPanel>{paginatedEvaluatedData.map(boxData => mapDataToBox(boxData))}</TabPanel>
-            </TabPanels>
+        <Tabs align="center" variant="line" className={styles['tab-wrapper']} isLazy>
+          <TabList>
+            <Tab onClick={() => handleTabClicked('under review')}>Under Review</Tab>
+            <Tab onClick={() => handleTabClicked('pending changes')}>Pending Changes</Tab>
+            <Tab onClick={() => handleTabClicked('evaluated')}>Evaluated</Tab>
+          </TabList>
+          <div className={styles['box-list-and-pagination']}>
+            <div className={styles['box-list']}>
+              <TabPanels>
+                {/* 'Under Review' section */}
+                <TabPanel className={styles['tab-panel']}>
+                  {paginatedUnderReviewData.map(boxData => mapDataToBox(boxData))}
+                </TabPanel>
+                {/* 'Pending Changes' section */}
+                <TabPanel className={styles['tab-panel']}>
+                  {paginatedPendingData.map(boxData => mapDataToBox(boxData))}
+                </TabPanel>
+                {/* 'Evaluated' section */}
+                <TabPanel className={styles['tab-panel']}>
+                  {paginatedEvaluatedData.map(boxData => mapDataToBox(boxData))}
+                </TabPanel>
+              </TabPanels>
+            </div>
+
+            {currentStatus === 'under review' && (
+              <PaginationController
+                paginatedIndex={paginatedUnderReviewIndex}
+                setPaginatedIndex={setPaginatedUnderReviewIndex}
+                totalNumberOfPages={totalNumberOfUnderReviewPages}
+              />
+            )}
+            {currentStatus === 'pending changes' && (
+              <PaginationController
+                paginatedIndex={paginatedPendingIndex}
+                setPaginatedIndex={setPaginatedPendingIndex}
+                totalNumberOfPages={totalNumberOfPendingPages}
+              />
+            )}
+            {currentStatus === 'evaluated' && (
+              <PaginationController
+                paginatedIndex={paginatedEvaluatedIndex}
+                setPaginatedIndex={setPaginatedEvaluatedIndex}
+                totalNumberOfPages={totalNumberOfEvaluatedPages}
+              />
+            )}
+            <div className={styles.legend}>
+              <div className={styles['legend-row']}>
+                <BsFillArrowRightCircleFill className={styles['request-changes-icon']} />
+                <p className={styles['request-changes-text']}>Request Changes</p>
+              </div>
+              <div className={styles['legend-row']}>
+                <img className={styles['relocate-box-icon']} src={RelocateBoxIcon} alt="" />
+                <p className={styles['relocate-box-text']}>Launched</p>
+              </div>
+              <div className={styles['legend-row']}>
+                <img className={styles['pickup-box-icon']} src={PickupBoxIcon} alt="" />
+                <p className={styles['pickup-box-text']}>Found a Box</p>
+              </div>
+            </div>
           </div>
         </Tabs>
-        <div className={styles.legend}>
-          <PaginationController
-            paginatedIndex={paginatedUnderReviewIndex}
-            setPaginatedIndex={setPaginatedUnderReviewIndex}
-            totalNumberOfPages={totalNumberOfUnderReviewPages}
-          />
-          <PaginationController
-            paginatedIndex={paginatedPendingIndex}
-            setPaginatedIndex={setPaginatedPendingIndex}
-            totalNumberOfPages={totalNumberOfPendingPages}
-          />
-          <PaginationController
-            paginatedIndex={paginatedEvaluatedIndex}
-            setPaginatedIndex={setPaginatedEvaluatedIndex}
-            totalNumberOfPages={totalNumberOfEvaluatedPages}
-          />
-          <div className={styles['request-changes-row']}>
-            <BsFillArrowRightCircleFill className={styles['request-changes-icon']} />
-            <p className={styles['request-changes-text']}>Request Changes</p>
-          </div>
-          <div className={styles['relocate-box-row']}>
-            <img className={styles['relocate-box-icon']} src={RelocateBoxIcon} alt="" />
-            <p className={styles['relocate-box-text']}>Launched</p>
-          </div>
-          <div className={styles['pickup-box-row']}>
-            <img className={styles['pickup-box-icon']} src={PickupBoxIcon} alt="" />
-            <p className={styles['pickup-box-text']}>Found a Box</p>
-          </div>
-        </div>
       </div>
     </ChakraProvider>
   );

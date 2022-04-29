@@ -30,7 +30,7 @@ const PaginationController = ({ paginatedIndex, setPaginatedIndex, totalNumberOf
       </button>
       <div>Page&nbsp;</div>
       <div>{totalNumberOfPages === 0 ? 0 : paginatedIndex + 1}</div>
-      <div>of&nbsp;</div>
+      <div>&nbsp;of&nbsp;</div>
       <div>{totalNumberOfPages}</div>
       <button
         className={styles['forward-button']}

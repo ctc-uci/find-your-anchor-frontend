@@ -3,6 +3,7 @@
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
+  margin: 1% 0% 0% 0%;
 }
 
 .back-button,
