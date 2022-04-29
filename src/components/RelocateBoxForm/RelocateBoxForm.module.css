@@ -48,6 +48,10 @@
   height: 50%;
 }
 
+.verification-sub-label {
+  opacity: 36%;
+}
+
 .relocate-box-photo-preview-section-hidden {
   display: none;
 }

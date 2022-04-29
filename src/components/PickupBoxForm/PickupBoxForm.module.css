@@ -52,6 +52,10 @@
   display: none;
 }
 
+.verification-sub-label {
+  opacity: 36%;
+}
+
 .pickup-box-info-section-left,
 .pickup-box-info-section-right {
   width: 40%;

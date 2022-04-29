@@ -51,6 +51,15 @@
   border: 0px;
 }
 
+.marker-cluster {
+  background-color: #345e80;
+  color: white;
+  border: 0px;
+  border-radius: 50%;
+  text-align: center;
+  padding-top: 6px;
+}
+
 .leaflet-tooltip-top:before {
   border-top-color: #345e80 !important;
 }
