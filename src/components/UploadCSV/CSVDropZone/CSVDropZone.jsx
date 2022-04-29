@@ -5,8 +5,10 @@ import { CloseIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 import styles from './CSVDropZone.module.css';
 import DropZoneIcon from '../../../assets/upload.png';
+import useMobileWidth from '../../../common/useMobileWidth';
 
 function CSVDropZone({ setFile }) {
+  const isMobile = useMobileWidth();
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     noKeyboard: true,
     accept: 'text/csv',
@@ -35,7 +37,11 @@ function CSVDropZone({ setFile }) {
         aria-label="Remove"
         onClick={removeUploadedPhoto}
       >
-        <CloseIcon w={4} h={4} color="gray.400" />
+        {isMobile ? (
+          <CloseIcon w={10} h={10} color="gray.400" />
+        ) : (
+          <CloseIcon w={4} h={4} color="gray.400" />
+        )}
       </button>
       <span className={styles['file-item-span']}>{acceptedFile.path}</span>
     </li>

@@ -79,7 +79,7 @@ const EditableRow = ({
     updateBoxNumberMap(editFormData.boxNumber, lineNumber, boxNumRef.current);
     if (isFirstRender.current) {
       // this ensures that we are just validating the inputs and not actually editing the form
-      handleSubmit(() => null, handleEditFormSubmitError)();
+      handleSubmit(() => {}, handleEditFormSubmitError)();
     } else {
       handleSubmit(handleEditFormSubmit, handleEditFormSubmitError)();
     }

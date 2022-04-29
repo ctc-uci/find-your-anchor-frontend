@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, ButtonGroup, Flex, Text, Image } from '@chakra-ui/react';
+import { Button, Flex, Text, Image } from '@chakra-ui/react';
 import SuccessCheckIcon from '../../../assets/Check.png';
 import styles from './SuccessModalContent.module.css';
 import useMobileWidth from '../../../common/useMobileWidth';
@@ -24,7 +24,7 @@ const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile }) => {
         <Text mb={5} className={styles['success-modal-text']}>
           File Uploaded Successfully
         </Text>
-        <ButtonGroup className={styles['success-modal-buttons']}>
+        <Flex gap={10} mt={10}>
           <Button color="white" bg="#1F2F38" onClick={uploadNewFile}>
             Upload New File
           </Button>
@@ -34,7 +34,7 @@ const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile }) => {
           <Button color="white" bg="#345E80" onClick={viewFile}>
             View File
           </Button>
-        </ButtonGroup>
+        </Flex>
       </div>
     );
   }
@@ -47,7 +47,7 @@ const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile }) => {
           File Uploaded Successfully
         </Text>
       </Flex>
-      <Flex justifyContent="flex-end" gap={5} mt={10} className={styles['success-modal-buttons']}>
+      <Flex justifyContent="flex-end" gap={5} mt={6}>
         <Button type="submit" colorScheme="teal">
           Add to Map
         </Button>

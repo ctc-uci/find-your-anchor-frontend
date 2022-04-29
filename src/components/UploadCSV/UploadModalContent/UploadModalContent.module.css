@@ -20,7 +20,7 @@
 
 @media screen and (max-width: 768px) {
   .upload-modal-content {
-    height: 600px;
+    height: 700px;
   }
 
   .upload-modal-title {
@@ -29,5 +29,10 @@
 
   .upload-modal-button {
     padding: 10px;
+  }
+
+  .upload-modal-back-button {
+    position: relative;
+    right: 48%;
   }
 }

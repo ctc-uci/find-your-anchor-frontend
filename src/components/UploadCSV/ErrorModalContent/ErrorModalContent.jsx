@@ -48,7 +48,7 @@ const ErrorModalContent = ({
   }
 
   return (
-    <Flex flexDirection="column" gap="8px" mt={3}>
+    <Flex flexDirection="column" gap="5px" mt={3}>
       <Flex alignItems="center" gap="10px">
         <WarningIcon alt="Warning Icon" boxSize="20px" color="red" />
         <Text className={styles['error-modal-text']}>Oops!</Text>

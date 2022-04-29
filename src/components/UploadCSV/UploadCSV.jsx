@@ -171,22 +171,12 @@ const UploadCSV = ({ isOpen, onClose }) => {
     }
   };
 
-  const commonModalProps = {
-    isOpen,
-    onClose: onCloseModal,
-    className: styles['common-modal'],
-  };
-  if (isMobile) {
-    commonModalProps.height = isUploadingNewFile ? '100%' : '200px';
-    commonModalProps.width = isUploadingNewFile ? '100%' : '300px';
-  }
-
   if (isMobile && isUploadingNewFile && isOpen) {
     return <UploadModalContent setCSVFile={setCSVFile} onUpload={onUpload} />;
   }
 
   return (
-    <CommonModal {...commonModalProps}>
+    <CommonModal isOpen={isOpen} onClose={onCloseModal} className={styles['common-modal']}>
       <form onSubmit={addToMap}>
         {(() => {
           if (isLoading) {

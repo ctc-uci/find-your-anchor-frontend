@@ -334,7 +334,12 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
               // console.log('Edit Row: ', editFormData);
               // console.log('Read Row: ', rowData);
               return (
-                <AccordionItem key={rowData.original.id} borderWidth="1px">
+                <AccordionItem
+                  key={rowData.original.id}
+                  borderWidth="1px"
+                  borderRadius="8px"
+                  borderColor={rowData.values.error && 'red'}
+                >
                   {({ isExpanded }) => (
                     <>
                       <h2>
