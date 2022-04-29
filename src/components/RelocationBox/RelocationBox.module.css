@@ -18,16 +18,16 @@
 }
 
 .status-message-approved {
-  color: #38A169;
+  color: #38a169;
 }
 
 .status-message-pending {
-  color: #3182CE;
+  color: #3182ce;
   margin-left: 19%;
 }
 
 .status-message-rejected {
-  color: #E53E3E;
+  color: #e53e3e;
 }
 
 .image-wrapper {
@@ -242,7 +242,6 @@
   color: green;
   font-size: 30px;
 }
-
 
 .review-header {
   width: 100%;
