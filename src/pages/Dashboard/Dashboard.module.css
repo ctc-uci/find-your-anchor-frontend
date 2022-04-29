@@ -74,6 +74,10 @@
   display: block;
 }
 
+.close-button {
+  float: right;
+}
+
 @media screen and (max-width: 768px) {
   .map.one-bar-open {
     width: 0vw;

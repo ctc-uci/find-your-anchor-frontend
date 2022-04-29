@@ -56,6 +56,7 @@ const Dashboard = () => {
         <div className={styles['side-bar-and-map-container']}>
           <Slide className={styles['box-approval-slide']} direction="left" in={boxApprovalIsOpen}>
             <IconButton
+              className={styles['close-button']}
               aria-label="Close Control Panel"
               icon={<CloseIcon />}
               onClick={onBoxApprovalToggle}
