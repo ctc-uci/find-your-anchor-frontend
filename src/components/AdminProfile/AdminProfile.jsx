@@ -100,7 +100,7 @@ const AdminProfile = () => {
         <div className={styles['profile-page-wrapper']}>
           <div className={styles['top-buttons']}>
             <Button onClick={onOpenLinkModal} color="white" bg="#1F2F38" fontSize="20px" size="lg">
-              Share Registration Link
+              Send Registration Link
             </Button>
             <SendLinkModal isOpen={isOpenLinkModal} onClose={onCloseLinkModal} />
           </div>

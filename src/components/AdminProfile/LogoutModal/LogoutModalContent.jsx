@@ -11,14 +11,14 @@ import { Cookies, withCookies } from '../../../common/cookie_utils';
 //   This should fix the button highlight color, which is currently white
 // - Implement "Return to Login page" button
 
-const ModalStepOne = ({ incrementStep, closeModal, cookies }) => {
-  const handleLogout = async () => {
-    incrementStep();
+const LogoutModalContent = ({ closeModal, cookies }) => {
+  const navigate = useNavigate();
 
+  const handleLogout = async () => {
     // Log out the user.
     await logout(cookies);
+    navigate('/login');
   };
-
   return (
     <div className={styles['step-content']}>
       <Text fontSize="2xl" fontWeight="bold" className={styles['step-text']}>
@@ -36,40 +36,7 @@ const ModalStepOne = ({ incrementStep, closeModal, cookies }) => {
   );
 };
 
-const ModalStepTwo = () => {
-  const navigate = useNavigate();
-  return (
-    <div className={styles['step-content']}>
-      <Text fontSize="2xl" fontWeight="bold" className={styles['step-text']}>
-        Account has been successfully signed out.
-      </Text>
-      <Button onClick={() => navigate('/login')} size="lg" color="white" bg="#173848">
-        Return to Login page
-      </Button>
-    </div>
-  );
-};
-
-const LogoutModalContent = ({ modalStep, setModalStep, closeModal, cookies }) => {
-  const incrementModalStep = () => {
-    setModalStep(modalStep + 1);
-  };
-
-  const modalSteps = [
-    <ModalStepOne
-      key=""
-      incrementStep={incrementModalStep}
-      closeModal={closeModal}
-      cookies={cookies}
-    />,
-    <ModalStepTwo key="" />,
-  ];
-
-  return modalSteps[modalStep];
-};
-
-ModalStepOne.propTypes = {
-  incrementStep: PropTypes.func.isRequired,
+LogoutModalContent.propTypes = {
   closeModal: PropTypes.func.isRequired,
   cookies: instanceOf(Cookies).isRequired,
 };

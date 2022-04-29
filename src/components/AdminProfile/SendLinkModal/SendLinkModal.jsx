@@ -1,21 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  ChakraProvider,
-  Text,
-  Input,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  ModalCloseButton,
-  Button,
-} from '@chakra-ui/react';
-import Checkmark from '../../../assets/Check.png';
+import { ChakraProvider, Text, Input, Button } from '@chakra-ui/react';
+import CheckIcon from '../../../assets/check-icon.svg';
 import styles from './SendLinkModal.module.css';
 import { sendInviteLink } from '../../../common/auth_utils';
 import { FYABackend } from '../../../common/utils';
 import SendRegistrationLinkIcon from '../../../assets/send-registration-link-icon.svg';
+import CommonModal from '../../../common/CommonModal/CommonModal';
 
 const ModalOne = ({ count, setCount }) => {
   const [email, setEmail] = useState('');
@@ -39,9 +30,12 @@ const ModalOne = ({ count, setCount }) => {
 
   return (
     <div className={styles['modal-content']}>
-      <Text fontSize="2xl" fontWeight="bold">
+      <img src={SendRegistrationLinkIcon} className={styles['email-icon']} alt="Logo" />
+
+      <Text fontSize="3xl" fontWeight="bold">
         Send Registration Link
       </Text>
+
       <Text fontSize="lg">
         Enter the recipient&apos;s email address and we&apos;ll send them a link to register
       </Text>
@@ -73,15 +67,16 @@ const ModalOne = ({ count, setCount }) => {
 
 const ModalTwo = () => (
   <div className={styles['modal-content']}>
-    <img src={Checkmark} alt="Green Checkmark" className={styles.checkmark} />
-    <Text fontSize="2xl" fontWeight="bold" textAlign="center">
-      LINK SENT!
+    <img src={CheckIcon} className={styles['check-icon']} alt="Logo" />
+
+    <Text fontSize="3xl" fontWeight="bold">
+      Registration Link Sent
     </Text>
-    <Text color="#3182CE" textAlign="center">
-      Recipient will receive link in their inbox shortly...
-    </Text>
-    <Button color="white" bg="#1F2F38" className={styles['modal-two-button']}>
-      Resend Link
+
+    <Text fontSize="lg">The recipient will receive a link in their inbox to register shortly</Text>
+
+    <Button color="white" bg="#345E80" iconSpacing="120px" className={styles['modal-two-button']}>
+      OK
     </Button>
   </div>
 );
@@ -100,18 +95,11 @@ const SendLinkModalContent = () => {
 const SendLinkModal = ({ isOpen, onClose }) => {
   return (
     <ChakraProvider>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalCloseButton />
-          <ModalBody>
-            <div className={styles['send-link-modal-content']}>
-              <img src={SendRegistrationLinkIcon} className={styles['email-icon']} alt="Logo" />
-              <SendLinkModalContent />
-            </div>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      <CommonModal isOpen={isOpen} onClose={onClose} modalClassName={styles['modal-body']}>
+        <div className={styles['send-link-modal-content']}>
+          <SendLinkModalContent />
+        </div>
+      </CommonModal>
     </ChakraProvider>
   );
 };

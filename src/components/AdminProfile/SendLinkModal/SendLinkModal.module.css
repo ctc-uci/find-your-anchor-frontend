@@ -3,8 +3,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
   margin: 20px;
   text-align: center;
+  padding: 20px;
 }
 
 .modal-one-input {
@@ -17,6 +19,7 @@
 
 .modal-one-button {
   align-self: flex-end;
+  margin-top: 5%;
 }
 
 .checkmark {
@@ -26,18 +29,21 @@
 }
 
 .modal-two-button {
-  margin-top: 1em;
+  margin-top: 5%;
 }
 
 .input-wrapper {
   width: 100%;
   text-align: left;
+  padding-top: 5%;
 }
 
-.email-icon {
+.email-icon,
+.check-icon {
   margin: 0 auto;
   height: 125px;
   width: 125px;
+  margin-bottom: 5%;
 }
 
 .send-link-modal-content {
@@ -45,4 +51,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
+}
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
