@@ -22,11 +22,8 @@ function validateZipcodeInCountry() {
         return createError({ path, message: `Cannot find ${zipCode} in this country` });
       }
 
-      // check if Nominatim API can find lat/long for zipcode
-      // const [lat, long] = await getLatLong(zipCode, countryCode);
-      // if (lat === undefined || long === undefined) {
-      //   return createError({ path, message: `Cannot find latitude/longitude for ${zipCode}` });
-      // }
+      // TODO: use zipcode data dump to check if zipcode exists in country
+      // instead. Nominatim API allows a maximum of one request per second only.
     }
     return true;
   });
