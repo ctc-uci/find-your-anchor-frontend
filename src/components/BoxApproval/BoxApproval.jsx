@@ -107,30 +107,43 @@ const BoxApproval = () => {
 
   return (
     <ChakraProvider>
+      <div className={styles.legend}>
+        <div className={styles['legend-row']}>
+          <BsFillArrowRightCircleFill className={styles['request-changes-icon']} />
+          <p className={styles['request-changes-text']}>Request Changes</p>
+        </div>
+        <div className={styles['legend-row']}>
+          <img className={styles['relocate-box-icon']} src={RelocateBoxIcon} alt="" />
+          <p className={styles['relocate-box-text']}>Launched</p>
+        </div>
+        <div className={styles['legend-row']}>
+          <img className={styles['pickup-box-icon']} src={PickupBoxIcon} alt="" />
+          <p className={styles['pickup-box-text']}>Found a Box</p>
+        </div>
+      </div>
       <div className={styles['box-approval']}>
-        <Tabs align="center" variant="line">
-          <div>
-            <TabList>
-              <Tab onClick={() => loadBoxesUnderStatus('under review')}>Under Review</Tab>
-              <Tab onClick={() => loadBoxesUnderStatus('pending changes')}>Pending Changes</Tab>
-              <Tab onClick={() => loadBoxesUnderStatus('evaluated')}>Evaluated</Tab>
-            </TabList>
-          </div>
+        <Tabs align="center" variant="line" className={styles['tab-wrapper']} isLazy>
+          <TabList>
+            <Tab onClick={() => loadBoxesUnderStatus('under review')}>Under Review</Tab>
+            <Tab onClick={() => loadBoxesUnderStatus('pending changes')}>Pending Changes</Tab>
+            <Tab onClick={() => loadBoxesUnderStatus('evaluated')}>Evaluated</Tab>
+          </TabList>
+
           <div className={styles['box-list']}>
             <TabPanels>
               {/* 'Under Review' section */}
-              <TabPanel>
+              <TabPanel className={styles['tab-panel']}>
                 <div>
                   {relocationBoxesUnderReview.map(boxData => mapDataToRelocationBox(boxData))}
                 </div>
                 <div>{pickupBoxesUnderReview.map(boxData => mapDataToPickupBox(boxData))}</div>
               </TabPanel>
               {/* 'Pending Changes' section */}
-              <TabPanel>
+              <TabPanel className={styles['tab-panel']}>
                 <div>{relocationBoxesPending.map(boxData => mapDataToRelocationBox(boxData))} </div>
               </TabPanel>
               {/* 'Evaluated' section */}
-              <TabPanel>
+              <TabPanel className={styles['tab-panel']}>
                 <div>
                   {relocationBoxesEvaluated.map(boxData => mapDataToRelocationBox(boxData))}
                 </div>
@@ -139,26 +152,6 @@ const BoxApproval = () => {
             </TabPanels>
           </div>
         </Tabs>
-        <div className={styles.legend}>
-          <div className={styles['request-changes-row']}>
-            <div className={styles['request-changes-row-content']}>
-              <BsFillArrowRightCircleFill className={styles['request-changes-icon']} />
-              <p className={styles['request-changes-text']}>Request Changes</p>
-            </div>
-          </div>
-          <div className={styles['relocate-box-row']}>
-            <div className={styles['relocate-box-row-content']}>
-              <img className={styles['relocate-box-icon']} src={RelocateBoxIcon} alt="" />
-              <p className={styles['relocate-box-text']}>Launched</p>
-            </div>
-          </div>
-          <div className={styles['pickup-box-row']}>
-            <div className={styles['pickup-box-row-content']}>
-              <img className={styles['pickup-box-icon']} src={PickupBoxIcon} alt="" />
-              <p className={styles['pickup-box-text']}>Found a Box</p>
-            </div>
-          </div>
-        </div>
       </div>
     </ChakraProvider>
   );

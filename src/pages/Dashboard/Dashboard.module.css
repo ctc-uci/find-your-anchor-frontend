@@ -44,7 +44,7 @@
   position: absolute !important;
   font-size: 18px;
   color: white;
-  background-color: #E53E3E;
+  background-color: #e53e3e;
   padding: 10px 12px;
   right: 10px;
   bottom: 10px;
@@ -92,4 +92,15 @@
   .close-button {
     visibility: hidden;
   }
+}
+
+.sidebar {
+  width: min(100%, 500px) !important;
+  z-index: 1300;
+  background-color: white;
+  height: 100%;
+  overflow-y: hidden;
+}
+.close-wrapper {
+  width: 100%;
 }

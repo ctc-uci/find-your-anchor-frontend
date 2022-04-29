@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { ChakraProvider, Button } from '@chakra-ui/react';
+import React, { useEffect, useState, useRef } from 'react';
+import { ChakraProvider, Button, Slide, IconButton, useDisclosure } from '@chakra-ui/react';
+import { CloseIcon } from '@chakra-ui/icons';
+
 import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 import Map from '../../components/Map/Map';
@@ -10,8 +12,9 @@ import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
 
 const Dashboard = () => {
-  // This state determines whether or not to show the admin approval (left) side bar
-  const [showReview, setShowReview] = useState(false);
+  const navigate = useNavigate();
+  const { isOpen: boxApprovalIsOpen, onToggle: onBoxApprovalToggle } = useDisclosure();
+
   // This state contains the currently selected zip code (set when a user clicks on a map pin)
   const [selectedZipCode, setSelectedZipCode] = useState(null);
   // This state contains the currently selected country (set when a user clicks on a map pin)
@@ -33,12 +36,13 @@ const Dashboard = () => {
 
   // This function opens the left sidebar closes the right sidebar when the review submission button is clicked
   const handleReviewSubmissionsClicked = () => {
+    // Close right sidebar
     setSelectedZipCode(null);
     setSelectedCountry(null);
-    setShowReview(true);
+    // Toggle left sidebar
+    onBoxApprovalToggle();
   };
-
-  const navigate = useNavigate();
+  const btnRef = useRef();
   // A list containing all unique zip codes stored in Anchor_Box
   const [zipCodeData, setZipCodeData] = useState([]);
   return (
@@ -48,29 +52,18 @@ const Dashboard = () => {
       </div>
       <div className={styles['admin-dashboard-container']}>
         <div className={styles['side-bar-and-map-container']}>
-          <div className={`${styles['side-bar']} ${showReview ? styles['show-review'] : ''}`}>
-            <BoxApproval />
-            <Button
-              variant="link"
-              colorScheme="white"
-              className={styles['close-button']}
-              paddingTop="6px"
-              paddingBottom="6px"
-              paddingLeft="12px"
-              paddingRight="12px"
-              borderRadius="6px"
-              size="md"
-              onClick={() => setShowReview(false)}
-            >
-              Close
-            </Button>
-          </div>
-          <div
-            className={`${styles.map}
-              ${showReview && !selectedZipCode ? styles['one-bar-open'] : ''}
-              ${selectedZipCode && !showReview ? styles['one-bar-open'] : ''}
-              ${selectedZipCode && showReview ? styles['two-bars-open'] : ''}`}
-          >
+          <Slide className={styles.sidebar} direction="left" in={boxApprovalIsOpen}>
+            <div className={styles['close-wrapper']} align="right">
+              <IconButton
+                aria-label="Close Control Panel"
+                icon={<CloseIcon />}
+                onClick={onBoxApprovalToggle}
+                color="black"
+              />
+              <BoxApproval />
+            </div>
+          </Slide>
+          <div className={styles.map}>
             <Map
               setSelectedZipCode={setSelectedZipCode}
               setSelectedCountry={setSelectedCountry}
@@ -80,15 +73,15 @@ const Dashboard = () => {
               setUpdateBoxListSwitch={setUpdateBoxListSwitch}
               zipCodeData={zipCodeData}
               setZipCodeData={setZipCodeData}
-              setShowReview={setShowReview}
+              boxApprovalIsOpen={boxApprovalIsOpen}
+              onBoxApprovalToggle={onBoxApprovalToggle}
             />
           </div>
           {adminIsLoggedIn ? (
             <Button
               colorScheme="blue"
-              className={`${styles['review-submission-button']} ${
-                showReview ? styles['show-review'] : ''
-              }`}
+              className={styles['review-submission-button']}
+              ref={btnRef}
               onClick={handleReviewSubmissionsClicked}
             >
               Review Submission

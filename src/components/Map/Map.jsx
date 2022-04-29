@@ -26,7 +26,8 @@ const Map = ({
   updateBoxListSwitch,
   zipCodeData,
   setZipCodeData,
-  setShowReview,
+  boxApprovalIsOpen,
+  onBoxApprovalToggle,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [mapState, setMapState] = useState(null);
@@ -35,8 +36,8 @@ const Map = ({
   // 1. Updates the box list with the boxes located in the zip code (in PinInformation)
   // 2. Switches PinInformation to box list view
   const handleMarkerClicked = markerObject => {
-    // Close the left sidebar
-    setShowReview(false);
+    // Close the left sidebar if open
+    if (boxApprovalIsOpen) onBoxApprovalToggle();
     setSelectedCountry(markerObject.country);
     setSelectedZipCode(markerObject.zip_code);
     // Toggle updateBoxListSwitch, which will update update the box list in the right side bar
@@ -178,7 +179,8 @@ Map.propTypes = {
     }),
   ).isRequired,
   setZipCodeData: PropTypes.func.isRequired,
-  setShowReview: PropTypes.func.isRequired,
+  boxApprovalIsOpen: PropTypes.bool.isRequired,
+  onBoxApprovalToggle: PropTypes.func.isRequired,
 };
 
 export default Map;
