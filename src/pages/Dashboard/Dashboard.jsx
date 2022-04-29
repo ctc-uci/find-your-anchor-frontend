@@ -52,7 +52,7 @@ const Dashboard = () => {
       </div>
       <div className={styles['admin-dashboard-container']}>
         <div className={styles['side-bar-and-map-container']}>
-          <Slide className={styles.sidebar} direction="left" in={boxApprovalIsOpen}>
+          <Slide className={styles['box-approval-slide']} direction="left" in={boxApprovalIsOpen}>
             <div className={styles['close-wrapper']} align="right">
               <IconButton
                 aria-label="Close Control Panel"
@@ -63,7 +63,11 @@ const Dashboard = () => {
               <BoxApproval />
             </div>
           </Slide>
-          <div className={styles.map}>
+          <div
+            className={`${styles.map}
+            ${selectedZipCode && !boxApprovalIsOpen ? styles['one-bar-open'] : ''}
+            ${selectedZipCode && boxApprovalIsOpen ? styles['two-bars-open'] : ''}`}
+          >
             <Map
               setSelectedZipCode={setSelectedZipCode}
               setSelectedCountry={setSelectedCountry}

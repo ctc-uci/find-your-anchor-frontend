@@ -30,9 +30,7 @@
 .legend {
   background-color: #eef6f8;
   width: 100%;
-  /* margin-left: 5%; */
   padding: 1%;
-  /* padding-top: 4%; */
   display: flex;
   flex-direction: row;
   flex: 1;
@@ -90,91 +88,12 @@
   margin-right: 4%;
 }
 
-.request-changes-text {
-  text-align: left;
-}
-
-.relocate-box-text {
-  text-align: left;
-}
-
-.pickup-box-text {
-  text-align: left;
-}
-
 @media screen and (max-width: 768px) {
   .box-approval {
     padding: 1%;
     height: 100vh;
     background-color: #eef6f8;
     position: relative;
-  }
-
-  .request-changes-row {
-    display: flex;
-    width: 30%;
-    position: relative;
-    float: right;
-  }
-
-  .request-changes-row-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-  }
-
-  .relocate-box-row-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-  }
-
-  .pickup-box-row-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-  }
-
-  .relocate-box-row {
-    display: flex;
-    width: 30%;
-    float: right;
-    position: relative;
-  }
-
-  .pickup-box-row {
-    display: flex;
-    width: 30%;
-    float: left;
-    position: relative;
-  }
-
-  .request-changes-icon {
-    width: 16px;
-    float: left;
-    color: #dd6b20;
-  }
-
-  .relocate-box-icon {
-    width: 16px;
-    float: left;
-  }
-
-  .pickup-box-icon {
-    width: 16px;
-    float: left;
   }
 
   .legend {
@@ -190,25 +109,8 @@
     justify-content: space-between;
   }
 
-  .box-list {
-    overflow-x: hidden;
-    overflow-y: scroll;
-  }
-
-  .relocate-box-row {
-    justify-content: center;
-  }
-
-  .pickup-box-text {
-    white-space: nowrap;
-    text-align: center;
-  }
-
-  .relocate-box-text {
-    white-space: nowrap;
-    text-align: center;
-  }
-
+  .pickup-box-text,
+  .relocate-box-text,
   .request-changes-text {
     white-space: nowrap;
     text-align: center;

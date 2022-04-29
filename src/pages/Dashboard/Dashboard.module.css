@@ -31,13 +31,17 @@
   z-index: 400; /* since leaflet has a high z index */
 }
 
-.test {
-  width: 25vw;
-}
-
 .side-bar.show-review,
 .show-info {
   display: block;
+}
+
+.box-approval-slide {
+  width: min(100%, 500px) !important;
+  z-index: 1300;
+  background-color: white;
+  height: 100%;
+  overflow-y: hidden;
 }
 
 .close-button {
@@ -92,14 +96,10 @@
   .close-button {
     visibility: hidden;
   }
-}
 
-.sidebar {
-  width: min(100%, 500px) !important;
-  z-index: 1300;
-  background-color: white;
-  height: 100%;
-  overflow-y: hidden;
+  .box-approval-slide {
+    width: 100vw !important;
+  }
 }
 .close-wrapper {
   width: 100%;
