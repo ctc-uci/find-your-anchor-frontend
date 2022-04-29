@@ -257,7 +257,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
 
   return (
     <form onSubmit={addToMap} className={styles['csv-table-form']}>
-      <Stack direction="row" justify="right" marginTop="-25px" marginBottom="25px">
+      <Stack direction="row" justify="right" marginTop="-40px" marginBottom="25px">
         {!isMobile && (
           <select
             value={pageSize}

@@ -13,7 +13,10 @@ const UploadCSVView = () => {
   return (
     <ChakraProvider>
       <Flex direction="column" margin="30px">
-        <Flex alignItems="center" ml={-2}>
+        <Text mb={1} fontSize="xl" fontWeight="500" color={isMobile && '#3182CE'}>
+          {state.filename}
+        </Text>
+        <Flex ml={-2}>
           {isMobile && (
             <IconButton
               background="transparent"
@@ -22,9 +25,6 @@ const UploadCSVView = () => {
               onClick={() => navigate('/')}
             />
           )}
-          <Text mb={1} fontSize="xl" fontWeight="500" color={isMobile && '#3182CE'}>
-            {state.filename}
-          </Text>
         </Flex>
         <CSVViewTable rows={state.rows} boxNumberMap={state.boxNumberMap} />
       </Flex>
