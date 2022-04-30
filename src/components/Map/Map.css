@@ -63,3 +63,14 @@
 .leaflet-tooltip-top:before {
   border-top-color: #345e80 !important;
 }
+
+.leaflet-top {
+  display: flex;
+  width: 350px;
+  justify-content: space-between;
+}
+@media screen and (max-width: 768px) {
+  .leaflet-top {
+    display: block;
+  }
+}
