@@ -5,10 +5,10 @@ import PickupBox from '../PickupBox/PickupBox';
 import RelocationBox from '../RelocationBox/RelocationBox';
 import styles from './BoxApproval.module.css';
 import { FYABackend } from '../../common/utils';
-import PickupBoxIcon from '../../assets/BoxIcons/PickupBoxIcon.svg';
 import RelocateBoxIcon from '../../assets/BoxIcons/RelocateBoxIcon.svg';
 import usePaginationController from '../../common/usePaginationController';
 import PaginationController from '../../common/CommonPaginationController/PaginationController';
+import PickupBoxIcon from '../../assets/BoxIcons/PickupBoxIcon.svg';
 
 const BoxApproval = () => {
   const [boxesUnderReview, setBoxesUnderReview] = useState([]);

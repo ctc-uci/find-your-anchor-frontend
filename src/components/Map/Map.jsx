@@ -113,6 +113,8 @@ const Map = ({
       } = marker.location.raw;
       // Only show the right sidebar if the user searched for box number (not location)
       if (custom) {
+        // Close left sidebar
+        if (boxApprovalIsOpen) onBoxApprovalToggle();
         // Open right sidebar
         setSelectedZipCode(zipCode);
         setSelectedCountry(country);
