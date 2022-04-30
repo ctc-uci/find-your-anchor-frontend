@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import launchBoxIcon from '../../../assets/launch-box-icon.svg';
-import foundBoxIcon from '../../../assets/found-box-icon.svg';
+import launchBoxIcon from '../../../assets/BoxIcons/RelocateBoxIcon.svg';
+import foundBoxIcon from '../../../assets/BoxIcons/PickupBoxIcon.svg';
 
 import styles from './MarkerHistoryElement.module.css';
 

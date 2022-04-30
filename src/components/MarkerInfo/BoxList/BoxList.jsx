@@ -21,7 +21,12 @@ const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox, updateBoxLi
           country: selectedCountry,
         },
       });
-      setBoxList(anchorBoxes.data);
+      setBoxList([
+        ...anchorBoxes.data,
+        ...anchorBoxes.data,
+        ...anchorBoxes.data,
+        ...anchorBoxes.data,
+      ]);
     }
   }, [updateBoxListSwitch]);
   return (
