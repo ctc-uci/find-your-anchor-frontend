@@ -19,6 +19,7 @@
 
 .box-list .box-list-item .box-number {
   font-weight: bold;
+  white-space: nowrap;
 }
 
 .title {
