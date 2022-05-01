@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import countryList from 'react-select-country-list';
 import { FYABackend } from '../../common/utils';
-import zipcodeDataDump from '../../common/zipcodeDataDump';
+import zipcodeDataDump from '../../common/allCountries.json';
 
 function validateZipcodeInCountry() {
   return this.test('isZipInCountry', async function zipcodeAndCountryCheck({ zipCode, country }) {
@@ -18,7 +18,7 @@ function validateZipcodeInCountry() {
 
     // use country-zipcode data dump to check if zipcode exists in country
     if (!zipcodeDataDump[countryCode][zipCode]) {
-      return createError({ path, message: 'Zipcode does not exist in this country' });
+      return createError({ path, message: `Zipcode ${zipCode} does not exist in this country` });
     }
 
     return true;

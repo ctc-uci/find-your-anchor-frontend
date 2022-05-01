@@ -5,7 +5,7 @@ import countryList from 'react-select-country-list';
 import PropTypes from 'prop-types';
 import { Button, Stack, Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
 import { useTable, usePagination } from 'react-table';
-import zipcodeDataDump from '../../../common/zipcodeDataDump';
+import zipcodeDataDump from '../../../common/allCountries.json';
 
 import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
@@ -210,6 +210,8 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
           formDatas[index].latitude = zipcodeDataDump[countryCode][formData.zipCode].lat;
           formDatas[index].longitude = zipcodeDataDump[countryCode][formData.zipCode].long;
         });
+
+        console.log('addToMap: ', formDatas);
 
         await FYABackend.post('/anchorBox/boxes', formDatas);
         setIsLoading(false);
