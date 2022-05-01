@@ -211,8 +211,6 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
           formDatas[index].longitude = zipcodeDataDump[countryCode][formData.zipCode].long;
         });
 
-        console.log('addToMap: ', formDatas);
-
         await FYABackend.post('/anchorBox/boxes', formDatas);
         setIsLoading(false);
         navigate('/admin');
