@@ -136,7 +136,14 @@ const sendPasswordReset = async email => {
 const sendInviteLink = async email => {
   const inviteId = nanoid();
   const url = `http://localhost:3000/auth-email?mode=inviteUser&inviteID=${inviteId}`;
-  await sendEmail(email, email, <AdminInviteEmail url={url} />);
+  const currentUserId = await getCurrentUser(auth);
+  const currentUserInDB = await FYABackend.get(`/users/userId/${currentUserId.uid}`);
+  await sendEmail(
+    email,
+    email,
+    <AdminInviteEmail url={url} senderName={currentUserInDB.data.user.first_name} />,
+    'Find Your Anchor Launch Map - Registration',
+  );
 
   // Add invited user to the AdminInvite table after the invite email has been sent.
   await FYABackend.post('/adminInvite', { email, inviteId });

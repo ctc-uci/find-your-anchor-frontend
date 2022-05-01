@@ -1,4 +1,5 @@
 .header {
+  display: flex;
   width: 100%;
   padding: 0 10% 0 5%;
 }
@@ -21,7 +22,9 @@
 }
 
 .title {
-  margin-left: 10%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .box-data {
@@ -41,9 +44,11 @@
   margin-top: 5%;
 }
 
-.image-corners {
+.image {
   border-radius: 10px;
   margin-top: 5%;
+  width: 100%;
+  padding: 0% 15% 0% 15%;
 }
 
 .box-info .box-number {
@@ -56,34 +61,61 @@
   margin-top: 3%;
 }
 
-.history-graph-items {
-  counter-reset: list;
-  border-left: 2px solid lightgrey;
-  margin: 1em;
-  padding: 0;
-}
-
-.history-graph-item {
-  list-style: none;
-  margin: 0 0 0.5em 0;
-  padding: 0;
-}
-
-.history-graph-item:before {
-  display: inline-block;
-  width: 1.2em;
-  height: 1.2em;
-  margin: 0 0.5em 0 -0.65em;
-  border-radius: 50%;
-  content: '';
-  text-align: center;
-  background: white;
-  border: 1px solid black;
-  counter-increment: list;
-}
-
 .history-graph {
   background-color: white;
   width: 100%;
   margin-left: 10px;
+}
+
+.mobile-icon {
+  display: block;
+  height: 25px;
+}
+
+.icon-number-wrapper {
+  display: flex;
+}
+
+.desktop-icon {
+  height: 30px;
+}
+
+.mobile-delete-box-button {
+  color: red;
+  position: fixed;
+  right: 2%;
+  bottom: 0;
+  width: 30px;
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .date {
+    float: right;
+    margin-left: 5%;
+  }
+  .box-number {
+    float: right;
+  }
+
+  .box-data {
+    width: 100%;
+    padding: 0% 7% 0% 7%;
+  }
+
+  .icon-number-wrapper {
+    width: 50%;
+  }
+
+  .image {
+    border-radius: 0;
+    width: 100%;
+    padding: 0;
+    margin-top: 1%;
+  }
 }

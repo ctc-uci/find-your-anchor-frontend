@@ -59,6 +59,7 @@ const PickupBox = ({
       boxID,
       status: 'evaluated',
       approved: true,
+      pickup,
       admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
     });
     if (Date.parse(transaction.data[0].mostrecentdate) <= Date.parse(date)) {

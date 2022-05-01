@@ -1,0 +1,11 @@
+.wrapper {
+  display: flex;
+  padding: 10px 0;
+}
+
+.text-wrapper {
+  display: flex;
+  padding-left: 10px;
+  flex-direction: column;
+}
+
