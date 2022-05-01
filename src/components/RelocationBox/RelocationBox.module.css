@@ -19,18 +19,18 @@
 
 .status-message-approved {
   align-self: center;
-  color: #38A169;
+  color: #38a169;
   width: 90%;
 }
 
 .status-message-pending {
-  color: #3182CE;
+  color: #3182ce;
   width: 90%;
 }
 
 .status-message-rejected {
   width: 90%;
-  color: #E53E3E;
+  color: #e53e3e;
 }
 
 .image-wrapper {

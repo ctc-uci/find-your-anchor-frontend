@@ -1,5 +1,8 @@
 .box-list {
   width: 100%;
+  height: calc(90vh - 60px);
+  overflow-x: hidden;
+  overflow-y: scroll;
   z-index: 900;
   display: flex;
   flex-direction: column;
@@ -25,6 +28,8 @@
 .title {
   font-weight: bold;
   padding: 2%;
+  width: 100%;
+  text-align: center;
 }
 
 .box-list-item-text {

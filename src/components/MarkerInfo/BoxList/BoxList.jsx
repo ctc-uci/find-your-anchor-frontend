@@ -4,12 +4,21 @@ import { ChakraProvider, Box, Text } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import styles from './BoxList.module.css';
 import { FYABackend } from '../../../common/utils';
+import usePaginationController from '../../../common/usePaginationController';
+import PaginationController from '../../../common/CommonPaginationController/PaginationController';
 import launchBoxIcon from '../../../assets/BoxIcons/RelocateBoxIcon.svg';
 import foundBoxIcon from '../../../assets/BoxIcons/PickupBoxIcon.svg';
 
 const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox, updateBoxListSwitch }) => {
   // This state contains all boxes to be shown in the right side bar
   const [boxList, setBoxList] = useState([]);
+
+  const [
+    paginatedBoxList,
+    paginatedBoxListIndex,
+    setPaginatedBoxListIndex,
+    totalNumberOfBoxListPages,
+  ] = usePaginationController(boxList, 8);
 
   // Load all boxes in the current selected pin
   // This useEffect is triggered whenever the user clicks on a pin
@@ -21,22 +30,17 @@ const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox, updateBoxLi
           country: selectedCountry,
         },
       });
-      setBoxList([
-        ...anchorBoxes.data,
-        ...anchorBoxes.data,
-        ...anchorBoxes.data,
-        ...anchorBoxes.data,
-      ]);
+      setBoxList(anchorBoxes.data);
     }
   }, [updateBoxListSwitch]);
   return (
     <ChakraProvider>
+      <Text fontSize="lg" className={styles.title}>
+        Zip Code: {selectedZipCode}
+      </Text>
       <div className={styles['box-list']}>
-        <Text fontSize="lg" className={styles.title}>
-          Zip Code: {selectedZipCode}
-        </Text>
-        {boxList &&
-          boxList.map(box => (
+        {paginatedBoxList &&
+          paginatedBoxList.map(box => (
             <Box
               key={box.box_id}
               className={styles['box-list-item']}
@@ -57,6 +61,11 @@ const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox, updateBoxLi
             </Box>
           ))}
       </div>
+      <PaginationController
+        paginatedIndex={paginatedBoxListIndex}
+        setPaginatedIndex={setPaginatedBoxListIndex}
+        totalNumberOfPages={totalNumberOfBoxListPages}
+      />
     </ChakraProvider>
   );
 };

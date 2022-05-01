@@ -87,6 +87,13 @@
   margin-right: 4%;
 }
 
+.box-list-and-pagination {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 140px);
+  justify-content: space-between;
+}
+
 @media screen and (max-width: 768px) {
   .box-approval {
     padding: 1%;
@@ -113,5 +120,9 @@
   .request-changes-text {
     white-space: nowrap;
     text-align: center;
+  }
+
+  .box-list-and-pagination {
+    height: calc(100vh - 140px);
   }
 }
