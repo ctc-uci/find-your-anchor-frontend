@@ -331,8 +331,6 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
           <Flex flexDirection="column" gap="20px">
             {page.map((rowData, index) => {
               prepareRow(rowData);
-              // console.log('Edit Row: ', editFormData);
-              // console.log('Read Row: ', rowData);
               return (
                 <AccordionItem
                   key={rowData.original.id}
