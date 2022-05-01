@@ -102,6 +102,7 @@ const DeleteBoxModal = ({
           transactionID: nextMostRecentTransaction.data[0].transaction_id,
           latitude,
           longitude,
+          isMostRecentDate: true,
         });
         // Update boxInfo to get rid of last transaction
         setTransactionToggle(!transactionToggle);

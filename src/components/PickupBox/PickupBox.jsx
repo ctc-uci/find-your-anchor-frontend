@@ -72,6 +72,7 @@ const PickupBox = ({
         transactionID,
         latitude: coordinates[0],
         longitude: coordinates[1],
+        isMostRecentDate: true,
       });
     } else {
       await FYABackend.put('/boxHistory/approveBox', { transactionID, isMostRecentDate: false });
