@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
@@ -202,21 +203,25 @@ const ExportCSVForm = ({ formID }) => {
                   headerText="Boxes"
                   options={['All Boxes', 'Custom']}
                   isHeader={false}
+                  isInPlane={true}
                 />
                 <AccordionTemplate
                   headerText="Date"
                   options={['All Boxes', 'Single Date', 'Range']}
                   isHeader={false}
+                  isInPlane={true}
                 />
                 <AccordionTemplate
                   headerText="Zip Code"
                   options={['All', 'By Zip Code', 'By State']}
                   isHeader={false}
+                  isInPlane={true}
                 />
                 <AccordionTemplate
                   headerText="Launched Organically?"
                   options={['Yes', 'No']}
                   isHeader={false}
+                  isInPlane={true}
                 />
               </AccordionPanel>
             </AccordionItem>

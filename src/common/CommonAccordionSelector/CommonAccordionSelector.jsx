@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
@@ -12,6 +13,7 @@ import {
   useRadio,
   useRadioGroup,
   VStack,
+  HStack,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import styles from './CommonAccordionSelector.module.css';
@@ -42,16 +44,8 @@ function RadioCard(props) {
 }
 
 // Step 2: Use the `useRadioGroup` hook to control a group of custom radios.
-const CommonAccordionSelector = ({ headerText, options, isHeader }) => {
-  // const options = [
-  //   'Ascending Box Number',
-  //   'Ascending Zip Code',
-  //   'Chronologically',
-  //   'Descending Box Number',
-  //   'Descending Zip Code',
-  // ];
-
-  const { getRootProps, getRadioProps } = useRadioGroup({
+const CommonAccordionSelector = ({ headerText, options, isHeader, isInPlane }) => {
+  const { value, getRootProps, getRadioProps } = useRadioGroup({
     name: 'framework',
     defaultValue: 'react',
     onChange: console.log,
@@ -59,39 +53,64 @@ const CommonAccordionSelector = ({ headerText, options, isHeader }) => {
 
   const group = getRootProps();
 
-  if (isHeader) {
-    return (
-      <Accordion allowMultiple>
-        <AccordionItem>
-          <h2>
-            <AccordionButton>
-              <Text className={styles['csv-form-labels']}>{headerText}</Text>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4}>
-            <VStack align="left" {...group}>
-              {options.map(value => {
-                const radio = getRadioProps({ value });
-                return (
-                  <RadioCard key={value} {...radio}>
-                    {value}
-                  </RadioCard>
-                );
-              })}
-            </VStack>
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
-    );
-  }
   return (
     <Accordion allowMultiple>
       <AccordionItem>
-        <AccordionButton>
-          <Text>{headerText}</Text>
-          <AccordionIcon />
-        </AccordionButton>
+        <h2>
+          <AccordionButton>
+            {value === 'react' ? (
+              <Box>
+                {isHeader ? (
+                  <Box display="flex" mt="2" alignItems="center" justify="space-between">
+                    <Text className={styles['csv-form-labels']}>{headerText}</Text>
+                    <AccordionIcon />
+                  </Box>
+                ) : (
+                  <Box display="flex" mt="2" alignItems="center" justify="space-between">
+                    <Text>{headerText}</Text>
+                    <AccordionIcon />
+                  </Box>
+                )}
+              </Box>
+            ) : (
+              <Box>
+                {isInPlane ? (
+                  <HStack className={styles['header-container']}>
+                    {isHeader ? (
+                      <Box display="flex" mt="2" alignItems="center" justify="space-between">
+                        <Text className={styles['csv-form-labels']}>{headerText}</Text>
+                      </Box>
+                    ) : (
+                      <Box display="flex" mt="2" alignItems="center" justify="space-between">
+                        <Text>{headerText}</Text>
+                      </Box>
+                    )}
+                    <HStack>
+                      <Text>{value}</Text>
+                      <AccordionIcon />
+                    </HStack>
+                  </HStack>
+                ) : (
+                  <VStack spacing={4} align="stretch">
+                    {isHeader ? (
+                      <Box display="flex" mt="2" alignItems="center" justify="space-between">
+                        <Text className={styles['csv-form-labels']}>{headerText}</Text>
+                      </Box>
+                    ) : (
+                      <Box display="flex" mt="2" alignItems="center" justify="space-between">
+                        <Text>{headerText}</Text>
+                      </Box>
+                    )}
+                    <div className={styles['header-selection-container']}>
+                      <Text>{value}</Text>
+                      <AccordionIcon />
+                    </div>
+                  </VStack>
+                )}
+              </Box>
+            )}
+          </AccordionButton>
+        </h2>
         <AccordionPanel pb={4}>
           <VStack align="left" {...group}>
             {options.map(value => {
@@ -111,6 +130,7 @@ const CommonAccordionSelector = ({ headerText, options, isHeader }) => {
 
 CommonAccordionSelector.defaultProps = {
   isHeader: true,
+  isInPlane: false,
 };
 
 CommonAccordionSelector.propTypes = {
@@ -118,6 +138,7 @@ CommonAccordionSelector.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   options: PropTypes.array.isRequired,
   isHeader: PropTypes.bool,
+  isInPlane: PropTypes.bool,
 };
 
 export default CommonAccordionSelector;

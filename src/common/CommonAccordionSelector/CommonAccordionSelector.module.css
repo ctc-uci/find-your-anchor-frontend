@@ -1,11 +1,23 @@
 .csv-form-labels {
   font-size: 20px;
   font-weight: 500;
+  display: flex;
 }
 
 @media screen and (max-width: 768px) {
   .csv-form-labels {
     font-size: 20px;
     font-weight: 500;
+    display: flex;
+  }
+
+  .header-container {
+    display: inline-block;
+    justify-content: space-between;
+  }
+
+  .header-selection-container {
+    display: flex;
+    justify-content: space-between;
   }
 }
