@@ -120,9 +120,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
   };
 
   const addToMap = async e => {
-    // TODO: check if latitude and longitude are undefined for each formData
     e.preventDefault();
-
     try {
       // formDatas structure:
       // [
