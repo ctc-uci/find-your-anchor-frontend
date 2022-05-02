@@ -40,6 +40,7 @@ const PickupBox = ({
   pickup,
   imageStatus,
   admin,
+  verificationPicture,
 }) => {
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
@@ -142,6 +143,9 @@ const PickupBox = ({
             <AccordionPanel className={styles['accordion-panel']} pb={4}>
               {getStatusMessage()}
               <div className={styles['box-details']}>
+                {status !== 'evaluated' && verificationPicture && (
+                  <img src={verificationPicture} alt="" className={styles['image-corners']} />
+                )}
                 {(status !== 'evaluated' || imageStatus !== 'rejected') && picture && (
                   <img
                     src={picture}
@@ -283,6 +287,7 @@ PickupBox.propTypes = {
   fetchBoxes: PropTypes.func.isRequired,
   imageStatus: PropTypes.string.isRequired,
   admin: PropTypes.string.isRequired,
+  verificationPicture: PropTypes.string.isRequired,
 };
 
 export default PickupBox;
