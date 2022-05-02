@@ -31,6 +31,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from './AddBoxForm.module.css';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import useMobileWidth from '../../common/useMobileWidth';
+import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
@@ -65,6 +66,7 @@ const AddBoxForm = () => {
   const navigate = useNavigate();
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { showToast } = useCustomToast();
 
   const {
     register,
@@ -87,7 +89,12 @@ const AddBoxForm = () => {
 
     const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
     if (latitude === undefined && longitude === undefined) {
-      // TODO: display toast component
+      showToast({
+        title: 'Form Error',
+        message: `Cannot find ${formData.zipcode} in country ${formData.country}`,
+        toastPosition: 'bottom-right',
+        type: 'error',
+      });
       console.log(`Cannot find ${formData.zipcode} in country ${formData.country}`);
     } else {
       try {
@@ -103,7 +110,12 @@ const AddBoxForm = () => {
         navigate('/admin');
       } catch (err) {
         setLoading(false);
-        // TODO: show error banner on failure
+        showToast({
+          title: 'Form Error',
+          message: err.message,
+          toastPosition: 'bottom-right',
+          type: 'error',
+        });
         console.log(err.message);
       }
     }

@@ -26,6 +26,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '../../common/FormUtils/DatePicker.css';
 import styles from './RelocateBoxForm.module.css';
 import useMobileWidth from '../../common/useMobileWidth';
+import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 yup.addMethod(yup.number, 'boxExists', validateBoxIdInAnchorBox);
@@ -79,7 +80,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
   const [loading, setLoading] = useState(false);
   const countryOptions = useMemo(() => countryList().getData(), []);
   const isMobile = useMobileWidth();
-
+  const { showToast } = useCustomToast();
   const onSubmit = async data => {
     const formData = data;
     formData.date = formatDate(data.date);
@@ -87,8 +88,12 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
 
     // This must be a toast error because yup validation does not check the uploaded files.
     if (verificationFiles.length === 0) {
-      // TODO: Replace with toast component.
-      alert('Please submit a Box Number Verification Photo');
+      showToast({
+        title: 'Error Submitting Form',
+        message: 'Please submit a Box Number Verification Photo',
+        toastPosition: 'bottom-right',
+        type: 'error',
+      });
       return;
     }
     formData.verificationPicture =
@@ -98,8 +103,12 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
 
     const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
     if (latitude === undefined && longitude === undefined) {
-      // TODO: display toast component
-      alert(`Cannot find ${formData.zipcode} in country ${formData.country}`);
+      showToast({
+        title: 'Error Submitting Form',
+        message: `Cannot find ${formData.zipcode} in country ${formData.country}`,
+        toastPosition: 'bottom-right',
+        type: 'error',
+      });
     } else {
       try {
         setLoading(true);
@@ -116,7 +125,12 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
         setLoading(false);
       } catch (err) {
         setLoading(false);
-        // TODO: show error banner on failure
+        showToast({
+          title: 'Error Submitting Form',
+          message: err.message,
+          toastPosition: 'bottom-right',
+          type: 'error',
+        });
         console.log(err.message);
       }
     }

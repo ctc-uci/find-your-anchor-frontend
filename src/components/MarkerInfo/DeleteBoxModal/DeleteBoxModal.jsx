@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useCustomToast } from '../../ToastProvider/ToastProvider';
 import CommonModal from '../../../common/CommonModal/CommonModal';
 import DeleteBoxModalContent from './DeleteBoxModalContent';
 import { FYABackend } from '../../../common/utils';
@@ -16,6 +17,7 @@ const DeleteBoxModal = ({
   zipCodeData,
   setZipCodeData,
 }) => {
+  const { showToast } = useCustomToast();
   // Deletes the currently selected box in both Anchor_Box and Box_History
   const deleteBox = async () => {
     try {
@@ -66,9 +68,19 @@ const DeleteBoxModal = ({
       }
       // Set the delete box to null
       setSelectedBox(null);
-      // TODO: Add toast to show box deleted
+      showToast({
+        title: `Box #${selectedBox} Deleted`,
+        message: 'Box Successfully Deleted',
+        toastPosition: 'bottom-right',
+        type: 'error',
+      });
     } catch (err) {
-      // TODO: Add toast if something goes wrong
+      showToast({
+        title: `Failed to Delete Box #${selectedBox}`,
+        message: err.message,
+        toastPosition: 'bottom-right',
+        type: 'error',
+      });
       // eslint-disable-next-line no-console
       console.log(err);
     }

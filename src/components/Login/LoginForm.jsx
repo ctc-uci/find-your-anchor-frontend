@@ -9,6 +9,7 @@ import styles from './LoginForm.module.css';
 import TextInput from '../Inputs/TextInput';
 import PasswordInput from '../Inputs/PasswordInput';
 import { Cookies, withCookies } from '../../common/cookie_utils';
+import { useCustomToast } from '../ToastProvider/ToastProvider';
 import {
   logInWithEmailAndPassword,
   useNavigate,
@@ -37,7 +38,7 @@ const LoginForm = ({ cookies, redirectLink }) => {
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-
+  const { showToast } = useCustomToast();
   /**
    * This function handles logging in with email/password (standard log in)
    * If the user signs in successfully, they are redirected to /logout, otherwise they are redirected to the login screen
@@ -47,8 +48,12 @@ const LoginForm = ({ cookies, redirectLink }) => {
     try {
       await logInWithEmailAndPassword(e.email, e.password, '/', navigate, cookies);
     } catch (err) {
-      // TODO: replace this with toast component
-      console.log(err.message);
+      showToast({
+        title: 'Error Logging In',
+        message: err.message,
+        toastPosition: 'bottom-right',
+        type: 'error',
+      });
     }
   };
 

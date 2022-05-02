@@ -22,6 +22,7 @@ import {
 import styles from './ExportCSVForm.module.css';
 import { formatDate, FYABackend } from '../../../common/utils';
 import { isValidRange, isZip, isDate } from './ExportCSVFormValidators';
+import { useCustomToast } from '../../ToastProvider/ToastProvider';
 
 // yup validation
 yup.addMethod(yup.mixed, 'isDate', isDate);
@@ -89,7 +90,7 @@ const ExportCSVForm = ({ formID }) => {
     resolver: yupResolver(schema),
     delayError: 750,
   });
-
+  const { showToast } = useCustomToast();
   const watchAllFields = useWatch({
     control,
   });
@@ -149,19 +150,31 @@ const ExportCSVForm = ({ formID }) => {
     } else if (data.dateOption === 'date-single') {
       formData.singleDate = formatDate(data.singleDate);
     }
+    try {
+      const res = await FYABackend.post('/exportCSV/boxes', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-    const res = await FYABackend.post('/exportCSV/boxes', formData, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    // if there are matching records
-    if (res.data.length > 0) {
-      navigate('/export-csv-preview', { state: { rows: res.data } });
-    } else {
-      // TODO: display toast component
-      console.log('no matching records');
+      // if there are matching records
+      if (res.data.length > 0) {
+        navigate('/export-csv-preview', { state: { rows: res.data } });
+      } else {
+        showToast({
+          title: 'No Matching Records',
+          message: `There was no records that matched your query`,
+          toastPosition: 'bottom-right',
+          type: 'error',
+        });
+      }
+    } catch (err) {
+      showToast({
+        title: 'Error Exporting CSV',
+        message: err.message || err.statusText,
+        toastPosition: 'bottom-right',
+        type: 'error',
+      });
     }
   };
 

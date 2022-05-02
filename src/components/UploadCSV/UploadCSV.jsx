@@ -12,6 +12,7 @@ import CommonModal from '../../common/CommonModal/CommonModal';
 
 import BoxSchema from './UploadCSVUtils';
 import styles from './UploadCSV.module.css';
+import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 const UploadCSV = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const [uploadErrors, setUploadErrors] = useState([]);
   const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-
+  const { showToast } = useCustomToast();
   useEffect(() => {
     if (isUploadingNewFile) {
       setFormDatas([]);
@@ -41,6 +42,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
         error: false,
       };
     } catch (err) {
+      console.log(err);
       err.inner.forEach(e => {
         setUploadErrors(prevState => [...prevState, `${e.message} (line ${i})`]);
       });
@@ -131,6 +133,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
       formDatas.forEach((formData, index) => {
         if (allCoordinates[index].length === 0) {
           // TODO: display toast component if lat/long is not found for this zipcode
+          // Don't know how many toasts I'd be showing here  ¯\_(ツ)_/¯
           hasError = true;
           setIsLoading(false);
         } else {
@@ -160,9 +163,21 @@ const UploadCSV = ({ isOpen, onClose }) => {
         // ]
         setIsLoading(false);
         navigate('/admin');
+        showToast({
+          title: `${CSVFilename} added to Map`,
+          message: `Successfully added ${formDatas.length} Boxes To Map`,
+          toastPosition: 'bottom-left',
+          type: 'success',
+        });
       }
     } catch (err) {
       console.log(err);
+      showToast({
+        title: `Failed to add ${CSVFilename} to Map`,
+        message: err.message,
+        toastPosition: 'bottom',
+        type: 'error',
+      });
     }
   };
 

@@ -11,6 +11,7 @@ import EditableRow from '../EditableRow/EditableRow';
 import { FYABackend, formatDate, getLatLong } from '../../../common/utils';
 import BoxSchema from '../../UploadCSV/UploadCSVUtils';
 import CSVViewTablePagination from './CSVViewTablePagination';
+import { useCustomToast } from '../../ToastProvider/ToastProvider';
 
 const CSVViewTable = ({ rows, boxNumberMap }) => {
   const navigate = useNavigate();
@@ -91,6 +92,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
       gotoPage(currentPage);
     }
   }, [deleted]);
+  const { showToast } = useCustomToast();
 
   // manual = editing the row by clicking on the Edit Icon (not from addToMap)
   const editRow = (e, rowData, firstErrorIndex, manual) => {
@@ -208,6 +210,12 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
           if (allCoordinates[index].length === 0) {
             // if lat/long is not found for this zipcode
             console.log('cannot find latitude for formData: ', formData);
+            showToast({
+              title: `Failed to add boxes to map`,
+              message: `cannot find latitude for Box #${formData.boxNumber}`,
+              toastPosition: 'bottom',
+              type: 'error',
+            });
             hasError = true;
             setIsLoading(false);
             editRow(e, formData, index, false);
@@ -226,7 +234,12 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
           navigate('/admin');
         }
       } catch (err) {
-        console.log(err);
+        showToast({
+          title: `Failed to add boxes to Map`,
+          message: err.message || err.statusText,
+          toastPosition: 'bottom',
+          type: 'error',
+        });
       }
     }
   };
@@ -266,6 +279,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
           <Tbody>
             {page.map((rowData, index) => {
               prepareRow(rowData);
+              console.log(rowData);
               return (
                 <Fragment key={rowData.original.id}>
                   {editId === rowData.original.id ? (
