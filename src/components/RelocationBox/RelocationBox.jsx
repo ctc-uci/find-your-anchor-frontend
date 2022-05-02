@@ -326,7 +326,10 @@ const RelocationBox = ({
                 )}
                 {(status !== 'evaluated' || imageStatus !== 'rejected') && picture && (
                   <>
-                    <FormLabel htmlFor="verificationPicture" className={styles['picture-label']}>
+                    <FormLabel
+                      htmlFor="boxImage"
+                      className={`${styles['picture-label']} ${styles['form-label']}`}
+                    >
                       Box Image
                     </FormLabel>
                     <img

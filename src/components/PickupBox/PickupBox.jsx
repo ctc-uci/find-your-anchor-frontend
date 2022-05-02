@@ -144,16 +144,24 @@ const PickupBox = ({
               {getStatusMessage()}
               <div className={styles['box-details']}>
                 {status !== 'evaluated' && verificationPicture && (
-                  <img src={verificationPicture} alt="" className={styles['image-corners']} />
+                  <>
+                    <FormLabel htmlFor="verificationPicture">Box Number Verification</FormLabel>
+                    <img src={verificationPicture} alt="" className={styles['image-corners']} />
+                  </>
                 )}
                 {(status !== 'evaluated' || imageStatus !== 'rejected') && picture && (
-                  <img
-                    src={picture}
-                    alt=""
-                    className={`${styles['image-corners']}
-                    ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
-                    ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
-                  />
+                  <>
+                    <FormLabel htmlFor="boxImage" className={styles['form-label']}>
+                      Box Image
+                    </FormLabel>
+                    <img
+                      src={picture}
+                      alt=""
+                      className={`${styles['image-corners']}
+                      ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
+                      ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
+                    />
+                  </>
                 )}
                 {picture && status !== 'evaluated' && (
                   <div className={styles['image-functionality-wrapper']}>
