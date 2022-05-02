@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { usePapaParse } from 'react-papaparse';
-// import { PromisePool } from '@supercharge/promise-pool';
 import PropTypes from 'prop-types';
 import { FYABackend, getLatLong } from '../../common/utils';
 
@@ -133,11 +132,9 @@ const UploadCSV = ({ isOpen, onClose }) => {
       let hasError = false;
       formDatas.forEach((formData, index) => {
         if (allCoordinates[index].length === 0) {
-          // if lat/long is not found for this zipcode
-          alert('Cannot find latitude/longitude for zipcode. Please click View file');
+          // TODO: display toast component if lat/long is not found for this zipcode
           hasError = true;
           setIsLoading(false);
-          // editRow(e, formData);
         } else {
           // otherwise, set lat/long for this zipcode
           const [lat, long] = allCoordinates[index];

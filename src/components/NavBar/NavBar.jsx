@@ -50,6 +50,14 @@ const NavBar = ({ isAdmin }) => {
   const AdminLinks = () => (
     <>
       <NavLink
+        to="/"
+        className={navLink =>
+          navLink.isActive ? styles['nav-link-selected'] : styles['nav-link-unselected']
+        }
+      >
+        Admin Dashboard
+      </NavLink>
+      <NavLink
         to="/add-box-form"
         className={navLink =>
           navLink.isActive ? styles['nav-link-selected'] : styles['nav-link-unselected']

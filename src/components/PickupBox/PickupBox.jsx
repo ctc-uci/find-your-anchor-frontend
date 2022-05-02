@@ -55,6 +55,7 @@ const PickupBox = ({
       boxID,
       status: 'evaluated',
       approved: true,
+      pickup,
       admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
     });
 

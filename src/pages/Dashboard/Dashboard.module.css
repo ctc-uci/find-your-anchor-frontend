@@ -20,14 +20,14 @@
 .side-bar-and-map-container {
   padding: 0px;
   display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .side-bar {
   position: relative;
   display: none;
-  height: calc(100vh - 55px);
   width: 25vw;
-  z-index: 400; /* since leaflet has a high z index */
 }
 
 .side-bar.show-review,
@@ -35,18 +35,26 @@
   display: block;
 }
 
-.close-button {
-  position: absolute !important;
-  font-size: 18px;
-  color: #e53e3e;
-  right: 10px;
-  bottom: 10px;
-  z-index: 400; /* since leaflet has a high z index */
+.marker-info-slide,
+.box-approval-slide {
+  width: min(100%, 500px) !important;
+  z-index: 1300;
+  background-color: #eef6f8;
+  height: calc(100% - 55px);
+  overflow-y: hidden;
+  margin-top: 49px;
 }
 
 .map {
-  height: calc(100vh - 55px - 55px);
   width: 100vw;
+}
+
+.admin-map {
+  height: calc(100vh - 55px);
+}
+
+.general-user-map {
+  height: calc(100vh - 49px - 55px);
 }
 
 .map.one-bar-open {
@@ -60,9 +68,16 @@
 .review-submission-button {
   position: absolute !important;
   left: 10px;
-  bottom: 70px;
   z-index: 400; /* since leaflet has a high z index */
   visibility: visible;
+}
+
+.admin-button {
+  bottom: 10px;
+}
+
+.general-user-button {
+  bottom: 70px;
 }
 
 .review-submission-button.show-review {
@@ -71,4 +86,23 @@
 
 .review-submission-button:hover .side-bar {
   display: block;
+}
+
+.close-button {
+  float: right;
+}
+
+@media screen and (max-width: 768px) {
+  .map.one-bar-open {
+    width: 0vw;
+  }
+
+  .side-bar {
+    width: 100vw;
+  }
+
+  .marker-info-slide,
+  .box-approval-slide {
+    width: 100vw !important;
+  }
 }

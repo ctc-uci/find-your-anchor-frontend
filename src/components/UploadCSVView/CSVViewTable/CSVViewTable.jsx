@@ -236,13 +236,6 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
           }
         });
 
-        // set lat/long for each formData
-        // formDatas.forEach((formData, index) => {
-        //   const [lat, long] = allCoordinates[index];
-        //   formDatas[index].latitude = lat;
-        //   formDatas[index].longitude = long;
-        // });
-
         // if none of the rows have any errors
         if (!hasError) {
           await FYABackend.post('/anchorBox/boxes', formDatas);

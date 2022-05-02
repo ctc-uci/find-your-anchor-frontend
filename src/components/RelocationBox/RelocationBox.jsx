@@ -5,6 +5,7 @@ import {
   AccordionPanel,
   AccordionButton,
   AccordionIcon,
+  Button,
   ChakraProvider,
   FormControl,
   FormLabel,
@@ -353,22 +354,43 @@ const RelocationBox = ({
                         </>
                       )}
                     </div>
-                    {/* Approve image button */}
-                    <button
-                      type="button"
-                      className={styles['image-approved-button']}
-                      onClick={async () => updateImageStatus('approved')}
-                    >
-                      <BsFillCheckCircleFill color="green" />
-                    </button>
-                    {/* Reject image button */}
-                    <button
-                      type="button"
-                      className={styles['image-rejected-button']}
-                      onClick={async () => updateImageStatus('rejected')}
-                    >
-                      <BsXCircleFill color="red" />
-                    </button>
+                    {imageStatus !== 'rejected' && imageStatus !== 'approved' && picture && (
+                      <>
+                        {/* Approve image button */}
+                        <button
+                          type="button"
+                          className={styles['image-approved-button']}
+                          onClick={async () => updateImageStatus('approved')}
+                        >
+                          <BsFillCheckCircleFill color="green" />
+                        </button>
+                        {/* Reject image button */}
+                        <button
+                          type="button"
+                          className={styles['image-rejected-button']}
+                          onClick={async () => updateImageStatus('rejected')}
+                        >
+                          <BsXCircleFill color="red" />
+                        </button>
+                      </>
+                    )}
+                    {(imageStatus === 'rejected' || imageStatus === 'approved') && picture && (
+                      <Button
+                        variant="outline"
+                        colorScheme="black"
+                        className={styles['undo-button']}
+                        paddingTop="0px"
+                        paddingBottom="0px"
+                        paddingLeft="8px"
+                        paddingRight="8px"
+                        borderRadius="6px"
+                        borderColor="#E2E8F0"
+                        size="sm"
+                        onClick={async () => updateImageStatus('pending')}
+                      >
+                        Undo
+                      </Button>
+                    )}
                   </div>
                 )}
                 {/* Box Name */}
