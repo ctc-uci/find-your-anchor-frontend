@@ -110,7 +110,7 @@ const AboutPage = () => {
           </Text>
         </div>
         <div className={styles['user-guide-section']}>
-          <Tabs size="lg" color="gray.600">
+          <Tabs size="lg" className={styles.tabs}>
             <TabList>
               <Tab>
                 <Heading size="md" className={styles['tab-heading']}>
@@ -154,7 +154,7 @@ const AboutPage = () => {
                   <br />
                   <strong>
                     If you&apos;d like, you can let us know where you&nbsp;
-                    <a href="/launch-box-form" style={{ color: '#2B6CB0' }}>
+                    <a href="/launch-box-form" className={styles.hyperlink}>
                       launched
                     </a>
                     &nbsp;your box! All you need is a picture of the box number (located in the
@@ -196,7 +196,7 @@ const AboutPage = () => {
                 <Text>
                   <strong>
                     If you&apos;d like, you can&nbsp;
-                    <a href="/found-box-form" style={{ color: '#2B6CB0' }}>
+                    <a href="/found-box-form" className={styles.hyperlink}>
                       claim
                     </a>
                     &nbsp;this box on the map! All you need is a picture of the box number (located
@@ -223,7 +223,7 @@ const AboutPage = () => {
                 <Text>
                   <strong>
                     For any questions, please email us at&nbsp;
-                    <a href="mailto:hello@findyouranchor.us" style={{ color: '#2B6CB0' }}>
+                    <a href="mailto:hello@findyouranchor.us" className={styles.hyperlink}>
                       hello@findyouranchor.us.
                     </a>
                   </strong>

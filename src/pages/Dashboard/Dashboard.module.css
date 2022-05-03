@@ -38,7 +38,7 @@
 .close-button {
   position: absolute !important;
   font-size: 18px;
-  color: #e53e3e;
+  color: var(--color-warning);
   right: 10px;
   bottom: 10px;
   z-index: 400; /* since leaflet has a high z index */
@@ -63,6 +63,8 @@
   bottom: 70px;
   z-index: 400; /* since leaflet has a high z index */
   visibility: visible;
+  background-color: var(--color-hyperlink) !important;
+  color: var(--color-white) !important;
 }
 
 .review-submission-button.show-review {

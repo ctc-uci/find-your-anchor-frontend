@@ -3,6 +3,11 @@
 
 :root {
   font-family: 'Inter', sans-serif;
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-gray: #8e8e8e;
+  --color-light-gray: #e2e8f0;
+  --color-off-white: #f2f2f2;
   --color-teal: #345e80;
   --color-light-mint: #d7eaed;
   --color-mint: #89bfbc;

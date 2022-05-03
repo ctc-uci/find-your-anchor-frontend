@@ -4,7 +4,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Inter', sans-serif !important;
-  color: black !important;
+  color: var(--color-text) !important;
   margin: 0;
   padding: 0;
 }

@@ -17,12 +17,7 @@ const ExportCSV = () => {
             </Text>
           </div>
           <div className={styles['button-section']}>
-            <Button
-              form={formID}
-              type="submit"
-              className={styles['header-button']}
-              colorScheme="teal"
-            >
+            <Button form={formID} type="submit" className={styles['header-button']}>
               Preview CSV
             </Button>
           </div>

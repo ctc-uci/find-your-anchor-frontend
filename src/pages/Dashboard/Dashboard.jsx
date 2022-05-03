@@ -71,7 +71,6 @@ const Dashboard = () => {
           </div>
           {adminIsLoggedIn ? (
             <Button
-              colorScheme="blue"
               className={`${styles['review-submission-button']} ${
                 showReview ? styles['show-review'] : ''
               }`}
@@ -81,7 +80,6 @@ const Dashboard = () => {
             </Button>
           ) : (
             <Button
-              colorScheme="blue"
               className={styles['review-submission-button']}
               onClick={() => navigate('/login')}
             >
