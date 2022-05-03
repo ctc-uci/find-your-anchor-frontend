@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heading, Text, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import { Text, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import { ChakraProvider } from '@chakra-ui/provider';
 import FriendIcon from '../../assets/about-friend-icon.svg';
 import GlobeIcon from '../../assets/about-globe-icon.svg';
@@ -89,7 +89,9 @@ const AboutPage = () => {
           </div>
         </div>
         <div className={styles['site-description-section']}>
-          <Heading className={styles['about-heading']}>How This Works</Heading>
+          <Text className={styles['about-heading']} textStyle="header-1">
+            How This Works
+          </Text>
           <Text className={styles['about-text']}>
             Each box we launch into the world is added to this map. But it doesn&apos;t end there.
             <br />
@@ -113,14 +115,14 @@ const AboutPage = () => {
           <Tabs size="lg" className={styles.tabs}>
             <TabList>
               <Tab>
-                <Heading size="md" className={styles['tab-heading']}>
+                <Text size="md" className={styles['tab-heading']} textStyle="header-1">
                   Launch a Box
-                </Heading>
+                </Text>
               </Tab>
               <Tab>
-                <Heading size="md" className={styles['tab-heading']}>
+                <Text size="md" className={styles['tab-heading']} textStyle="header-1">
                   Found a Box
-                </Heading>
+                </Text>
               </Tab>
             </TabList>
             <TabPanels color="black">

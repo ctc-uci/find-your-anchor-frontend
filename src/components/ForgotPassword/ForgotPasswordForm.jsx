@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Heading, Text } from '@chakra-ui/react';
+import { Button, Text } from '@chakra-ui/react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import styles from './ForgotPasswordForm.module.css';
 import TextInput from '../Inputs/TextInput';
@@ -84,7 +84,9 @@ const ForgotPasswordForm = () => {
 
   return (
     <div className={styles['forgot-password-form-container']}>
-      <Heading className={styles['form-heading']}>Forgot Password</Heading>
+      <Text className={styles['form-heading']} textStyle="header-1">
+        Forgot Password
+      </Text>
       <Text className={styles['info-text']}>
         Please enter your registered FYA email address and we will send you a link to reset your
         password.

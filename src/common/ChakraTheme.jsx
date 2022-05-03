@@ -4,17 +4,17 @@ const ChakraTheme = extendTheme({
   textStyles: {
     'header-1': {
       fontFamily: 'Inter, sans-serif',
-      fontSize: '48px',
+      fontSize: '36px',
       fontWeight: 700,
     },
     'header-2': {
       fontFamily: 'Inter, sans-serif',
-      fontSize: '36px',
+      fontSize: '28px',
       fontWeight: 400,
     },
     subheader: {
       fontFamily: 'Inter, sans-serif',
-      fontSize: '18px',
+      fontSize: '20px',
       fontWeight: 400,
     },
     body: {
