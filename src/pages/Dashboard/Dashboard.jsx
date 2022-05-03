@@ -60,7 +60,6 @@ const Dashboard = () => {
               aria-label="Close Control Panel"
               icon={<CloseIcon />}
               onClick={onBoxApprovalToggle}
-              color="red"
             />
             <BoxApproval />
           </Slide>
