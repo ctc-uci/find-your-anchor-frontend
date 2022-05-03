@@ -1,5 +1,8 @@
 .box-list {
   width: 100%;
+  height: calc(90vh - 60px);
+  overflow-x: hidden;
+  overflow-y: scroll;
   z-index: 900;
   display: flex;
   flex-direction: column;
@@ -12,7 +15,6 @@
   border-radius: 6px;
   background-color: white;
   display: flex;
-  align-items: center;
   justify-content: space-between;
   cursor: pointer;
   margin-bottom: 4%;
@@ -20,9 +22,33 @@
 
 .box-list .box-list-item .box-number {
   font-weight: bold;
+  white-space: nowrap;
 }
 
 .title {
   font-weight: bold;
   padding: 2%;
+  width: 100%;
+  text-align: center;
+}
+
+.box-list-item-text {
+  display: flex;
+  flex-direction: column;
+  float: left;
+}
+
+.box-icon {
+  height: 30px;
+  margin-top: 3px;
+  padding: 0% 15% 0% 7%;
+}
+
+.right-icon {
+  float: right;
+}
+
+.box-list-item-wrapper {
+  display: flex;
+  justify-content: space-between;
 }

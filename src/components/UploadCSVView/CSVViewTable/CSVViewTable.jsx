@@ -3,7 +3,22 @@ import React, { useState, useEffect, Fragment, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import countryList from 'react-select-country-list';
 import PropTypes from 'prop-types';
-import { Button, Stack, Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
+import {
+  Button,
+  Box,
+  Stack,
+  Table,
+  Tbody,
+  Th,
+  Thead,
+  Tr,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Flex,
+} from '@chakra-ui/react';
 import { useTable, usePagination } from 'react-table';
 import zipcodeDataDump from '../../../common/zipcodeDataDump.json';
 
@@ -13,8 +28,10 @@ import EditableRow from '../EditableRow/EditableRow';
 import { FYABackend, formatDate } from '../../../common/utils';
 import BoxSchema from '../../UploadCSV/UploadCSVUtils';
 import CSVViewTablePagination from './CSVViewTablePagination';
+import useMobileWidth from '../../../common/useMobileWidth';
 
 const CSVViewTable = ({ rows, boxNumberMap }) => {
+  const isMobile = useMobileWidth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [formDatas, setFormDatas] = useState(rows);
@@ -222,64 +239,130 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
 
   return (
     <form onSubmit={addToMap} className={styles['csv-table-form']}>
-      <Stack direction="row" justify="right" marginTop="-25px" marginBottom="25px">
-        <select
-          value={pageSize}
-          onChange={e => {
-            setPageSize(Number(e.target.value));
-          }}
-          className={styles['show-pages-select']}
+      <Stack direction="row" justify="right" marginTop="-40px" marginBottom="25px">
+        {!isMobile && (
+          <select
+            value={pageSize}
+            onChange={e => {
+              setPageSize(Number(e.target.value));
+            }}
+            className={styles['show-pages-select']}
+          >
+            {[10, 20, 30, 40, 50].map(pageSizeVal => (
+              <option key={pageSizeVal} value={pageSizeVal}>
+                Show {pageSizeVal}
+              </option>
+            ))}
+          </select>
+        )}
+        <Button
+          isLoading={isLoading}
+          type="submit"
+          color="white"
+          bg="#345E80"
+          borderRadius={isMobile ? 'xl' : 'md'}
         >
-          {[10, 20, 30, 40, 50].map(pageSizeVal => (
-            <option key={pageSizeVal} value={pageSizeVal}>
-              Show {pageSizeVal}
-            </option>
-          ))}
-        </select>
-        <Button isLoading={isLoading} type="submit" color="white" bg="#345E80">
           Add to Map
         </Button>
       </Stack>
-      <div className={`${styles['csv-table-container']} ${styles['scrollable-div']}`}>
-        <Table className={styles['csv-table']}>
-          <Thead>
-            <Tr>
-              <Th>Date</Th>
-              <Th>Box Number</Th>
-              <Th>Zip Code</Th>
-              <Th>Country</Th>
-              <Th>Launched Organically</Th>
-              <Th>&nbsp;</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
+      {!isMobile && (
+        <div className={`${styles['csv-table-container']} ${styles['scrollable-div']}`}>
+          <Table className={styles['csv-table']}>
+            <Thead>
+              <Tr>
+                <Th>Date</Th>
+                <Th>Box Number</Th>
+                <Th>Zip Code</Th>
+                <Th>Country</Th>
+                <Th>Launched Organically</Th>
+                <Th>&nbsp;</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {page.map((rowData, index) => {
+                prepareRow(rowData);
+                return (
+                  <Fragment key={rowData.original.id}>
+                    {editId === rowData.original.id ? (
+                      <EditableRow
+                        editFormData={editFormData}
+                        handleEditFormSubmit={handleEditFormSubmit}
+                        isError={rowData.values.error}
+                        boxNumberMap={boxNumbers}
+                        updateBoxNumberMap={updateBoxNumberMap}
+                        lineNumber={pageIndex * 10 + index + 1}
+                        handleDeleteRow={handleDeleteRow}
+                      />
+                    ) : (
+                      <ReadOnlyRow
+                        data={rowData}
+                        editRow={editRow}
+                        handleDeleteRow={handleDeleteRow}
+                        isError={rowData.values.error}
+                      />
+                    )}
+                  </Fragment>
+                );
+              })}
+            </Tbody>
+          </Table>
+        </div>
+      )}
+      {isMobile && (
+        <Accordion allowToggle>
+          <Flex flexDirection="column" gap="20px">
             {page.map((rowData, index) => {
               prepareRow(rowData);
               return (
-                <Fragment key={rowData.original.id}>
-                  {editId === rowData.original.id ? (
-                    <EditableRow
-                      editFormData={editFormData}
-                      handleEditFormSubmit={handleEditFormSubmit}
-                      isError={rowData.values.error}
-                      boxNumberMap={boxNumbers}
-                      updateBoxNumberMap={updateBoxNumberMap}
-                      lineNumber={pageIndex * 10 + index + 1}
-                    />
-                  ) : (
-                    <ReadOnlyRow
-                      data={rowData}
-                      editRow={editRow}
-                      handleDeleteRow={handleDeleteRow}
-                      isError={rowData.values.error}
-                    />
+                <AccordionItem
+                  key={rowData.original.id}
+                  borderWidth="1px"
+                  borderRadius="8px"
+                  borderColor={rowData.values.error && 'red'}
+                >
+                  {({ isExpanded }) => (
+                    <>
+                      <h2>
+                        <AccordionButton
+                          _expanded={{ bg: 'white' }}
+                          onClick={() => {
+                            setEditId(null);
+                          }}
+                        >
+                          <Box flex="1" textAlign="left" fontWeight="bold">
+                            {!isExpanded ? `Box #${rowData.values.boxNumber}` : ''}
+                          </Box>
+                          <AccordionIcon />
+                        </AccordionButton>
+                      </h2>
+                      <AccordionPanel pb={4}>
+                        {editId === rowData.original.id ? (
+                          <EditableRow
+                            editFormData={editFormData}
+                            handleEditFormSubmit={handleEditFormSubmit}
+                            isError={rowData.values.error}
+                            boxNumberMap={boxNumbers}
+                            updateBoxNumberMap={updateBoxNumberMap}
+                            lineNumber={pageIndex * 10 + index + 1}
+                            handleDeleteRow={handleDeleteRow}
+                          />
+                        ) : (
+                          <ReadOnlyRow
+                            data={rowData}
+                            editRow={editRow}
+                            handleDeleteRow={handleDeleteRow}
+                            isError={rowData.values.error}
+                          />
+                        )}
+                      </AccordionPanel>
+                    </>
                   )}
-                </Fragment>
+                </AccordionItem>
               );
             })}
-          </Tbody>
-        </Table>
-      </div>
+          </Flex>
+        </Accordion>
+      )}
       <CSVViewTablePagination
         pageLength={pageOptions.length}
         pageIndex={pageIndex}
