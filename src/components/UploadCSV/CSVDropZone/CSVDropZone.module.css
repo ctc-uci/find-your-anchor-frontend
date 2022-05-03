@@ -1,6 +1,3 @@
-:root {
-  --dropzone-color: #fafafa;
-}
 
 .dropzone-content {
   display: flex;
@@ -17,12 +14,12 @@
   border-width: 2px;
   border-style: dashed;
   border-color: #b9b9b9;
-  background-color: var(--dropzone-color);
   color: #b9b9b9;
 }
 
 .dropzone-text {
   color: black;
+  text-align: center;
 }
 
 .dropzone-support-text {
@@ -41,6 +38,15 @@
 
 .dropzone-icon {
   width: 80px;
-  height: 80px;
+  height: 70px;
   margin-bottom: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .dropzone-content {
+    width: 100%;
+    height: 80%;
+    margin-bottom: 50px;
+    margin-top: 50px;
+  }
 }

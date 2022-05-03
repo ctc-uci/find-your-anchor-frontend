@@ -3,10 +3,18 @@ import PropTypes from 'prop-types';
 import { Button, Text, Stack } from '@chakra-ui/react';
 import CommonModal from '../../../common/CommonModal/CommonModal';
 import styles from './DeleteBoxModal.module.css';
+import useMobileWidth from '../../../common/useMobileWidth';
 
 const DeleteBoxModal = ({ isOpen, onClose, onDelete }) => {
+  const isMobile = useMobileWidth();
+
   return (
-    <CommonModal isOpen={isOpen} onClose={onClose} width={500} height={150}>
+    <CommonModal
+      isOpen={isOpen}
+      onClose={onClose}
+      width={!isMobile ? '500px' : '300px'}
+      height="200px"
+    >
       <div className={styles['delete-modal-container']}>
         <Text fontSize="xl" fontWeight="bold" className={styles['delete-modal-text']}>
           Delete Box

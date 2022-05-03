@@ -9,6 +9,7 @@ import UploadModalContent from './UploadModalContent/UploadModalContent';
 import SuccessModalContent from './SuccessModalContent/SuccessModalContent';
 import ErrorModalContent from './ErrorModalContent/ErrorModalContent';
 import CommonModal from '../../common/CommonModal/CommonModal';
+import useMobileWidth from '../../common/useMobileWidth';
 
 import BoxSchema from './UploadCSVUtils';
 import styles from './UploadCSV.module.css';
@@ -23,6 +24,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const [uploadErrors, setUploadErrors] = useState([]);
   const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const isMobile = useMobileWidth();
 
   useEffect(() => {
     if (isUploadingNewFile) {
@@ -159,12 +161,16 @@ const UploadCSV = ({ isOpen, onClose }) => {
         //   }
         // ]
         setIsLoading(false);
-        navigate('/admin');
+        navigate('/');
       }
     } catch (err) {
       console.log(err);
     }
   };
+
+  if (isMobile && isUploadingNewFile && isOpen) {
+    return <UploadModalContent setCSVFile={setCSVFile} onUpload={onUpload} />;
+  }
 
   return (
     <CommonModal isOpen={isOpen} onClose={onCloseModal} className={styles['common-modal']}>
@@ -179,7 +185,6 @@ const UploadCSV = ({ isOpen, onClose }) => {
           if (uploadErrors.length === 0) {
             return (
               <SuccessModalContent
-                CSVFileName={CSVFilename}
                 setIsUploadingNewFile={setIsUploadingNewFile}
                 onEditViewFile={onEditViewFile}
               />
@@ -199,9 +204,14 @@ const UploadCSV = ({ isOpen, onClose }) => {
   );
 };
 
+UploadCSV.defaultProps = {
+  isOpen: true,
+  onClose: () => {},
+};
+
 UploadCSV.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func,
 };
 
 export default UploadCSV;
