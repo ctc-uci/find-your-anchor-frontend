@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import countryList from 'react-select-country-list';
 import { FYABackend } from '../../common/utils';
-import zipcodeDataDump from '../../common/allCountries.json';
+import zipcodeDataDump from '../../common/zipcodeDataDump.json';
 
 function validateZipcodeInCountry() {
   return this.test('isZipInCountry', async function zipcodeAndCountryCheck({ zipCode, country }) {

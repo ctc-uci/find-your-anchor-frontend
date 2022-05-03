@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { usePapaParse } from 'react-papaparse';
 import PropTypes from 'prop-types';
 import { FYABackend } from '../../common/utils';
-import zipcodeDataDump from '../../common/allCountries.json';
+import zipcodeDataDump from '../../common/zipcodeDataDump.json';
 
 import UploadModalContent from './UploadModalContent/UploadModalContent';
 import SuccessModalContent from './SuccessModalContent/SuccessModalContent';

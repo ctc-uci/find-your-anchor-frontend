@@ -5,7 +5,7 @@ import countryList from 'react-select-country-list';
 import PropTypes from 'prop-types';
 import { Button, Stack, Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
 import { useTable, usePagination } from 'react-table';
-import zipcodeDataDump from '../../../common/allCountries.json';
+import zipcodeDataDump from '../../../common/zipcodeDataDump.json';
 
 import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
