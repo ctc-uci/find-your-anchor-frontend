@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import countryList from 'react-select-country-list';
 import { v4 as uuidv4 } from 'uuid';
 import { usePapaParse } from 'react-papaparse';
 import PropTypes from 'prop-types';
-import { FYABackend, getLatLong } from '../../common/utils';
+import { FYABackend } from '../../common/utils';
+import zipcodeDataDump from '../../common/zipcodeDataDump.json';
 
 import UploadModalContent from './UploadModalContent/UploadModalContent';
 import SuccessModalContent from './SuccessModalContent/SuccessModalContent';
@@ -120,49 +122,49 @@ const UploadCSV = ({ isOpen, onClose }) => {
   };
 
   const addToMap = async e => {
-    // TODO: check if latitude and longitude are undefined for each formData
     e.preventDefault();
-
     try {
-      // find lat/long for each formData
-      const allCoordinates = await Promise.all(
-        formDatas.map(async formData => getLatLong(formData.zipCode, formData.country)),
-      );
+      // formDatas structure:
+      // [
+      //   {
+      //     id,
+      //     boxNumber,
+      //     date,
+      //     zipCode,
+      //     country,
+      //     launchedOrganically,
+      //     error,
+      //     latitude,
+      //     longitude,
+      //   }
+      // ]
 
-      let hasError = false;
+      // if no errors with any of the rows, set lat/long for each row
       formDatas.forEach((formData, index) => {
-        if (allCoordinates[index].length === 0) {
-          // TODO: display toast component if lat/long is not found for this zipcode
-          hasError = true;
-          setIsLoading(false);
-        } else {
-          // otherwise, set lat/long for this zipcode
-          const [lat, long] = allCoordinates[index];
-          formDatas[index].latitude = lat;
-          formDatas[index].longitude = long;
-        }
+        const countryCode = countryList().getValue(formData.country);
+        formDatas[index].country = countryCode;
+        formDatas[index].latitude = zipcodeDataDump[countryCode][formData.zipCode].lat;
+        formDatas[index].longitude = zipcodeDataDump[countryCode][formData.zipCode].long;
       });
 
-      // if none of the rows have any errors
-      if (!hasError) {
-        await FYABackend.post('/anchorBox/boxes', formDatas);
-        // formDatas structure:
-        // [
-        //   {
-        //     id,
-        //     boxNumber,
-        //     date,
-        //     zipCode,
-        //     country,
-        //     launchedOrganically,
-        //     error,
-        //     latitude,
-        //     longitude,
-        //   }
-        // ]
-        setIsLoading(false);
-        navigate('/');
-      }
+      // formDatas structure:
+      // [
+      //   {
+      //     id,
+      //     boxNumber,
+      //     date,
+      //     zipCode,
+      //     country,
+      //     launchedOrganically,
+      //     error,
+      //     latitude,
+      //     longitude,
+      //   }
+      // ]
+
+      await FYABackend.post('/anchorBox/boxes', formDatas);
+      setIsLoading(false);
+      navigate('/');
     } catch (err) {
       console.log(err);
     }
