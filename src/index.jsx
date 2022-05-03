@@ -19,6 +19,7 @@ import LoginPage from './pages/Login/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
 import AboutPage from './pages/About/AboutPage';
 import ChakraTheme from './common/ChakraTheme';
+import UploadCSV from './components/UploadCSV/UploadCSV';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -62,6 +63,11 @@ ReactDOM.render(
                 exact
                 path="/upload-csv-view"
                 element={<ProtectedRoute Component={UploadCSVView} redirectPath="/login" />}
+              />
+              <Route
+                exact
+                path="/upload-csv"
+                element={<ProtectedRoute Component={UploadCSV} redirectPath="/login" />}
               />
             </Route>
           </Routes>

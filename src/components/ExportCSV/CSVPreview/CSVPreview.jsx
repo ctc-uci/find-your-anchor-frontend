@@ -6,6 +6,7 @@ import styles from './CSVPreview.module.css';
 import ExportCSVRow from '../ExportCSVRow/ExportCSVRow';
 import renameProperty from '../ExportCSVUtils';
 
+// this component is used for Export CSV
 const CSVPreview = ({ formValues }) => {
   return (
     <div className={styles['csv-preview']}>

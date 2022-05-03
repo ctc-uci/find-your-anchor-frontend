@@ -40,6 +40,7 @@ const PickupBox = ({
   pickup,
   imageStatus,
   admin,
+  verificationPicture,
 }) => {
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
@@ -55,6 +56,7 @@ const PickupBox = ({
       boxID,
       status: 'evaluated',
       approved: true,
+      pickup,
       admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
     });
 
@@ -141,14 +143,25 @@ const PickupBox = ({
             <AccordionPanel className={styles['accordion-panel']} pb={4}>
               {getStatusMessage()}
               <div className={styles['box-details']}>
+                {status !== 'evaluated' && verificationPicture && (
+                  <>
+                    <FormLabel htmlFor="verificationPicture">Box Number Verification</FormLabel>
+                    <img src={verificationPicture} alt="" className={styles['image-corners']} />
+                  </>
+                )}
                 {(status !== 'evaluated' || imageStatus !== 'rejected') && picture && (
-                  <img
-                    src={picture}
-                    alt=""
-                    className={`${styles['image-corners']}
-                    ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
-                    ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
-                  />
+                  <>
+                    <FormLabel htmlFor="boxImage" className={styles['form-label']}>
+                      Box Image
+                    </FormLabel>
+                    <img
+                      src={picture}
+                      alt=""
+                      className={`${styles['image-corners']}
+                      ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
+                      ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
+                    />
+                  </>
                 )}
                 {picture && status !== 'evaluated' && (
                   <div className={styles['image-functionality-wrapper']}>
@@ -282,6 +295,7 @@ PickupBox.propTypes = {
   fetchBoxes: PropTypes.func.isRequired,
   imageStatus: PropTypes.string.isRequired,
   admin: PropTypes.string.isRequired,
+  verificationPicture: PropTypes.string.isRequired,
 };
 
 export default PickupBox;

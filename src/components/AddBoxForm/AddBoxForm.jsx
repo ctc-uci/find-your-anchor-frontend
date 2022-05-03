@@ -88,7 +88,7 @@ const AddBoxForm = () => {
     const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
     if (latitude === undefined && longitude === undefined) {
       // TODO: display toast component
-      alert(`Cannot find ${formData.zipcode} in country ${formData.country}`);
+      console.log(`Cannot find ${formData.zipcode} in country ${formData.country}`);
     } else {
       try {
         setLoading(true);
@@ -97,9 +97,10 @@ const AddBoxForm = () => {
           ...formData,
           latitude: latitude,
           longitude: longitude,
+          showOnMap: true,
         });
         setLoading(false);
-        navigate('/');
+        navigate('/admin');
       } catch (err) {
         setLoading(false);
         // TODO: show error banner on failure

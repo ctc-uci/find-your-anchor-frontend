@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { ChakraProvider, Button } from '@chakra-ui/react';
+import React, { useEffect, useState, useRef } from 'react';
+import { ChakraProvider, Button, Slide, IconButton, useDisclosure } from '@chakra-ui/react';
+import { CloseIcon } from '@chakra-ui/icons';
+
 import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 import Map from '../../components/Map/Map';
@@ -10,8 +12,10 @@ import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
 
 const Dashboard = () => {
-  // This state determines whether or not to show the admin approval (left) side bar
-  const [showReview, setShowReview] = useState(false);
+  const navigate = useNavigate();
+  const { isOpen: boxApprovalIsOpen, onToggle: onBoxApprovalToggle } = useDisclosure();
+  const { isOpen: markerInfoIsOpen, onToggle: onMarkerInfoToggle } = useDisclosure();
+
   // This state contains the currently selected zip code (set when a user clicks on a map pin)
   const [selectedZipCode, setSelectedZipCode] = useState(null);
   // This state contains the currently selected country (set when a user clicks on a map pin)
@@ -31,7 +35,16 @@ const Dashboard = () => {
     setAdminIsLoggedIn((await getCurrentUser(auth)) !== null);
   }, []);
 
-  const navigate = useNavigate();
+  // This function opens the left sidebar closes the right sidebar when the review submission button is clicked
+  const handleReviewSubmissionsClicked = () => {
+    // Close right sidebar
+    if (markerInfoIsOpen) onMarkerInfoToggle();
+    setSelectedZipCode(null);
+    setSelectedCountry(null);
+    // Toggle left sidebar
+    onBoxApprovalToggle();
+  };
+  const btnRef = useRef();
   // A list containing all unique zip codes stored in Anchor_Box
   const [zipCodeData, setZipCodeData] = useState([]);
   return (
@@ -41,22 +54,20 @@ const Dashboard = () => {
       </div>
       <div className={styles['admin-dashboard-container']}>
         <div className={styles['side-bar-and-map-container']}>
-          <div className={`${styles['side-bar']} ${showReview ? styles['show-review'] : ''}`}>
-            <BoxApproval />
-            <Button
-              variant="link"
-              colorScheme="white"
+          <Slide className={styles['box-approval-slide']} direction="left" in={boxApprovalIsOpen}>
+            <IconButton
               className={styles['close-button']}
-              onClick={() => setShowReview(false)}
-            >
-              Close
-            </Button>
-          </div>
+              aria-label="Close Control Panel"
+              icon={<CloseIcon />}
+              onClick={onBoxApprovalToggle}
+              color="red"
+            />
+            <BoxApproval />
+          </Slide>
           <div
-            className={`${styles.map}
-            ${showReview && !selectedZipCode ? styles['one-bar-open'] : ''}
-            ${selectedZipCode && !showReview ? styles['one-bar-open'] : ''}
-            ${selectedZipCode && showReview ? styles['two-bars-open'] : ''}`}
+            className={`${styles.map} ${
+              adminIsLoggedIn ? `${styles['admin-map']}` : `${styles['general-user-map']}`
+            }`}
           >
             <Map
               setSelectedZipCode={setSelectedZipCode}
@@ -67,47 +78,50 @@ const Dashboard = () => {
               setUpdateBoxListSwitch={setUpdateBoxListSwitch}
               zipCodeData={zipCodeData}
               setZipCodeData={setZipCodeData}
+              boxApprovalIsOpen={boxApprovalIsOpen}
+              onBoxApprovalToggle={onBoxApprovalToggle}
+              onMarkerInfoToggle={onMarkerInfoToggle}
+              markerInfoIsOpen={markerInfoIsOpen}
             />
           </div>
           {adminIsLoggedIn ? (
             <Button
-              className={`${styles['review-submission-button']} ${
-                showReview ? styles['show-review'] : ''
-              }`}
-              onClick={() => setShowReview(true)}
+              className={`${styles['review-submission-button']} ${styles['admin-button']}`}
+              ref={btnRef}
+              onClick={handleReviewSubmissionsClicked}
             >
               Review Submission
             </Button>
           ) : (
             <Button
-              className={styles['review-submission-button']}
+              className={`${styles['review-submission-button']} ${styles['general-user-button']}`}
               onClick={() => navigate('/login')}
             >
               Admin Login
             </Button>
           )}
-          <div
-            className={`${styles['side-bar']} ${
-              selectedZipCode && selectedCountry ? styles['show-info'] : ''
-            }`}
-          >
-            <MarkerInfo
-              selectedZipCode={selectedZipCode}
-              selectedCountry={selectedCountry}
-              setSelectedZipCode={setSelectedZipCode}
-              setSelectedCountry={setSelectedCountry}
-              setUpdateBoxListSwitch={setUpdateBoxListSwitch}
-              updateBoxListSwitch={updateBoxListSwitch}
-              setSelectedBox={setSelectedBox}
-              selectedBox={selectedBox}
-              adminIsLoggedIn={adminIsLoggedIn}
-              zipCodeData={zipCodeData}
-              setZipCodeData={setZipCodeData}
-            />
+          <div className={`${styles['side-bar']} ${markerInfoIsOpen ? styles['show-info'] : ''}`}>
+            <Slide className={styles['marker-info-slide']} direction="right" in={markerInfoIsOpen}>
+              <MarkerInfo
+                selectedZipCode={selectedZipCode}
+                selectedCountry={selectedCountry}
+                setSelectedZipCode={setSelectedZipCode}
+                setSelectedCountry={setSelectedCountry}
+                setUpdateBoxListSwitch={setUpdateBoxListSwitch}
+                updateBoxListSwitch={updateBoxListSwitch}
+                setSelectedBox={setSelectedBox}
+                selectedBox={selectedBox}
+                adminIsLoggedIn={adminIsLoggedIn}
+                zipCodeData={zipCodeData}
+                setZipCodeData={setZipCodeData}
+                onMarkerInfoToggle={onMarkerInfoToggle}
+                markerInfoIsOpen={markerInfoIsOpen}
+              />
+            </Slide>
           </div>
+          {!adminIsLoggedIn && <Footer />}
         </div>
       </div>
-      {!adminIsLoggedIn && <Footer />}
     </ChakraProvider>
   );
 };
