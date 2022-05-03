@@ -42,7 +42,6 @@
 
 .submit-button {
   float: right;
-  margin-bottom: 3%;
 }
 
 .pickup-box-photo-preview-section {
@@ -53,7 +52,28 @@
   display: none;
 }
 
+.verification-sub-label {
+  opacity: 36%;
+}
+
 .pickup-box-info-section-left,
 .pickup-box-info-section-right {
   width: 40%;
+}
+
+.privacy-statement {
+  margin-left: 3%;
+  padding-bottom: 5%;
+}
+
+@media screen and (max-width: 768px) {
+  .pickup-box-form {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .pickup-box-info-section-left,
+  .pickup-box-info-section-right {
+    width: 80%;
+  }
 }

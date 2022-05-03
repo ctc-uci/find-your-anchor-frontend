@@ -11,14 +11,18 @@ import {
   Input,
   Textarea,
 } from '@chakra-ui/react';
-
+import countryList from 'react-select-country-list';
 import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
 import PropTypes from 'prop-types';
 import styles from './PickupBox.module.css';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
-import PickupBoxIcon from '../BoxIcons/PickupBoxIcon.svg';
-import ApprovedBoxEmail from '../Email/EmailTemplates/ApprovedBoxEmail';
+import PickupBoxIcon from '../../assets/BoxIcons/PickupBoxIcon.svg';
+import ApprovedPickupIcon from '../../assets/BoxIcons/ApprovedPickupIcon.svg';
+import RejectedPickupIcon from '../../assets/BoxIcons/RejectedPickupIcon.svg';
+import PendingPickupIcon from '../../assets/BoxIcons/PendingPickupIcon.svg';
+import AdminApprovalProcessEmail from '../Email/EmailTemplates/AdminApprovalProcessEmail';
 import { FYABackend, getLatLong, sendEmail } from '../../common/utils';
+import { auth, getCurrentUser } from '../../common/auth_utils';
 
 const PickupBox = ({
   approved,
@@ -27,6 +31,7 @@ const PickupBox = ({
   boxHolderName,
   boxHolderEmail,
   zipCode,
+  country,
   picture,
   date,
   status,
@@ -34,6 +39,8 @@ const PickupBox = ({
   fetchBoxes,
   pickup,
   imageStatus,
+  admin,
+  verificationPicture,
 }) => {
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
@@ -42,15 +49,19 @@ const PickupBox = ({
   // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
   // This method is called when the approve box icon is clicked
   const approvePickupBox = async id => {
+    const user = await getCurrentUser(auth);
+    const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
     await FYABackend.put('/boxHistory/update', {
       transactionID: id,
       boxID,
       status: 'evaluated',
       approved: true,
+      pickup,
+      admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
     });
 
     // TODO: REPLACE US WITH COUNTRY INPUT
-    let coordinates = await getLatLong(zipCode, 'US');
+    let coordinates = await getLatLong(zipCode, country || 'US');
     if (coordinates.length !== 2) {
       coordinates = [0, 0];
     }
@@ -62,7 +73,7 @@ const PickupBox = ({
     });
     const requests = [
       fetchBoxes('under review', true),
-      sendEmail(boxHolderName, boxHolderEmail, <ApprovedBoxEmail boxHolderName={boxHolderName} />),
+      sendEmail(boxHolderName, boxHolderEmail, <AdminApprovalProcessEmail type="approved" />),
     ];
     await Promise.all(requests);
   };
@@ -76,19 +87,47 @@ const PickupBox = ({
     await fetchBoxes(status, true);
   };
 
+  // A function that changes the color of the relocation box icon depending on whether it's approved, rejected, pending, or not yet evaluated
+  const getColoredIcon = () => {
+    if (status === 'evaluated' && approved) {
+      return ApprovedPickupIcon;
+    }
+    if (status === 'evaluated' && !approved) {
+      return RejectedPickupIcon;
+    }
+    if (status === 'pending changes') {
+      return PendingPickupIcon;
+    }
+    return PickupBoxIcon;
+  };
+
+  // A function that creates the string that identifies which admin evaluated the box
+  const getStatusMessage = () => {
+    if (status === 'evaluated' && approved) {
+      return <h4 className={styles['status-message-approved']}>Approved by {admin}</h4>;
+    }
+    if (status === 'evaluated' && !approved) {
+      return <h4 className={styles['status-message-rejected']}>Rejected by {admin}</h4>;
+    }
+    if (status === 'pending changes') {
+      return <h4 className={styles['status-message-pending']}>Pending Review by {admin}</h4>;
+    }
+    return '';
+  };
+
   return (
     <ChakraProvider>
       <div
         className={`${styles.box}
-        ${status === 'evaluated' && approved === true ? styles['box-approved'] : ''}
-        ${status === 'evaluated' && approved === false ? styles['box-rejected'] : ''}`}
+        ${status === 'evaluated' && approved ? styles['box-approved'] : ''}
+        ${status === 'evaluated' && !approved ? styles['box-rejected'] : ''}`}
       >
         <Accordion allowToggle>
           <AccordionItem>
             {/* Pickup box ID and date */}
             <h3>
               <AccordionButton className={styles['accordion-button']}>
-                <img src={PickupBoxIcon} alt="" />
+                <img src={getColoredIcon()} alt="" />
                 <div className={styles['title-div']}>
                   <p className={styles.title}>
                     <p className={styles['box-number']}>Box #{boxID}</p>
@@ -102,15 +141,27 @@ const PickupBox = ({
             </h3>
             {/* Box details */}
             <AccordionPanel className={styles['accordion-panel']} pb={4}>
+              {getStatusMessage()}
               <div className={styles['box-details']}>
+                {status !== 'evaluated' && verificationPicture && (
+                  <>
+                    <FormLabel htmlFor="verificationPicture">Box Number Verification</FormLabel>
+                    <img src={verificationPicture} alt="" className={styles['image-corners']} />
+                  </>
+                )}
                 {(status !== 'evaluated' || imageStatus !== 'rejected') && picture && (
-                  <img
-                    src={picture}
-                    alt=""
-                    className={`${styles['image-corners']}
-                    ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
-                    ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
-                  />
+                  <>
+                    <FormLabel htmlFor="boxImage" className={styles['form-label']}>
+                      Box Image
+                    </FormLabel>
+                    <img
+                      src={picture}
+                      alt=""
+                      className={`${styles['image-corners']}
+                      ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
+                      ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
+                    />
+                  </>
                 )}
                 {picture && status !== 'evaluated' && (
                   <div className={styles['image-functionality-wrapper']}>
@@ -168,6 +219,16 @@ const PickupBox = ({
                     Zip Code
                   </FormLabel>
                   <Input readOnly id="zipCode" type="zipCode" value={zipCode} />
+                  {/* Box country */}
+                  <FormLabel htmlFor="country" className={styles['form-label']}>
+                    Country
+                  </FormLabel>
+                  <Input
+                    readOnly
+                    id="country"
+                    type="country"
+                    value={country ? countryList().getLabel(country) : ''}
+                  />
                   {/* Rejection reason text area (only show if box has been evaluated and bxo was rejected) */}
                   {status === 'evaluated' && !approved && (
                     <>
@@ -225,6 +286,7 @@ PickupBox.propTypes = {
   boxHolderName: PropTypes.string.isRequired,
   boxHolderEmail: PropTypes.string.isRequired,
   zipCode: PropTypes.string.isRequired,
+  country: PropTypes.string.isRequired,
   picture: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
@@ -232,6 +294,8 @@ PickupBox.propTypes = {
   pickup: PropTypes.bool.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
   imageStatus: PropTypes.string.isRequired,
+  admin: PropTypes.string.isRequired,
+  verificationPicture: PropTypes.string.isRequired,
 };
 
 export default PickupBox;

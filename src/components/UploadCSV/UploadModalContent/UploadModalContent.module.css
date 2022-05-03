@@ -8,11 +8,31 @@
 
 .upload-modal-title {
   color: black;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 2rem;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .upload-modal-button {
   margin-top: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .upload-modal-content {
+    height: 700px;
+  }
+
+  .upload-modal-title {
+    margin-top: 30px;
+  }
+
+  .upload-modal-button {
+    padding: 10px;
+  }
+
+  .upload-modal-back-button {
+    position: relative;
+    right: 48%;
+  }
 }
