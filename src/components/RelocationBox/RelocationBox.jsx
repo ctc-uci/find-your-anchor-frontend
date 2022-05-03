@@ -188,9 +188,9 @@ const RelocationBox = ({
 
     if (Date.parse(transaction.data[0].mostrecentdate) <= Date.parse(date)) {
       // Just in case the country value is null so it doesnt break, we can remove it once we clear the DB and have correct data
-      let coordinates = await getLatLong(zipCode, formData.country.value || 'US');
+      let coordinates = await getLatLong(zipCode, formData.country.value);
       if (coordinates.length !== 2) {
-        coordinates = [0, 0];
+        coordinates = [null, null];
       }
 
       await FYABackend.put('/boxHistory/approveBox', {

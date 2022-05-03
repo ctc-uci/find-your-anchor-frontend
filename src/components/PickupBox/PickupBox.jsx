@@ -64,9 +64,9 @@ const PickupBox = ({
     });
     if (Date.parse(transaction.data[0].mostrecentdate) <= Date.parse(date)) {
       // TODO: REPLACE US WITH COUNTRY INPUT
-      let coordinates = await getLatLong(zipCode, country || 'US');
+      let coordinates = await getLatLong(zipCode, country);
       if (coordinates.length !== 2) {
-        coordinates = [0, 0];
+        coordinates = [null, null];
       }
 
       await FYABackend.put('/boxHistory/approveBox', {
