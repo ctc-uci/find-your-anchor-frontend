@@ -82,6 +82,7 @@ const RelocationBox = ({
   launchedOrganically,
   imageStatus,
   admin,
+  verificationPicture,
 }) => {
   const countryOptions = useMemo(() => countryList().getData(), []);
   const boxFormData = {
@@ -315,14 +316,30 @@ const RelocationBox = ({
                 )}
               </div>
               <div className={styles['box-details']}>
+                {status !== 'evaluated' && verificationPicture && (
+                  <>
+                    <FormLabel htmlFor="verificationPicture" className={styles['picture-label']}>
+                      Box Number Verification
+                    </FormLabel>
+                    <img src={verificationPicture} alt="" className={styles['image-corners']} />
+                  </>
+                )}
                 {(status !== 'evaluated' || imageStatus !== 'rejected') && picture && (
-                  <img
-                    src={picture}
-                    alt=""
-                    className={`${styles['image-corners']}
-                    ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
-                    ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
-                  />
+                  <>
+                    <FormLabel
+                      htmlFor="boxImage"
+                      className={`${styles['picture-label']} ${styles['form-label']}`}
+                    >
+                      Box Image
+                    </FormLabel>
+                    <img
+                      src={picture}
+                      alt=""
+                      className={`${styles['image-corners']}
+                      ${imageStatus === 'approved' ? `${styles['image-approved']}` : ''}
+                      ${imageStatus === 'rejected' ? `${styles['image-rejected']}` : ''}`}
+                    />
+                  </>
                 )}
                 {picture && status !== 'evaluated' && (
                   <div className={styles['image-functionality-wrapper']}>
@@ -651,6 +668,7 @@ RelocationBox.propTypes = {
   launchedOrganically: PropTypes.bool.isRequired,
   imageStatus: PropTypes.string.isRequired,
   admin: PropTypes.string.isRequired,
+  verificationPicture: PropTypes.string.isRequired,
 };
 
 export default RelocationBox;

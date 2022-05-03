@@ -13,6 +13,11 @@
   box-shadow: none !important;
 }
 
+.picture-label {
+  width: 100%;
+  margin-left: 5%;
+}
+
 .form-label {
   margin-top: 5%;
 }

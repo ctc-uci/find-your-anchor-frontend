@@ -73,6 +73,7 @@ const BoxApproval = () => {
         fetchBoxes={fetchBoxes}
         imageStatus={boxData.image_status}
         admin={boxData.admin}
+        verificationPicture={boxData.verification_picture}
       />
     ) : (
       <RelocationBox
@@ -97,6 +98,7 @@ const BoxApproval = () => {
         launchedOrganically={boxData.launched_organically}
         imageStatus={boxData.image_status}
         admin={boxData.admin}
+        verificationPicture={boxData.verification_picture}
       />
     );
 
