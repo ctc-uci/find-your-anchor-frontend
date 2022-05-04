@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import countryList from 'react-select-country-list';
 import { v4 as uuidv4 } from 'uuid';
 import { usePapaParse } from 'react-papaparse';
 import PropTypes from 'prop-types';
-import { FYABackend, getLatLong } from '../../common/utils';
+import { FYABackend } from '../../common/utils';
+import zipcodeDataDump from '../../common/zipcodeDataDump.json';
 
 import UploadModalContent from './UploadModalContent/UploadModalContent';
 import SuccessModalContent from './SuccessModalContent/SuccessModalContent';
 import ErrorModalContent from './ErrorModalContent/ErrorModalContent';
 import CommonModal from '../../common/CommonModal/CommonModal';
+import useMobileWidth from '../../common/useMobileWidth';
 
 import BoxSchema from './UploadCSVUtils';
 import styles from './UploadCSV.module.css';
@@ -25,6 +28,8 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useCustomToast();
+  const isMobile = useMobileWidth();
+
   useEffect(() => {
     if (isUploadingNewFile) {
       setFormDatas([]);
@@ -120,56 +125,55 @@ const UploadCSV = ({ isOpen, onClose }) => {
   };
 
   const addToMap = async e => {
-    // TODO: check if latitude and longitude are undefined for each formData
     e.preventDefault();
-
     try {
-      // find lat/long for each formData
-      const allCoordinates = await Promise.all(
-        formDatas.map(async formData => getLatLong(formData.zipCode, formData.country)),
-      );
+      // formDatas structure:
+      // [
+      //   {
+      //     id,
+      //     boxNumber,
+      //     date,
+      //     zipCode,
+      //     country,
+      //     launchedOrganically,
+      //     error,
+      //     latitude,
+      //     longitude,
+      //   }
+      // ]
 
-      let hasError = false;
+      // if no errors with any of the rows, set lat/long for each row
       formDatas.forEach((formData, index) => {
-        if (allCoordinates[index].length === 0) {
-          // TODO: display toast component if lat/long is not found for this zipcode
-          // Don't know how many toasts I'd be showing here  ¯\_(ツ)_/¯
-          hasError = true;
-          setIsLoading(false);
-        } else {
-          // otherwise, set lat/long for this zipcode
-          const [lat, long] = allCoordinates[index];
-          formDatas[index].latitude = lat;
-          formDatas[index].longitude = long;
-        }
+        const countryCode = countryList().getValue(formData.country);
+        formDatas[index].country = countryCode;
+        formDatas[index].latitude = zipcodeDataDump[countryCode][formData.zipCode].lat;
+        formDatas[index].longitude = zipcodeDataDump[countryCode][formData.zipCode].long;
       });
 
-      // if none of the rows have any errors
-      if (!hasError) {
-        await FYABackend.post('/anchorBox/boxes', formDatas);
-        // formDatas structure:
-        // [
-        //   {
-        //     id,
-        //     boxNumber,
-        //     date,
-        //     zipCode,
-        //     country,
-        //     launchedOrganically,
-        //     error,
-        //     latitude,
-        //     longitude,
-        //   }
-        // ]
-        setIsLoading(false);
-        navigate('/');
-        showToast({
-          title: `${CSVFilename} added to Map`,
-          message: `Successfully added ${formDatas.length} Boxes To Map`,
-          toastPosition: 'bottom-left',
-          type: 'success',
-        });
-      }
+      // formDatas structure:
+      // [
+      //   {
+      //     id,
+      //     boxNumber,
+      //     date,
+      //     zipCode,
+      //     country,
+      //     launchedOrganically,
+      //     error,
+      //     latitude,
+      //     longitude,
+      //   }
+      // ]
+
+      await FYABackend.post('/anchorBox/boxes', formDatas);
+      setIsLoading(false);
+      navigate('/');
+      showToast({
+        title: `${CSVFilename} added to Map`,
+        message: `Successfully added ${formDatas.length} Boxes To Map`,
+        toastPosition: 'bottom-left',
+        type: 'success',
+      });
     } catch (err) {
       showToast({
         title: `Failed to add ${CSVFilename} to Map`,
@@ -179,6 +183,10 @@ const UploadCSV = ({ isOpen, onClose }) => {
       });
     }
   };
+
+  if (isMobile && isUploadingNewFile && isOpen) {
+    return <UploadModalContent setCSVFile={setCSVFile} onUpload={onUpload} />;
+  }
 
   return (
     <CommonModal isOpen={isOpen} onClose={onCloseModal} className={styles['common-modal']}>
@@ -193,7 +201,6 @@ const UploadCSV = ({ isOpen, onClose }) => {
           if (uploadErrors.length === 0) {
             return (
               <SuccessModalContent
-                CSVFileName={CSVFilename}
                 setIsUploadingNewFile={setIsUploadingNewFile}
                 onEditViewFile={onEditViewFile}
               />
@@ -213,9 +220,14 @@ const UploadCSV = ({ isOpen, onClose }) => {
   );
 };
 
+UploadCSV.defaultProps = {
+  isOpen: true,
+  onClose: () => {},
+};
+
 UploadCSV.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func,
 };
 
 export default UploadCSV;

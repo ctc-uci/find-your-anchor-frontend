@@ -1,7 +1,7 @@
 import * as yup from 'yup';
-import postalCodes from 'postal-codes-js';
 import countryList from 'react-select-country-list';
 import { FYABackend } from '../../common/utils';
+import zipcodeDataDump from '../../common/zipcodeDataDump.json';
 
 function validateZipcodeInCountry() {
   return this.test('isZipInCountry', async function zipcodeAndCountryCheck({ zipCode, country }) {
@@ -16,20 +16,16 @@ function validateZipcodeInCountry() {
     const countryCode = countryList().getValue(country);
 
     // check if country field (country must be entered in its full country name) is valid
-    if (countryCode === undefined) {
+    // and if country can be found in the country-zipcode data dump
+    if (countryCode === undefined || zipcodeDataDump[countryCode] === undefined) {
       return createError({ path, message: 'Missing or invalid country name' });
     }
-    // if both zip code and country fields are not empty
-    if (zipCode && country) {
-      // the postal-codes-js library checks if zipcode is in the valid postal code format for the country
-      const isValidMessage = postalCodes.validate(countryCode, zipCode);
-      if (isValidMessage !== true) {
-        return createError({ path, message: `Cannot find ${zipCode} in this country` });
-      }
 
-      // TODO: use zipcode data dump to check if zipcode exists in country
-      // instead. Nominatim API allows a maximum of one request per second only.
+    // use country-zipcode data dump to check if zipcode exists in country
+    if (!zipcodeDataDump[countryCode][zipCode]) {
+      return createError({ path, message: `Zipcode ${zipCode} does not exist in this country` });
     }
+
     return true;
   });
 }

@@ -1,19 +1,38 @@
 /* eslint-disable prefer-object-spread */
 import React, { useState, useEffect, Fragment, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import countryList from 'react-select-country-list';
 import PropTypes from 'prop-types';
-import { Button, Stack, Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
+import {
+  Button,
+  Box,
+  Stack,
+  Table,
+  Tbody,
+  Th,
+  Thead,
+  Tr,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Flex,
+} from '@chakra-ui/react';
 import { useTable, usePagination } from 'react-table';
+import zipcodeDataDump from '../../../common/zipcodeDataDump.json';
 
 import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../EditableRow/EditableRow';
-import { FYABackend, formatDate, getLatLong } from '../../../common/utils';
+import { FYABackend, formatDate } from '../../../common/utils';
 import BoxSchema from '../../UploadCSV/UploadCSVUtils';
 import CSVViewTablePagination from './CSVViewTablePagination';
 import { useCustomToast } from '../../ToastProvider/ToastProvider';
+import useMobileWidth from '../../../common/useMobileWidth';
 
 const CSVViewTable = ({ rows, boxNumberMap }) => {
+  const isMobile = useMobileWidth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [formDatas, setFormDatas] = useState(rows);
@@ -192,46 +211,28 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
     e.preventDefault();
     setIsLoading(true);
 
+    // check all rows again for any errors
     const processedRows = await Promise.all(formDatas.map(async formData => checkErrors(formData)));
+    // find the first row that has an error
     const firstErrorRowIndex = processedRows.findIndex(row => row.error);
 
+    // if an error is found in any of the rows, change the first row to EditableRow
     if (firstErrorRowIndex !== -1) {
       setIsLoading(false);
       editRow(e, processedRows[firstErrorRowIndex], firstErrorRowIndex, false);
     } else {
       try {
-        // find lat/long for each formData
-        const allCoordinates = await Promise.all(
-          formDatas.map(async formData => getLatLong(formData.zipCode, formData.country)),
-        );
-
-        let hasError = false;
+        // if no errors with any of the rows, set lat/long for each row
         formDatas.forEach((formData, index) => {
-          if (allCoordinates[index].length === 0) {
-            // if lat/long is not found for this zipcode
-            showToast({
-              title: `Failed to add boxes to map`,
-              message: `cannot find latitude for Box #${formData.boxNumber}`,
-              toastPosition: 'bottom',
-              type: 'error',
-            });
-            hasError = true;
-            setIsLoading(false);
-            editRow(e, formData, index, false);
-          } else {
-            // otherwise, set lat/long for this zipcode
-            const [lat, long] = allCoordinates[index];
-            formDatas[index].latitude = lat;
-            formDatas[index].longitude = long;
-          }
+          const countryCode = countryList().getValue(formData.country);
+          formDatas[index].country = countryCode;
+          formDatas[index].latitude = zipcodeDataDump[countryCode][formData.zipCode].lat;
+          formDatas[index].longitude = zipcodeDataDump[countryCode][formData.zipCode].long;
         });
 
-        // if none of the rows have any errors
-        if (!hasError) {
-          await FYABackend.post('/anchorBox/boxes', formDatas);
-          setIsLoading(false);
-          navigate('/');
-        }
+        await FYABackend.post('/anchorBox/boxes', formDatas);
+        setIsLoading(false);
+        navigate('/');
       } catch (err) {
         showToast({
           title: `Failed to add boxes to Map`,
@@ -245,65 +246,131 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
 
   return (
     <form onSubmit={addToMap} className={styles['csv-table-form']}>
-      <Stack direction="row" justify="right" marginTop="-25px" marginBottom="25px">
-        <select
-          value={pageSize}
-          onChange={e => {
-            setPageSize(Number(e.target.value));
-          }}
-          className={styles['show-pages-select']}
+      <Stack direction="row" justify="right" marginTop="-40px" marginBottom="25px">
+        {!isMobile && (
+          <select
+            value={pageSize}
+            onChange={e => {
+              setPageSize(Number(e.target.value));
+            }}
+            className={styles['show-pages-select']}
+          >
+            {[10, 20, 30, 40, 50].map(pageSizeVal => (
+              <option key={pageSizeVal} value={pageSizeVal}>
+                Show {pageSizeVal}
+              </option>
+            ))}
+          </select>
+        )}
+        <Button
+          isLoading={isLoading}
+          type="submit"
+          color="white"
+          bg="#345E80"
+          borderRadius={isMobile ? 'xl' : 'md'}
         >
-          {[10, 20, 30, 40, 50].map(pageSizeVal => (
-            <option key={pageSizeVal} value={pageSizeVal}>
-              Show {pageSizeVal}
-            </option>
-          ))}
-        </select>
-        <Button isLoading={isLoading} type="submit" color="white" bg="#345E80">
           Add to Map
         </Button>
       </Stack>
-      <div className={`${styles['csv-table-container']} ${styles['scrollable-div']}`}>
-        <Table className={styles['csv-table']}>
-          <Thead>
-            <Tr>
-              <Th>Date</Th>
-              <Th>Box Number</Th>
-              <Th>Zip Code</Th>
-              <Th>Country</Th>
-              <Th>Launched Organically</Th>
-              <Th>&nbsp;</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
+      {!isMobile && (
+        <div className={`${styles['csv-table-container']} ${styles['scrollable-div']}`}>
+          <Table className={styles['csv-table']}>
+            <Thead>
+              <Tr>
+                <Th>Date</Th>
+                <Th>Box Number</Th>
+                <Th>Zip Code</Th>
+                <Th>Country</Th>
+                <Th>Launched Organically</Th>
+                <Th>&nbsp;</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {page.map((rowData, index) => {
+                prepareRow(rowData);
+                return (
+                  <Fragment key={rowData.original.id}>
+                    {editId === rowData.original.id ? (
+                      <EditableRow
+                        editFormData={editFormData}
+                        handleEditFormSubmit={handleEditFormSubmit}
+                        isError={rowData.values.error}
+                        boxNumberMap={boxNumbers}
+                        updateBoxNumberMap={updateBoxNumberMap}
+                        lineNumber={pageIndex * 10 + index + 1}
+                        handleDeleteRow={handleDeleteRow}
+                      />
+                    ) : (
+                      <ReadOnlyRow
+                        data={rowData}
+                        editRow={editRow}
+                        handleDeleteRow={handleDeleteRow}
+                        isError={rowData.values.error}
+                      />
+                    )}
+                  </Fragment>
+                );
+              })}
+            </Tbody>
+          </Table>
+        </div>
+      )}
+      {isMobile && (
+        <Accordion allowToggle>
+          <Flex flexDirection="column" gap="20px">
             {page.map((rowData, index) => {
               prepareRow(rowData);
               console.log(rowData);
               return (
-                <Fragment key={rowData.original.id}>
-                  {editId === rowData.original.id ? (
-                    <EditableRow
-                      editFormData={editFormData}
-                      handleEditFormSubmit={handleEditFormSubmit}
-                      isError={rowData.values.error}
-                      boxNumberMap={boxNumbers}
-                      updateBoxNumberMap={updateBoxNumberMap}
-                      lineNumber={pageIndex * 10 + index + 1}
-                    />
-                  ) : (
-                    <ReadOnlyRow
-                      data={rowData}
-                      editRow={editRow}
-                      handleDeleteRow={handleDeleteRow}
-                      isError={rowData.values.error}
-                    />
+                <AccordionItem
+                  key={rowData.original.id}
+                  borderWidth="1px"
+                  borderRadius="8px"
+                  borderColor={rowData.values.error && 'red'}
+                >
+                  {({ isExpanded }) => (
+                    <>
+                      <h2>
+                        <AccordionButton
+                          _expanded={{ bg: 'white' }}
+                          onClick={() => {
+                            setEditId(null);
+                          }}
+                        >
+                          <Box flex="1" textAlign="left" fontWeight="bold">
+                            {!isExpanded ? `Box #${rowData.values.boxNumber}` : ''}
+                          </Box>
+                          <AccordionIcon />
+                        </AccordionButton>
+                      </h2>
+                      <AccordionPanel pb={4}>
+                        {editId === rowData.original.id ? (
+                          <EditableRow
+                            editFormData={editFormData}
+                            handleEditFormSubmit={handleEditFormSubmit}
+                            isError={rowData.values.error}
+                            boxNumberMap={boxNumbers}
+                            updateBoxNumberMap={updateBoxNumberMap}
+                            lineNumber={pageIndex * 10 + index + 1}
+                            handleDeleteRow={handleDeleteRow}
+                          />
+                        ) : (
+                          <ReadOnlyRow
+                            data={rowData}
+                            editRow={editRow}
+                            handleDeleteRow={handleDeleteRow}
+                            isError={rowData.values.error}
+                          />
+                        )}
+                      </AccordionPanel>
+                    </>
                   )}
-                </Fragment>
+                </AccordionItem>
               );
             })}
-          </Tbody>
-        </Table>
-      </div>
+          </Flex>
+        </Accordion>
+      )}
       <CSVViewTablePagination
         pageLength={pageOptions.length}
         pageIndex={pageIndex}
