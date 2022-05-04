@@ -162,7 +162,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
         //   }
         // ]
         setIsLoading(false);
-        navigate('/admin');
+        navigate('/');
         showToast({
           title: `${CSVFilename} added to Map`,
           message: `Successfully added ${formDatas.length} Boxes To Map`,

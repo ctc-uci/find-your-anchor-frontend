@@ -106,7 +106,7 @@ const AddBoxForm = () => {
           showOnMap: true,
         });
         setLoading(false);
-        navigate('/admin');
+        navigate('/');
       } catch (err) {
         setLoading(false);
         showToast({
