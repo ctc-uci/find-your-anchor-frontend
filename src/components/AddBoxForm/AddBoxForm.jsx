@@ -95,7 +95,6 @@ const AddBoxForm = () => {
         toastPosition: 'bottom-right',
         type: 'error',
       });
-      console.log(`Cannot find ${formData.zipcode} in country ${formData.country}`);
     } else {
       try {
         setLoading(true);
@@ -116,7 +115,6 @@ const AddBoxForm = () => {
           toastPosition: 'bottom-right',
           type: 'error',
         });
-        console.log(err.message);
       }
     }
   };

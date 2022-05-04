@@ -131,7 +131,6 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
           toastPosition: 'bottom-right',
           type: 'error',
         });
-        console.log(err.message);
       }
     }
   };

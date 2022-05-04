@@ -81,8 +81,6 @@ const DeleteBoxModal = ({
         toastPosition: 'bottom-right',
         type: 'error',
       });
-      // eslint-disable-next-line no-console
-      console.log(err);
     }
   };
   const closeModal = () => {

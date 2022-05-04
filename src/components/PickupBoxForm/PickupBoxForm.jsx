@@ -95,7 +95,6 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
         toastPosition: 'bottom-right',
         type: 'error',
       });
-      alert(`Cannot find ${formData.zipcode} in country ${formData.country}`);
     } else {
       try {
         setLoading(true);
@@ -117,7 +116,6 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
           toastPosition: 'bottom-right',
           type: 'error',
         });
-        console.log(err.message);
       }
     }
   };

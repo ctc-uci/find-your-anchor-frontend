@@ -80,8 +80,6 @@ const ForgotPasswordForm = () => {
         toastPosition: 'bottom-right',
         type: 'error',
       });
-
-      console.log(err.message);
     }
   };
 

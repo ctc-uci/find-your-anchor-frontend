@@ -171,7 +171,6 @@ const UploadCSV = ({ isOpen, onClose }) => {
         });
       }
     } catch (err) {
-      console.log(err);
       showToast({
         title: `Failed to add ${CSVFilename} to Map`,
         message: err.message,

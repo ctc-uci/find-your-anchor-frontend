@@ -209,7 +209,6 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
         formDatas.forEach((formData, index) => {
           if (allCoordinates[index].length === 0) {
             // if lat/long is not found for this zipcode
-            console.log('cannot find latitude for formData: ', formData);
             showToast({
               title: `Failed to add boxes to map`,
               message: `cannot find latitude for Box #${formData.boxNumber}`,
