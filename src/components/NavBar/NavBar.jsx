@@ -23,12 +23,16 @@ import { getCurrentUser, auth, logout } from '../../common/auth_utils';
 import { Cookies, withCookies } from '../../common/cookie_utils';
 import useMobileWidth from '../../common/useMobileWidth';
 import addBoxIcon from '../../assets/navBarIcons/add-box-icon.svg';
-import adminDashboardIcon from '../../assets/navBarIcons/admin-dashboard-icon.svg';
+import dashboardIcon from '../../assets/navBarIcons/admin-dashboard-icon.svg';
 import exportCSVIcon from '../../assets/navBarIcons/export-csv-icon.svg';
 import hamburgerIcon from '../../assets/navBarIcons/hamburger-icon.svg';
 import uploadCSVIcon from '../../assets/navBarIcons/upload-csv-icon.svg';
 import userProfileIcon from '../../assets/navBarIcons/user-profile-icon.svg';
 import logoutIcon from '../../assets/navBarIcons/logout-icon.svg';
+import aboutIcon from '../../assets/navBarIcons/about-icon.svg';
+import admingLoginIcon from '../../assets/navBarIcons/admin-login-icon.svg';
+import foundBoxIcon from '../../assets/navBarIcons/found-box-icon.svg';
+import launchBoxIcon from '../../assets/navBarIcons/launch-box-icon.svg';
 
 const NavBar = ({ isAdmin, cookies }) => {
   const isMobile = useMobileWidth();
@@ -59,7 +63,8 @@ const NavBar = ({ isAdmin, cookies }) => {
       const temp = await getUserInitials();
       setInitials(temp);
     }
-    onCloseUploadCSVOpenModal();
+    onMobileNavClose();
+    console.log('useeffect!');
   }, [isAdmin, location]);
 
   const linkDesktopElement = (linkData, hasIcon = false) => {
@@ -83,23 +88,38 @@ const NavBar = ({ isAdmin, cookies }) => {
   );
   const generalUserLinks = [
     {
+      path: '/',
+      display: 'Dashboard',
+      icon: dashboardIcon,
+      mobileOnly: true,
+    },
+    {
       path: '/about',
       display: 'About',
+      icon: aboutIcon,
     },
     {
       path: '/launch-box-form',
       display: 'Launch a Box',
+      icon: launchBoxIcon,
     },
     {
       path: '/found-box-form',
       display: 'Found a Box',
+      icon: foundBoxIcon,
+    },
+    {
+      path: '/login',
+      display: 'Admin Login',
+      icon: admingLoginIcon,
+      mobileOnly: true,
     },
   ];
   const adminLinks = [
     {
       path: '/',
       display: 'Admin Dashboard',
-      icon: adminDashboardIcon,
+      icon: dashboardIcon,
     },
     {
       path: '/add-box-form',
@@ -141,13 +161,14 @@ const NavBar = ({ isAdmin, cookies }) => {
       mobileOnly: true,
     },
   ];
-  const desktopNavElements = isAdmin
-    ? adminLinks.map(link => (link.mobileOnly ? <></> : linkDesktopElement(link)))
-    : generalUserLinks.map(link => (link.mobileOnly ? <></> : linkDesktopElement(link)));
+  const navElements = (isAdmin ? adminLinks : generalUserLinks).map(link =>
+    (link.mobileOnly && !isMobile) || (link.desktopOnly && isMobile) ? (
+      <></>
+    ) : (
+      (isMobile ? linkMobileElement : linkDesktopElement)(link)
+    ),
+  );
 
-  const mobileNavElements = isAdmin
-    ? adminLinks.map(link => (link.desktopOnly ? <></> : linkMobileElement(link)))
-    : generalUserLinks.map(link => (link.desktopOnly ? <></> : linkMobileElement(link)));
   return (
     <ChakraProvider>
       <Flex minWidth="100%" boxShadow="md" alignItems="center" gap="2">
@@ -172,7 +193,7 @@ const NavBar = ({ isAdmin, cookies }) => {
               icon={<img src={hamburgerIcon} alt="" />}
             />
           ) : (
-            desktopNavElements
+            navElements
           )}
         </Box>
       </Flex>
@@ -182,7 +203,7 @@ const NavBar = ({ isAdmin, cookies }) => {
           <ModalCloseButton />
           <ModalBody>
             <Flex direction="column" p="5">
-              {mobileNavElements}
+              {navElements}
             </Flex>
           </ModalBody>
         </ModalContent>
