@@ -25,7 +25,7 @@ function RadioCard(props) {
   const checkbox = getCheckboxProps();
 
   return (
-    <Box as="label" onClick={() => props.openAdditionalValueInput()}>
+    <Box as="label">
       <input {...input} />
       <Box
         {...checkbox}
@@ -36,6 +36,7 @@ function RadioCard(props) {
         }}
         px={5}
         py={3}
+        onClick={props.openAdditionalValueInput}
       >
         {props.children}
       </Box>
@@ -44,14 +45,7 @@ function RadioCard(props) {
 }
 
 // Step 2: Use the `useRadioGroup` hook to control a group of custom radios.
-const CommonAccordionSelector = ({
-  headerText,
-  options,
-  isHeader,
-  isInPlane,
-  setValue,
-  setAdditionalValueInput,
-}) => {
+const CommonAccordionSelector = ({ headerText, options, isHeader, isInPlane, setValue }) => {
   const { value, getRootProps, getRadioProps } = useRadioGroup({
     name: 'framework',
     defaultValue: 'react',
@@ -92,10 +86,12 @@ const CommonAccordionSelector = ({
                         <Text>{headerText}</Text>
                       </Box>
                     )}
-                    <HStack>
-                      <Text>{options.find(option => option.value === value).name}</Text>
-                      <AccordionIcon />
-                    </HStack>
+                    <Text>{`${options.find(option => option.value === value).name} ${
+                      options.find(option => option.value === value).additionalValue
+                        ? `(${options.find(option => option.value === value).additionalValue})`
+                        : ''
+                    }`}</Text>
+                    <AccordionIcon />
                   </HStack>
                 ) : (
                   <VStack spacing={4} align="stretch">
@@ -109,7 +105,9 @@ const CommonAccordionSelector = ({
                       </Box>
                     )}
                     <div className={styles['header-selection-container']}>
-                      <Text>{options.find(option => option.value === value).name}</Text>
+                      <Text>{`${options.find(option => option.value === value).name} ${
+                        options.find(option => option.value === value)?.additionalValue || ''
+                      }`}</Text>
                       <AccordionIcon />
                     </div>
                   </VStack>
@@ -127,9 +125,12 @@ const CommonAccordionSelector = ({
                   key={option.value}
                   value={option.value}
                   {...radio}
-                  openAdditionalValueInput={setAdditionalValueInput}
+                  openAdditionalValueInput={option?.setAdditionalValueInput}
                 >
-                  {option.name}
+                  <div className={styles['item-header']}>
+                    <div>{option.name}</div>
+                    <div>{option?.additionalValue || ''}</div>
+                  </div>
                 </RadioCard>
               );
             })}

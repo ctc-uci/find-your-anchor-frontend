@@ -7,14 +7,14 @@ import { ChevronLeftIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-// import DatePicker from 'react-datepicker';
+import DatePicker from 'react-datepicker';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import * as yup from 'yup';
 
 import {
   FormControl,
-  // FormLabel,
-  // Input,
+  FormLabel,
+  Input,
   // Select,
   Text,
   // Radio,
@@ -28,8 +28,10 @@ import {
   AccordionIcon,
   AccordionButton,
   useDisclosure,
-  Slide,
-  Box,
+  Drawer,
+  DrawerContent,
+  DrawerBody,
+  DrawerHeader,
 } from '@chakra-ui/react';
 // import { CheckIcon } from '@chakra-ui/icons'
 import AccordionTemplate from '../../../common/CommonAccordionSelector/CommonAccordionSelector';
@@ -81,11 +83,11 @@ const ExportCSVForm = ({ formID }) => {
     control,
     reset,
     getValues,
-    // register,
+    register,
     handleSubmit,
     setValue,
     clearErrors,
-    // formState: { errors },
+    formState: { errors },
   } = useForm({
     defaultValues: {
       sortBy: 'ascend-box-num',
@@ -179,21 +181,17 @@ const ExportCSVForm = ({ formID }) => {
     }
   };
 
-  const { isOpen: additionalValueInputOpen, onToggle: additionalValueInputToggle } =
-    useDisclosure();
+  const { isOpen: singleDateInputOpen, onToggle: singleDateInputToggle } = useDisclosure();
+
+  const { isOpen: customBoxInputOpen, onToggle: customBoxInputToggle } = useDisclosure();
+
+  const { isOpen: rangeDateInputOpen, onToggle: rangeDateInputToggle } = useDisclosure();
+
+  const { isOpen: customZipInputOpen, onToggle: customZipInputToggle } = useDisclosure();
+
   return (
     <div className={styles['csv-form-wrapper']}>
       <form id={formID} className={styles['export-csv-form']} onSubmit={handleSubmit(onSubmit)}>
-        <Slide direction="right" in={additionalValueInputOpen}>
-          <Box bg="white" w="100%" h="calc(100vh)">
-            <ChevronLeftIcon
-              className={styles['back-button']}
-              boxSize={7}
-              onClick={additionalValueInputToggle}
-            />
-            <input type="text" />
-          </Box>
-        </Slide>
         <div className={styles['accordion-box']}>
           <Controller
             control={control}
@@ -231,7 +229,12 @@ const ExportCSVForm = ({ formID }) => {
                       headerText="Boxes"
                       options={[
                         { name: 'All Boxes', value: 'boxes-all' },
-                        { name: 'Custom', value: 'boxes-custom' },
+                        {
+                          name: 'Custom',
+                          value: 'boxes-custom',
+                          setAdditionalValueInput: customBoxInputToggle,
+                          additionalValue: getValues('boxRange'),
+                        },
                       ]}
                       isHeader={false}
                       isInPlane={true}
@@ -249,14 +252,22 @@ const ExportCSVForm = ({ formID }) => {
                       headerText="Date"
                       options={[
                         { name: 'All', value: 'date-all' },
-                        { name: 'Single Date', value: 'date-single' },
-                        { name: 'Range', value: 'date-range' },
+                        {
+                          name: 'Single Date',
+                          value: 'date-single',
+                          setAdditionalValueInput: singleDateInputToggle,
+                        },
+                        {
+                          name: 'Range',
+                          value: 'date-range',
+                          setAdditionalValueInput: rangeDateInputToggle,
+                        },
                       ]}
                       isHeader={false}
                       isInPlane={true}
                       inputValue={value}
                       setValue={onChange}
-                      setAdditionalValueInput={additionalValueInputToggle}
+                      setAdditionalValueInput={singleDateInputToggle}
                     />
                   )}
                 />
@@ -269,7 +280,11 @@ const ExportCSVForm = ({ formID }) => {
                       headerText="Zip Code"
                       options={[
                         { name: 'All', value: 'zipcode-all' },
-                        { name: 'Custom', value: 'zipcode-custom' },
+                        {
+                          name: 'Custom',
+                          value: 'zipcode-custom',
+                          setAdditionalValueInput: customZipInputToggle,
+                        },
                       ]}
                       isHeader={false}
                       isInPlane={true}
@@ -358,13 +373,141 @@ const ExportCSVForm = ({ formID }) => {
             </AccordionItem>
           </Accordion>
         </div>
+        <Drawer onToggle={customBoxInputToggle} isOpen={customBoxInputOpen} size="full">
+          <DrawerContent>
+            <ChevronLeftIcon
+              className={styles['back-button']}
+              boxSize={7}
+              onClick={customBoxInputToggle}
+            />
+            <DrawerHeader>Boxes</DrawerHeader>
+            <DrawerBody>
+              <Input
+                isInvalid={errors?.boxRange}
+                placeholder="e.g. 1-9, 6, 12"
+                {...register('boxRange')}
+                className={styles['custom-input']}
+              />
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
+
+        <Drawer
+          onToggle={singleDateInputToggle}
+          isOpen={singleDateInputOpen}
+          size="full"
+          trapFocus={false}
+        >
+          <DrawerContent>
+            <ChevronLeftIcon
+              className={styles['back-button']}
+              boxSize={7}
+              onClick={singleDateInputToggle}
+            />
+            <DrawerHeader>Date</DrawerHeader>
+            <DrawerBody>
+              <Controller
+                name="singleDate"
+                control={control}
+                // eslint-disable-next-line no-unused-vars
+                render={({ field: { onChange, value, ref } }) => (
+                  <DatePicker
+                    className={
+                      styles[`${errors?.singleDate ? 'date-picker-error' : 'date-picker'}`]
+                    }
+                    placeholderText="MM/DD/YYYY"
+                    type="date"
+                    selected={value}
+                    onChange={onChange}
+                  />
+                )}
+              />
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
+        <Drawer
+          onToggle={rangeDateInputToggle}
+          isOpen={rangeDateInputOpen}
+          size="full"
+          trapFocus={false}
+        >
+          <DrawerContent>
+            <ChevronLeftIcon
+              className={styles['back-button']}
+              boxSize={7}
+              onClick={rangeDateInputToggle}
+            />
+            <DrawerHeader>Date</DrawerHeader>
+            <DrawerBody>
+              <FormLabel className={styles['date-range-label']} htmlFor="end-date">
+                End Date
+              </FormLabel>
+              <Controller
+                name="startDate"
+                control={control}
+                // eslint-disable-next-line no-unused-vars
+                render={({ field: { onChange, value, ref } }) => (
+                  <DatePicker
+                    className={styles[`${errors?.startDate ? 'date-picker-error' : 'date-picker'}`]}
+                    placeholderText="MM/DD/YYYY"
+                    type="date"
+                    selected={value}
+                    onChange={onChange}
+                    selectsStart
+                    startDate={watchAllFields.startDate}
+                    endDate={watchAllFields.endDate}
+                  />
+                )}
+              />
+              <FormLabel className={styles['date-range-label']} htmlFor="end-date">
+                End Date
+              </FormLabel>
+              <Controller
+                name="endDate"
+                control={control}
+                // eslint-disable-next-line no-unused-vars
+                render={({ field: { onChange, value, ref } }) => (
+                  <DatePicker
+                    className={styles[`${errors?.endDate ? 'date-picker-error' : 'date-picker'}`]}
+                    placeholderText="MM/DD/YYYY"
+                    type="date"
+                    selected={value}
+                    onChange={onChange}
+                    selectsEnd
+                    startDate={watchAllFields.startDate}
+                    endDate={watchAllFields.endDate}
+                    minDate={watchAllFields.startDate}
+                  />
+                )}
+              />
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
+        <Drawer onToggle={customZipInputToggle} isOpen={customZipInputOpen} size="full">
+          <DrawerContent>
+            <ChevronLeftIcon
+              className={styles['back-button']}
+              boxSize={7}
+              onClick={customZipInputToggle}
+            />
+            <DrawerHeader>Zip Code</DrawerHeader>
+            <DrawerBody>
+              <Input
+                isInvalid={errors?.zipCode}
+                placeholder="e.g. 96162, 91007"
+                className={styles['custom-input']}
+                {...register('zipCode')}
+              />
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
       </form>
 
       <div className={styles['buttons-container']}>
         <Button border="1px" borderColor="#CBD5E0" bg="white">
           Cancel
         </Button>
-        <Button textColor="white" bg="#345E80" onClick={additionalValueInputToggle}>
+        <Button textColor="white" bg="#345E80">
           Export
         </Button>
       </div>
