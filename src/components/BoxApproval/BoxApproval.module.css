@@ -1,40 +1,70 @@
 .box-approval {
   width: 100%;
   padding: 1%;
-  height: 95vh;
-  background-color: #e5e5e5;
+  background-color: #eef6f8;
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.tab-wrapper {
+  flex: 9;
+  flex-direction: column;
+  width: 100%;
 }
 
 .box-list {
   overflow-x: hidden;
   overflow-y: scroll;
-  height: 75vh;
-}
-
-.legend {
-  background-color: #e5e5e5;
+  height: calc(80vh - 60px);
   width: 100%;
-  margin-left: 5%;
-  height: 100px;
-  padding-top: 4%;
-  position: sticky;
-  bottom: 0;
 }
-
-.request-changes-row {
+.tab-panel {
+  overflow-x: hidden;
+  overflow-y: hidden;
   display: flex;
   width: 100%;
+  flex: 1;
+  flex-direction: column;
+}
+.legend {
+  background-color: #eef6f8;
+  width: 100%;
+  padding: 1%;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
+.legend-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.request-changes-row,
+.relocate-box-row,
+.pickup-box-row {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+.request-changes-row-content,
+.relocate-box-row-content,
+.pickup-box-row-content {
+  width: 100%;
+}
+.request-changes-row {
+  align-items: center;
   margin: 1% 1% 1% 1%;
 }
 
 .relocate-box-row {
-  width: 100%;
   margin: 1% 1% 1% 1%;
 }
 
 .pickup-box-row {
-  width: 100%;
   margin: 1% 1% 1% 1%;
 }
 
@@ -57,14 +87,42 @@
   margin-right: 4%;
 }
 
-.request-changes-text {
-  text-align: left;
+.box-list-and-pagination {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 140px);
+  justify-content: space-between;
 }
 
-.relocate-box-text {
-  text-align: left;
-}
+@media screen and (max-width: 768px) {
+  .box-approval {
+    padding: 1%;
+    height: 100vh;
+    background-color: #eef6f8;
+    position: relative;
+  }
 
-.pickup-box-text {
-  text-align: left;
+  .legend {
+    display: flex;
+    background-color: #eef6f8;
+    width: 100%;
+    margin-left: 0;
+    font-size: 12px;
+    padding: 3% 0%;
+    height: 5vh;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .pickup-box-text,
+  .relocate-box-text,
+  .request-changes-text {
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .box-list-and-pagination {
+    height: calc(100vh - 140px);
+  }
 }

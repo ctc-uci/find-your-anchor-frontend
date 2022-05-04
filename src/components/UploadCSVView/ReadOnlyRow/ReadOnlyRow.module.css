@@ -22,6 +22,13 @@
   height: 10px;
 }
 
+.green-check-icon,
+.red-cross-icon {
+  position: absolute;
+  left: 70px;
+  top: 40%;
+}
+
 .csv-error td {
   border-top: 1px solid red;
   border-bottom: 1px solid red;
@@ -33,4 +40,24 @@
 
 .csv-error td:first-child {
   border-left: 1px solid red;
+}
+
+.input-right-warning {
+  color: red;
+  position: absolute;
+  top: -3px;
+  right: 25px;
+}
+
+.date-picker {
+  font-size: 15px;
+  height: 2.5rem;
+  width: 100%;
+  border: 1px solid rgb(226, 232, 240);
+  border-radius: 0.375rem;
+  padding-left: 1rem;
+}
+
+.date-picker-error {
+  border: 2.2px solid #ea6565;
 }

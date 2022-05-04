@@ -43,6 +43,7 @@ const schema = yup
       value: yup.string().required('Invalid country, please select a country'),
     }),
     picture: yup.string().url(),
+    verificationPicture: yup.string().url(),
   })
   .isZipInCountry()
   .required();
@@ -59,6 +60,7 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
   });
 
   const [files, setFiles] = useState([]);
+  const [verificationFiles, setVerificationFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const isMobile = useMobileWidth();
 
@@ -68,6 +70,16 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
     const formData = data;
     formData.date = formatDate(data.date);
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
+
+    // This must be a toast error because yup validation does not check the uploaded files.
+    if (verificationFiles.length === 0) {
+      // TODO: Replace with toast component.
+      alert('Please submit a Box Number Verification Photo');
+      return;
+    }
+    formData.verificationPicture =
+      verificationFiles.length > 0 ? await uploadBoxPhoto(verificationFiles[0]) : '';
+
     formData.country = formData.country.value;
 
     const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
@@ -132,30 +144,55 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
               <FormErrorMessage>{errors.boxID?.message}</FormErrorMessage>
             </FormControl>
             <br />
-            <FormControl isInvalid={errors?.date}>
-              <FormLabel htmlFor="date" className={styles['required-field']}>
-                Date
+            <FormControl>
+              <FormLabel htmlFor="boxVerificationPhoto" className={styles['required-field']}>
+                Box Number Verification
               </FormLabel>
-              <Controller
-                control={control}
-                name="date"
-                // eslint-disable-next-line no-unused-vars
-                render={({ field: { onChange, value, ref } }) => (
-                  <DatePicker
-                    placeholderText="MM/DD/YYYY"
-                    className={errors?.date ? 'date-picker date-picker-error' : 'date-picker'}
-                    type="date"
-                    selected={value}
-                    onChange={onChange}
-                  />
-                )}
-              />
-              <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
+              <p className={styles['verification-sub-label']}>
+                Please upload an image with the box number
+              </p>
+              <DropZone setFiles={setVerificationFiles} />
             </FormControl>
+            <div
+              className={
+                styles[
+                  verificationFiles.length !== 0
+                    ? 'pickup-box-photo-preview-section'
+                    : 'pickup-box-photo-preview-section-hidden'
+                ]
+              }
+            >
+              <div className={styles['box-image']}>
+                {verificationFiles.length !== 0 && (
+                  <img src={URL.createObjectURL(verificationFiles[0])} alt="" />
+                )}
+              </div>
+            </div>
           </div>
         </div>
         {isMobile && <br />}
         <div className={styles['pickup-box-info-section-right']}>
+          <FormControl isInvalid={errors?.date}>
+            <FormLabel htmlFor="date" className={styles['required-field']}>
+              Date
+            </FormLabel>
+            <Controller
+              control={control}
+              name="date"
+              // eslint-disable-next-line no-unused-vars
+              render={({ field: { onChange, value, ref } }) => (
+                <DatePicker
+                  placeholderText="MM/DD/YYYY"
+                  className={errors?.date ? 'date-picker date-picker-error' : 'date-picker'}
+                  type="date"
+                  selected={value}
+                  onChange={onChange}
+                />
+              )}
+            />
+            <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
+          </FormControl>
+          <br />
           <FormControl isInvalid={errors?.zipcode || errors['']?.message.startsWith('Postal code')}>
             <FormLabel htmlFor="zipcode" className={styles['required-field']}>
               Zip Code

@@ -17,7 +17,7 @@
 .csv-table-container {
   display: flex;
   flex-direction: column;
-  height: 80vh;
+  height: 65vh;
 }
 
 .csv-table {
@@ -55,7 +55,7 @@
 
 .csv-table th {
   background-color: none;
-  font-weight: 600;
+  font-weight: 700;
   border-bottom: none;
   text-transform: none;
   font-size: 1rem;
@@ -68,4 +68,8 @@
 
 .csv-table * {
   font-size: 1rem;
+}
+
+.show-pages-select {
+  margin-right: 20px;
 }
