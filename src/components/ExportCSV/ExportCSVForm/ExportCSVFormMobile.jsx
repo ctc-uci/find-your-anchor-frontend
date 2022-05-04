@@ -3,6 +3,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ChevronLeftIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -26,6 +27,9 @@ import {
   AccordionPanel,
   AccordionIcon,
   AccordionButton,
+  useDisclosure,
+  Slide,
+  Box,
 } from '@chakra-ui/react';
 // import { CheckIcon } from '@chakra-ui/icons'
 import AccordionTemplate from '../../../common/CommonAccordionSelector/CommonAccordionSelector';
@@ -175,19 +179,39 @@ const ExportCSVForm = ({ formID }) => {
     }
   };
 
+  const { isOpen: additionalValueInputOpen, onToggle: additionalValueInputToggle } =
+    useDisclosure();
   return (
     <div className={styles['csv-form-wrapper']}>
       <form id={formID} className={styles['export-csv-form']} onSubmit={handleSubmit(onSubmit)}>
+        <Slide direction="right" in={additionalValueInputOpen}>
+          <Box bg="white" w="100%" h="calc(100vh)">
+            <ChevronLeftIcon
+              className={styles['back-button']}
+              boxSize={7}
+              onClick={additionalValueInputToggle}
+            />
+            <input type="text" />
+          </Box>
+        </Slide>
         <div className={styles['accordion-box']}>
-          <AccordionTemplate
-            headerText="Sort By"
-            options={[
-              'Ascending Box Number',
-              'Ascending Zip Code',
-              'Chronologically',
-              'Descending Box Number',
-              'Descending Zip Code',
-            ]}
+          <Controller
+            control={control}
+            name="sortBy"
+            render={({ field: { value, onChange } }) => (
+              <AccordionTemplate
+                headerText="Sort By"
+                options={[
+                  { name: 'Ascending Box Number', value: 'ascend-box-num' },
+                  { name: 'Ascending Zip Code', value: 'ascend-zip-code' },
+                  { name: 'Chronologically', value: 'chronologic' },
+                  { name: 'Descending Box Number', value: 'descend-box-num' },
+                  { name: 'Descending Zip Code', value: 'descend-zip-num' },
+                ]}
+                inputValue={value}
+                setValue={onChange}
+              />
+            )}
           />
         </div>
 
@@ -199,29 +223,78 @@ const ExportCSVForm = ({ formID }) => {
                 <AccordionIcon />
               </AccordionButton>
               <AccordionPanel>
-                <AccordionTemplate
-                  headerText="Boxes"
-                  options={['All Boxes', 'Custom']}
-                  isHeader={false}
-                  isInPlane={true}
+                <Controller
+                  control={control}
+                  name="boxOption"
+                  render={({ field: { value, onChange } }) => (
+                    <AccordionTemplate
+                      headerText="Boxes"
+                      options={[
+                        { name: 'All Boxes', value: 'boxes-all' },
+                        { name: 'Custom', value: 'boxes-custom' },
+                      ]}
+                      isHeader={false}
+                      isInPlane={true}
+                      inputValue={value}
+                      setValue={onChange}
+                    />
+                  )}
                 />
-                <AccordionTemplate
-                  headerText="Date"
-                  options={['All Boxes', 'Single Date', 'Range']}
-                  isHeader={false}
-                  isInPlane={true}
+
+                <Controller
+                  control={control}
+                  name="dateOption"
+                  render={({ field: { value, onChange } }) => (
+                    <AccordionTemplate
+                      headerText="Date"
+                      options={[
+                        { name: 'All', value: 'date-all' },
+                        { name: 'Single Date', value: 'date-single' },
+                        { name: 'Range', value: 'date-range' },
+                      ]}
+                      isHeader={false}
+                      isInPlane={true}
+                      inputValue={value}
+                      setValue={onChange}
+                      setAdditionalValueInput={additionalValueInputToggle}
+                    />
+                  )}
                 />
-                <AccordionTemplate
-                  headerText="Zip Code"
-                  options={['All', 'By Zip Code', 'By State']}
-                  isHeader={false}
-                  isInPlane={true}
+
+                <Controller
+                  control={control}
+                  name="zipOption"
+                  render={({ field: { value, onChange } }) => (
+                    <AccordionTemplate
+                      headerText="Zip Code"
+                      options={[
+                        { name: 'All', value: 'zipcode-all' },
+                        { name: 'Custom', value: 'zipcode-custom' },
+                      ]}
+                      isHeader={false}
+                      isInPlane={true}
+                      inputValue={value}
+                      setValue={onChange}
+                    />
+                  )}
                 />
-                <AccordionTemplate
-                  headerText="Launched Organically?"
-                  options={['Yes', 'No']}
-                  isHeader={false}
-                  isInPlane={true}
+
+                <Controller
+                  control={control}
+                  name="launchedOrganically"
+                  render={({ field: { value, onChange } }) => (
+                    <AccordionTemplate
+                      headerText="Launched Organically?"
+                      options={[
+                        { name: 'Yes', value: 'yes' },
+                        { name: 'No', value: 'no' },
+                      ]}
+                      isHeader={false}
+                      isInPlane={true}
+                      inputValue={value}
+                      setValue={onChange}
+                    />
+                  )}
                 />
               </AccordionPanel>
             </AccordionItem>
@@ -291,7 +364,7 @@ const ExportCSVForm = ({ formID }) => {
         <Button border="1px" borderColor="#CBD5E0" bg="white">
           Cancel
         </Button>
-        <Button textColor="white" bg="#345E80">
+        <Button textColor="white" bg="#345E80" onClick={additionalValueInputToggle}>
           Export
         </Button>
       </div>

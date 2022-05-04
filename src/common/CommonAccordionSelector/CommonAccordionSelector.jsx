@@ -25,7 +25,7 @@ function RadioCard(props) {
   const checkbox = getCheckboxProps();
 
   return (
-    <Box as="label">
+    <Box as="label" onClick={() => props.openAdditionalValueInput()}>
       <input {...input} />
       <Box
         {...checkbox}
@@ -44,11 +44,18 @@ function RadioCard(props) {
 }
 
 // Step 2: Use the `useRadioGroup` hook to control a group of custom radios.
-const CommonAccordionSelector = ({ headerText, options, isHeader, isInPlane }) => {
+const CommonAccordionSelector = ({
+  headerText,
+  options,
+  isHeader,
+  isInPlane,
+  setValue,
+  setAdditionalValueInput,
+}) => {
   const { value, getRootProps, getRadioProps } = useRadioGroup({
     name: 'framework',
     defaultValue: 'react',
-    onChange: console.log,
+    onChange: setValue,
   });
 
   const group = getRootProps();
@@ -86,7 +93,7 @@ const CommonAccordionSelector = ({ headerText, options, isHeader, isInPlane }) =
                       </Box>
                     )}
                     <HStack>
-                      <Text>{value}</Text>
+                      <Text>{options.find(option => option.value === value).name}</Text>
                       <AccordionIcon />
                     </HStack>
                   </HStack>
@@ -102,7 +109,7 @@ const CommonAccordionSelector = ({ headerText, options, isHeader, isInPlane }) =
                       </Box>
                     )}
                     <div className={styles['header-selection-container']}>
-                      <Text>{value}</Text>
+                      <Text>{options.find(option => option.value === value).name}</Text>
                       <AccordionIcon />
                     </div>
                   </VStack>
@@ -113,11 +120,16 @@ const CommonAccordionSelector = ({ headerText, options, isHeader, isInPlane }) =
         </h2>
         <AccordionPanel pb={4}>
           <VStack align="left" {...group}>
-            {options.map(value => {
-              const radio = getRadioProps({ value });
+            {options.map(option => {
+              const radio = getRadioProps({ value: option.value });
               return (
-                <RadioCard key={value} {...radio}>
-                  {value}
+                <RadioCard
+                  key={option.value}
+                  value={option.value}
+                  {...radio}
+                  openAdditionalValueInput={setAdditionalValueInput}
+                >
+                  {option.name}
                 </RadioCard>
               );
             })}
