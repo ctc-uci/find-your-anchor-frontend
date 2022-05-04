@@ -36,7 +36,6 @@ ReactDOM.render(
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/auth-email" element={<AuthEmail redirectPath="/" />} />
           <Route path="/" element={<Dashboard />} />
-          <Route path="/404" element={<NotFoundErrorPage />} />
           <Route path="/500" element={<InternalServerErrorPage />} />
 
           <Route element={<Layout isAdmin />}>
@@ -71,6 +70,8 @@ ReactDOM.render(
               element={<ProtectedRoute Component={UploadCSV} redirectPath="/login" />}
             />
           </Route>
+
+          <Route path="*" element={<NotFoundErrorPage />} />
         </Routes>
       </Router>
     </CookiesProvider>
