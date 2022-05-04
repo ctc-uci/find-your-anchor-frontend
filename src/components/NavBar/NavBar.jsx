@@ -64,7 +64,6 @@ const NavBar = ({ isAdmin, cookies }) => {
       setInitials(temp);
     }
     onMobileNavClose();
-    console.log('useeffect!');
   }, [isAdmin, location]);
 
   const linkDesktopElement = (linkData, hasIcon = false) => {

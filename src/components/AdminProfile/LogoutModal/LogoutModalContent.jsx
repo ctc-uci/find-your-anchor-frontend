@@ -14,7 +14,6 @@ import { Cookies, withCookies } from '../../../common/cookie_utils';
 const ModalStepOne = ({ incrementStep, closeModal, cookies }) => {
   const handleLogout = async () => {
     incrementStep();
-    console.log(cookies);
     // Log out the user.
     await logout(cookies);
   };
