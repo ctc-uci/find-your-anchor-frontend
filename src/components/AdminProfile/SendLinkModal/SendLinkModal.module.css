@@ -53,10 +53,53 @@
   align-items: center;
   height: 100%;
 }
+
 .modal-body {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .modal-content {
+    position: fixed;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    padding: 25px;
+  }
+
+  .modal-button-section {
+    width: 80%;
+    position: fixed;
+    bottom: 75px;
+  }
+
+  .modal-one-button {
+    width: 100% !important;
+  }
+
+  .modal-two-button {
+    width: 100% !important;
+  }
+
+  .modal-cancel-button {
+    text-decoration: underline;
+    color: #3182ce;
+    margin-top: 15px;
+  }
+
+  .input-wrapper,
+  .modal-header {
+    margin-top: 15px;
+  }
+
+  .email-icon,
+  .check-icon {
+    height: 175px;
+    width: 175px;
+  }
 }

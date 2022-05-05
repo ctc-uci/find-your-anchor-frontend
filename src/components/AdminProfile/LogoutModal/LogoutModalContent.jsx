@@ -5,6 +5,7 @@ import { Text, Button, ButtonGroup } from '@chakra-ui/react';
 import styles from './LogoutModal.module.css';
 import { logout } from '../../../common/auth_utils';
 import { Cookies, withCookies } from '../../../common/cookie_utils';
+import useMobileWidth from '../../../common/useMobileWidth';
 
 // TODO:
 // - Button colors should be added to ChakraProvider using extendTheme
@@ -12,6 +13,7 @@ import { Cookies, withCookies } from '../../../common/cookie_utils';
 // - Implement "Return to Login page" button
 
 const LogoutModalContent = ({ closeModal, cookies }) => {
+  const isMobile = useMobileWidth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -19,6 +21,27 @@ const LogoutModalContent = ({ closeModal, cookies }) => {
     await logout(cookies);
     navigate('/login');
   };
+
+  if (isMobile) {
+    return (
+      <div className={styles['step-content']}>
+        <Text fontSize="lg" fontWeight="bold" className={styles['modal-heading']}>
+          Logout
+        </Text>
+        <Text fontSize="lg" className={styles['step-text']}>
+          Are you sure you want to logout?
+        </Text>
+        <ButtonGroup size="md" className={styles['step-button-group']}>
+          <Button onClick={closeModal} color="#2D3748" bg="#E2E8F0">
+            Cancel
+          </Button>
+          <Button onClick={handleLogout} color="white" bg="#345E80">
+            Logout
+          </Button>
+        </ButtonGroup>
+      </div>
+    );
+  }
   return (
     <div className={styles['step-content']}>
       <Text fontSize="2xl" fontWeight="bold" className={styles['step-text']}>
