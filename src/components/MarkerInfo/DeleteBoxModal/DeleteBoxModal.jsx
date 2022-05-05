@@ -17,6 +17,7 @@ const DeleteBoxModal = ({
   setZipCodeData,
   transactionToggle,
   setTransactionToggle,
+  onMarkerInfoToggle,
 }) => {
   const closeModal = () => {
     onClose();
@@ -25,13 +26,6 @@ const DeleteBoxModal = ({
   // Deletes the currently selected box in both Anchor_Box and Box_History
   const deleteBox = async () => {
     try {
-      // Refetch box list
-      const anchorBoxesInZipCode = await FYABackend.get('/anchorBox', {
-        params: {
-          zipCode: selectedZipCode,
-          country: selectedCountry,
-        },
-      });
       const deletedBox = (await FYABackend.get(`/anchorBox/box/${selectedBox}`)).data[0];
       const deleteRequests = [
         // Delete the box in Box_History
@@ -40,6 +34,13 @@ const DeleteBoxModal = ({
         FYABackend.delete(`/anchorBox/${selectedBox}`),
       ];
       await Promise.allSettled(deleteRequests);
+      // Refetch box list
+      const anchorBoxesInZipCode = await FYABackend.get('/anchorBox', {
+        params: {
+          zipCode: selectedZipCode,
+          country: selectedCountry,
+        },
+      });
       // If the box list is now empty, remove marker from map
       if (anchorBoxesInZipCode.data.length === 0) {
         setZipCodeData(
@@ -51,6 +52,7 @@ const DeleteBoxModal = ({
         );
         setSelectedZipCode(null);
         setSelectedCountry(null);
+        onMarkerInfoToggle();
         // If box list is not empty, decrement the marker's label
       } else {
         // Find the marker inside zipCodeData
@@ -157,6 +159,7 @@ DeleteBoxModal.propTypes = {
   setZipCodeData: PropTypes.func.isRequired,
   setTransactionToggle: PropTypes.func.isRequired,
   transactionToggle: PropTypes.bool.isRequired,
+  onMarkerInfoToggle: PropTypes.func.isRequired,
 };
 
 export default DeleteBoxModal;
