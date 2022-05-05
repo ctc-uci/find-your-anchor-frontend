@@ -79,7 +79,7 @@ const PickupBox = ({
       ];
       await Promise.all(requests);
       showToast({
-        type: 'sucess',
+        type: 'success',
         title: `Box #${boxID} Approved`,
         message: `Box #${boxID} added to map. `,
         toastPosition: 'bottom-right',
