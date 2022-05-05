@@ -1,16 +1,16 @@
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import DatePicker from 'react-datepicker';
 import useDeepCompareEffect from 'use-deep-compare-effect';
+// import { CSVLink } from 'react-csv';
 import * as yup from 'yup';
-
 import {
   FormControl,
   FormLabel,
@@ -34,11 +34,15 @@ import {
   DrawerHeader,
   Box,
 } from '@chakra-ui/react';
+// import renameProperty from '../ExportCSVUtils';
+// import ExportSuccessModal from '../ExportSuccessModal/ExportSuccessModal';
+
 // import { CheckIcon } from '@chakra-ui/icons'
 import AccordionTemplate from '../../../common/CommonAccordionSelector/CommonAccordionSelector';
 import styles from './ExportCSVForm.module.css';
 import { formatDate, FYABackend } from '../../../common/utils';
 import { isValidRange, isZip, isDate } from './ExportCSVFormValidators';
+import CSVPreview from '../CSVPreview/CSVPreview';
 
 // yup validation
 yup.addMethod(yup.mixed, 'isDate', isDate);
@@ -78,7 +82,25 @@ const schema = yup
   .required();
 
 const ExportCSVForm = ({ formID }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+
+  const { isOpen: singleDateInputOpen, onToggle: singleDateInputToggle } = useDisclosure();
+
+  const { isOpen: customBoxInputOpen, onToggle: customBoxInputToggle } = useDisclosure();
+
+  const { isOpen: rangeDateInputOpen, onToggle: rangeDateInputToggle } = useDisclosure();
+
+  const { isOpen: customZipInputOpen, onToggle: customZipInputToggle } = useDisclosure();
+
+  const { isOpen: csvPreviewOpen, onToggle: csvPreviewToggle } = useDisclosure();
+
+  // const {
+  //   isOpen: isUploadCSVOpenModal,
+  //   onOpen: onUploadCSVOpenModal,
+  //   onClose: onCloseUploadCSVOpenModal,
+  // } = useDisclosure();
+
+  const [csvPreviewRows, setCSVPreviewRows] = useState([]);
 
   const {
     control,
@@ -175,22 +197,23 @@ const ExportCSVForm = ({ formID }) => {
 
     // if there are matching records
     if (res.data.length > 0) {
-      navigate('/export-csv-preview', { state: { rows: res.data } });
+      setCSVPreviewRows(res.data);
+      csvPreviewToggle();
     } else {
       // TODO: display toast component
       console.log('no matching records');
     }
   };
 
-  const { isOpen: singleDateInputOpen, onToggle: singleDateInputToggle } = useDisclosure();
-
-  const { isOpen: customBoxInputOpen, onToggle: customBoxInputToggle } = useDisclosure();
-
-  const { isOpen: rangeDateInputOpen, onToggle: rangeDateInputToggle } = useDisclosure();
-
-  const { isOpen: customZipInputOpen, onToggle: customZipInputToggle } = useDisclosure();
-
-  const { isOpen: csvPreviewOpen, onToggle: csvPreviewToggle } = useDisclosure();
+  // const csvReport = {
+  //   data: csvPreviewRows,
+  //   headers: Object.keys(csvPreviewRows.rows[0]).map(property => ({
+  //     label: renameProperty(property),
+  //     key: property,
+  //   })),
+  //   filename: 'FYA-CSV.csv',
+  //   onClick: () => onUploadCSVOpenModal(),
+  // };
 
   return (
     <div className={styles['csv-form-wrapper']}>
@@ -509,7 +532,9 @@ const ExportCSVForm = ({ formID }) => {
               onClick={csvPreviewToggle}
             />
             <DrawerHeader>CSV Preview</DrawerHeader>
-            <DrawerBody>Test</DrawerBody>
+            <DrawerBody>
+              {csvPreviewRows.length > 0 ? <CSVPreview formValues={csvPreviewRows} /> : ''}
+            </DrawerBody>
           </DrawerContent>
         </Drawer>
       </form>
@@ -519,9 +544,11 @@ const ExportCSVForm = ({ formID }) => {
           Cancel
         </Button>
         <Button textColor="white" bg="#345E80">
+          {/* <CSVLink {...csvReport}>Export</CSVLink> */}
           Export
         </Button>
       </div>
+      {/* <ExportSuccessModal isOpen={isUploadCSVOpenModal} onClose={onCloseUploadCSVOpenModal} /> */}
     </div>
   );
 };
