@@ -1,15 +1,14 @@
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import DatePicker from 'react-datepicker';
 import useDeepCompareEffect from 'use-deep-compare-effect';
-// import { CSVLink } from 'react-csv';
 import * as yup from 'yup';
 import {
   FormControl,
@@ -42,7 +41,7 @@ import AccordionTemplate from '../../../common/CommonAccordionSelector/CommonAcc
 import styles from './ExportCSVForm.module.css';
 import { formatDate, FYABackend } from '../../../common/utils';
 import { isValidRange, isZip, isDate } from './ExportCSVFormValidators';
-import CSVPreview from '../CSVPreview/CSVPreview';
+// import CSVPreview from '../CSVPreview/CSVPreview';
 
 // yup validation
 yup.addMethod(yup.mixed, 'isDate', isDate);
@@ -82,7 +81,7 @@ const schema = yup
   .required();
 
 const ExportCSVForm = ({ formID }) => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const { isOpen: singleDateInputOpen, onToggle: singleDateInputToggle } = useDisclosure();
 
@@ -92,7 +91,7 @@ const ExportCSVForm = ({ formID }) => {
 
   const { isOpen: customZipInputOpen, onToggle: customZipInputToggle } = useDisclosure();
 
-  const { isOpen: csvPreviewOpen, onToggle: csvPreviewToggle } = useDisclosure();
+  // const { isOpen: csvPreviewOpen, onToggle: csvPreviewToggle } = useDisclosure();
 
   // const {
   //   isOpen: isUploadCSVOpenModal,
@@ -100,7 +99,7 @@ const ExportCSVForm = ({ formID }) => {
   //   onClose: onCloseUploadCSVOpenModal,
   // } = useDisclosure();
 
-  const [csvPreviewRows, setCSVPreviewRows] = useState([]);
+  // const [csvPreviewRows, setCSVPreviewRows] = useState([]);
 
   const {
     control,
@@ -110,7 +109,7 @@ const ExportCSVForm = ({ formID }) => {
     handleSubmit,
     setValue,
     clearErrors,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     defaultValues: {
       sortBy: 'ascend-box-num',
@@ -127,6 +126,7 @@ const ExportCSVForm = ({ formID }) => {
     },
     resolver: yupResolver(schema),
     delayError: 750,
+    mode: 'onTouched',
   });
 
   const watchAllFields = useWatch({
@@ -197,23 +197,14 @@ const ExportCSVForm = ({ formID }) => {
 
     // if there are matching records
     if (res.data.length > 0) {
-      setCSVPreviewRows(res.data);
-      csvPreviewToggle();
+      navigate('/export-csv-preview', { state: { rows: res.data } });
     } else {
       // TODO: display toast component
       console.log('no matching records');
     }
   };
 
-  // const csvReport = {
-  //   data: csvPreviewRows,
-  //   headers: Object.keys(csvPreviewRows.rows[0]).map(property => ({
-  //     label: renameProperty(property),
-  //     key: property,
-  //   })),
-  //   filename: 'FYA-CSV.csv',
-  //   onClick: () => onUploadCSVOpenModal(),
-  // };
+  // useEffect(handleSubmit(onSubmit), []);
 
   return (
     <div className={styles['csv-form-wrapper']}>
@@ -282,11 +273,20 @@ const ExportCSVForm = ({ formID }) => {
                           name: 'Single Date',
                           value: 'date-single',
                           setAdditionalValueInput: singleDateInputToggle,
+                          additionalValue: getValues('singleDate')
+                            ? formatDate(getValues('singleDate'))
+                            : undefined,
                         },
                         {
                           name: 'Range',
                           value: 'date-range',
                           setAdditionalValueInput: rangeDateInputToggle,
+                          additionalValue:
+                            getValues('startDate') && getValues('endDate')
+                              ? `${formatDate(getValues('startDate'))} - ${formatDate(
+                                  getValues('endDate'),
+                                )}`
+                              : undefined,
                         },
                       ]}
                       isHeader={false}
@@ -305,11 +305,12 @@ const ExportCSVForm = ({ formID }) => {
                     <AccordionTemplate
                       headerText="Zip Code"
                       options={[
-                        { name: 'All', value: 'zipcode-all' },
+                        { name: 'All', value: 'zip-code-all' },
                         {
                           name: 'Custom',
-                          value: 'zipcode-custom',
+                          value: 'zip-code-custom',
                           setAdditionalValueInput: customZipInputToggle,
+                          additionalValue: getValues('zipCode'),
                         },
                       ]}
                       isHeader={false}
@@ -398,17 +399,22 @@ const ExportCSVForm = ({ formID }) => {
             <ChevronLeftIcon
               className={styles['back-button']}
               boxSize={7}
-              onClick={customBoxInputToggle}
+              onClick={() => (isValid ? customBoxInputToggle() : undefined)}
             />
             <DrawerHeader>Boxes</DrawerHeader>
             <DrawerBody>
-              <Text>Custom Range</Text>
-              <Input
-                isInvalid={errors?.boxRange}
-                placeholder="e.g. 1-9, 6, 12"
-                {...register('boxRange')}
-                className={styles['custom-input']}
-              />
+              <FormControl isInvalid={errors?.sortBy}>
+                <FormLabel htmlFor="boxes">Custom Range</FormLabel>
+                {watchAllFields.boxOption === 'boxes-custom' && (
+                  <Input
+                    isInvalid={errors?.boxRange}
+                    placeholder="e.g. 1-9, 6, 12"
+                    {...register('boxRange')}
+                    className={styles['custom-input']}
+                  />
+                )}
+                <p className={styles['error-message']}>{errors.boxRange?.message}</p>
+              </FormControl>
             </DrawerBody>
           </DrawerContent>
         </Drawer>
@@ -423,27 +429,31 @@ const ExportCSVForm = ({ formID }) => {
             <ChevronLeftIcon
               className={styles['back-button']}
               boxSize={7}
-              onClick={singleDateInputToggle}
+              onClick={() => (isValid ? singleDateInputToggle() : undefined)}
             />
             <DrawerHeader>Date</DrawerHeader>
             <DrawerBody>
-              <Text>Single Date</Text>
-              <Controller
-                name="singleDate"
-                control={control}
-                // eslint-disable-next-line no-unused-vars
-                render={({ field: { onChange, value, ref } }) => (
-                  <DatePicker
-                    className={
-                      styles[`${errors?.singleDate ? 'date-picker-error' : 'date-picker'}`]
-                    }
-                    placeholderText="MM/DD/YYYY"
-                    type="date"
-                    selected={value}
-                    onChange={onChange}
+              <FormControl isInvalid={errors?.sortBy}>
+                <FormLabel htmlFor="date-single">Single Date</FormLabel>
+                {watchAllFields.dateOption === 'date-single' && (
+                  <Controller
+                    name="singleDate"
+                    control={control}
+                    // eslint-disable-next-line no-unused-vars
+                    render={({ field: { onChange, value, ref } }) => (
+                      <DatePicker
+                        className={
+                          styles[`${errors?.singleDate ? 'date-picker-error' : 'date-picker'}`]
+                        }
+                        placeholderText="MM/DD/YYYY"
+                        type="date"
+                        selected={value}
+                        onChange={onChange}
+                      />
+                    )}
                   />
                 )}
-              />
+              </FormControl>
             </DrawerBody>
           </DrawerContent>
         </Drawer>
@@ -457,52 +467,66 @@ const ExportCSVForm = ({ formID }) => {
             <ChevronLeftIcon
               className={styles['back-button']}
               boxSize={7}
-              onClick={rangeDateInputToggle}
+              onClick={() => (isValid ? rangeDateInputToggle() : undefined)}
             />
             <DrawerHeader>Date</DrawerHeader>
             <DrawerBody>
-              <Text>Range</Text>
-              <FormLabel className={styles['date-range-label']} htmlFor="start-date">
-                Start Date
-              </FormLabel>
-              <Controller
-                name="startDate"
-                control={control}
-                // eslint-disable-next-line no-unused-vars
-                render={({ field: { onChange, value, ref } }) => (
-                  <DatePicker
-                    className={styles[`${errors?.startDate ? 'date-picker-error' : 'date-picker'}`]}
-                    placeholderText="MM/DD/YYYY"
-                    type="date"
-                    selected={value}
-                    onChange={onChange}
-                    selectsStart
-                    startDate={watchAllFields.startDate}
-                    endDate={watchAllFields.endDate}
-                  />
-                )}
-              />
-              <FormLabel className={styles['date-range-label']} htmlFor="end-date">
-                End Date
-              </FormLabel>
-              <Controller
-                name="endDate"
-                control={control}
-                // eslint-disable-next-line no-unused-vars
-                render={({ field: { onChange, value, ref } }) => (
-                  <DatePicker
-                    className={styles[`${errors?.endDate ? 'date-picker-error' : 'date-picker'}`]}
-                    placeholderText="MM/DD/YYYY"
-                    type="date"
-                    selected={value}
-                    onChange={onChange}
-                    selectsEnd
-                    startDate={watchAllFields.startDate}
-                    endDate={watchAllFields.endDate}
-                    minDate={watchAllFields.startDate}
-                  />
-                )}
-              />
+              <FormLabel htmlFor="date-range">Range</FormLabel>
+              {watchAllFields.dateOption === 'date-range' && (
+                <div className={styles['date-range']}>
+                  <FormControl>
+                    <FormLabel className={styles['date-range-label']} htmlFor="start-date">
+                      Start Date
+                    </FormLabel>
+                    <Controller
+                      name="startDate"
+                      control={control}
+                      // eslint-disable-next-line no-unused-vars
+                      render={({ field: { onChange, value, ref } }) => (
+                        <DatePicker
+                          className={
+                            styles[`${errors?.startDate ? 'date-picker-error' : 'date-picker'}`]
+                          }
+                          placeholderText="MM/DD/YYYY"
+                          type="date"
+                          selected={value}
+                          onChange={onChange}
+                          selectsStart
+                          startDate={watchAllFields.startDate}
+                          endDate={watchAllFields.endDate}
+                        />
+                      )}
+                    />
+                  </FormControl>
+                  <p className={styles['error-message']}>{errors.startDate?.message}</p>
+                  <FormControl>
+                    <FormLabel className={styles['date-range-label']} htmlFor="end-date">
+                      End Date
+                    </FormLabel>
+                    <Controller
+                      name="endDate"
+                      control={control}
+                      // eslint-disable-next-line no-unused-vars
+                      render={({ field: { onChange, value, ref } }) => (
+                        <DatePicker
+                          className={
+                            styles[`${errors?.endDate ? 'date-picker-error' : 'date-picker'}`]
+                          }
+                          placeholderText="MM/DD/YYYY"
+                          type="date"
+                          selected={value}
+                          onChange={onChange}
+                          selectsEnd
+                          startDate={watchAllFields.startDate}
+                          endDate={watchAllFields.endDate}
+                          minDate={watchAllFields.startDate}
+                        />
+                      )}
+                    />
+                  </FormControl>
+                  <p className={styles['error-message']}>{errors.endDate?.message}</p>
+                </div>
+              )}
             </DrawerBody>
           </DrawerContent>
         </Drawer>
@@ -511,20 +535,25 @@ const ExportCSVForm = ({ formID }) => {
             <ChevronLeftIcon
               className={styles['back-button']}
               boxSize={7}
-              onClick={customZipInputToggle}
+              onClick={() => (isValid ? customZipInputToggle() : undefined)}
             />
             <DrawerHeader>Zip Code</DrawerHeader>
             <DrawerBody>
-              <Input
-                isInvalid={errors?.zipCode}
-                placeholder="e.g. 96162, 91007"
-                className={styles['custom-input']}
-                {...register('zipCode')}
-              />
+              <FormControl isInvalid={errors?.sortBy}>
+                <FormLabel htmlFor="zip">Custom</FormLabel>
+                {watchAllFields.zipOption === 'zip-code-custom' && (
+                  <Input
+                    isInvalid={errors?.zipCode}
+                    placeholder="e.g. 96162, 91007"
+                    className={styles['custom-input']}
+                    {...register('zipCode')}
+                  />
+                )}
+              </FormControl>
             </DrawerBody>
           </DrawerContent>
         </Drawer>
-        <Drawer onToggle={csvPreviewToggle} isOpen={csvPreviewOpen} size="full">
+        {/* <Drawer onToggle={csvPreviewToggle} isOpen={csvPreviewOpen} size="full">
           <DrawerContent>
             <ChevronLeftIcon
               className={styles['back-button']}
@@ -536,7 +565,7 @@ const ExportCSVForm = ({ formID }) => {
               {csvPreviewRows.length > 0 ? <CSVPreview formValues={csvPreviewRows} /> : ''}
             </DrawerBody>
           </DrawerContent>
-        </Drawer>
+        </Drawer> */}
       </form>
 
       <div className={styles['buttons-container']}>
@@ -544,11 +573,9 @@ const ExportCSVForm = ({ formID }) => {
           Cancel
         </Button>
         <Button textColor="white" bg="#345E80">
-          {/* <CSVLink {...csvReport}>Export</CSVLink> */}
-          Export
+          Preview CSV
         </Button>
       </div>
-      {/* <ExportSuccessModal isOpen={isUploadCSVOpenModal} onClose={onCloseUploadCSVOpenModal} /> */}
     </div>
   );
 };
