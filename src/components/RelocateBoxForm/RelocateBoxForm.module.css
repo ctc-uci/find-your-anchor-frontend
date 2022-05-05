@@ -42,11 +42,14 @@
 
 .submit-button {
   float: right;
-  margin-bottom: 3%;
 }
 
 .relocate-box-photo-preview-section {
   height: 50%;
+}
+
+.verification-sub-label {
+  opacity: 36%;
 }
 
 .relocate-box-photo-preview-section-hidden {
@@ -56,4 +59,21 @@
 .relocate-box-info-section-left,
 .relocate-box-info-section-right {
   width: 40%;
+}
+
+.privacy-statement {
+  margin-left: 3%;
+  padding-bottom: 5%;
+}
+
+@media screen and (max-width: 768px) {
+  .relocate-box-form {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .relocate-box-info-section-left,
+  .relocate-box-info-section-right {
+    width: 80%;
+  }
 }

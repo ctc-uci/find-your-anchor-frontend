@@ -5,10 +5,11 @@ import { CloseIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 import styles from './CSVDropZone.module.css';
 import DropZoneIcon from '../../../assets/upload.png';
+import useMobileWidth from '../../../common/useMobileWidth';
 
 function CSVDropZone({ setFile }) {
-  const { getRootProps, getInputProps, acceptedFiles, open } = useDropzone({
-    noClick: true,
+  const isMobile = useMobileWidth();
+  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     noKeyboard: true,
     accept: 'text/csv',
     maxFiles: 1,
@@ -36,7 +37,11 @@ function CSVDropZone({ setFile }) {
         aria-label="Remove"
         onClick={removeUploadedPhoto}
       >
-        <CloseIcon w={4} h={4} color="gray.400" />
+        {isMobile ? (
+          <CloseIcon w={10} h={10} color="gray.400" />
+        ) : (
+          <CloseIcon w={4} h={4} color="gray.400" />
+        )}
       </button>
       <span className={styles['file-item-span']}>{acceptedFile.path}</span>
     </li>
@@ -52,11 +57,8 @@ function CSVDropZone({ setFile }) {
           <input {...getInputProps()} />
           <div className={styles['upload-icon']} />
           <img src={DropZoneIcon} alt="Icon" className={styles['dropzone-icon']} />
-          <div>
-            <button type="button" className={styles['file-selector']} onClick={open}>
-              Click
-            </button>
-            <span className={styles['dropzone-text']}>/drag file to upload</span>
+          <div className={styles['dropzone-text']}>
+            <span>Click or drag to upload CSV file</span>
           </div>
         </div>
       ) : (

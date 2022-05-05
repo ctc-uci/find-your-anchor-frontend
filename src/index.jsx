@@ -16,6 +16,10 @@ import RelocateBoxFormPage from './pages/RelocateBoxForm/RelocateBoxFormPage';
 import UploadCSVView from './pages/UploadCSVView/UploadCSVView';
 import LoginPage from './pages/Login/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
+import AboutPage from './pages/About/AboutPage';
+import UploadCSV from './components/UploadCSV/UploadCSV';
+import NotFoundErrorPage from './pages/ErrorPages/NotFoundErrorPage';
+import InternalServerErrorPage from './pages/ErrorPages/InternalServerErrorPage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -23,15 +27,16 @@ ReactDOM.render(
       <Router>
         <Routes>
           <Route element={<Layout />}>
+            <Route path="/about" element={<AboutPage />} />
             <Route path="/found-box-form" element={<PickupBoxFormPage />} />
             <Route path="/launch-box-form" element={<RelocateBoxFormPage />} />
           </Route>
 
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/about" />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/auth-email" element={<AuthEmail redirectPath="/" />} />
           <Route path="/" element={<Dashboard />} />
+          <Route path="/500" element={<InternalServerErrorPage />} />
 
           <Route element={<Layout isAdmin />}>
             <Route
@@ -59,7 +64,14 @@ ReactDOM.render(
               path="/upload-csv-view"
               element={<ProtectedRoute Component={UploadCSVView} redirectPath="/login" />}
             />
+            <Route
+              exact
+              path="/upload-csv"
+              element={<ProtectedRoute Component={UploadCSV} redirectPath="/login" />}
+            />
           </Route>
+
+          <Route path="*" element={<NotFoundErrorPage />} />
         </Routes>
       </Router>
     </CookiesProvider>

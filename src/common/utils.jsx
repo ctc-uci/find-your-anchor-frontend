@@ -16,6 +16,11 @@ FYABackend.interceptors.response.use(
   error => {
     // eslint-disable-next-line no-console
     console.error(`[Axios] FYABackend error: ${JSON.stringify(error.toJSON(), null, 2)}`);
+
+    // Redirect to internal server error page for 500 errors.
+    if (error.toJSON().status === 500) {
+      window.location.href = '/500';
+    }
     return Promise.reject(error.response);
   },
 );
@@ -32,15 +37,14 @@ export const formatDate = value => {
   return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
 };
 
-export const sendEmail = async (name, email, messageHtml) => {
+export const sendEmail = async (name, email, messageHtml, subject) => {
   const response = await FYABackend.post('/nodemailer/send', {
     name,
     email,
     messageHtml: renderEmail(messageHtml),
+    subject,
   });
-  if (response.status === 200) {
-    alert('Email sent, awesome!');
-  } else {
+  if (response.status !== 200) {
     throw new Error('Oops, something went wrong. Try again');
   }
 };
@@ -55,3 +59,13 @@ export const getLatLong = async (zipCode, country) => {
   }
   return [];
 };
+
+export const BoxApprovedEmailPicture = `https://${process.env.REACT_APP_S3_URL}/BoxApprovedEmailPicture.png`;
+
+export const BoxRejectedEmailPicture = `https://${process.env.REACT_APP_S3_URL}/BoxRejectedEmailPicture.png`;
+
+export const ChangesRequestedEmailPicture = `https://${process.env.REACT_APP_S3_URL}/ChangesRequestedEmailPicture.png`;
+
+export const FYATextLogo = `https://${process.env.REACT_APP_S3_URL}/fya-text-logo.png`;
+
+export const AdminApprovalProcessEmailSubject = 'Find Your Anchor Launch Map - Update';
