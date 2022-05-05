@@ -239,4 +239,16 @@
     align-items: center;
     column-gap: 1em;
   }
+
+  .preview-csv-button {
+    padding: 5px 15px 5px 15px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    margin-bottom: 4%;
+    border: 1px solid #CBD5E0;
+    border-radius: 6.2px;
+  }
 }

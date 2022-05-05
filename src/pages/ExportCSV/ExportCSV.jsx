@@ -3,12 +3,13 @@ import { ChakraProvider, Button, Text } from '@chakra-ui/react';
 import ExportCSVForm from '../../components/ExportCSV/ExportCSVForm/ExportCSVForm';
 import styles from './ExportCSV.module.css';
 
-// import useMobileWidth from '../../common/FormUtils/useMobileWidth';
+import useMobileWidth from '../../common/FormUtils/useMobileWidth';
 
 const ExportCSV = () => {
   // Used to connect submit button outside form
   const formID = 'export-csv-form';
 
+  const isMobile = useMobileWidth();
   return (
     <ChakraProvider>
       <div className={styles['export-csv-wrapper']}>
@@ -18,20 +19,36 @@ const ExportCSV = () => {
               Export CSV
             </Text>
           </div>
-          <div className={styles['button-section']}>
-            <Button
-              form={formID}
-              type="submit"
-              className={styles['header-button']}
-              colorScheme="teal"
-            >
-              Preview CSV
-            </Button>
-          </div>
+          {!isMobile ? (
+            <div className={styles['button-section']}>
+              <Button
+                form={formID}
+                type="submit"
+                className={styles['header-button']}
+                colorScheme="teal"
+              >
+                Preview CSV
+              </Button>
+            </div>
+          ) : (
+            ''
+          )}
         </div>
         <div className={styles['export-csv-content']}>
           <ExportCSVForm formID={formID} />
         </div>
+        {/* {isMobile ? (
+          <div className={styles['buttons-container']}>
+            <Button border="1px" borderColor="#CBD5E0" bg="white">
+              Cancel
+            </Button>
+            <Button textColor="white" bg="#345E80">
+              Export
+            </Button>
+          </div>
+        ) : (
+          ''
+        )} */}
       </div>
     </ChakraProvider>
   );

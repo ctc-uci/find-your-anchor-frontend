@@ -37,3 +37,14 @@
   flex-direction: column;
   flex: 1;
 }
+
+@media screen and (max-width: 768px) {
+  .buttons-container {
+    justify-content: center;
+    margin: 80% auto 1.4em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 1em;
+  }
+}

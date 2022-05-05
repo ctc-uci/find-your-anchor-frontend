@@ -3,7 +3,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ChevronLeftIcon } from '@chakra-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -32,6 +32,7 @@ import {
   DrawerContent,
   DrawerBody,
   DrawerHeader,
+  Box,
 } from '@chakra-ui/react';
 // import { CheckIcon } from '@chakra-ui/icons'
 import AccordionTemplate from '../../../common/CommonAccordionSelector/CommonAccordionSelector';
@@ -188,6 +189,8 @@ const ExportCSVForm = ({ formID }) => {
   const { isOpen: rangeDateInputOpen, onToggle: rangeDateInputToggle } = useDisclosure();
 
   const { isOpen: customZipInputOpen, onToggle: customZipInputToggle } = useDisclosure();
+
+  const { isOpen: csvPreviewOpen, onToggle: csvPreviewToggle } = useDisclosure();
 
   return (
     <div className={styles['csv-form-wrapper']}>
@@ -363,16 +366,10 @@ const ExportCSVForm = ({ formID }) => {
           </Accordion>
         </div>
 
-        <div className={styles['accordion-box']}>
-          <Accordion allowToggle>
-            <AccordionItem>
-              <AccordionButton>
-                <Text className={styles['csv-form-labels']}>CSV Preview</Text>
-                <AccordionIcon />
-              </AccordionButton>
-            </AccordionItem>
-          </Accordion>
-        </div>
+        <Box className={styles['preview-csv-button']} onClick={handleSubmit(onSubmit)}>
+          <Text className={styles['csv-form-labels']}>CSV Preview</Text>
+          <ChevronRightIcon boxSize={6} />
+        </Box>
         <Drawer onToggle={customBoxInputToggle} isOpen={customBoxInputOpen} size="full">
           <DrawerContent>
             <ChevronLeftIcon
@@ -382,6 +379,7 @@ const ExportCSVForm = ({ formID }) => {
             />
             <DrawerHeader>Boxes</DrawerHeader>
             <DrawerBody>
+              <Text>Custom Range</Text>
               <Input
                 isInvalid={errors?.boxRange}
                 placeholder="e.g. 1-9, 6, 12"
@@ -406,6 +404,7 @@ const ExportCSVForm = ({ formID }) => {
             />
             <DrawerHeader>Date</DrawerHeader>
             <DrawerBody>
+              <Text>Single Date</Text>
               <Controller
                 name="singleDate"
                 control={control}
@@ -439,8 +438,9 @@ const ExportCSVForm = ({ formID }) => {
             />
             <DrawerHeader>Date</DrawerHeader>
             <DrawerBody>
-              <FormLabel className={styles['date-range-label']} htmlFor="end-date">
-                End Date
+              <Text>Range</Text>
+              <FormLabel className={styles['date-range-label']} htmlFor="start-date">
+                Start Date
               </FormLabel>
               <Controller
                 name="startDate"
@@ -499,6 +499,17 @@ const ExportCSVForm = ({ formID }) => {
                 {...register('zipCode')}
               />
             </DrawerBody>
+          </DrawerContent>
+        </Drawer>
+        <Drawer onToggle={csvPreviewToggle} isOpen={csvPreviewOpen} size="full">
+          <DrawerContent>
+            <ChevronLeftIcon
+              className={styles['back-button']}
+              boxSize={7}
+              onClick={csvPreviewToggle}
+            />
+            <DrawerHeader>CSV Preview</DrawerHeader>
+            <DrawerBody>Test</DrawerBody>
           </DrawerContent>
         </Drawer>
       </form>
