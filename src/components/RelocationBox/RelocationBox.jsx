@@ -172,6 +172,10 @@ const RelocationBox = ({
       const user = await getCurrentUser(auth);
       const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
       const formData = getValues();
+
+      // Retrieve date of most recent transaction.
+      const transaction = await FYABackend.get(`/boxHistory/mostRecentTransaction/${boxID}`);
+
       await FYABackend.put('/boxHistory/update', {
         transactionID,
         boxID,
@@ -185,17 +189,23 @@ const RelocationBox = ({
         launchedOrganically: formData.dropOffMethod === 'organic-launch',
         admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
       });
-      // Just in case the country value is null so it doesnt break, we can remove it once we clear the DB and have correct data
-      let coordinates = await getLatLong(zipCode, formData.country.value || 'US');
-      if (coordinates.length !== 2) {
-        coordinates = [0, 0];
-      }
 
-      await FYABackend.put('/boxHistory/approveBox', {
-        transactionID,
-        latitude: coordinates[0],
-        longitude: coordinates[1],
-      });
+      if (Date.parse(transaction.data[0].mostrecentdate) <= Date.parse(date)) {
+        // Just in case the country value is null so it doesnt break, we can remove it once we clear the DB and have correct data
+        let coordinates = await getLatLong(zipCode, formData.country.value);
+        if (coordinates.length !== 2) {
+          coordinates = [null, null];
+        }
+
+        await FYABackend.put('/boxHistory/approveBox', {
+          transactionID,
+          latitude: coordinates[0],
+          longitude: coordinates[1],
+          isMostRecentDate: true,
+        });
+      } else {
+        await FYABackend.put('/boxHistory/approveBox', { transactionID, isMostRecentDate: false });
+      }
       const requests = [
         fetchBoxes('under review', false),
         fetchBoxes('pending changes', false),
@@ -211,7 +221,7 @@ const RelocationBox = ({
       showToast({
         type: 'success',
         title: `Box #${boxID} Approved`,
-        message: `Box #${boxID} added to map. `,
+        message: `Box #${boxID} succesfully added to map`,
         toastPosition: 'bottom-right',
       });
     } catch (err) {

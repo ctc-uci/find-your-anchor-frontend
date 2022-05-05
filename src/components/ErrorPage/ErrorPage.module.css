@@ -1,0 +1,48 @@
+.error-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  left: 0;
+  top: 0;
+}
+
+.logo {
+  margin-top: 12.5px;
+  margin-left: 12.5px;
+  align-self: flex-start;
+  position: absolute;
+}
+
+.error-page-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.error-message {
+  text-align: center;
+  margin: 50px;
+}
+
+@media screen and (max-width: 768px) {
+  .home-button {
+    position: absolute !important;
+    bottom: 60px;
+    width: 80% !important;
+  }
+
+  .logo-mobile {
+    width: 50px;
+    margin-top: 12.5px;
+    margin-left: 12.5px;
+    align-self: flex-start;
+    position: absolute;
+  }
+}

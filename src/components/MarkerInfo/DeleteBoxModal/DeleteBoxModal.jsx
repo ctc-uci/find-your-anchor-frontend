@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useCustomToast } from '../../ToastProvider/ToastProvider';
 import CommonModal from '../../../common/CommonModal/CommonModal';
 import DeleteBoxModalContent from './DeleteBoxModalContent';
-import { FYABackend } from '../../../common/utils';
+import { FYABackend, getLatLong } from '../../../common/utils';
 
 const DeleteBoxModal = ({
   isOpen,
@@ -16,8 +16,14 @@ const DeleteBoxModal = ({
   setSelectedCountry,
   zipCodeData,
   setZipCodeData,
+  transactionToggle,
+  setTransactionToggle,
 }) => {
   const { showToast } = useCustomToast();
+  const closeModal = () => {
+    onClose();
+  };
+
   // Deletes the currently selected box in both Anchor_Box and Box_History
   const deleteBox = async () => {
     try {
@@ -31,9 +37,9 @@ const DeleteBoxModal = ({
       const deletedBox = (await FYABackend.get(`/anchorBox/box/${selectedBox}`)).data[0];
       const deleteRequests = [
         // Delete the box in Box_History
-        await FYABackend.delete(`/boxHistory/${selectedBox}`),
+        FYABackend.delete(`/boxHistory/box/${selectedBox}`),
         // Delete the box in Anchor_Box
-        await FYABackend.delete(`/anchorBox/${selectedBox}`),
+        FYABackend.delete(`/anchorBox/${selectedBox}`),
       ];
       await Promise.allSettled(deleteRequests);
       // If the box list is now empty, remove marker from map
@@ -83,8 +89,42 @@ const DeleteBoxModal = ({
       });
     }
   };
-  const closeModal = () => {
-    onClose();
+
+  const deleteTransaction = async () => {
+    try {
+      // Get the most recent transaction for the selected box
+      const mostRecentTransaction = await FYABackend.get(
+        `/boxHistory/mostRecentTransaction/${selectedBox}`,
+      );
+      // Delete the most recent transaction for the selected box
+      await FYABackend.delete(
+        `/boxHistory/transaction/${mostRecentTransaction.data[0].transaction_id}`,
+      );
+      // Get the 2nd most recent transaction for the selected box
+      const nextMostRecentTransaction = await FYABackend.get(
+        `/boxHistory/mostRecentTransaction/${selectedBox}`,
+      );
+      const [latitude, longitude] = await getLatLong(selectedZipCode, selectedCountry);
+      // If there is another transaction, update the BoxInfo page
+      if (nextMostRecentTransaction.data.length > 0) {
+        // Copy the most recent transaction to Anchor_Box
+        await FYABackend.put(`/boxHistory/approveBox`, {
+          transactionID: nextMostRecentTransaction.data[0].transaction_id,
+          latitude,
+          longitude,
+          isMostRecentDate: true,
+        });
+        // Update boxInfo to get rid of last transaction
+        setTransactionToggle(!transactionToggle);
+        // Having no 2nd most recent transaction is equivalent to deleting the box
+      } else {
+        deleteBox();
+      }
+      closeModal();
+    } catch (err) {
+      // TODO: TOAST
+      console.log(err);
+    }
   };
   return (
     <CommonModal
@@ -95,7 +135,7 @@ const DeleteBoxModal = ({
       width={448}
       height={196}
     >
-      <DeleteBoxModalContent deleteBox={deleteBox} />
+      <DeleteBoxModalContent deleteBox={deleteBox} deleteTransaction={deleteTransaction} />
     </CommonModal>
   );
 };
@@ -125,6 +165,8 @@ DeleteBoxModal.propTypes = {
     }),
   ).isRequired,
   setZipCodeData: PropTypes.func.isRequired,
+  setTransactionToggle: PropTypes.func.isRequired,
+  transactionToggle: PropTypes.bool.isRequired,
 };
 
 export default DeleteBoxModal;

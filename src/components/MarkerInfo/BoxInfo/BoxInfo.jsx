@@ -45,6 +45,7 @@ const BoxInfo = ({
   const [additionalComments, setAdditionalComments] = useState('');
   const [dropOffMethod, setDropOffMethod] = useState('');
   const [message, setMessage] = useState('');
+  const [transactionToggle, setTransactionToggle] = useState(false);
   const [pickup, setPickup] = useState('');
   const updateXarrow = useXarrow();
 
@@ -73,7 +74,7 @@ const BoxInfo = ({
       setBoxHistory(history.data);
       setPickup(boxData.data[0].pickup);
     }
-  }, [selectedBox]);
+  }, [selectedBox, transactionToggle]);
   return (
     <ChakraProvider>
       <div className={styles['box-info']} onLoad={updateXarrow}>
@@ -216,6 +217,8 @@ const BoxInfo = ({
                 setSelectedCountry={setSelectedCountry}
                 zipCodeData={zipCodeData}
                 setZipCodeData={setZipCodeData}
+                transactionToggle={transactionToggle}
+                setTransactionToggle={setTransactionToggle}
               />
             </div>
           )}
