@@ -107,6 +107,12 @@ const AddBoxForm = () => {
         });
         setLoading(false);
         navigate('/');
+        showToast({
+          title: 'Box Added Sucessfully',
+          message: `Sucessfully added to Box #${formData.boxNumber} to map`,
+          toastPosition: 'bottom-right',
+          type: 'success',
+        });
       } catch (err) {
         setLoading(false);
         showToast({
