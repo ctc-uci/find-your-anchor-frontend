@@ -35,6 +35,11 @@
   display: block;
 }
 
+.close-button {
+  float: right;
+  color: var(--color-warning);
+}
+
 .marker-info-slide,
 .box-approval-slide {
   width: min(100%, 500px) !important;
@@ -46,7 +51,7 @@
 }
 
 .map {
-  width: 100vw;
+  width: 100%;
 }
 
 .admin-map {
@@ -70,6 +75,8 @@
   left: 10px;
   z-index: 400; /* since leaflet has a high z index */
   visibility: visible;
+  background-color: var(--color-hyperlink) !important;
+  color: var(--color-white) !important;
 }
 
 .admin-button {

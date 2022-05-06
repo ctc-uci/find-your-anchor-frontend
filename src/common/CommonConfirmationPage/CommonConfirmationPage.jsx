@@ -20,7 +20,7 @@ const CommonConfirmationPage = ({ isOpen, confirmationTitle, confirmationText, s
         {showFYALogo && <img src={FYALogo} className={styles.logo} alt="logo" />}
         {showFYALogo && <img src={FYALogoMobile} className={styles['logo-mobile']} alt="logo" />}
         <div className={styles['confirmation-content']}>
-          <CheckCircleIcon className={styles['confirmation-icon']} w={24} h={24} color="#345E80" />
+          <CheckCircleIcon className={styles['confirmation-icon']} w={24} h={24} />
           <div className={styles['confirmation-message']}>
             <Text fontSize="48px" fontWeight="bold" className={styles['confirmation-title']}>
               {confirmationTitle}
@@ -29,12 +29,7 @@ const CommonConfirmationPage = ({ isOpen, confirmationTitle, confirmationText, s
               {confirmationText}
             </Text>
           </div>
-          <Button
-            className={styles['confirmation-button']}
-            onClick={returnToLogin}
-            color="white"
-            bg="#345E80"
-          >
+          <Button className={styles['confirmation-button']} onClick={returnToLogin}>
             Return to Login
           </Button>
         </div>
