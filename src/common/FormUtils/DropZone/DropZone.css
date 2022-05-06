@@ -1,30 +1,27 @@
-:root {
-  --dropzone-color: #fafafa;
-}
 .dropzone-zone {
   padding: 55px;
   border-radius: 5px;
   border-width: 2px;
   border-style: solid;
   height: 250px;
-  border-color: #b9b9b9;
-  background-color: var(--dropzone-color);
-  color: #b9b9b9;
+  border-color: var(--color-light-gray);
+  background-color: var(--color-off-white);
+  color: var(--color-gray);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .dropzone-accept {
-  border-color: #00e676;
+  border-color: var(--color-success);
 }
 
 .dropzone-reject {
-  border-color: #ff1744;
+  border-color: var(--color-warning);
 }
 
 .dropzone-text {
-  color: black;
+  color: var(--color-black);
 }
 .dropzone-support-text {
   font-size: 0.8rem;
@@ -33,13 +30,13 @@
 .dropzone-icon {
   margin: auto;
   font-size: 30px;
-  color: black;
+  color: var(--color-black);
 }
 
 .fileSelector {
   border: none;
   background-color: transparent;
-  color: black;
+  color: var(--color-black);
   text-decoration: underline;
   font-size: 1rem;
   cursor: pointer;
@@ -50,15 +47,10 @@
   padding: 0;
 }
 
-.file-item-button {
-  border: 1px solid #a0aec0;
-  border-radius: 2px;
-  height: 30px;
-  width: 30px;
-  margin-right: 10px;
-  padding-bottom: 2px;
+.remove-uploaded-photo-button {
+  color: var(--color-gray) !important;
 }
 
 .file-item-span {
-  color: var(--text-gray-color);
+  color: var(--color-gray);
 }

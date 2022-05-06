@@ -38,7 +38,7 @@ const CSVPreviewPage = () => {
             <Text fontSize="lg">{state.rows.length} boxes</Text>
           </div>
           <div className={styles['button-section']}>
-            <Button className={styles['header-button']} colorScheme="teal">
+            <Button className={styles['header-button']}>
               <CSVLink {...csvReport}>Export to CSV</CSVLink>
             </Button>
           </div>

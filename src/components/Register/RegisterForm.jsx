@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import PropTypes from 'prop-types';
-import { Button, Heading } from '@chakra-ui/react';
+import { Button, Text } from '@chakra-ui/react';
 import { registerWithEmailAndPassword } from '../../common/auth_utils';
 import styles from './RegisterForm.module.css';
 import TextInput from '../Inputs/TextInput';
@@ -47,7 +47,9 @@ const RegisterForm = ({ email }) => {
 
   return (
     <div className={styles['register-form-container']}>
-      <Heading className={styles['form-heading']}>Register</Heading>
+      <Text className={styles['form-heading']} textStyle="header-1">
+        Register
+      </Text>
       <form className={styles['register-form']} onSubmit={handleSubmit(onSubmit)}>
         <TextInput
           register={register('firstName')}

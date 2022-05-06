@@ -60,7 +60,6 @@ const Dashboard = () => {
               aria-label="Close Control Panel"
               icon={<CloseIcon />}
               onClick={onBoxApprovalToggle}
-              color="red"
             />
             <BoxApproval />
           </Slide>
@@ -86,7 +85,6 @@ const Dashboard = () => {
           </div>
           {adminIsLoggedIn ? (
             <Button
-              colorScheme="blue"
               className={`${styles['review-submission-button']} ${styles['admin-button']}`}
               ref={btnRef}
               onClick={handleReviewSubmissionsClicked}
@@ -95,7 +93,6 @@ const Dashboard = () => {
             </Button>
           ) : (
             <Button
-              colorScheme="blue"
               className={`${styles['review-submission-button']} ${styles['general-user-button']}`}
               onClick={() => navigate('/login')}
             >
