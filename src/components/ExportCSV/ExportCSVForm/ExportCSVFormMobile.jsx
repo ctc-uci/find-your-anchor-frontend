@@ -91,16 +91,6 @@ const ExportCSVForm = ({ formID }) => {
 
   const { isOpen: customZipInputOpen, onToggle: customZipInputToggle } = useDisclosure();
 
-  // const { isOpen: csvPreviewOpen, onToggle: csvPreviewToggle } = useDisclosure();
-
-  // const {
-  //   isOpen: isUploadCSVOpenModal,
-  //   onOpen: onUploadCSVOpenModal,
-  //   onClose: onCloseUploadCSVOpenModal,
-  // } = useDisclosure();
-
-  // const [csvPreviewRows, setCSVPreviewRows] = useState([]);
-
   const {
     control,
     reset,
@@ -203,8 +193,6 @@ const ExportCSVForm = ({ formID }) => {
       console.log('no matching records');
     }
   };
-
-  // useEffect(handleSubmit(onSubmit), []);
 
   return (
     <div className={styles['csv-form-wrapper']}>
@@ -389,7 +377,7 @@ const ExportCSVForm = ({ formID }) => {
             </AccordionItem>
           </Accordion>
         </div>
-
+        {/* TODO: CSV Preview Flow for Mobile View */}
         <Box className={styles['preview-csv-button']} onClick={handleSubmit(onSubmit)}>
           <Text className={styles['csv-form-labels']}>CSV Preview</Text>
           <ChevronRightIcon boxSize={6} />
@@ -553,19 +541,6 @@ const ExportCSVForm = ({ formID }) => {
             </DrawerBody>
           </DrawerContent>
         </Drawer>
-        {/* <Drawer onToggle={csvPreviewToggle} isOpen={csvPreviewOpen} size="full">
-          <DrawerContent>
-            <ChevronLeftIcon
-              className={styles['back-button']}
-              boxSize={7}
-              onClick={csvPreviewToggle}
-            />
-            <DrawerHeader>CSV Preview</DrawerHeader>
-            <DrawerBody>
-              {csvPreviewRows.length > 0 ? <CSVPreview formValues={csvPreviewRows} /> : ''}
-            </DrawerBody>
-          </DrawerContent>
-        </Drawer> */}
       </form>
 
       <div className={styles['buttons-container']}>
