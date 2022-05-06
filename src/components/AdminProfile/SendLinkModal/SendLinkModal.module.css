@@ -3,13 +3,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
   margin: 20px;
   text-align: center;
+  padding: 20px;
 }
 
 .modal-one-input {
-  text-align: center;
-  margin: 2em 0 1em 0;
+  margin: 0em 0 1em 0;
 }
 
 .error-message {
@@ -18,6 +19,7 @@
 
 .modal-one-button {
   align-self: flex-end;
+  margin-top: 5%;
 }
 
 .checkmark {
@@ -27,5 +29,77 @@
 }
 
 .modal-two-button {
-  margin-top: 1em;
+  margin-top: 5%;
+}
+
+.input-wrapper {
+  width: 100%;
+  text-align: left;
+  padding-top: 5%;
+}
+
+.email-icon,
+.check-icon {
+  margin: 0 auto;
+  height: 125px;
+  width: 125px;
+  margin-bottom: 5%;
+}
+
+.send-link-modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .modal-content {
+    position: fixed;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    padding: 25px;
+  }
+
+  .modal-button-section {
+    width: 80%;
+    position: fixed;
+    bottom: 75px;
+  }
+
+  .modal-one-button {
+    width: 100% !important;
+  }
+
+  .modal-two-button {
+    width: 100% !important;
+  }
+
+  .modal-cancel-button {
+    text-decoration: underline;
+    color: #3182ce;
+    margin-top: 15px;
+  }
+
+  .input-wrapper,
+  .modal-header {
+    margin-top: 15px;
+  }
+
+  .email-icon,
+  .check-icon {
+    height: 175px;
+    width: 175px;
+  }
 }

@@ -3,12 +3,13 @@ import { PropTypes } from 'prop-types';
 import { ChakraProvider, Button, useDisclosure, Input, Text } from '@chakra-ui/react';
 
 import { RiPencilFill, RiCheckFill } from 'react-icons/ri';
-import { DiReact } from 'react-icons/di';
 import styles from './AdminProfile.module.css';
 import DeleteAccountModal from './DeleteAccountModal/DeleteAccountModal';
 import LogoutModal from './LogoutModal/LogoutModal';
 import SendLinkModal from './SendLinkModal/SendLinkModal';
 import FYALogoLarge from '../../assets/fya-logo-large.svg';
+import useMobileWidth from '../../common/useMobileWidth';
+import BackgroundImageMobile from '../../assets/profile-background-mobile.jpg';
 
 import { getCurrentUser, auth } from '../../common/auth_utils';
 import { FYABackend } from '../../common/utils';
@@ -93,65 +94,120 @@ const AdminProfile = () => {
     setLastName(backendUser.data.user.last_name);
     setEmail(backendUser.data.user.email);
   }, []);
-
+  const isMobile = useMobileWidth();
   return (
     <ChakraProvider>
-      <div className={styles['profile-page-wrapper']}>
-        <div className={styles['top-buttons']}>
-          <Button
-            onClick={onOpenLinkModal}
-            color="white"
-            bg="#1F2F38"
-            fontSize="20px"
-            size="lg"
-            rightIcon={<DiReact />}
-          >
-            Share Registration Link
-          </Button>
-          <SendLinkModal isOpen={isOpenLinkModal} onClose={onCloseLinkModal} />
-        </div>
-        <div className={styles['profile-form']}>
-          <div className={styles['logo-wrapper']}>
-            <img className={styles['fya-logo']} src={FYALogoLarge} alt="Find Your Anchor Logo" />
+      <div className={styles['flex-wrapper']}>
+        <div className={styles['profile-page-wrapper']}>
+          {isMobile && (
+            <>
+              <div className={styles['background-image-container']}>
+                <img src={BackgroundImageMobile} alt="Profile Page Background" />
+              </div>
+              <div className={styles['logo-container']}>
+                <img
+                  className={styles['fya-logo']}
+                  src={FYALogoLarge}
+                  alt="Find Your Anchor Logo"
+                />
+              </div>
+            </>
+          )}
+          <div className={styles['top-buttons']}>
+            {!isMobile && (
+              <Button
+                onClick={onOpenLinkModal}
+                color="white"
+                bg="#1F2F38"
+                fontSize="20px"
+                size="lg"
+              >
+                Send Registration Link
+              </Button>
+            )}
+
+            <SendLinkModal isOpen={isOpenLinkModal} onClose={onCloseLinkModal} />
           </div>
-          <TextInput
-            inputLabel="First Name"
-            placeHolder={firstName}
-            value={firstName}
-            setValue={setFirstName}
-            editable
-            editState={editFirst}
-            makeEditable={() => setEditFirst(!editFirst)}
-            handleCheckMarkClicked={handleCheckMarkClicked}
-          />
-          <TextInput
-            inputLabel="Last Name"
-            placeHolder={lastName}
-            value={lastName}
-            setValue={setLastName}
-            editable
-            editState={editLast}
-            makeEditable={() => setEditLast(!editLast)}
-            handleCheckMarkClicked={handleCheckMarkClicked}
-          />
-          <TextInput inputLabel="Email" placeHolder={email} editState={false} />
-        </div>
-        <div className={styles['bottom-buttons']}>
-          <Button onClick={onOpenDeleteModal} colorScheme="red" size="lg" rightIcon={<DiReact />}>
-            Delete Account
-          </Button>
-          <Button
-            onClick={onOpenLogoutModal}
-            colorScheme="teal"
-            bg="#345E80"
-            fontSize="20px"
-            size="lg"
-            rightIcon={<DiReact />}
-          >
-            Logout
-          </Button>
-          <DeleteAccountModal isOpen={isOpenDeleteModal} onClose={onCloseDeleteModal} />
-          <LogoutModal isOpen={isOpenLogoutModal} onClose={onCloseLogoutModal} />
+          <div className={styles['profile-form']}>
+            {!isMobile && (
+              <div className={styles['logo-wrapper']}>
+                <img
+                  className={styles['fya-logo']}
+                  src={FYALogoLarge}
+                  alt="Find Your Anchor Logo"
+                />
+              </div>
+            )}
+
+            <TextInput
+              inputLabel="First Name"
+              placeHolder={firstName}
+              value={firstName}
+              setValue={setFirstName}
+              editable
+              editState={editFirst}
+              makeEditable={() => setEditFirst(!editFirst)}
+              handleCheckMarkClicked={handleCheckMarkClicked}
+            />
+            <TextInput
+              inputLabel="Last Name"
+              placeHolder={lastName}
+              value={lastName}
+              setValue={setLastName}
+              editable
+              editState={editLast}
+              makeEditable={() => setEditLast(!editLast)}
+              handleCheckMarkClicked={handleCheckMarkClicked}
+            />
+            <TextInput inputLabel="Email" placeHolder={email} editState={false} />
+            {isMobile && (
+              <div className={styles['bottom-buttons']}>
+                <Button
+                  onClick={onOpenLinkModal}
+                  color="white"
+                  bg="#1F2F38"
+                  fontSize="18px"
+                  size="lg"
+                  width={isMobile ? '100%' : 'auto'}
+                >
+                  Send Registration Link
+                </Button>
+                <Button
+                  onClick={onOpenDeleteModal}
+                  colorScheme="red"
+                  size="lg"
+                  width={isMobile ? '100%' : 'auto'}
+                >
+                  Delete Account
+                </Button>
+                <DeleteAccountModal isOpen={isOpenDeleteModal} onClose={onCloseDeleteModal} />
+                <LogoutModal isOpen={isOpenLogoutModal} onClose={onCloseLogoutModal} />
+              </div>
+            )}
+          </div>
+          {!isMobile && (
+            <div className={styles['bottom-buttons']}>
+              <Button
+                onClick={onOpenDeleteModal}
+                colorScheme="red"
+                size="lg"
+                width={isMobile ? '100%' : 'auto'}
+              >
+                Delete Account
+              </Button>
+              <Button
+                onClick={onOpenLogoutModal}
+                colorScheme="teal"
+                bg="#345E80"
+                fontSize="20px"
+                size="lg"
+              >
+                Logout
+              </Button>
+              <DeleteAccountModal isOpen={isOpenDeleteModal} onClose={onCloseDeleteModal} />
+              <LogoutModal isOpen={isOpenLogoutModal} onClose={onCloseLogoutModal} />
+            </div>
+          )}
         </div>
       </div>
     </ChakraProvider>

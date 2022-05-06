@@ -1,10 +1,23 @@
+.flex-wrapper {
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  background: linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)),
+    url('../../assets/profile-background.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 5%;
+}
+
 .profile-page-wrapper {
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 30em;
+  width: 50%;
   margin: 0 auto;
 }
 
@@ -19,21 +32,25 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: white;
   width: 100%;
-  margin: 2vh 0;
+  margin: 3vh 0;
   padding: 2.75em;
   border: 2px solid #e2e8f0;
   border-radius: 22px;
+  z-index: 100;
 }
 
 .logo-wrapper {
   max-width: 140px;
+  z-index: 1000;
 }
 
 .fya-logo {
   max-width: 100%;
   height: auto;
   width: auto;
+  z-index: 1000;
 }
 
 .form-input {
@@ -52,6 +69,92 @@
 .bottom-buttons {
   width: 100%;
   display: flex;
+  padding-top: 0%;
   justify-content: flex-end;
   gap: 2em;
+}
+
+@media screen and (max-width: 768px) {
+  .profile-page-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+    overflow-y: hidden;
+  }
+
+  .background-image-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.6;
+    flex: 1;
+  }
+
+  .profile-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 0;
+    padding: 1.75em;
+    background-color: transparent;
+    border: 0px solid;
+    border-radius: 0px;
+    flex: 1;
+    transform: translateY(-30%);
+  }
+
+  .logo-container {
+    max-width: 140px;
+    transform: translateY(-50%);
+  }
+
+  .fya-logo {
+    max-width: 100%;
+    height: auto;
+    width: auto;
+  }
+
+  .form-input {
+    width: 100%;
+    margin-top: 2.2vh;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .editable-input {
+    gap: 0.65em;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .bottom-buttons {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    display: flex;
+    padding-top: 8%;
+    gap: 1.75em;
+  }
+
+  .page-content-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto 0.15em;
+  }
+  .flex-wrapper {
+    padding: 0%;
+    background-image: none;
+  }
 }

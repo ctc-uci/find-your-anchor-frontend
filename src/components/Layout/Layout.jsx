@@ -7,7 +7,7 @@ import styles from './Layout.module.css';
 import NavBar from '../NavBar/NavBar';
 
 const Layout = ({ isAdmin }) => (
-  <div>
+  <div className={styles.wrapper}>
     <div className={styles.navbar}>
       <NavBar isAdmin={isAdmin} />
     </div>

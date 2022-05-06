@@ -25,11 +25,44 @@
 
 .logout-modal-content .step-text {
   text-align: center;
-  margin: 0px 60px 40px;
+  margin-bottom: 40px;
 }
 
-.logout-modal-content .step-button-group {
+.logout-modal-content,
+.step-button-group {
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+
+@media screen and (max-width: 768px) {
+  .modal-heading {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+  }
+
+  .fya-logo {
+    display: none;
+  }
+
+  .step-button-group {
+    position: absolute;
+    bottom: 15px;
+    right: 20px;
+  }
+
+  .logout-modal-content .step-button-group {
+    width: auto;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .logout-modal-content .step-text {
+    text-align: left;
+    margin-bottom: 0px;
+    position: absolute;
+    top: 75px;
+    left: 20px;
+  }
 }

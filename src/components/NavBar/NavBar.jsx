@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes, { instanceOf } from 'prop-types';
+import PropTypes from 'prop-types';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import {
   ChakraProvider,
@@ -16,11 +16,11 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 import UploadCSV from '../UploadCSV/UploadCSV';
+import LogoutModal from '../AdminProfile/LogoutModal/LogoutModal';
 import styles from './NavBar.module.css';
 import FYALogo from '../../assets/fya-logo.png';
 import { FYABackend } from '../../common/utils';
-import { getCurrentUser, auth, logout } from '../../common/auth_utils';
-import { Cookies, withCookies } from '../../common/cookie_utils';
+import { getCurrentUser, auth } from '../../common/auth_utils';
 import useMobileWidth from '../../common/useMobileWidth';
 import addBoxIcon from '../../assets/navBarIcons/add-box-icon.svg';
 import dashboardIcon from '../../assets/navBarIcons/admin-dashboard-icon.svg';
@@ -34,7 +34,7 @@ import admingLoginIcon from '../../assets/navBarIcons/admin-login-icon.svg';
 import foundBoxIcon from '../../assets/navBarIcons/found-box-icon.svg';
 import launchBoxIcon from '../../assets/navBarIcons/launch-box-icon.svg';
 
-const NavBar = ({ isAdmin, cookies }) => {
+const NavBar = ({ isAdmin }) => {
   const isMobile = useMobileWidth();
   const [initials, setInitials] = useState('');
   const navigate = useNavigate();
@@ -45,11 +45,19 @@ const NavBar = ({ isAdmin, cookies }) => {
     onOpen: onUploadCSVOpenModal,
     onClose: onCloseUploadCSVOpenModal,
   } = useDisclosure();
+
   const {
     isOpen: isMobileNavOpen,
     onOpen: onMobileNavOpen,
     onClose: onMobileNavClose,
   } = useDisclosure();
+
+  const {
+    isOpen: isLogoutOpenModal,
+    onOpen: onLogoutOpenModal,
+    onClose: onLogoutCloseModal,
+  } = useDisclosure();
+
   const getUserInitials = async () => {
     const user = await getCurrentUser(auth);
     const backendUser = await FYABackend.get(`/users/userId/${user.uid}`);
@@ -153,8 +161,7 @@ const NavBar = ({ isAdmin, cookies }) => {
     {
       display: 'Log out',
       onClick: async () => {
-        await logout(cookies);
-        navigate('/login');
+        onLogoutOpenModal();
       },
       icon: logoutIcon,
       mobileOnly: true,
@@ -208,6 +215,7 @@ const NavBar = ({ isAdmin, cookies }) => {
         </ModalContent>
       </Modal>
       <UploadCSV isOpen={isUploadCSVOpenModal} onClose={onCloseUploadCSVOpenModal} />
+      <LogoutModal isOpen={isLogoutOpenModal} onClose={onLogoutCloseModal} />
     </ChakraProvider>
   );
 };
@@ -216,6 +224,5 @@ NavBar.defaultProps = {
 };
 NavBar.propTypes = {
   isAdmin: PropTypes.bool,
-  cookies: instanceOf(Cookies).isRequired,
 };
-export default withCookies(NavBar);
+export default NavBar;
