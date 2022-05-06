@@ -19,31 +19,17 @@ const ExportCSV = () => {
               Export CSV
             </Text>
           </div>
-          {!isMobile ? (
+          {!isMobile && (
             <div className={styles['button-section']}>
               <Button form={formID} type="submit" className={styles['header-button']}>
                 Preview CSV
               </Button>
             </div>
-          ) : (
-            ''
           )}
         </div>
         <div className={styles['export-csv-content']}>
           <ExportCSVForm formID={formID} />
         </div>
-        {/* {isMobile ? (
-          <div className={styles['buttons-container']}>
-            <Button border="1px" borderColor="#CBD5E0" bg="white">
-              Cancel
-            </Button>
-            <Button textColor="white" bg="#345E80">
-              Export
-            </Button>
-          </div>
-        ) : (
-          ''
-        )} */}
       </div>
     </ChakraProvider>
   );
