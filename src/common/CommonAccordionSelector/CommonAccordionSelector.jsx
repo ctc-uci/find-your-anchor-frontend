@@ -45,10 +45,17 @@ function RadioCard(props) {
 }
 
 // Step 2: Use the `useRadioGroup` hook to control a group of custom radios.
-const CommonAccordionSelector = ({ headerText, options, isHeader, isInPlane, setValue }) => {
+const CommonAccordionSelector = ({
+  headerText,
+  options,
+  isHeader,
+  isInPlane,
+  inputValue,
+  setValue,
+}) => {
   const { value, getRootProps, getRadioProps } = useRadioGroup({
     name: 'framework',
-    defaultValue: 'react',
+    defaultValue: inputValue,
     onChange: setValue,
   });
 
@@ -59,61 +66,45 @@ const CommonAccordionSelector = ({ headerText, options, isHeader, isInPlane, set
       <AccordionItem>
         <h2>
           <AccordionButton>
-            {value === 'react' ? (
-              <Box>
-                {isHeader ? (
-                  <Box display="flex" mt="2" alignItems="center" justify="space-between">
-                    <Text className={styles['csv-form-labels']}>{headerText}</Text>
-                    <AccordionIcon />
-                  </Box>
-                ) : (
-                  <Box display="flex" mt="2" alignItems="center" justify="space-between">
-                    <Text>{headerText}</Text>
-                    <AccordionIcon />
-                  </Box>
-                )}
-              </Box>
-            ) : (
-              <Box>
-                {isInPlane ? (
-                  <HStack className={styles['header-container']}>
-                    {isHeader ? (
-                      <Box display="flex" mt="2" alignItems="center" justify="space-between">
-                        <Text className={styles['csv-form-labels']}>{headerText}</Text>
-                      </Box>
-                    ) : (
-                      <Box display="flex" mt="2" alignItems="center" justify="space-between">
-                        <Text>{headerText}</Text>
-                      </Box>
-                    )}
+            <Box>
+              {isInPlane ? (
+                <HStack className={styles['header-container']}>
+                  {isHeader ? (
+                    <Box display="flex" mt="2" alignItems="center" justify="space-between">
+                      <Text className={styles['csv-form-labels']}>{headerText}</Text>
+                    </Box>
+                  ) : (
+                    <Box display="flex" mt="2" alignItems="center" justify="space-between">
+                      <Text>{headerText}</Text>
+                    </Box>
+                  )}
+                  <Text>{`${options.find(option => option.value === value).name} ${
+                    options.find(option => option.value === value).additionalValue
+                      ? `(${options.find(option => option.value === value).additionalValue})`
+                      : ''
+                  }`}</Text>
+                  <AccordionIcon />
+                </HStack>
+              ) : (
+                <VStack spacing={4} align="stretch">
+                  {isHeader ? (
+                    <Box display="flex" mt="2" alignItems="center" justify="space-between">
+                      <Text className={styles['csv-form-labels']}>{headerText}</Text>
+                    </Box>
+                  ) : (
+                    <Box display="flex" mt="2" alignItems="center" justify="space-between">
+                      <Text>{headerText}</Text>
+                    </Box>
+                  )}
+                  <div className={styles['header-selection-container']}>
                     <Text>{`${options.find(option => option.value === value).name} ${
-                      options.find(option => option.value === value).additionalValue
-                        ? `(${options.find(option => option.value === value).additionalValue})`
-                        : ''
+                      options.find(option => option.value === value)?.additionalValue || ''
                     }`}</Text>
                     <AccordionIcon />
-                  </HStack>
-                ) : (
-                  <VStack spacing={4} align="stretch">
-                    {isHeader ? (
-                      <Box display="flex" mt="2" alignItems="center" justify="space-between">
-                        <Text className={styles['csv-form-labels']}>{headerText}</Text>
-                      </Box>
-                    ) : (
-                      <Box display="flex" mt="2" alignItems="center" justify="space-between">
-                        <Text>{headerText}</Text>
-                      </Box>
-                    )}
-                    <div className={styles['header-selection-container']}>
-                      <Text>{`${options.find(option => option.value === value).name} ${
-                        options.find(option => option.value === value)?.additionalValue || ''
-                      }`}</Text>
-                      <AccordionIcon />
-                    </div>
-                  </VStack>
-                )}
-              </Box>
-            )}
+                  </div>
+                </VStack>
+              )}
+            </Box>
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4}>

@@ -401,7 +401,7 @@ const ExportCSVForm = ({ formID }) => {
               boxSize={7}
               onClick={() => (isValid ? customBoxInputToggle() : undefined)}
             />
-            <DrawerHeader>Boxes</DrawerHeader>
+            <DrawerHeader className={styles['additional-input-header']}>Boxes</DrawerHeader>
             <DrawerBody>
               <FormControl isInvalid={errors?.sortBy}>
                 <FormLabel htmlFor="boxes">Custom Range</FormLabel>
@@ -431,7 +431,7 @@ const ExportCSVForm = ({ formID }) => {
               boxSize={7}
               onClick={() => (isValid ? singleDateInputToggle() : undefined)}
             />
-            <DrawerHeader>Date</DrawerHeader>
+            <DrawerHeader className={styles['additional-input-header']}>Date</DrawerHeader>
             <DrawerBody>
               <FormControl isInvalid={errors?.sortBy}>
                 <FormLabel htmlFor="date-single">Single Date</FormLabel>
@@ -469,7 +469,7 @@ const ExportCSVForm = ({ formID }) => {
               boxSize={7}
               onClick={() => (isValid ? rangeDateInputToggle() : undefined)}
             />
-            <DrawerHeader>Date</DrawerHeader>
+            <DrawerHeader className={styles['additional-input-header']}>Date</DrawerHeader>
             <DrawerBody>
               <FormLabel htmlFor="date-range">Range</FormLabel>
               {watchAllFields.dateOption === 'date-range' && (
@@ -537,7 +537,7 @@ const ExportCSVForm = ({ formID }) => {
               boxSize={7}
               onClick={() => (isValid ? customZipInputToggle() : undefined)}
             />
-            <DrawerHeader>Zip Code</DrawerHeader>
+            <DrawerHeader className={styles['additional-input-header']}>Zip Code</DrawerHeader>
             <DrawerBody>
               <FormControl isInvalid={errors?.sortBy}>
                 <FormLabel htmlFor="zip">Custom</FormLabel>
