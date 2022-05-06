@@ -44,6 +44,7 @@ const MarkerInfo = ({
             setSelectedCountry={setSelectedCountry}
             zipCodeData={zipCodeData}
             setZipCodeData={setZipCodeData}
+            onMarkerInfoToggle={onMarkerInfoToggle}
           />
         ) : (
           <BoxList

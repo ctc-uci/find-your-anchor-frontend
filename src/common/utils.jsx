@@ -16,6 +16,11 @@ FYABackend.interceptors.response.use(
   error => {
     // eslint-disable-next-line no-console
     console.error(`[Axios] FYABackend error: ${JSON.stringify(error.toJSON(), null, 2)}`);
+
+    // Redirect to internal server error page for 500 errors.
+    if (error.toJSON().status === 500) {
+      window.location.href = '/500';
+    }
     return Promise.reject(error.response);
   },
 );
@@ -39,9 +44,7 @@ export const sendEmail = async (name, email, messageHtml, subject) => {
     messageHtml: renderEmail(messageHtml),
     subject,
   });
-  if (response.status === 200) {
-    alert('Email sent, awesome!');
-  } else {
+  if (response.status !== 200) {
     throw new Error('Oops, something went wrong. Try again');
   }
 };

@@ -20,6 +20,8 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
 import AboutPage from './pages/About/AboutPage';
 import ChakraTheme from './common/ChakraTheme';
 import UploadCSV from './components/UploadCSV/UploadCSV';
+import NotFoundErrorPage from './pages/ErrorPages/NotFoundErrorPage';
+import InternalServerErrorPage from './pages/ErrorPages/InternalServerErrorPage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -37,6 +39,7 @@ ReactDOM.render(
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/auth-email" element={<AuthEmail redirectPath="/" />} />
             <Route path="/" element={<Dashboard />} />
+            <Route path="/500" element={<InternalServerErrorPage />} />
 
             <Route element={<Layout isAdmin />}>
               <Route
@@ -70,6 +73,8 @@ ReactDOM.render(
                 element={<ProtectedRoute Component={UploadCSV} redirectPath="/login" />}
               />
             </Route>
+
+            <Route path="*" element={<NotFoundErrorPage />} />
           </Routes>
         </Router>
       </ChakraProvider>
