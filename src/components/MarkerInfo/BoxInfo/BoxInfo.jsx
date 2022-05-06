@@ -32,6 +32,7 @@ const BoxInfo = ({
   setSelectedCountry,
   zipCodeData,
   setZipCodeData,
+  onMarkerInfoToggle,
 }) => {
   const isMobile = useMobileWidth();
   const [date, setDate] = useState('');
@@ -219,6 +220,7 @@ const BoxInfo = ({
                 setZipCodeData={setZipCodeData}
                 transactionToggle={transactionToggle}
                 setTransactionToggle={setTransactionToggle}
+                onMarkerInfoToggle={onMarkerInfoToggle}
               />
             </div>
           )}
@@ -252,5 +254,6 @@ BoxInfo.propTypes = {
     }),
   ).isRequired,
   setZipCodeData: PropTypes.func.isRequired,
+  onMarkerInfoToggle: PropTypes.func.isRequired,
 };
 export default BoxInfo;
