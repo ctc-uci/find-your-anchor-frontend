@@ -189,29 +189,25 @@ const Map = ({
         }}
       >
         {zipCodeData &&
-          Object.values(zipCodeData).map(
-            locations =>
-              /* eslint-disable react/no-array-index-key */
-              // >
-              locations.map(markerObject => (
-                <Marker
-                  icon={markerIcon}
-                  key={markerObject.box_id}
-                  position={[markerObject.latitude, markerObject.longitude]}
-                  eventHandlers={{
-                    // Marker click effect
-                    click: () => {
-                      handleMarkerClicked(markerObject);
-                    },
-                  }}
-                >
-                  <Tooltip interactive className="tooltip" direction="top" permanent>
-                    {markerObject.box_count}
-                  </Tooltip>
-                </Marker>
-              )),
-            // </MarkerClusterGroup>
-          )}
+          zipCodeData.map(markerObject => (
+            /* eslint-disable react/no-array-index-key */
+            // >
+            <Marker
+              icon={markerIcon}
+              key={markerObject.box_id}
+              position={[markerObject.latitude, markerObject.longitude]}
+              eventHandlers={{
+                // Marker click effect
+                click: () => {
+                  handleMarkerClicked(markerObject);
+                },
+              }}
+            >
+              <Tooltip interactive className="tooltip" direction="top" permanent>
+                {markerObject.box_count}
+              </Tooltip>
+            </Marker>
+          ))}
       </MarkerClusterGroup>
       <LocationSearchField />
       <BoxSearchField />

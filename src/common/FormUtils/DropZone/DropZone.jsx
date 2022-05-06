@@ -43,7 +43,7 @@ const DropZone = ({ setFiles }) => {
         aria-label="Remove"
         onClick={removeUploadedPhoto}
       >
-        <CloseIcon w={4} h={4} color="gray.400" />
+        <CloseIcon w={4} h={4} className="remove-uploaded-photo-button" />
       </button>
       <span className="file-item-span">{acceptedFile.path}</span>
     </li>

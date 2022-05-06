@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  background-color: white;
+  background-color: var(--color-white);
   position: fixed;
   height: 100%;
   width: 100%;
@@ -41,8 +41,14 @@
   width: 125px !important;
   height: 125px !important;
   padding: 5px;
-  border: 7.5px solid #345e80;
+  color: var(--color-teal) !important;
+  border: 7.5px solid var(--color-teal);
   border-radius: 50%;
+}
+
+.confirmation-button {
+  background-color: var(--color-teal) !important;
+  color: var(--color-white) !important;
 }
 
 .confirmation-message {

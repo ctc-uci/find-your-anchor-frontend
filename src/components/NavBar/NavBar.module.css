@@ -9,6 +9,11 @@
   align-items: center;
   font-size: 18px;
 }
+
+.nav-link-unselected {
+  text-decoration: none;
+}
+
 .nav-link {
   margin: auto;
   padding: 1%;

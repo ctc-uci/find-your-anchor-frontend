@@ -1,6 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { Button, Heading } from '@chakra-ui/react';
+import { Button, Text } from '@chakra-ui/react';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import styles from './BoxFormConfirmation.module.css';
@@ -15,13 +15,23 @@ const BoxFormConfirmation = ({ pickup }) => {
   return (
     <div className={styles['box-form-confirmation-page']}>
       <CheckCircleIcon className={styles['confirmation-check-circle']} color="#345E80" />
-      <Heading className={styles['confirmation-text']} size="xl" fontWeight="normal">
+      <Text
+        className={styles['confirmation-text']}
+        size="xl"
+        fontWeight="normal"
+        textStyle="header-1"
+      >
         Your {pickup ? 'found' : 'launch'} box request has been confirmed!
-      </Heading>
-      <Heading className={styles['confirmation-message']} size="md" fontWeight="normal">
+      </Text>
+      <Text
+        className={styles['confirmation-message']}
+        size="md"
+        fontWeight="normal"
+        textStyle="header-1"
+      >
         Please allow 1-3 business days for your request to be reviewed. You will receive more
         information via email.
-      </Heading>
+      </Text>
       <Button
         className={styles['confirmation-button']}
         size="sm"
