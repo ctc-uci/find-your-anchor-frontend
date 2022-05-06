@@ -13,13 +13,13 @@ const ExportSuccessModal = ({ isOpen, onClose }) => {
   return (
     <CommonModal isOpen={isOpen} onClose={onClose} className={styles['common-modal']}>
       <div className={styles['export-success-modal-content']}>
-        <CheckCircleIcon alt="Check Icon" boxSize="80px" color="green.300" marginBottom="20px" />
+        <CheckCircleIcon className={styles['confirmation-icon']} w={24} h={24} color="#345E80" />
         <Text className={styles['export-success-modal-heading']}>Export Successful!</Text>
         <Text className={styles['export-success-modal-text']}>
           Your CSV file is now available to view.
         </Text>
         <ButtonGroup className={styles['export-success-modal-buttons']}>
-          <Button type="submit" colorScheme="teal" onClick={() => navigate('/admin')}>
+          <Button type="submit" colorScheme="teal" onClick={() => navigate('/')}>
             Back to Home
           </Button>
         </ButtonGroup>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Heading } from '@chakra-ui/react';
+import { Button, Text } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './ResetPasswordForm.module.css';
 import PasswordInput from '../Inputs/PasswordInput';
@@ -55,7 +55,9 @@ const ResetPasswordForm = ({ code }) => {
 
   return (
     <div className={styles['reset-password-form-container']}>
-      <Heading className={styles['form-heading']}>Reset Password</Heading>
+      <Text className={styles['form-heading']} textStyle="header-1">
+        Reset Password
+      </Text>
       <form className={styles['reset-password-form']} onSubmit={handleSubmit(onSubmit)}>
         <PasswordInput
           register={register('newPassword')}

@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { PropTypes, instanceOf } from 'prop-types';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Heading } from '@chakra-ui/react';
+import { Button, Text } from '@chakra-ui/react';
 import styles from './LoginForm.module.css';
 import TextInput from '../Inputs/TextInput';
 import PasswordInput from '../Inputs/PasswordInput';
@@ -72,7 +72,9 @@ const LoginForm = ({ cookies, redirectLink }) => {
 
   return (
     <div className={styles['login-form-container']}>
-      <Heading className={styles['form-heading']}>Login</Heading>
+      <Text className={styles['form-heading']} textStyle="header-1">
+        Login
+      </Text>
       <form className={styles['login-form']} onSubmit={handleSubmit(onSubmit)}>
         <TextInput
           register={register('email')}

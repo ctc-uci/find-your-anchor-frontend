@@ -105,3 +105,154 @@
   color: red;
   font-size: 13px;
 }
+
+@media screen and (max-width: 768px) {
+  .accordion-box {
+    border: 1px solid #CBD5E0;
+    border-radius: 6.2pt;
+  }
+
+  .accordion-items {
+    align-items: left;
+  }
+
+  .csv-form-wrapper {
+    flex-basis: 42%;
+    width: 100%;
+    margin: 1.4em 0em 1.4em;
+  }
+
+  .export-csv-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .section-wrapper {
+    width: 400px !important;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: left;
+    row-gap: 0.5em;
+  }
+
+  .filter-label-select {
+    width: 400px !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .input-drop-down {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 200px;
+    gap: 5px;
+  }
+
+  .organically-radio-group {
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .date-picker {
+    font-size: var(--chakra-fontSizes-md);
+    height: 2.5rem;
+    width: 100%;
+    border: 1px solid rgb(226, 232, 240);
+    border-radius: 0.375rem;
+    padding-left: 1rem;
+  }
+
+  .date-picker-error {
+    font-size: var(--chakra-fontSizes-md);
+    height: 2.5rem;
+    width: 100%;
+    border: 1px solid #e53e3e;
+    box-shadow: 0 0 0 1px #e53e3e;
+    border-radius: 0.375rem;
+    padding-left: 1rem;
+  }
+
+  .date-range {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .date-range-label {
+    font-size: 14px;
+    color: #9c9c9c;
+  }
+
+  .filter-section-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .filter-option-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .filter-choices {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .box-detail-checkboxes {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: auto;
+    align-items: left;
+    row-gap: 0.5em;
+  }
+
+  .box-detail-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .csv-form-labels {
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 13px;
+  }
+
+  .buttons-container {
+    justify-content: center;
+    margin: 80% auto 1.4em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 1em;
+  }
+
+  .preview-csv-button {
+    padding: 5px 15px 5px 15px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    margin-bottom: 4%;
+    border: 1px solid #CBD5E0;
+    border-radius: 6.2px;
+  }
+
+  .additional-input-header {
+    text-align: center;
+  }
+}

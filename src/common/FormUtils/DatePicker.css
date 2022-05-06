@@ -2,11 +2,11 @@
   font-size: 15px;
   height: 2.5rem;
   width: 100%;
-  border: 1px solid rgb(226, 232, 240);
+  border: 1px solid var(--color-light-gray);
   border-radius: 0.375rem;
   padding-left: 1rem;
 }
 
 .date-picker-error {
-  border: 2.2px solid #ea6565;
+  border: 2.2px solid var(--color-warning);
 }
