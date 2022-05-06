@@ -23,6 +23,7 @@ import PendingPickupIcon from '../../assets/BoxIcons/PendingPickupIcon.svg';
 import AdminApprovalProcessEmail from '../Email/EmailTemplates/AdminApprovalProcessEmail';
 import { FYABackend, getLatLong, sendEmail } from '../../common/utils';
 import { auth, getCurrentUser } from '../../common/auth_utils';
+import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 const PickupBox = ({
   approved,
@@ -45,45 +46,60 @@ const PickupBox = ({
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
   const [rejectBoxPopupIsOpen, setRejectBoxPopupIsOpen] = useState(false);
-
+  const { showToast } = useCustomToast();
   // A function that updates the approved boolean in the backend and refreshes all boxes that are under review
   // This method is called when the approve box icon is clicked
   const approvePickupBox = async id => {
-    const user = await getCurrentUser(auth);
-    const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
+    try {
+      const user = await getCurrentUser(auth);
+      const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
 
-    // Retrieve date of most recent transaction.
-    const transaction = await FYABackend.get(`/boxHistory/mostRecentTransaction/${boxID}`);
+      // Retrieve date of most recent transaction.
+      const transaction = await FYABackend.get(`/boxHistory/mostRecentTransaction/${boxID}`);
 
-    await FYABackend.put('/boxHistory/update', {
-      transactionID: id,
-      boxID,
-      status: 'evaluated',
-      approved: true,
-      pickup,
-      admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
-    });
-    if (Date.parse(transaction.data[0].mostrecentdate) <= Date.parse(date)) {
-      // TODO: REPLACE US WITH COUNTRY INPUT
-      let coordinates = await getLatLong(zipCode, country);
-      if (coordinates.length !== 2) {
-        coordinates = [null, null];
-      }
-
-      await FYABackend.put('/boxHistory/approveBox', {
-        transactionID,
-        latitude: coordinates[0],
-        longitude: coordinates[1],
-        isMostRecentDate: true,
+      await FYABackend.put('/boxHistory/update', {
+        transactionID: id,
+        boxID,
+        status: 'evaluated',
+        approved: true,
+        pickup,
+        admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
       });
-    } else {
-      await FYABackend.put('/boxHistory/approveBox', { transactionID, isMostRecentDate: false });
+      if (Date.parse(transaction.data[0].mostrecentdate) <= Date.parse(date)) {
+        // TODO: REPLACE US WITH COUNTRY INPUT
+        let coordinates = await getLatLong(zipCode, country);
+        if (coordinates.length !== 2) {
+          coordinates = [null, null];
+        }
+
+        await FYABackend.put('/boxHistory/approveBox', {
+          transactionID,
+          latitude: coordinates[0],
+          longitude: coordinates[1],
+          isMostRecentDate: true,
+        });
+      } else {
+        await FYABackend.put('/boxHistory/approveBox', { transactionID, isMostRecentDate: false });
+      }
+      const requests = [
+        fetchBoxes('under review', true),
+        sendEmail(boxHolderName, boxHolderEmail, <AdminApprovalProcessEmail type="approved" />),
+      ];
+      await Promise.all(requests);
+      showToast({
+        type: 'success',
+        title: `Box #${boxID} Approved`,
+        message: `Box #${boxID} succesfully added to map`,
+        toastPosition: 'bottom-right',
+      });
+    } catch (err) {
+      showToast({
+        type: 'error',
+        title: `Failed to Approve Box #${boxID}`,
+        message: err.message,
+        toastPosition: 'bottom-right',
+      });
     }
-    const requests = [
-      fetchBoxes('under review', true),
-      sendEmail(boxHolderName, boxHolderEmail, <AdminApprovalProcessEmail type="approved" />),
-    ];
-    await Promise.all(requests);
   };
 
   const updateImageStatus = async newStatus => {

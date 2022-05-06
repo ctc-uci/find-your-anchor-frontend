@@ -16,6 +16,7 @@ import { FYABackend, sendEmail, AdminApprovalProcessEmailSubject } from '../../.
 import AdminApprovalProcessEmail from '../../Email/EmailTemplates/AdminApprovalProcessEmail';
 import styles from './RejectBoxPopup.module.css';
 import { auth, getCurrentUser } from '../../../common/auth_utils';
+import { useCustomToast } from '../../ToastProvider/ToastProvider';
 
 const RejectBoxPopup = ({
   boxHolderName,
@@ -29,31 +30,46 @@ const RejectBoxPopup = ({
 }) => {
   const cancelRef = React.useRef();
   const [rejectionReason, setRejectionReason] = useState('');
-
+  const { showToast } = useCustomToast();
   const handleRejectButtonClicked = async () => {
-    const user = await getCurrentUser(auth);
-    const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
-    await FYABackend.put('/boxHistory/update', {
-      transactionID,
-      boxID,
-      approved: false,
-      status: 'evaluated',
-      rejectionReason,
-      admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
-    });
-    const requests = [
-      fetchBoxes('under review', pickup),
-      fetchBoxes('pending changes', pickup),
-      fetchBoxes('evaluated', pickup),
-      sendEmail(
-        boxHolderName,
-        boxHolderEmail,
-        <AdminApprovalProcessEmail type="rejected" rejectionReason={rejectionReason} />,
-        AdminApprovalProcessEmailSubject,
-      ),
-    ];
-    await Promise.all(requests);
-    setIsOpen(false);
+    try {
+      const user = await getCurrentUser(auth);
+      const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
+      await FYABackend.put('/boxHistory/update', {
+        transactionID,
+        boxID,
+        approved: false,
+        status: 'evaluated',
+        rejectionReason,
+        admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
+      });
+      const requests = [
+        fetchBoxes('under review', pickup),
+        fetchBoxes('pending changes', pickup),
+        fetchBoxes('evaluated', pickup),
+        sendEmail(
+          boxHolderName,
+          boxHolderEmail,
+          <AdminApprovalProcessEmail type="rejected" rejectionReason={rejectionReason} />,
+          AdminApprovalProcessEmailSubject,
+        ),
+      ];
+      await Promise.all(requests);
+      setIsOpen(false);
+      showToast({
+        type: 'error',
+        title: `Box #${boxID} Rejected`,
+        message: 'A copy of your responses has been sent to the messenger.',
+        toastPosition: 'bottom-right',
+      });
+    } catch (err) {
+      showToast({
+        type: 'error',
+        title: `Failed to Reject Box #${boxID}`,
+        message: err.message,
+        toastPosition: 'bottom-right',
+      });
+    }
   };
 
   return (

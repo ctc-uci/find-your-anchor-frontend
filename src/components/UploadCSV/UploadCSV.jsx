@@ -15,6 +15,7 @@ import useMobileWidth from '../../common/useMobileWidth';
 
 import BoxSchema from './UploadCSVUtils';
 import styles from './UploadCSV.module.css';
+import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 const UploadCSV = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const [uploadErrors, setUploadErrors] = useState([]);
   const [isUploadingNewFile, setIsUploadingNewFile] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const { showToast } = useCustomToast();
   const isMobile = useMobileWidth();
 
   useEffect(() => {
@@ -45,6 +47,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
         error: false,
       };
     } catch (err) {
+      console.log(err);
       err.inner.forEach(e => {
         setUploadErrors(prevState => [...prevState, `${e.message} (line ${i})`]);
       });
@@ -165,8 +168,19 @@ const UploadCSV = ({ isOpen, onClose }) => {
       await FYABackend.post('/anchorBox/boxes', formDatas);
       setIsLoading(false);
       navigate('/');
+      showToast({
+        title: `${CSVFilename} added to Map`,
+        message: `Successfully added ${formDatas.length} Boxes To Map`,
+        toastPosition: 'bottom-left',
+        type: 'success',
+      });
     } catch (err) {
-      console.log(err);
+      showToast({
+        title: `Failed to add ${CSVFilename} to Map`,
+        message: err.message,
+        toastPosition: 'bottom',
+        type: 'error',
+      });
     }
   };
 

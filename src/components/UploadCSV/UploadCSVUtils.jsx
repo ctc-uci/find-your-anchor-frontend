@@ -8,6 +8,11 @@ function validateZipcodeInCountry() {
     const { path, createError } = this;
 
     // convert country to its country code
+
+    if (country === undefined) {
+      return createError({ path, message: 'Missing or invalid country name' });
+    }
+
     const countryCode = countryList().getValue(country);
 
     // check if country field (country must be entered in its full country name) is valid

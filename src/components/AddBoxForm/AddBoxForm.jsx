@@ -31,6 +31,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from './AddBoxForm.module.css';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import useMobileWidth from '../../common/useMobileWidth';
+import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
@@ -65,6 +66,7 @@ const AddBoxForm = () => {
   const navigate = useNavigate();
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { showToast } = useCustomToast();
 
   const {
     register,
@@ -87,8 +89,12 @@ const AddBoxForm = () => {
 
     const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
     if (latitude === undefined && longitude === undefined) {
-      // TODO: display toast component
-      console.log(`Cannot find ${formData.zipcode} in country ${formData.country}`);
+      showToast({
+        title: 'Form Error',
+        message: `Cannot find ${formData.zipcode} in country ${formData.country}`,
+        toastPosition: 'bottom-right',
+        type: 'error',
+      });
     } else {
       try {
         setLoading(true);
@@ -100,11 +106,21 @@ const AddBoxForm = () => {
           showOnMap: true,
         });
         setLoading(false);
-        navigate('/admin');
+        navigate('/');
+        showToast({
+          title: 'Box Added Sucessfully',
+          message: `Sucessfully added to Box #${formData.boxNumber} to map`,
+          toastPosition: 'bottom-right',
+          type: 'success',
+        });
       } catch (err) {
         setLoading(false);
-        // TODO: show error banner on failure
-        console.log(err.message);
+        showToast({
+          title: 'Form Error',
+          message: err.message,
+          toastPosition: 'bottom-right',
+          type: 'error',
+        });
       }
     }
   };

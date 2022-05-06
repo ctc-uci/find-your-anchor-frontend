@@ -18,6 +18,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '../../common/FormUtils/DatePicker.css';
 import styles from './PickupBoxForm.module.css';
 import useMobileWidth from '../../common/useMobileWidth';
+import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 yup.addMethod(yup.number, 'boxExists', validateBoxIdInAnchorBox);
@@ -63,7 +64,7 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
   const [verificationFiles, setVerificationFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const isMobile = useMobileWidth();
-
+  const { showToast } = useCustomToast();
   const countryOptions = useMemo(() => countryList().getData(), []);
 
   const onSubmit = async data => {
@@ -71,10 +72,14 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
     formData.date = formatDate(data.date);
     formData.picture = files.length > 0 ? await uploadBoxPhoto(files[0]) : '';
 
-    // This must be a toast error because yup validation does not check the uploaded files.
     if (verificationFiles.length === 0) {
-      // TODO: Replace with toast component.
-      alert('Please submit a Box Number Verification Photo');
+      showToast({
+        title: 'Error Submitting Form',
+        message: 'Please submit a Box Number Verification Photo',
+        toastPosition: 'bottom-right',
+        type: 'error',
+      });
+
       return;
     }
     formData.verificationPicture =
@@ -84,8 +89,12 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
 
     const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
     if (latitude === undefined && longitude === undefined) {
-      // TODO: display toast component
-      alert(`Cannot find ${formData.zipcode} in country ${formData.country}`);
+      showToast({
+        title: 'Error Submitting Form',
+        message: `Cannot find ${formData.zipcode} in country ${formData.country}`,
+        toastPosition: 'bottom-right',
+        type: 'error',
+      });
     } else {
       try {
         setLoading(true);
@@ -101,8 +110,12 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
         setLoading(false);
       } catch (err) {
         setLoading(false);
-        // TODO: show error banner on failure
-        console.log(err.message);
+        showToast({
+          title: 'Error Submitting Form',
+          message: err.message,
+          toastPosition: 'bottom-right',
+          type: 'error',
+        });
       }
     }
   };

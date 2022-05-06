@@ -38,6 +38,7 @@ import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChang
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import styles from './RelocationBox.module.css';
 import { validateZip } from '../../common/FormUtils/boxFormUtils';
+import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 const schema = yup
@@ -84,6 +85,7 @@ const RelocationBox = ({
   admin,
   verificationPicture,
 }) => {
+  const { showToast } = useCustomToast();
   const countryOptions = useMemo(() => countryList().getData(), []);
   const boxFormData = {
     name: boxHolderName,
@@ -166,55 +168,70 @@ const RelocationBox = ({
 
   // A function that approves a relocation box submission and updates the backend state accordingly and then refetches all boxes (boxes can be approved from any tab)
   const approveRelocationBox = async () => {
-    const user = await getCurrentUser(auth);
-    const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
-    const formData = getValues();
+    try {
+      const user = await getCurrentUser(auth);
+      const userInDB = await FYABackend.get(`/users/userId/${user.uid}`);
+      const formData = getValues();
 
-    // Retrieve date of most recent transaction.
-    const transaction = await FYABackend.get(`/boxHistory/mostRecentTransaction/${boxID}`);
+      // Retrieve date of most recent transaction.
+      const transaction = await FYABackend.get(`/boxHistory/mostRecentTransaction/${boxID}`);
 
-    await FYABackend.put('/boxHistory/update', {
-      transactionID,
-      boxID,
-      status,
-      boxHolderName: formData.name,
-      boxHolderEmail: formData.email,
-      zipCode: formData.zipcode,
-      country: formData.country.value,
-      generalLocation: formData.boxLocation,
-      message: formData.boxMessage,
-      launchedOrganically: formData.dropOffMethod === 'organic-launch',
-      admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
-    });
-
-    if (Date.parse(transaction.data[0].mostrecentdate) <= Date.parse(date)) {
-      // Just in case the country value is null so it doesnt break, we can remove it once we clear the DB and have correct data
-      let coordinates = await getLatLong(zipCode, formData.country.value);
-      if (coordinates.length !== 2) {
-        coordinates = [null, null];
-      }
-
-      await FYABackend.put('/boxHistory/approveBox', {
+      await FYABackend.put('/boxHistory/update', {
         transactionID,
-        latitude: coordinates[0],
-        longitude: coordinates[1],
-        isMostRecentDate: true,
+        boxID,
+        status,
+        boxHolderName: formData.name,
+        boxHolderEmail: formData.email,
+        zipCode: formData.zipcode,
+        country: formData.country.value,
+        generalLocation: formData.boxLocation,
+        message: formData.boxMessage,
+        launchedOrganically: formData.dropOffMethod === 'organic-launch',
+        admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
       });
-    } else {
-      await FYABackend.put('/boxHistory/approveBox', { transactionID, isMostRecentDate: false });
+
+      if (Date.parse(transaction.data[0].mostrecentdate) <= Date.parse(date)) {
+        // Just in case the country value is null so it doesnt break, we can remove it once we clear the DB and have correct data
+        let coordinates = await getLatLong(zipCode, formData.country.value);
+        if (coordinates.length !== 2) {
+          coordinates = [null, null];
+        }
+
+        await FYABackend.put('/boxHistory/approveBox', {
+          transactionID,
+          latitude: coordinates[0],
+          longitude: coordinates[1],
+          isMostRecentDate: true,
+        });
+      } else {
+        await FYABackend.put('/boxHistory/approveBox', { transactionID, isMostRecentDate: false });
+      }
+      const requests = [
+        fetchBoxes('under review', false),
+        fetchBoxes('pending changes', false),
+        fetchBoxes('evaluated', false),
+        sendEmail(
+          formData.name,
+          formData.email,
+          <AdminApprovalProcessEmail type="approved" />,
+          AdminApprovalProcessEmailSubject,
+        ),
+      ];
+      await Promise.all(requests);
+      showToast({
+        type: 'success',
+        title: `Box #${boxID} Approved`,
+        message: `Box #${boxID} succesfully added to map`,
+        toastPosition: 'bottom-right',
+      });
+    } catch (err) {
+      showToast({
+        type: 'error',
+        title: `Failed to Approve Box #${boxID}`,
+        message: err.message,
+        toastPosition: 'bottom-right',
+      });
     }
-    const requests = [
-      fetchBoxes('under review', false),
-      fetchBoxes('pending changes', false),
-      fetchBoxes('evaluated', false),
-      sendEmail(
-        formData.name,
-        formData.email,
-        <AdminApprovalProcessEmail type="approved" />,
-        AdminApprovalProcessEmailSubject,
-      ),
-    ];
-    await Promise.all(requests);
   };
 
   // A function that updates imageStatus in the backend when a user clicks on the accept/reject buttons below the box's image

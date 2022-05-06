@@ -28,6 +28,7 @@ import EditableRow from '../EditableRow/EditableRow';
 import { FYABackend, formatDate } from '../../../common/utils';
 import BoxSchema from '../../UploadCSV/UploadCSVUtils';
 import CSVViewTablePagination from './CSVViewTablePagination';
+import { useCustomToast } from '../../ToastProvider/ToastProvider';
 import useMobileWidth from '../../../common/useMobileWidth';
 
 const CSVViewTable = ({ rows, boxNumberMap }) => {
@@ -110,6 +111,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
       gotoPage(currentPage);
     }
   }, [deleted]);
+  const { showToast } = useCustomToast();
 
   // manual = editing the row by clicking on the Edit Icon (not from addToMap)
   const editRow = (e, rowData, firstErrorIndex, manual) => {
@@ -232,7 +234,12 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
         setIsLoading(false);
         navigate('/');
       } catch (err) {
-        console.log(err);
+        showToast({
+          title: `Failed to add boxes to Map`,
+          message: err.message || err.statusText,
+          toastPosition: 'bottom',
+          type: 'error',
+        });
       }
     }
   };
@@ -313,6 +320,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
           <Flex flexDirection="column" gap="20px">
             {page.map((rowData, index) => {
               prepareRow(rowData);
+              console.log(rowData);
               return (
                 <AccordionItem
                   key={rowData.original.id}

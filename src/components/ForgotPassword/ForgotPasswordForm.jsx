@@ -9,6 +9,7 @@ import TextInput from '../Inputs/TextInput';
 import { FYABackend } from '../../common/utils';
 import { auth, getCurrentUser, sendPasswordReset } from '../../common/auth_utils';
 import CommonConfirmationPage from '../../common/CommonConfirmationPage/CommonConfirmationPage';
+import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 // Check if user exists in the database
 const userExists = async email => {
@@ -52,7 +53,7 @@ const ForgotPasswordForm = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
-
+  const { showToast } = useCustomToast();
   useEffect(async () => {
     const authenticated = await getCurrentUser(auth);
     setIsAuthenticated(authenticated);
@@ -73,8 +74,12 @@ const ForgotPasswordForm = () => {
       await sendPasswordReset(data.email);
       setOpenConfirmation(true);
     } catch (err) {
-      // TODO: replace with toast component
-      console.log(err.message);
+      showToast({
+        title: 'Error Resetting Password',
+        message: err.message,
+        toastPosition: 'bottom-right',
+        type: 'error',
+      });
     }
   };
 
