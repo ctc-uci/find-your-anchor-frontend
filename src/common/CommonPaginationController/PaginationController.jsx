@@ -5,7 +5,7 @@ import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 
 import styles from './PaginationController.module.css';
 
-const PaginationController = ({ paginatedIndex, setPaginatedIndex, totalNumberOfPages }) => (
+const PaginationController = ({ paginatedIndex, setPaginatedIndex, totalNumberOfPages = 5 }) => (
   <div className={styles['pagination-indicator']}>
     <div className={styles['left-section']}>
       <button
@@ -29,14 +29,14 @@ const PaginationController = ({ paginatedIndex, setPaginatedIndex, totalNumberOf
         <MdArrowBackIos />
       </button>
       <div>Page&nbsp;</div>
-      <div>{totalNumberOfPages === 0 ? 0 : paginatedIndex + 1}</div>
+      <div>{totalNumberOfPages === 0 ? 0 : paginatedIndex}</div>
       <div>&nbsp;of&nbsp;</div>
       <div>{totalNumberOfPages}</div>
       <button
         className={styles['forward-button']}
         type="button"
         onClick={() => {
-          setPaginatedIndex(old => Math.min(totalNumberOfPages - 1, old + 1));
+          setPaginatedIndex(old => Math.min(totalNumberOfPages, old + 1));
         }}
       >
         <MdArrowForwardIos />

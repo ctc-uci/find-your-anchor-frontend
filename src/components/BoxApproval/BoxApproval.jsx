@@ -6,42 +6,35 @@ import RelocationBox from '../RelocationBox/RelocationBox';
 import styles from './BoxApproval.module.css';
 import { FYABackend } from '../../common/utils';
 import RelocateBoxIcon from '../../assets/BoxIcons/RelocateBoxIcon.svg';
-import usePaginationController from '../../common/usePaginationController';
 import PaginationController from '../../common/CommonPaginationController/PaginationController';
 import PickupBoxIcon from '../../assets/BoxIcons/PickupBoxIcon.svg';
 
 const BoxApproval = () => {
   const [boxesUnderReview, setBoxesUnderReview] = useState([]);
+  const [underReviewPageIndex, setUnderReviewPageIndex] = useState(1);
   const [boxesPending, setBoxesPending] = useState([]);
+  const [pendingPageIndex, setPendingPageIndex] = useState(1);
   const [boxesEvaluated, setBoxesEvaluated] = useState([]);
+  const [evaluatedPageIndex, setEvaluatedPageIndex] = useState(1);
   const [currentStatus, setCurrentStatus] = useState('under review');
-
-  const [
-    paginatedUnderReviewData,
-    paginatedUnderReviewIndex,
-    setPaginatedUnderReviewIndex,
-    totalNumberOfUnderReviewPages,
-  ] = usePaginationController(boxesUnderReview, 8);
-
-  const [
-    paginatedPendingData,
-    paginatedPendingIndex,
-    setPaginatedPendingIndex,
-    totalNumberOfPendingPages,
-  ] = usePaginationController(boxesPending, 8);
-
-  const [
-    paginatedEvaluatedData,
-    paginatedEvaluatedIndex,
-    setPaginatedEvaluatedIndex,
-    totalNumberOfEvaluatedPages,
-  ] = usePaginationController(boxesEvaluated, 8);
+  const [numPages, setNumPages] = useState(1);
 
   // Gets all Relocation/Pickup boxes according to status
   const fetchBoxes = async status => {
+    const pageSize = 2;
+    let pageIndex = null;
+    if (status === 'under review') {
+      pageIndex = underReviewPageIndex;
+    } else if (status === 'pending changes') {
+      pageIndex = pendingPageIndex;
+    } else {
+      pageIndex = evaluatedPageIndex;
+    }
     const response = await FYABackend.get('/boxHistory', {
       params: {
         status,
+        pageIndex,
+        pageSize,
       },
     });
     if (status === 'under review') {
@@ -51,6 +44,13 @@ const BoxApproval = () => {
     } else {
       setBoxesEvaluated(response.data);
     }
+    const totalNumberOfPages = await FYABackend.get('/boxHistory/boxCount', {
+      params: {
+        status,
+        pageSize,
+      },
+    });
+    setNumPages(totalNumberOfPages.data[0].totalNumberOfPages);
   };
 
   // Maps a single box to a RelocationBox component
@@ -107,6 +107,10 @@ const BoxApproval = () => {
     await fetchBoxes('under review');
   }, []);
 
+  useEffect(async () => {
+    await fetchBoxes(currentStatus);
+  }, [underReviewPageIndex, pendingPageIndex, evaluatedPageIndex]);
+
   const handleTabClicked = status => {
     fetchBoxes(status);
     setCurrentStatus(status);
@@ -126,38 +130,38 @@ const BoxApproval = () => {
               <TabPanels>
                 {/* 'Under Review' section */}
                 <TabPanel className={styles['tab-panel']}>
-                  {paginatedUnderReviewData.map(boxData => mapDataToBox(boxData))}
+                  {boxesUnderReview.map(boxData => mapDataToBox(boxData))}
                 </TabPanel>
                 {/* 'Pending Changes' section */}
                 <TabPanel className={styles['tab-panel']}>
-                  {paginatedPendingData.map(boxData => mapDataToBox(boxData))}
+                  {boxesPending.map(boxData => mapDataToBox(boxData))}
                 </TabPanel>
                 {/* 'Evaluated' section */}
                 <TabPanel className={styles['tab-panel']}>
-                  {paginatedEvaluatedData.map(boxData => mapDataToBox(boxData))}
+                  {boxesEvaluated.map(boxData => mapDataToBox(boxData))}
                 </TabPanel>
               </TabPanels>
             </div>
 
             {currentStatus === 'under review' && (
               <PaginationController
-                paginatedIndex={paginatedUnderReviewIndex}
-                setPaginatedIndex={setPaginatedUnderReviewIndex}
-                totalNumberOfPages={totalNumberOfUnderReviewPages}
+                paginatedIndex={underReviewPageIndex}
+                setPaginatedIndex={setUnderReviewPageIndex}
+                totalNumberOfPages={numPages}
               />
             )}
             {currentStatus === 'pending changes' && (
               <PaginationController
-                paginatedIndex={paginatedPendingIndex}
-                setPaginatedIndex={setPaginatedPendingIndex}
-                totalNumberOfPages={totalNumberOfPendingPages}
+                paginatedIndex={pendingPageIndex}
+                setPaginatedIndex={setPendingPageIndex}
+                totalNumberOfPages={numPages}
               />
             )}
             {currentStatus === 'evaluated' && (
               <PaginationController
-                paginatedIndex={paginatedEvaluatedIndex}
-                setPaginatedIndex={setPaginatedEvaluatedIndex}
-                totalNumberOfPages={totalNumberOfEvaluatedPages}
+                paginatedIndex={evaluatedPageIndex}
+                setPaginatedIndex={setEvaluatedPageIndex}
+                totalNumberOfPages={numPages}
               />
             )}
             <div className={styles.legend}>
