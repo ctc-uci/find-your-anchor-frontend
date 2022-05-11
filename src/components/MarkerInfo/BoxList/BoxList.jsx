@@ -18,8 +18,10 @@ const BoxList = ({
 }) => {
   // This state contains all boxes to be shown in the right side bar
   const [boxList, setBoxList] = useState([]);
+  // Total number of pages for pagination
   const [numPages, setNumPages] = useState(1);
 
+  // Page size to be used for pagination
   const PAGE_SIZE = 8;
 
   const populateBoxList = async () => {
@@ -51,6 +53,7 @@ const BoxList = ({
     }
   }, [updateBoxListSwitch]);
 
+  // Make another request to get the next page of boxes from the backend whenever pagination controls are used
   useEffect(async () => {
     if (selectedCountry && selectedZipCode) {
       populateBoxList();

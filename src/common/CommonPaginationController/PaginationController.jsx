@@ -5,7 +5,7 @@ import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 
 import styles from './PaginationController.module.css';
 
-const PaginationController = ({ paginatedIndex, setPaginatedIndex, totalNumberOfPages = 5 }) => (
+const PaginationController = ({ paginatedIndex, setPaginatedIndex, totalNumberOfPages }) => (
   <div className={styles['pagination-indicator']}>
     <div className={styles['left-section']}>
       <button
@@ -23,7 +23,7 @@ const PaginationController = ({ paginatedIndex, setPaginatedIndex, totalNumberOf
         className={styles['back-button']}
         type="button"
         onClick={() => {
-          setPaginatedIndex(old => Math.max(1, old - 1));
+          setPaginatedIndex(Math.max(1, paginatedIndex - 1));
         }}
       >
         <MdArrowBackIos />

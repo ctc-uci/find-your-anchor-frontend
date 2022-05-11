@@ -11,17 +11,22 @@ import PickupBoxIcon from '../../assets/BoxIcons/PickupBoxIcon.svg';
 
 const BoxApproval = () => {
   const [boxesUnderReview, setBoxesUnderReview] = useState([]);
+  // Page number for under review tab
   const [underReviewPageIndex, setUnderReviewPageIndex] = useState(1);
   const [boxesPending, setBoxesPending] = useState([]);
+  // Page number for pending changes tab
   const [pendingPageIndex, setPendingPageIndex] = useState(1);
   const [boxesEvaluated, setBoxesEvaluated] = useState([]);
+  // Page number for evaluated tab
   const [evaluatedPageIndex, setEvaluatedPageIndex] = useState(1);
   const [currentStatus, setCurrentStatus] = useState('under review');
+  // Total number of pages for pagination
   const [numPages, setNumPages] = useState(1);
 
+  // Page size to be used with pagination
   const PAGE_SIZE = 8;
 
-  // Gets all Relocation/Pickup boxes according to status
+  // Gets pagesize number of relocation/pickup boxes for a certain status
   const fetchBoxes = async status => {
     let pageIndex = null;
     if (status === 'under review') {
@@ -45,6 +50,7 @@ const BoxApproval = () => {
     } else {
       setBoxesEvaluated(response.data);
     }
+    // Get the total number of pages
     const totalNumberOfPages = await FYABackend.get('/boxHistory/boxCount', {
       params: {
         status,
@@ -108,6 +114,7 @@ const BoxApproval = () => {
     await fetchBoxes('under review');
   }, []);
 
+  // Make another request to get the next page of boxes from the backend whenever pagination controls are used
   useEffect(async () => {
     await fetchBoxes(currentStatus);
   }, [underReviewPageIndex, pendingPageIndex, evaluatedPageIndex]);
