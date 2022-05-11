@@ -19,9 +19,10 @@ const BoxApproval = () => {
   const [currentStatus, setCurrentStatus] = useState('under review');
   const [numPages, setNumPages] = useState(1);
 
+  const PAGE_SIZE = 8;
+
   // Gets all Relocation/Pickup boxes according to status
   const fetchBoxes = async status => {
-    const pageSize = 2;
     let pageIndex = null;
     if (status === 'under review') {
       pageIndex = underReviewPageIndex;
@@ -34,7 +35,7 @@ const BoxApproval = () => {
       params: {
         status,
         pageIndex,
-        pageSize,
+        pageSize: PAGE_SIZE,
       },
     });
     if (status === 'under review') {
@@ -47,7 +48,7 @@ const BoxApproval = () => {
     const totalNumberOfPages = await FYABackend.get('/boxHistory/boxCount', {
       params: {
         status,
-        pageSize,
+        pageSize: PAGE_SIZE,
       },
     });
     setNumPages(totalNumberOfPages.data[0].totalNumberOfPages);
