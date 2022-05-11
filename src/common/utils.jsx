@@ -3,7 +3,7 @@ import postalCodes from 'postal-codes-js';
 import countryList from 'react-select-country-list';
 import { renderEmail } from 'react-html-email';
 
-const baseURL = `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}`;
+const baseURL = `${process.env.REACT_APP_HOST}:3050/api`;
 
 // Import this wherever you make calls to backend.
 export const FYABackend = axios.create({
