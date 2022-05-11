@@ -73,3 +73,7 @@
 .show-pages-select {
   margin-right: 20px;
 }
+
+.csv-table-container-mobile {
+  min-height: 65vh;
+}

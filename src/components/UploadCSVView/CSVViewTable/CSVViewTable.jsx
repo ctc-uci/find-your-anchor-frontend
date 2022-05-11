@@ -50,6 +50,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
   const [deleted, setDeleted] = useState(false);
   const [accordionProps, setAccordionProps] = useState({
     allowToggle: true,
+    index: [],
   });
 
   const columns = useMemo(
@@ -320,73 +321,66 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
         </div>
       )}
       {isMobile && (
-        <Accordion
-          {...accordionProps}
-          onChange={() => {
-            // if (editId || 'index' in accordionProps) {
-            //   setEditId(null);
-            //   setAccordionProps({ allowToggle: true });
-            // }
-          }}
-        >
-          <Flex flexDirection="column" gap="20px">
-            {page.map((rowData, index) => {
-              prepareRow(rowData);
-              console.log(rowData);
-              console.log('Accordion Props: ', accordionProps);
-              return (
-                <AccordionItem
-                  key={rowData.original.id}
-                  borderWidth="1px"
-                  borderRadius="8px"
-                  borderColor={rowData.values.error && 'red'}
-                >
-                  {({ isExpanded }) => (
-                    <>
-                      <h2>
-                        <AccordionButton
-                          _expanded={{ bg: 'white' }}
-                          onClick={() => {
-                            if (editId || 'index' in accordionProps) {
+        <div className={styles['csv-table-container-mobile']}>
+          <Accordion {...accordionProps}>
+            <Flex flexDirection="column" gap="20px">
+              {page.map((rowData, index) => {
+                prepareRow(rowData);
+                return (
+                  <AccordionItem
+                    key={rowData.original.id}
+                    borderWidth="1px"
+                    borderRadius="8px"
+                    borderColor={rowData.values.error && 'red'}
+                  >
+                    {({ isExpanded }) => (
+                      <>
+                        <h2>
+                          <AccordionButton
+                            _expanded={{ bg: 'white' }}
+                            onClick={() => {
                               setEditId(null);
-                              delete accordionProps.index;
-                              setAccordionProps({ ...accordionProps });
-                            }
-                          }}
-                        >
-                          <Box flex="1" textAlign="left" fontWeight="bold">
-                            {!isExpanded ? `Box #${rowData.values.boxNumber}` : ''}
-                          </Box>
-                          <AccordionIcon />
-                        </AccordionButton>
-                      </h2>
-                      <AccordionPanel pb={4}>
-                        {editId === rowData.original.id ? (
-                          <EditableRow
-                            editFormData={editFormData}
-                            handleEditFormSubmit={handleEditFormSubmit}
-                            isError={rowData.values.error}
-                            boxNumberMap={boxNumbers}
-                            updateBoxNumberMap={updateBoxNumberMap}
-                            lineNumber={pageIndex * 10 + index + 1}
-                            handleDeleteRow={handleDeleteRow}
-                          />
-                        ) : (
-                          <ReadOnlyRow
-                            data={rowData}
-                            editRow={editRow}
-                            handleDeleteRow={handleDeleteRow}
-                            isError={rowData.values.error}
-                          />
-                        )}
-                      </AccordionPanel>
-                    </>
-                  )}
-                </AccordionItem>
-              );
-            })}
-          </Flex>
-        </Accordion>
+                              if (isExpanded) {
+                                setAccordionProps({ ...accordionProps, index: [] });
+                              } else {
+                                setAccordionProps({ ...accordionProps, index: [index] });
+                              }
+                            }}
+                          >
+                            <Box flex="1" textAlign="left" fontWeight="bold">
+                              {!isExpanded ? `Box #${rowData.values.boxNumber}` : ''}
+                            </Box>
+                            <AccordionIcon />
+                          </AccordionButton>
+                        </h2>
+                        <AccordionPanel pb={4}>
+                          {editId === rowData.original.id ? (
+                            <EditableRow
+                              editFormData={editFormData}
+                              handleEditFormSubmit={handleEditFormSubmit}
+                              isError={rowData.values.error}
+                              boxNumberMap={boxNumbers}
+                              updateBoxNumberMap={updateBoxNumberMap}
+                              lineNumber={pageIndex * 10 + index + 1}
+                              handleDeleteRow={handleDeleteRow}
+                            />
+                          ) : (
+                            <ReadOnlyRow
+                              data={rowData}
+                              editRow={editRow}
+                              handleDeleteRow={handleDeleteRow}
+                              isError={rowData.values.error}
+                            />
+                          )}
+                        </AccordionPanel>
+                      </>
+                    )}
+                  </AccordionItem>
+                );
+              })}
+            </Flex>
+          </Accordion>
+        </div>
       )}
       <CSVViewTablePagination
         pageLength={pageOptions.length}
