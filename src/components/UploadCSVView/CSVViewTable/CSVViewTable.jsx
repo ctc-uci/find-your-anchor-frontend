@@ -48,6 +48,9 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
 
   const [currentPage, setCurrentPage] = useState(null);
   const [deleted, setDeleted] = useState(false);
+  const [accordionProps, setAccordionProps] = useState({
+    allowToggle: true,
+  });
 
   const columns = useMemo(
     () => [
@@ -142,6 +145,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
       setEditFormData(formValues);
       setEditId(rowData.id);
       gotoPage(Math.floor(firstErrorIndex / pageSize));
+      setAccordionProps({ ...accordionProps, index: [firstErrorIndex] });
     }
   };
 
@@ -316,11 +320,20 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
         </div>
       )}
       {isMobile && (
-        <Accordion allowToggle>
+        <Accordion
+          {...accordionProps}
+          onChange={() => {
+            // if (editId || 'index' in accordionProps) {
+            //   setEditId(null);
+            //   setAccordionProps({ allowToggle: true });
+            // }
+          }}
+        >
           <Flex flexDirection="column" gap="20px">
             {page.map((rowData, index) => {
               prepareRow(rowData);
               console.log(rowData);
+              console.log('Accordion Props: ', accordionProps);
               return (
                 <AccordionItem
                   key={rowData.original.id}
@@ -334,7 +347,11 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
                         <AccordionButton
                           _expanded={{ bg: 'white' }}
                           onClick={() => {
-                            setEditId(null);
+                            if (editId || 'index' in accordionProps) {
+                              setEditId(null);
+                              delete accordionProps.index;
+                              setAccordionProps({ ...accordionProps });
+                            }
                           }}
                         >
                           <Box flex="1" textAlign="left" fontWeight="bold">
