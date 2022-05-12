@@ -26,7 +26,7 @@
 }
 
 .logo-container {
-  width: 100%;
+  align-self: flex-start;
 }
 
 .auth-form-component {
@@ -41,9 +41,13 @@
 .logo-mobile {
   width: 50px;
   height: auto;
+  display: none;
+}
+
+.logo-container-mobile {
   margin-top: 12.5px;
   margin-left: 12.5px;
-  display: none;
+  max-width: fit-content;
 }
 
 @media screen and (max-width: 768px) {
