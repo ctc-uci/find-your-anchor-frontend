@@ -90,11 +90,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
           }),
         );
 
-        setIsUploadingNewFile(false);
-        setCSVFile();
-
         setFormDatas(responses);
-
         setIsUploadingNewFile(false);
         setCSVFile();
         setBoxNumberMap(boxNumbers);
@@ -103,12 +99,19 @@ const UploadCSV = ({ isOpen, onClose }) => {
     });
   };
 
-  const onUpload = e => {
+  const onUpload = async e => {
     e.preventDefault();
     if (CSVFile) {
       setIsLoading(true);
       setCSVFilename(CSVFile.name);
       readCSV();
+      const formData = new FormData();
+      formData.append('file', CSVFile);
+      await FYABackend.post('/uploadCSV', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
     }
   };
 
