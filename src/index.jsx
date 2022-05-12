@@ -23,7 +23,6 @@ import ChakraTheme from './common/ChakraTheme';
 import UploadCSV from './components/UploadCSV/UploadCSV';
 import NotFoundErrorPage from './pages/ErrorPages/NotFoundErrorPage';
 import InternalServerErrorPage from './pages/ErrorPages/InternalServerErrorPage';
-import LoadingPage from './common/LoadingPage/LoadingPage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -76,8 +75,6 @@ ReactDOM.render(
                   element={<ProtectedRoute Component={UploadCSV} redirectPath="/login" />}
                 />
               </Route>
-
-              <Route path="/loading" element={<LoadingPage />} />
 
               <Route path="*" element={<NotFoundErrorPage />} />
             </Routes>
