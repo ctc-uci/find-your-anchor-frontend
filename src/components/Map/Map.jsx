@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import MarkerIcon from '../../assets/MarkerIcon.svg';
 import './Map.css';
 import { FYABackend } from '../../common/utils';
+import LoadingPage from '../../common/LoadingPage/LoadingPage';
 
 class BoxProvider extends OpenStreetMapProvider {
   constructor(options) {
@@ -157,7 +158,7 @@ const Map = ({
   };
 
   if (isLoading) {
-    return <h1>LOADING...</h1>;
+    return <LoadingPage />;
   }
   return (
     <MapContainer
