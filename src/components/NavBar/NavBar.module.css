@@ -16,7 +16,7 @@
 
 .nav-link {
   margin: auto;
-  padding: 1%;
+  /* padding: 1%; */
   font-size: 1em !important;
   font-family: var(--chakra-fonts-body) !important;
   text-align: justify;

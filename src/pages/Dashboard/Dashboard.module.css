@@ -13,10 +13,6 @@
   overflow: hidden;
 }
 
-.admin-nav-bar {
-  height: 55px;
-}
-
 .side-bar-and-map-container {
   padding: 0px;
   display: flex;
@@ -40,14 +36,24 @@
   color: var(--color-warning);
 }
 
-.marker-info-slide,
-.box-approval-slide {
+.marker-info-slide-admin,
+.box-approval-slide-admin {
   width: min(100%, 500px) !important;
   z-index: 1300;
   background-color: #eef6f8;
-  height: calc(100% - 55px);
+  height: calc(100% - 57px);
   overflow-y: hidden;
-  margin-top: 49px;
+  margin-top: 56px;
+}
+
+.marker-info-slide-general,
+.box-approval-slide-general {
+  width: min(100%, 500px) !important;
+  z-index: 1300;
+  background-color: #eef6f8;
+  height: calc(100% - 57px - 54px);
+  overflow-y: hidden;
+  margin-top: 57px;
 }
 
 .map {
@@ -55,11 +61,11 @@
 }
 
 .admin-map {
-  height: calc(100vh - 55px);
+  height: calc(100vh - 58.66px);
 }
 
 .general-user-map {
-  height: calc(100vh - 49px - 55px);
+  height: calc(100vh - 55px - 57px);
 }
 
 .map.one-bar-open {
@@ -108,8 +114,10 @@
     width: 100vw;
   }
 
-  .marker-info-slide,
-  .box-approval-slide {
+  .marker-info-slide-admin,
+  .box-approval-slide-admin,
+  .marker-info-slide-general,
+  .box-approval-slide-general {
     width: 100vw !important;
   }
 }
