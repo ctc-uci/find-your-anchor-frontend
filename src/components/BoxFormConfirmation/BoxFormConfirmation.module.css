@@ -10,6 +10,7 @@
 .confirmation-message {
   margin-top: 3%;
   text-align: center;
+  width: 60%;
 }
 
 .confirmation-check-circle {
