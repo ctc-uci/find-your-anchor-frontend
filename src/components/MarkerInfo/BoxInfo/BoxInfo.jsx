@@ -203,7 +203,12 @@ const BoxInfo = ({
                   size="50px"
                 />
               ) : (
-                <Button colorScheme="red" size="md" onClick={onOpenDeleteBoxModal}>
+                <Button
+                  className={styles['desktop-delete-box-button']}
+                  colorScheme="red"
+                  size="md"
+                  onClick={onOpenDeleteBoxModal}
+                >
                   Delete Box
                 </Button>
               )}
