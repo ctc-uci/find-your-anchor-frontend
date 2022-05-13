@@ -422,6 +422,7 @@ const ExportCSVForm = ({ formID }) => {
                           <Checkbox value="date">Date</Checkbox>
                           <Checkbox value="box_id">Box Number</Checkbox>
                           <Checkbox value="zip_code">Zip Code</Checkbox>
+                          <Checkbox value="country">Country</Checkbox>
                           <Checkbox value="picture">Image</Checkbox>
                           <Checkbox value="general_location">Landmarks</Checkbox>
                           <Checkbox value="launched_organically">Launch Type</Checkbox>
