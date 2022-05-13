@@ -8,6 +8,9 @@ const ChakraTheme = extendTheme({
     warning: {
       500: 'var(--color-warning)',
     },
+    cancel: {
+      500: 'var(--color-light-gray)',
+    },
   },
   textStyles: {
     'header-1': {
