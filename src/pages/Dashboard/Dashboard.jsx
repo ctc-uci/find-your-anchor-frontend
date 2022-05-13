@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { ChakraProvider, Button, Slide, IconButton, useDisclosure } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 
-import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 import Map from '../../components/Map/Map';
 import BoxApproval from '../../components/BoxApproval/BoxApproval';
@@ -12,7 +11,6 @@ import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const { isOpen: boxApprovalIsOpen, onToggle: onBoxApprovalToggle } = useDisclosure();
   const { isOpen: markerInfoIsOpen, onToggle: onMarkerInfoToggle } = useDisclosure();
 
@@ -83,20 +81,13 @@ const Dashboard = () => {
               markerInfoIsOpen={markerInfoIsOpen}
             />
           </div>
-          {adminIsLoggedIn ? (
+          {adminIsLoggedIn && (
             <Button
               className={`${styles['review-submission-button']} ${styles['admin-button']}`}
               ref={btnRef}
               onClick={handleReviewSubmissionsClicked}
             >
               Review Submission
-            </Button>
-          ) : (
-            <Button
-              className={`${styles['review-submission-button']} ${styles['general-user-button']}`}
-              onClick={() => navigate('/login')}
-            >
-              Admin Login
             </Button>
           )}
           <div className={`${styles['side-bar']} ${markerInfoIsOpen ? styles['show-info'] : ''}`}>
