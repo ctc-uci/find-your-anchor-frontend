@@ -115,29 +115,38 @@ const BoxInfo = ({
                 <FormLabel htmlFor="name" className={styles['form-label']}>
                   Name
                 </FormLabel>
-                <Input isReadOnly id="name" type="name" value={boxHolderName} />
+                {boxHolderName && <Input isReadOnly id="name" type="name" value={boxHolderName} />}
                 {/* Box email */}
                 <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
                   Email
                 </FormLabel>
-                <Input isReadOnly id="email" type="email" value={boxHolderEmail} />
+                {boxHolderEmail && (
+                  <Input isReadOnly id="email" type="email" value={boxHolderEmail} />
+                )}
               </>
             )}
             {/* Box zip code */}
             <FormLabel isReadOnly htmlFor="zipCode" className={styles['form-label']}>
               Zip Code
             </FormLabel>
-            <Input isReadOnly id="zipCode" type="zipCode" value={zipCode} />
+            {zipCode && <Input isReadOnly id="zipCode" type="zipCode" value={zipCode} />}
             {/* Box country */}
             <FormLabel isReadOnly htmlFor="country" className={styles['form-label']}>
               Country
             </FormLabel>
-            <Input isReadOnly id="country" type="country" value={country} />
+            {country && <Input isReadOnly id="country" type="country" value={country} />}
             {/* Box general location */}
             <FormLabel isReadOnly htmlFor="generalLocation" className={styles['form-label']}>
               General Location
             </FormLabel>
-            <Input isReadOnly id="generalLocation" type="generalLocation" value={generalLocation} />
+            {generalLocation && (
+              <Input
+                isReadOnly
+                id="generalLocation"
+                type="generalLocation"
+                value={generalLocation}
+              />
+            )}
             {/* Box drop off method */}
             <FormLabel htmlFor="dropOffMethod" className={styles['form-label']}>
               Drop Off Method
