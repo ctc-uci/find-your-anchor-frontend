@@ -5,6 +5,9 @@ const ChakraTheme = extendTheme({
     button: {
       500: 'var(--color-teal)',
     },
+    warning: {
+      500: 'var(--color-warning)',
+    },
   },
   textStyles: {
     'header-1': {
