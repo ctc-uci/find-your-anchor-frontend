@@ -29,7 +29,6 @@ const EditableRow = ({
   isError,
   boxNumberMap,
   updateBoxNumberMap,
-  lineNumber,
   handleDeleteRow,
 }) => {
   const isMobile = useMobileWidth();
@@ -71,12 +70,12 @@ const EditableRow = ({
 
   const handleEditFormSubmitError = () => {
     // Revert update to box map if new box number causes error
-    updateBoxNumberMap(boxNumRef.current, lineNumber, editFormData.boxNumber);
+    updateBoxNumberMap(boxNumRef.current, editFormData.boxNumber);
   };
 
   const onSave = () => {
     boxNumRef.current = Number(getValues('boxNumber'));
-    updateBoxNumberMap(editFormData.boxNumber, lineNumber, boxNumRef.current);
+    updateBoxNumberMap(editFormData.boxNumber, boxNumRef.current);
     if (isFirstRender.current) {
       // this ensures that we are just validating the inputs and not actually editing the form
       handleSubmit(() => {}, handleEditFormSubmitError)();
@@ -267,7 +266,6 @@ EditableRow.propTypes = {
   isError: PropTypes.bool.isRequired,
   boxNumberMap: PropTypes.instanceOf(Map).isRequired,
   updateBoxNumberMap: PropTypes.func.isRequired,
-  lineNumber: PropTypes.number.isRequired,
   handleDeleteRow: PropTypes.func.isRequired,
 };
 

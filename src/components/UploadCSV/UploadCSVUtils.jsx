@@ -41,8 +41,7 @@ function validateBoxNumber() {
       return createError({ path, message: `Box number already exists: ${boxNumber}` });
     }
 
-    // if box number if found on more than one row
-    if (boxNumberMap.has(boxNumber) && boxNumberMap.get(boxNumber).size > 1) {
+    if (boxNumber in boxNumberMap && boxNumberMap[boxNumber] > 1) {
       return createError({ path, message: `Duplicate found: ${boxNumber}` });
     }
 

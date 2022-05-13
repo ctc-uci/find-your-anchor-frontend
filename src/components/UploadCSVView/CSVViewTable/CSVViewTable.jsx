@@ -26,7 +26,6 @@ import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../EditableRow/EditableRow';
 import { FYABackend, formatDate } from '../../../common/utils';
-import BoxSchema from '../../UploadCSV/UploadCSVUtils';
 import CSVViewTablePagination from './CSVViewTablePagination';
 import { useCustomToast } from '../../ToastProvider/ToastProvider';
 import useMobileWidth from '../../../common/useMobileWidth';
@@ -145,23 +144,22 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
     }
   };
 
-  const updateBoxNumberMap = (oldBoxNum, lineNum, newBoxNum) => {
+  const updateBoxNumberMap = (oldBoxNum, newBoxNum) => {
     // if either oldBoxNum or newBoxNum is empty
     if (oldBoxNum === 0 || newBoxNum === 0) {
       return;
     }
 
-    boxNumbers.get(oldBoxNum).delete(lineNum);
+    boxNumbers[oldBoxNum] -= 1;
 
-    if (boxNumbers.get(oldBoxNum).size === 0) {
-      boxNumbers.delete(oldBoxNum);
+    if (boxNumbers[oldBoxNum] === 0) {
+      delete boxNumbers[oldBoxNum];
     }
 
-    if (!boxNumbers.has(newBoxNum)) {
-      boxNumbers.set(newBoxNum, new Set());
+    if (!(newBoxNum in boxNumbers)) {
+      boxNumbers[newBoxNum] = 0;
     }
-
-    boxNumbers.get(newBoxNum).add(lineNum);
+    boxNumbers[newBoxNum] += 1;
   };
 
   const handleEditFormSubmit = editRowData => {
@@ -190,36 +188,17 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
     setDeleted(!deleted);
   };
 
-  const checkErrors = async CSVRow => {
-    try {
-      // the context allows us to pass extra arguments to yup validation
-      // passing boxNumbers so yup validation can use this to check if there's a duplicate box number
-      await BoxSchema.validate(CSVRow, { context: boxNumbers });
-      return {
-        ...CSVRow,
-        error: false,
-      };
-    } catch (err) {
-      return {
-        ...CSVRow,
-        error: true,
-      };
-    }
-  };
-
   const addToMap = async e => {
     e.preventDefault();
     setIsLoading(true);
 
-    // check all rows again for any errors
-    const processedRows = await Promise.all(formDatas.map(async formData => checkErrors(formData)));
     // find the first row that has an error
-    const firstErrorRowIndex = processedRows.findIndex(row => row.error);
+    const firstErrorRowIndex = formDatas.findIndex(row => row.error);
 
     // if an error is found in any of the rows, change the first row to EditableRow
     if (firstErrorRowIndex !== -1) {
       setIsLoading(false);
-      editRow(e, processedRows[firstErrorRowIndex], firstErrorRowIndex, false);
+      editRow(e, formDatas[firstErrorRowIndex], firstErrorRowIndex, false);
     } else {
       try {
         // if no errors with any of the rows, set lat/long for each row
@@ -286,7 +265,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
               </Tr>
             </Thead>
             <Tbody>
-              {page.map((rowData, index) => {
+              {page.map(rowData => {
                 prepareRow(rowData);
                 return (
                   <Fragment key={rowData.original.id}>
@@ -297,7 +276,6 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
                         isError={rowData.values.error}
                         boxNumberMap={boxNumbers}
                         updateBoxNumberMap={updateBoxNumberMap}
-                        lineNumber={pageIndex * 10 + index + 1}
                         handleDeleteRow={handleDeleteRow}
                       />
                     ) : (
@@ -318,7 +296,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
       {isMobile && (
         <Accordion allowToggle>
           <Flex flexDirection="column" gap="20px">
-            {page.map((rowData, index) => {
+            {page.map(rowData => {
               prepareRow(rowData);
               return (
                 <AccordionItem
@@ -350,7 +328,6 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
                             isError={rowData.values.error}
                             boxNumberMap={boxNumbers}
                             updateBoxNumberMap={updateBoxNumberMap}
-                            lineNumber={pageIndex * 10 + index + 1}
                             handleDeleteRow={handleDeleteRow}
                           />
                         ) : (
