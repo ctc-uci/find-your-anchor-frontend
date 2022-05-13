@@ -13,6 +13,12 @@
   width: 60%;
 }
 
+.check-icon {
+  margin: 0 auto;
+  height: 125px;
+  width: 125px;
+}
+
 .confirmation-check-circle {
   font-size: 125px;
 }
@@ -31,14 +37,14 @@
     margin-top: 15%;
   }
 
-  .confirmation-button {
-    position: fixed;
-    bottom: 0px;
-    margin-bottom: 10%;
-  }
-
   .confirmation-message {
     margin-left: 10%;
     margin-right: 10%;
+  }
+
+  .confirmation-button {
+    position: absolute !important;
+    bottom: 60px;
+    width: 80% !important;
   }
 }
