@@ -10,11 +10,16 @@
   --color-off-white: #f2f2f2;
   --color-teal: #345e80;
   --color-light-mint: #d7eaed;
+  --color-light-blue: #eef6f8;
   --color-mint: #89bfbc;
   --color-dark-blue: #1f2f38;
   --color-success: #38a169;
+  --color-light-warning: #bee3f8;
   --color-warning: #e53e3e;
   --color-request-changes: #dd6b20;
+  --color-approved: #c6f6d5;
+  --color-light-pending-changes: #bee3f8;
+  --color-pending-changes: #3182ce;
   --color-hyperlink: #3182ce;
   --color-text: #2d3748;
 }

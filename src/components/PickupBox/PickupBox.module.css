@@ -11,20 +11,20 @@
 }
 
 .approved-icon {
-  color: green;
+  color: var(--color-success);
   font-size: 30px;
 }
 
 .status-message-approved {
-  color: #38a169;
+  color: var(--color-success);
 }
 
 .status-message-pending {
-  color: #3182ce;
+  color: var(--color-pending-changes);
 }
 
 .status-message-rejected {
-  color: #e53e3e;
+  color: var(--color-warning);
 }
 
 .image-wrapper {
@@ -32,7 +32,7 @@
   height: 100%;
   margin: auto;
   border-radius: 10px;
-  border: 1px dashed black;
+  border: 1px dashed var(--color-black);
   opacity: 0.4;
 }
 
@@ -45,26 +45,26 @@
 }
 
 .accordion-panel {
-  background-color: white;
+  background-color: var(--color-white);
   border-radius: 10px;
 }
 
 .box-approved {
-  background-color: #c6f6d5;
+  background-color: var(--color-approved);
   padding: 0px 15px 15px 15px;
   margin-top: 15px;
   border-radius: 10px;
 }
 
 .box-rejected {
-  background-color: #fed7d7;
+  background-color: var(--color-light-warning);
   padding: 0px 15px 15px 15px;
   margin-top: 15px;
   border-radius: 10px;
 }
 
 .box-pending {
-  background-color: #bee3f8;
+  background-color: var(--color-light-pending-changes);
   padding: 0px 15px 15px 15px;
   margin-top: 15px;
   border-radius: 10px;
@@ -163,11 +163,11 @@
 }
 
 .image-approved {
-  border: 1px solid green;
+  border: 1px solid var(--color-success);
 }
 
 .image-rejected {
-  border: 1px solid red;
+  border: 1px solid var(--color-warning);
 }
 
 .status-message {
@@ -179,11 +179,11 @@
 }
 
 .approval-message {
-  color: green;
+  color: var(--color-success);
 }
 
 .rejection-message {
-  color: red;
+  color: var(--color-warning);
 }
 
 .image-approved-button {
