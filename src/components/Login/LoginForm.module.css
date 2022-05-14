@@ -12,8 +12,6 @@
 
 .login-button {
   width: 100% !important;
-  background-color: #345e80 !important;
-  color: white;
   align-self: flex-end;
   margin-top: 5%;
 }
@@ -23,7 +21,7 @@
 }
 
 .forgot-password {
-  color: #3182ce;
+  color: var(--color-hyperlink);
   text-decoration: underline;
   margin-top: 5%;
   align-self: center;
