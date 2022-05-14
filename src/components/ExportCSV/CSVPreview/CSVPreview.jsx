@@ -5,12 +5,17 @@ import { Table, Tbody, Th, Thead, Tr, Text } from '@chakra-ui/react';
 import styles from './CSVPreview.module.css';
 import ExportCSVRow from '../ExportCSVRow/ExportCSVRow';
 import renameProperty from '../ExportCSVUtils';
+import useMobileWidth from '../../../common/useMobileWidth';
 
 // this component is used for Export CSV
 const CSVPreview = ({ formValues }) => {
+  const isMobile = useMobileWidth();
   return (
     <div className={styles['csv-preview']}>
-      <Text className={styles['csv-preview-title']}>CSV Preview</Text>
+      <div className={styles['csv-preview-header']}>
+        <Text className={styles['csv-preview-title']}>CSV Preview</Text>
+        {isMobile && <Text fontSize="lg">{formValues.length} boxes</Text>}
+      </div>
       <div className={`${styles['csv-preview-wrapper']} ${styles['scrollable-div']}`}>
         {formValues.length > 0 && (
           <Table className={styles['csv-preview']}>
