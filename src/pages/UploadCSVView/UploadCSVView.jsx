@@ -12,7 +12,7 @@ const UploadCSVView = () => {
 
   return (
     <ChakraProvider>
-      <Flex direction="column" margin="30px">
+      <Flex direction="column" margin="30px" marginBottom="0px">
         <Text mb={3} fontSize="xl" fontWeight="500" color={isMobile && '#3182CE'}>
           {state.filename}
         </Text>
