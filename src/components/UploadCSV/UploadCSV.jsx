@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import countryList from 'react-select-country-list';
 import PropTypes from 'prop-types';
 import { FYABackend } from '../../common/utils';
-import zipcodeDataDump from '../../common/zipcodeDataDump.json';
+// import zipcodeDataDump from '../../common/zipcodeDataDump.json';
 
 import UploadModalContent from './UploadModalContent/UploadModalContent';
 import SuccessModalContent from './SuccessModalContent/SuccessModalContent';
@@ -35,23 +35,30 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const readCSV = async () => {
     const formData = new FormData();
     formData.append('file', CSVFile);
-    const response = await FYABackend.post('/uploadCSV', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    console.log('Response: ', response);
 
-    const { rowData, boxNumbers, numErrors } = response.data;
-    console.log('Row Data: ', rowData);
-    console.log('Box Numbers: ', boxNumbers);
-    console.log('Num Errors: ', numErrors);
+    try {
+      const response = await FYABackend.post('/uploadCSV', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-    setFormDatas(rowData);
+      const { rowData, boxNumbers, numErrors } = response.data;
+
+      setFormDatas(rowData);
+      setBoxNumberMap(boxNumbers);
+      setNumUploadErrors(numErrors);
+    } catch (err) {
+      showToast({
+        title: `Failed to upload ${CSVFilename}`,
+        message: err.message,
+        toastPosition: 'bottom',
+        type: 'error',
+      });
+    }
+
     setIsUploadingNewFile(false);
     setCSVFile();
-    setBoxNumberMap(boxNumbers);
-    setNumUploadErrors(numErrors);
     setIsLoading(false);
   };
 
@@ -98,8 +105,10 @@ const UploadCSV = ({ isOpen, onClose }) => {
       formDatas.forEach((formData, index) => {
         const countryCode = countryList().getValue(formData.country);
         formDatas[index].country = countryCode;
-        formDatas[index].latitude = zipcodeDataDump[countryCode][formData.zipCode].lat;
-        formDatas[index].longitude = zipcodeDataDump[countryCode][formData.zipCode].long;
+        formDatas[index].latitude = 12.23;
+        formDatas[index].longitude = 23.325;
+        // formDatas[index].latitude = zipcodeDataDump[countryCode][formData.zipCode].lat;
+        // formDatas[index].longitude = zipcodeDataDump[countryCode][formData.zipCode].long;
       });
 
       // formDatas structure:

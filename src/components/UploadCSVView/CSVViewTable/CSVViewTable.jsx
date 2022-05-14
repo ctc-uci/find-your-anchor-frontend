@@ -20,7 +20,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { useTable, usePagination } from 'react-table';
-import zipcodeDataDump from '../../../common/zipcodeDataDump.json';
+// import zipcodeDataDump from '../../../common/zipcodeDataDump.json';
 
 import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
@@ -205,8 +205,10 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
         formDatas.forEach((formData, index) => {
           const countryCode = countryList().getValue(formData.country);
           formDatas[index].country = countryCode;
-          formDatas[index].latitude = zipcodeDataDump[countryCode][formData.zipCode].lat;
-          formDatas[index].longitude = zipcodeDataDump[countryCode][formData.zipCode].long;
+          formDatas[index].latitude = 12.23;
+          formDatas[index].longitude = 23.325;
+          // formDatas[index].latitude = zipcodeDataDump[countryCode][formData.zipCode].lat;
+          // formDatas[index].longitude = zipcodeDataDump[countryCode][formData.zipCode].long;
         });
 
         await FYABackend.post('/anchorBox/boxes', formDatas);

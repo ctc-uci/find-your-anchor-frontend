@@ -1,29 +1,16 @@
 import * as yup from 'yup';
-import countryList from 'react-select-country-list';
 import { FYABackend } from '../../common/utils';
-import zipcodeDataDump from '../../common/zipcodeDataDump.json';
 
 function validateZipcodeInCountry() {
   return this.test('isZipInCountry', async function zipcodeAndCountryCheck({ zipCode, country }) {
     const { path, createError } = this;
 
-    // convert country to its country code
-
-    if (country === undefined) {
-      return createError({ path, message: 'Missing or invalid country name' });
-    }
-
-    const countryCode = countryList().getValue(country);
-
-    // check if country field (country must be entered in its full country name) is valid
-    // and if country can be found in the country-zipcode data dump
-    if (countryCode === undefined || zipcodeDataDump[countryCode] === undefined) {
-      return createError({ path, message: 'Missing or invalid country name' });
-    }
-
-    // use country-zipcode data dump to check if zipcode exists in country
-    if (!zipcodeDataDump[countryCode][zipCode]) {
-      return createError({ path, message: `Zipcode ${zipCode} does not exist in this country` });
+    const validateResult = await FYABackend.post(`/validateBox/countryZipcode`, {
+      zipCode,
+      country,
+    });
+    if (validateResult.data !== 'success') {
+      return createError({ path, message: validateResult.data });
     }
 
     return true;
