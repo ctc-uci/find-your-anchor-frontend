@@ -5,12 +5,12 @@ function validateZipcodeInCountry() {
   return this.test('isZipInCountry', async function zipcodeAndCountryCheck({ zipCode, country }) {
     const { path, createError } = this;
 
-    const validateResult = await FYABackend.post(`/validateBox/countryZipcode`, {
+    const { data: validationMessage } = await FYABackend.post(`/validateBox/countryZipcode`, {
       zipCode,
       country,
     });
-    if (validateResult.data !== 'success') {
-      return createError({ path, message: validateResult.data });
+    if (validationMessage !== 'success') {
+      return createError({ path, message: validationMessage });
     }
 
     return true;
