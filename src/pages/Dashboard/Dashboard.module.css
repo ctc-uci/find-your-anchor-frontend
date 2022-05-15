@@ -1,12 +1,3 @@
-.adminDashboardDiv {
-  width: 100%;
-  min-height: 100%;
-}
-
-.rejectBoxPopup {
-  float: right;
-}
-
 .admin-dashboard-container {
   display: flex;
   flex-direction: column;
@@ -18,17 +9,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-}
-
-.side-bar {
-  position: relative;
-  display: none;
-  width: 25vw;
-}
-
-.side-bar.show-review,
-.show-info {
-  display: block;
 }
 
 .close-button {
@@ -68,14 +48,6 @@
   height: calc(100vh - 55px - 57px);
 }
 
-.map.one-bar-open {
-  width: 75vw;
-}
-
-.two-bars-open {
-  width: 50vw;
-}
-
 .review-submission-button {
   position: absolute !important;
   left: 10px;
@@ -106,14 +78,6 @@
 }
 
 @media screen and (max-width: 768px) {
-  .map.one-bar-open {
-    width: 0vw;
-  }
-
-  .side-bar {
-    width: 100vw;
-  }
-
   .marker-info-slide-admin,
   .box-approval-slide-admin,
   .marker-info-slide-general,

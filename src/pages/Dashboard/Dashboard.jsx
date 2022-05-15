@@ -111,37 +111,35 @@ const Dashboard = () => {
               Admin Login
             </Button>
           )}
-          <div className={`${styles['side-bar']} ${markerInfoIsOpen ? styles['show-info'] : ''}`}>
-            <Slide
-              className={
-                adminIsLoggedIn
-                  ? styles['marker-info-slide-admin']
-                  : styles['marker-info-slide-general']
-              }
-              direction="right"
-              in={markerInfoIsOpen}
-            >
-              <MarkerInfo
-                selectedZipCode={selectedZipCode}
-                selectedCountry={selectedCountry}
-                setSelectedZipCode={setSelectedZipCode}
-                setSelectedCountry={setSelectedCountry}
-                setUpdateBoxListSwitch={setUpdateBoxListSwitch}
-                updateBoxListSwitch={updateBoxListSwitch}
-                setSelectedBox={setSelectedBox}
-                selectedBox={selectedBox}
-                adminIsLoggedIn={adminIsLoggedIn}
-                zipCodeData={zipCodeData}
-                setZipCodeData={setZipCodeData}
-                onMarkerInfoToggle={onMarkerInfoToggle}
-                markerInfoIsOpen={markerInfoIsOpen}
-                boxListPageIndex={boxListPageIndex}
-                setBoxListPageIndex={setBoxListPageIndex}
-              />
-            </Slide>
-          </div>
-          {!adminIsLoggedIn && <Footer />}
+          <Slide
+            className={
+              adminIsLoggedIn
+                ? styles['marker-info-slide-admin']
+                : styles['marker-info-slide-general']
+            }
+            direction="right"
+            in={markerInfoIsOpen}
+          >
+            <MarkerInfo
+              selectedZipCode={selectedZipCode}
+              selectedCountry={selectedCountry}
+              setSelectedZipCode={setSelectedZipCode}
+              setSelectedCountry={setSelectedCountry}
+              setUpdateBoxListSwitch={setUpdateBoxListSwitch}
+              updateBoxListSwitch={updateBoxListSwitch}
+              setSelectedBox={setSelectedBox}
+              selectedBox={selectedBox}
+              adminIsLoggedIn={adminIsLoggedIn}
+              zipCodeData={zipCodeData}
+              setZipCodeData={setZipCodeData}
+              onMarkerInfoToggle={onMarkerInfoToggle}
+              markerInfoIsOpen={markerInfoIsOpen}
+              boxListPageIndex={boxListPageIndex}
+              setBoxListPageIndex={setBoxListPageIndex}
+            />
+          </Slide>
         </div>
+        {!adminIsLoggedIn && <Footer />}
       </div>
     </ChakraProvider>
   );
