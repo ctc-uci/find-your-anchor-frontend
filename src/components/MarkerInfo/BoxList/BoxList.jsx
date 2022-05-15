@@ -4,43 +4,70 @@ import { ChakraProvider, Box, Text } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import styles from './BoxList.module.css';
 import { FYABackend } from '../../../common/utils';
-import usePaginationController from '../../../common/usePaginationController';
 import PaginationController from '../../../common/CommonPaginationController/PaginationController';
 import launchBoxIcon from '../../../assets/BoxIcons/RelocateBoxIcon.svg';
 import foundBoxIcon from '../../../assets/BoxIcons/PickupBoxIcon.svg';
 
-const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox, updateBoxListSwitch }) => {
+const BoxList = ({
+  selectedCountry,
+  selectedZipCode,
+  setSelectedBox,
+  updateBoxListSwitch,
+  boxListPageIndex,
+  setBoxListPageIndex,
+}) => {
   // This state contains all boxes to be shown in the right side bar
   const [boxList, setBoxList] = useState([]);
+  // Total number of pages for pagination
+  const [numPages, setNumPages] = useState(1);
 
-  const [
-    paginatedBoxList,
-    paginatedBoxListIndex,
-    setPaginatedBoxListIndex,
-    totalNumberOfBoxListPages,
-  ] = usePaginationController(boxList, 8);
+  // Page size to be used for pagination
+  const PAGE_SIZE = 8;
+
+  const populateBoxList = async () => {
+    const anchorBoxes = await FYABackend.get('/anchorBox', {
+      params: {
+        zipCode: selectedZipCode,
+        country: selectedCountry,
+        pageIndex: boxListPageIndex,
+        pageSize: PAGE_SIZE,
+      },
+    });
+    setBoxList(anchorBoxes.data);
+  };
 
   // Load all boxes in the current selected pin
   // This useEffect is triggered whenever the user clicks on a pin
   useEffect(async () => {
     if (selectedCountry && selectedZipCode) {
-      const anchorBoxes = await FYABackend.get('/anchorBox', {
+      populateBoxList();
+
+      const totalNumberOfPages = await FYABackend.get('/anchorBox/boxCount', {
         params: {
+          pageSize: PAGE_SIZE,
           zipCode: selectedZipCode,
           country: selectedCountry,
         },
       });
-      setBoxList(anchorBoxes.data);
+      setNumPages(totalNumberOfPages.data[0].totalNumberOfPages);
     }
   }, [updateBoxListSwitch]);
+
+  // Make another request to get the next page of boxes from the backend whenever pagination controls are used
+  useEffect(async () => {
+    if (selectedCountry && selectedZipCode) {
+      populateBoxList();
+    }
+  }, [boxListPageIndex]);
+
   return (
     <ChakraProvider>
       <Text fontSize="lg" className={styles.title}>
         Zip Code: {selectedZipCode}
       </Text>
       <div className={styles['box-list']}>
-        {paginatedBoxList &&
-          paginatedBoxList.map(box => (
+        {boxList &&
+          boxList.map(box => (
             <Box
               key={box.box_id}
               className={styles['box-list-item']}
@@ -62,9 +89,9 @@ const BoxList = ({ selectedCountry, selectedZipCode, setSelectedBox, updateBoxLi
           ))}
       </div>
       <PaginationController
-        paginatedIndex={paginatedBoxListIndex}
-        setPaginatedIndex={setPaginatedBoxListIndex}
-        totalNumberOfPages={totalNumberOfBoxListPages}
+        paginatedIndex={boxListPageIndex}
+        setPaginatedIndex={setBoxListPageIndex}
+        totalNumberOfPages={numPages}
       />
     </ChakraProvider>
   );
@@ -80,6 +107,8 @@ BoxList.propTypes = {
   selectedZipCode: PropTypes.string,
   setSelectedBox: PropTypes.func.isRequired,
   updateBoxListSwitch: PropTypes.bool.isRequired,
+  boxListPageIndex: PropTypes.number.isRequired,
+  setBoxListPageIndex: PropTypes.func.isRequired,
 };
 
 export default BoxList;

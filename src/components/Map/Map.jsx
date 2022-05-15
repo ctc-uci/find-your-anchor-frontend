@@ -32,6 +32,7 @@ const Map = ({
   onBoxApprovalToggle,
   onMarkerInfoToggle,
   markerInfoIsOpen,
+  setBoxListPageIndex,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [mapState, setMapState] = useState(null);
@@ -49,6 +50,8 @@ const Map = ({
     // Open the right sidebar
     if (!markerInfoIsOpen) onMarkerInfoToggle();
     setSelectedBox(null);
+    // Set box list page index to 1
+    setBoxListPageIndex(1);
     // IMPORTANT: mapState.flyTo(xxx) must be called LAST in order to avoid a moving pin bug
     mapState.flyTo(
       [markerObject.latitude, markerObject.longitude],
@@ -236,6 +239,7 @@ Map.propTypes = {
   onBoxApprovalToggle: PropTypes.func.isRequired,
   onMarkerInfoToggle: PropTypes.bool.isRequired,
   markerInfoIsOpen: PropTypes.func.isRequired,
+  setBoxListPageIndex: PropTypes.func.isRequired,
 };
 
 export default Map;
