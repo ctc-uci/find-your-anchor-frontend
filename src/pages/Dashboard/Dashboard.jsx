@@ -30,6 +30,9 @@ const Dashboard = () => {
   // This state determines whether an admin is logged in or not
   const [adminIsLoggedIn, setAdminIsLoggedIn] = useState(false);
 
+  // This state determines the box list page index
+  const [boxListPageIndex, setBoxListPageIndex] = useState(1);
+
   // This function is called to set isAdmin
   useEffect(async () => {
     setAdminIsLoggedIn((await getCurrentUser(auth)) !== null);
@@ -89,6 +92,7 @@ const Dashboard = () => {
               onBoxApprovalToggle={onBoxApprovalToggle}
               onMarkerInfoToggle={onMarkerInfoToggle}
               markerInfoIsOpen={markerInfoIsOpen}
+              setBoxListPageIndex={setBoxListPageIndex}
             />
           </div>
           {adminIsLoggedIn ? (
@@ -131,6 +135,8 @@ const Dashboard = () => {
                 setZipCodeData={setZipCodeData}
                 onMarkerInfoToggle={onMarkerInfoToggle}
                 markerInfoIsOpen={markerInfoIsOpen}
+                boxListPageIndex={boxListPageIndex}
+                setBoxListPageIndex={setBoxListPageIndex}
               />
             </Slide>
           </div>
