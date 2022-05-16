@@ -28,7 +28,7 @@ import CSVViewTablePagination from './CSVViewTablePagination';
 import { useCustomToast } from '../../ToastProvider/ToastProvider';
 import useMobileWidth from '../../../common/useMobileWidth';
 
-const CSVViewTable = ({ rows, boxNumberMap }) => {
+const CSVViewTable = ({ rows, boxNumberMap, CSVFilename }) => {
   const isMobile = useMobileWidth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -203,6 +203,12 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
         await FYABackend.post('/anchorBox/boxes', formDatas);
         setIsLoading(false);
         navigate('/');
+        showToast({
+          title: `${CSVFilename} added to Map`,
+          message: `Successfully added ${formDatas.length} Boxes To Map`,
+          toastPosition: 'bottom-left',
+          type: 'success',
+        });
       } catch (err) {
         showToast({
           title: `Failed to add boxes to Map`,
@@ -359,6 +365,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
 CSVViewTable.propTypes = {
   rows: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])).isRequired,
   boxNumberMap: PropTypes.instanceOf(Map).isRequired,
+  CSVFilename: PropTypes.string.isRequired,
 };
 
 export default CSVViewTable;
