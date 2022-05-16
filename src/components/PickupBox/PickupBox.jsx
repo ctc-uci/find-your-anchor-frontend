@@ -194,7 +194,7 @@ const PickupBox = ({
                       {imageStatus === 'approved' && (
                         <>
                           <button type="button" className={styles['approval-button']}>
-                            <BsFillCheckCircleFill color="green" />
+                            <BsFillCheckCircleFill color="var(--color-success)" />
                           </button>
                           <p
                             className={`${styles['status-message']} ${styles['approval-message']}`}
@@ -207,7 +207,7 @@ const PickupBox = ({
                       {imageStatus === 'rejected' && (
                         <>
                           <button type="button" className={styles['rejection-button']}>
-                            <BsXCircleFill color="red" />
+                            <BsXCircleFill color="var(--color-warning)" />
                           </button>
                           <p
                             className={`${styles['status-message']} ${styles['rejection-message']}`}
@@ -225,7 +225,7 @@ const PickupBox = ({
                           className={styles['image-approved-button']}
                           onClick={async () => updateImageStatus('approved')}
                         >
-                          <BsFillCheckCircleFill color="green" />
+                          <BsFillCheckCircleFill color="var(--color-success)" />
                         </button>
                         {/* Reject image button */}
                         <button
@@ -233,7 +233,7 @@ const PickupBox = ({
                           className={styles['image-rejected-button']}
                           onClick={async () => updateImageStatus('rejected')}
                         >
-                          <BsXCircleFill color="red" />
+                          <BsXCircleFill color="var(--color-warning)" />
                         </button>
                       </>
                     )}

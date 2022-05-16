@@ -205,7 +205,7 @@ const BoxInfo = ({
                           start={`box-history-element-${pos}`}
                           end={`box-history-element-${pos + 1}`}
                           showHead={false}
-                          color="#E2E8F0"
+                          color="var(--color-light-gray)"
                         />
                       )}
                     </>

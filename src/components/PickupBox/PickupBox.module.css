@@ -2,11 +2,11 @@
   padding: 0px 15px 0px 15px;
   margin-top: 15px;
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--color-white);
 }
 
 .rejected-icon {
-  color: red;
+  color: var(--color-warning);
   font-size: 30px;
 }
 
