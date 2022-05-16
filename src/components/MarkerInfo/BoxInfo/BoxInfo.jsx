@@ -108,14 +108,18 @@ const BoxInfo = ({
         <img src={picture} alt="" className={styles.image} />
         <div className={styles['box-data']}>
           <FormControl>
-            {adminIsLoggedIn && (
+            {/* Box name */}
+            {adminIsLoggedIn && boxHolderName && (
               <>
-                {/* Box name */}
                 <FormLabel htmlFor="name" className={styles['form-label']}>
                   Name
                 </FormLabel>
                 <Input isReadOnly id="name" type="name" value={boxHolderName} />
-                {/* Box email */}
+              </>
+            )}
+            {/* Box email */}
+            {adminIsLoggedIn && boxHolderEmail && (
+              <>
                 <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
                   Email
                 </FormLabel>
@@ -123,20 +127,37 @@ const BoxInfo = ({
               </>
             )}
             {/* Box zip code */}
-            <FormLabel isReadOnly htmlFor="zipCode" className={styles['form-label']}>
-              Zip Code
-            </FormLabel>
-            <Input isReadOnly id="zipCode" type="zipCode" value={zipCode} />
+            {zipCode && (
+              <>
+                <FormLabel isReadOnly htmlFor="zipCode" className={styles['form-label']}>
+                  Zip Code
+                </FormLabel>
+                <Input isReadOnly id="zipCode" type="zipCode" value={zipCode} />
+              </>
+            )}
             {/* Box country */}
-            <FormLabel isReadOnly htmlFor="country" className={styles['form-label']}>
-              Country
-            </FormLabel>
-            <Input isReadOnly id="country" type="country" value={country} />
+            {country && (
+              <>
+                <FormLabel isReadOnly htmlFor="country" className={styles['form-label']}>
+                  Country
+                </FormLabel>
+                <Input isReadOnly id="country" type="country" value={country} />
+              </>
+            )}
             {/* Box general location */}
-            <FormLabel isReadOnly htmlFor="generalLocation" className={styles['form-label']}>
-              General Location
-            </FormLabel>
-            <Input isReadOnly id="generalLocation" type="generalLocation" value={generalLocation} />
+            {generalLocation && (
+              <>
+                <FormLabel isReadOnly htmlFor="generalLocation" className={styles['form-label']}>
+                  General Location
+                </FormLabel>
+                <Input
+                  isReadOnly
+                  id="generalLocation"
+                  type="generalLocation"
+                  value={generalLocation}
+                />
+              </>
+            )}
             {/* Box drop off method */}
             <FormLabel htmlFor="dropOffMethod" className={styles['form-label']}>
               Drop Off Method
@@ -202,7 +223,12 @@ const BoxInfo = ({
                   size="50px"
                 />
               ) : (
-                <Button colorScheme="warning" size="md" onClick={onOpenDeleteBoxModal}>
+                <Button
+                  className={styles['desktop-delete-box-button']}
+                  colorScheme="warning"
+                  size="md"
+                  onClick={onOpenDeleteBoxModal}
+                >
                   Delete Box
                 </Button>
               )}
