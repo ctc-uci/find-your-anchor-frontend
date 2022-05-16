@@ -5,7 +5,7 @@ import {
   AccordionPanel,
   AccordionButton,
   AccordionIcon,
-  ChakraProvider,
+  Button,
   FormControl,
   FormLabel,
   Input,
@@ -140,7 +140,7 @@ const PickupBox = ({
   };
 
   return (
-    <ChakraProvider>
+    <>
       <div
         className={`${styles.box}
         ${status === 'evaluated' && approved ? styles['box-approved'] : ''}
@@ -194,37 +194,65 @@ const PickupBox = ({
                       {imageStatus === 'approved' && (
                         <>
                           <button type="button" className={styles['approval-button']}>
-                            <BsFillCheckCircleFill color="green" />
+                            <BsFillCheckCircleFill color="var(--color-success)" />
                           </button>
-                          <p className={styles['approval-message']}>Image Approved</p>
+                          <p
+                            className={`${styles['status-message']} ${styles['approval-message']}`}
+                          >
+                            Photo Approved
+                          </p>
                         </>
                       )}
                       {/* Image rejected indicator (only show if image is rejected) */}
                       {imageStatus === 'rejected' && (
                         <>
                           <button type="button" className={styles['rejection-button']}>
-                            <BsXCircleFill color="red" />
+                            <BsXCircleFill color="var(--color-warning)" />
                           </button>
-                          <p className={styles['rejection-message']}>Image Denied</p>
+                          <p
+                            className={`${styles['status-message']} ${styles['rejection-message']}`}
+                          >
+                            Photo Denied
+                          </p>
                         </>
                       )}
                     </div>
-                    {/* Approve image button */}
-                    <button
-                      type="button"
-                      className={styles['image-approved-button']}
-                      onClick={async () => updateImageStatus('approved')}
-                    >
-                      <BsFillCheckCircleFill color="green" />
-                    </button>
-                    {/* Reject image button */}
-                    <button
-                      type="button"
-                      className={styles['image-rejected-button']}
-                      onClick={async () => updateImageStatus('rejected')}
-                    >
-                      <BsXCircleFill color="red" />
-                    </button>
+                    {imageStatus !== 'rejected' && imageStatus !== 'approved' && picture && (
+                      <>
+                        {/* Approve image button */}
+                        <button
+                          type="button"
+                          className={styles['image-approved-button']}
+                          onClick={async () => updateImageStatus('approved')}
+                        >
+                          <BsFillCheckCircleFill color="var(--color-success)" />
+                        </button>
+                        {/* Reject image button */}
+                        <button
+                          type="button"
+                          className={styles['image-rejected-button']}
+                          onClick={async () => updateImageStatus('rejected')}
+                        >
+                          <BsXCircleFill color="var(--color-warning)" />
+                        </button>
+                      </>
+                    )}
+                    {(imageStatus === 'rejected' || imageStatus === 'approved') && picture && (
+                      <Button
+                        variant="outline"
+                        className={styles['undo-button']}
+                        paddingTop="0px"
+                        paddingBottom="0px"
+                        paddingLeft="8px"
+                        paddingRight="8px"
+                        borderRadius="6px"
+                        borderColor="var(--color-light-gray)"
+                        size="sm"
+                        onClick={async () => updateImageStatus('pending')}
+                      >
+                        Undo
+                      </Button>
+                    )}
                   </div>
                 )}
                 <FormControl>
@@ -299,7 +327,7 @@ const PickupBox = ({
           </AccordionItem>
         </Accordion>
       </div>
-    </ChakraProvider>
+    </>
   );
 };
 

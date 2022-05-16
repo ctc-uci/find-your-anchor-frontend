@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { ChakraProvider, Button, Slide, IconButton, useDisclosure } from '@chakra-ui/react';
+import { Button, Slide, IconButton, useDisclosure } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 
 import { useNavigate } from 'react-router-dom';
@@ -51,7 +51,7 @@ const Dashboard = () => {
   // A list containing all unique zip codes stored in Anchor_Box
   const [zipCodeData, setZipCodeData] = useState([]);
   return (
-    <ChakraProvider>
+    <>
       <div className={styles.navbar}>
         <NavBar isAdmin={adminIsLoggedIn} />
       </div>
@@ -100,6 +100,7 @@ const Dashboard = () => {
               className={`${styles['review-submission-button']} ${styles['admin-button']}`}
               ref={btnRef}
               onClick={handleReviewSubmissionsClicked}
+              colorScheme="button"
             >
               Review Submission
             </Button>
@@ -107,6 +108,7 @@ const Dashboard = () => {
             <Button
               className={`${styles['review-submission-button']} ${styles['general-user-button']}`}
               onClick={() => navigate('/login')}
+              colorScheme="button"
             >
               Admin Login
             </Button>
@@ -141,7 +143,7 @@ const Dashboard = () => {
         </div>
         {!adminIsLoggedIn && <Footer />}
       </div>
-    </ChakraProvider>
+    </>
   );
 };
 

@@ -6,7 +6,6 @@ import {
   AccordionButton,
   AccordionIcon,
   Button,
-  ChakraProvider,
   FormControl,
   FormLabel,
   FormErrorMessage,
@@ -292,7 +291,7 @@ const RelocationBox = ({
   };
 
   return (
-    <ChakraProvider>
+    <>
       <div
         // Conditional classes for approved/pending changes/rejected boxes to determine background coloring
         className={`${styles.box}
@@ -335,9 +334,13 @@ const RelocationBox = ({
                     }}
                   >
                     {editPendingChangesState ? (
-                      <RiCheckFill color="#38a169" size={20} onClick={handleSubmit(onSubmit)} />
+                      <RiCheckFill
+                        color="var(--color-success)"
+                        size={20}
+                        onClick={handleSubmit(onSubmit)}
+                      />
                     ) : (
-                      <RiPencilFill color="#8E8E8E" size={20} />
+                      <RiPencilFill color="var(--color-gray)" size={20} />
                     )}
                   </button>
                 )}
@@ -375,7 +378,7 @@ const RelocationBox = ({
                       {imageStatus === 'approved' && (
                         <>
                           <button type="button" className={styles['approval-button']}>
-                            <BsFillCheckCircleFill color="green" />
+                            <BsFillCheckCircleFill color="var(--color-success)" />
                           </button>
                           <p
                             className={`${styles['status-message']} ${styles['approval-message']}`}
@@ -388,7 +391,7 @@ const RelocationBox = ({
                       {imageStatus === 'rejected' && (
                         <>
                           <button type="button" className={styles['rejection-button']}>
-                            <BsXCircleFill color="red" />
+                            <BsXCircleFill color="var(--color-warning)" />
                           </button>
                           <p
                             className={`${styles['status-message']} ${styles['rejection-message']}`}
@@ -406,7 +409,7 @@ const RelocationBox = ({
                           className={styles['image-approved-button']}
                           onClick={async () => updateImageStatus('approved')}
                         >
-                          <BsFillCheckCircleFill color="green" />
+                          <BsFillCheckCircleFill color="var(--color-success)" />
                         </button>
                         {/* Reject image button */}
                         <button
@@ -414,21 +417,20 @@ const RelocationBox = ({
                           className={styles['image-rejected-button']}
                           onClick={async () => updateImageStatus('rejected')}
                         >
-                          <BsXCircleFill color="red" />
+                          <BsXCircleFill color="var(--color-warning)" />
                         </button>
                       </>
                     )}
                     {(imageStatus === 'rejected' || imageStatus === 'approved') && picture && (
                       <Button
                         variant="outline"
-                        colorScheme="black"
                         className={styles['undo-button']}
                         paddingTop="0px"
                         paddingBottom="0px"
                         paddingLeft="8px"
                         paddingRight="8px"
                         borderRadius="6px"
-                        borderColor="#E2E8F0"
+                        borderColor="var(--color-light-gray)"
                         size="sm"
                         onClick={async () => updateImageStatus('pending')}
                       >
@@ -556,7 +558,7 @@ const RelocationBox = ({
                           {messageStatus === 'approved' && (
                             <>
                               <button type="button" className={styles['approval-button']}>
-                                <BsFillCheckCircleFill color="green" />
+                                <BsFillCheckCircleFill color="var(--color-success)" />
                               </button>
                               <p
                                 className={`${styles['status-message']} ${styles['approval-message']}`}
@@ -569,7 +571,7 @@ const RelocationBox = ({
                           {messageStatus === 'rejected' && (
                             <>
                               <button type="button" className={styles['rejection-button']}>
-                                <BsXCircleFill color="red" />
+                                <BsXCircleFill color="var(--color-warning)" />
                               </button>
                               <p
                                 className={`${styles['status-message']} ${styles['rejection-message']}`}
@@ -585,7 +587,7 @@ const RelocationBox = ({
                           className={styles['message-approved-button']}
                           onClick={async () => updateMessageStatus('approved')}
                         >
-                          <BsFillCheckCircleFill color="green" />
+                          <BsFillCheckCircleFill color="var(--color-success)" />
                         </button>
                         {/* Reject message button */}
                         <button
@@ -593,7 +595,7 @@ const RelocationBox = ({
                           className={styles['message-rejected-button']}
                           onClick={async () => updateMessageStatus('rejected')}
                         >
-                          <BsXCircleFill color="red" />
+                          <BsXCircleFill color="var(--color-warning)" />
                         </button>
                       </div>
                     )}
@@ -670,7 +672,7 @@ const RelocationBox = ({
           </AccordionItem>
         </Accordion>
       </div>
-    </ChakraProvider>
+    </>
   );
 };
 

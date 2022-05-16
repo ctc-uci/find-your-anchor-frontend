@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ChakraProvider } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 import styles from './MarkerInfo.module.css';
 import BoxList from './BoxList/BoxList';
@@ -29,7 +28,7 @@ const MarkerInfo = ({
     setSelectedCountry(null);
   };
   return (
-    <ChakraProvider>
+    <>
       <div
         className={`${
           !selectedBox ? styles['right-side-bar-box-list'] : styles['right-side-bar-box-info']
@@ -60,7 +59,7 @@ const MarkerInfo = ({
           />
         )}
       </div>
-    </ChakraProvider>
+    </>
   );
 };
 
