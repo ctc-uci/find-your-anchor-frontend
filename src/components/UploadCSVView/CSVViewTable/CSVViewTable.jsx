@@ -1,7 +1,6 @@
 /* eslint-disable prefer-object-spread */
 import React, { useState, useEffect, Fragment, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import countryList from 'react-select-country-list';
 import PropTypes from 'prop-types';
 import {
   Button,
@@ -20,7 +19,6 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { useTable, usePagination } from 'react-table';
-// import zipcodeDataDump from '../../../common/zipcodeDataDump.json';
 
 import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
@@ -201,16 +199,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
       editRow(e, formDatas[firstErrorRowIndex], firstErrorRowIndex, false);
     } else {
       try {
-        // if no errors with any of the rows, set lat/long for each row
-        formDatas.forEach((formData, index) => {
-          const countryCode = countryList().getValue(formData.country);
-          formDatas[index].country = countryCode;
-          formDatas[index].latitude = 12.23;
-          formDatas[index].longitude = 23.325;
-          // formDatas[index].latitude = zipcodeDataDump[countryCode][formData.zipCode].lat;
-          // formDatas[index].longitude = zipcodeDataDump[countryCode][formData.zipCode].long;
-        });
-
+        // if no errors with any of the rows, upload all boxes
         await FYABackend.post('/anchorBox/boxes', formDatas);
         setIsLoading(false);
         navigate('/');

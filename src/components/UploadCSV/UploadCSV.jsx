@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import countryList from 'react-select-country-list';
 import PropTypes from 'prop-types';
 import { FYABackend } from '../../common/utils';
-// import zipcodeDataDump from '../../common/zipcodeDataDump.json';
 
 import UploadModalContent from './UploadModalContent/UploadModalContent';
 import SuccessModalContent from './SuccessModalContent/SuccessModalContent';
@@ -86,46 +84,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const addToMap = async e => {
     e.preventDefault();
     try {
-      // formDatas structure:
-      // [
-      //   {
-      //     id,
-      //     boxNumber,
-      //     date,
-      //     zipCode,
-      //     country,
-      //     launchedOrganically,
-      //     error,
-      //     latitude,
-      //     longitude,
-      //   }
-      // ]
-
-      // if no errors with any of the rows, set lat/long for each row
-      formDatas.forEach((formData, index) => {
-        const countryCode = countryList().getValue(formData.country);
-        formDatas[index].country = countryCode;
-        formDatas[index].latitude = 12.23;
-        formDatas[index].longitude = 23.325;
-        // formDatas[index].latitude = zipcodeDataDump[countryCode][formData.zipCode].lat;
-        // formDatas[index].longitude = zipcodeDataDump[countryCode][formData.zipCode].long;
-      });
-
-      // formDatas structure:
-      // [
-      //   {
-      //     id,
-      //     boxNumber,
-      //     date,
-      //     zipCode,
-      //     country,
-      //     launchedOrganically,
-      //     error,
-      //     latitude,
-      //     longitude,
-      //   }
-      // ]
-
+      // if no errors with any of the rows, upload all boxes
       await FYABackend.post('/anchorBox/boxes', formDatas);
       setIsLoading(false);
       navigate('/');
