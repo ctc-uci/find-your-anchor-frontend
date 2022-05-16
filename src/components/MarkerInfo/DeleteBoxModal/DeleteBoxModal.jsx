@@ -29,15 +29,22 @@ const DeleteBoxModal = ({
   const deleteBox = async () => {
     try {
       const deletedBox = (await FYABackend.get(`/anchorBox/box/${selectedBox}`)).data[0];
+      const deletePromises = [
+        FYABackend.delete(`/boxHistory/${selectedBox}`),
+        FYABackend.delete(`/anchorBox/${selectedBox}`),
+      ];
+      await Promise.allSettled(deletePromises);
       // Refetch box list
       const anchorBoxesInZipCode = await FYABackend.get('/anchorBox', {
         params: {
           zipCode: selectedZipCode,
           country: selectedCountry,
+          pageSize: 8,
+          pageIndex: 1,
         },
       });
       // If the box list is now empty, remove marker from map
-      if (anchorBoxesInZipCode.data.length === 1) {
+      if (anchorBoxesInZipCode.data.length === 0) {
         setZipCodeData(
           zipCodeData.filter(
             zipCodeInfo =>
