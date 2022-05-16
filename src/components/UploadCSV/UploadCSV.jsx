@@ -46,6 +46,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
       setFormDatas(rowData);
       setBoxNumberMap(boxNumbers);
       setNumUploadErrors(numErrors);
+      setIsUploadingNewFile(false);
     } catch (err) {
       showToast({
         title: `Failed to upload ${CSVFilename}`,
@@ -53,9 +54,9 @@ const UploadCSV = ({ isOpen, onClose }) => {
         toastPosition: 'bottom',
         type: 'error',
       });
+      setIsUploadingNewFile(true);
     }
 
-    setIsUploadingNewFile(false);
     setCSVFile();
     setIsLoading(false);
   };
