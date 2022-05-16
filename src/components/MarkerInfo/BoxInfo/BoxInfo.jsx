@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  ChakraProvider,
   FormControl,
   FormLabel,
   Input,
@@ -77,7 +76,7 @@ const BoxInfo = ({
     }
   }, [selectedBox, transactionToggle]);
   return (
-    <ChakraProvider>
+    <>
       <div className={styles['box-info']} onLoad={updateXarrow}>
         <div className={styles.header}>
           <ChevronLeftIcon
@@ -203,7 +202,7 @@ const BoxInfo = ({
                   size="50px"
                 />
               ) : (
-                <Button colorScheme="red" size="md" onClick={onOpenDeleteBoxModal}>
+                <Button colorScheme="warning" size="md" onClick={onOpenDeleteBoxModal}>
                   Delete Box
                 </Button>
               )}
@@ -226,7 +225,7 @@ const BoxInfo = ({
           )}
         </div>
       </div>
-    </ChakraProvider>
+    </>
   );
 };
 

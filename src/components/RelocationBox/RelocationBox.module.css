@@ -88,7 +88,7 @@
 }
 
 .approval-message {
-  color: var(--color-approved);
+  color: var(--color-success);
   text-align: left;
 }
 

@@ -75,7 +75,6 @@
   left: 10px;
   z-index: 400; /* since leaflet has a high z index */
   visibility: visible;
-  background-color: var(--color-hyperlink) !important;
   color: var(--color-white) !important;
 }
 

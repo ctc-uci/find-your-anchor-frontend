@@ -6,7 +6,6 @@ import {
   AccordionButton,
   AccordionIcon,
   Button,
-  ChakraProvider,
   FormControl,
   FormLabel,
   FormErrorMessage,
@@ -292,7 +291,7 @@ const RelocationBox = ({
   };
 
   return (
-    <ChakraProvider>
+    <>
       <div
         // Conditional classes for approved/pending changes/rejected boxes to determine background coloring
         className={`${styles.box}
@@ -421,14 +420,13 @@ const RelocationBox = ({
                     {(imageStatus === 'rejected' || imageStatus === 'approved') && picture && (
                       <Button
                         variant="outline"
-                        colorScheme="black"
                         className={styles['undo-button']}
                         paddingTop="0px"
                         paddingBottom="0px"
                         paddingLeft="8px"
                         paddingRight="8px"
                         borderRadius="6px"
-                        borderColor="#E2E8F0"
+                        borderColor="var(--color-light-gray)"
                         size="sm"
                         onClick={async () => updateImageStatus('pending')}
                       >
@@ -670,7 +668,7 @@ const RelocationBox = ({
           </AccordionItem>
         </Accordion>
       </div>
-    </ChakraProvider>
+    </>
   );
 };
 

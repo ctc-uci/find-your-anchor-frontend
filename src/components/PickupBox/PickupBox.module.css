@@ -16,14 +16,18 @@
 }
 
 .status-message-approved {
-  color: var(--color-success);
+  align-self: center;
+  color: var(--color-approved);
+  width: 90%;
 }
 
 .status-message-pending {
   color: var(--color-pending-changes);
+  width: 90%;
 }
 
 .status-message-rejected {
+  width: 90%;
   color: var(--color-warning);
 }
 
@@ -148,6 +152,8 @@
 .image-functionality-wrapper {
   display: flex;
   width: 100%;
+  align-items: center;
+  margin-top: 2%;
 }
 
 .image-functionality {
@@ -159,7 +165,7 @@
 .approval-button,
 .rejection-button {
   float: left;
-  margin: 2% 2% 0% 0%;
+  margin: 0% 2% 0% 0%;
 }
 
 .image-approved {
@@ -174,15 +180,16 @@
   float: left;
   padding: 1%;
   width: 100%;
-  text-align: left;
   margin-left: 1%;
 }
 
 .approval-message {
+  text-align: left;
   color: var(--color-success);
 }
 
 .rejection-message {
+  text-align: left;
   color: var(--color-warning);
 }
 
