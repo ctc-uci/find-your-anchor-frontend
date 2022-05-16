@@ -57,7 +57,15 @@ const Dashboard = () => {
       </div>
       <div className={styles['admin-dashboard-container']}>
         <div className={styles['side-bar-and-map-container']}>
-          <Slide className={styles['box-approval-slide']} direction="left" in={boxApprovalIsOpen}>
+          <Slide
+            className={
+              adminIsLoggedIn
+                ? styles['box-approval-slide-admin']
+                : styles['box-approval-slide-general']
+            }
+            direction="left"
+            in={boxApprovalIsOpen}
+          >
             <IconButton
               className={styles['close-button']}
               aria-label="Close Control Panel"
@@ -103,29 +111,35 @@ const Dashboard = () => {
               Admin Login
             </Button>
           )}
-          <div className={`${styles['side-bar']} ${markerInfoIsOpen ? styles['show-info'] : ''}`}>
-            <Slide className={styles['marker-info-slide']} direction="right" in={markerInfoIsOpen}>
-              <MarkerInfo
-                selectedZipCode={selectedZipCode}
-                selectedCountry={selectedCountry}
-                setSelectedZipCode={setSelectedZipCode}
-                setSelectedCountry={setSelectedCountry}
-                setUpdateBoxListSwitch={setUpdateBoxListSwitch}
-                updateBoxListSwitch={updateBoxListSwitch}
-                setSelectedBox={setSelectedBox}
-                selectedBox={selectedBox}
-                adminIsLoggedIn={adminIsLoggedIn}
-                zipCodeData={zipCodeData}
-                setZipCodeData={setZipCodeData}
-                onMarkerInfoToggle={onMarkerInfoToggle}
-                markerInfoIsOpen={markerInfoIsOpen}
-                boxListPageIndex={boxListPageIndex}
-                setBoxListPageIndex={setBoxListPageIndex}
-              />
-            </Slide>
-          </div>
-          {!adminIsLoggedIn && <Footer />}
+          <Slide
+            className={
+              adminIsLoggedIn
+                ? styles['marker-info-slide-admin']
+                : styles['marker-info-slide-general']
+            }
+            direction="right"
+            in={markerInfoIsOpen}
+          >
+            <MarkerInfo
+              selectedZipCode={selectedZipCode}
+              selectedCountry={selectedCountry}
+              setSelectedZipCode={setSelectedZipCode}
+              setSelectedCountry={setSelectedCountry}
+              setUpdateBoxListSwitch={setUpdateBoxListSwitch}
+              updateBoxListSwitch={updateBoxListSwitch}
+              setSelectedBox={setSelectedBox}
+              selectedBox={selectedBox}
+              adminIsLoggedIn={adminIsLoggedIn}
+              zipCodeData={zipCodeData}
+              setZipCodeData={setZipCodeData}
+              onMarkerInfoToggle={onMarkerInfoToggle}
+              markerInfoIsOpen={markerInfoIsOpen}
+              boxListPageIndex={boxListPageIndex}
+              setBoxListPageIndex={setBoxListPageIndex}
+            />
+          </Slide>
         </div>
+        {!adminIsLoggedIn && <Footer />}
       </div>
     </ChakraProvider>
   );

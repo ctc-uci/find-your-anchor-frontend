@@ -88,6 +88,12 @@
   width: 30px;
 }
 
+.desktop-delete-box-button {
+  position: fixed !important;
+  right: 20px;
+  bottom: 5px;
+}
+
 @media screen and (max-width: 768px) {
   .title {
     width: 100%;
