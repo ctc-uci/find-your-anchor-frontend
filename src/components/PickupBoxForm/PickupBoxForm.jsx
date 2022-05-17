@@ -236,6 +236,7 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
           <br />
           <FormControl>
             <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
+            {!isMobile && <br />}
             <DropZone setFiles={setFiles} />
           </FormControl>
           <br />

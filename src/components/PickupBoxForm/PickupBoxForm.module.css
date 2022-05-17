@@ -50,7 +50,7 @@
 }
 
 .verification-sub-label {
-  opacity: 36%;
+  color: var(--text-gray-color);
 }
 
 .pickup-box-info-section-left,
@@ -61,6 +61,8 @@
 .privacy-statement {
   margin-left: 3%;
   padding-bottom: 5%;
+  font-size: 14px;
+  font-style: italic;
 }
 
 @media screen and (max-width: 768px) {
