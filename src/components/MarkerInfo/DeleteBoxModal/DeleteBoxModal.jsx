@@ -107,9 +107,12 @@ const DeleteBoxModal = ({
         const nextMostRecentTransaction = await FYABackend.get(
           `/boxHistory/mostRecentTransaction/${selectedBox}`,
         );
-        const [latitude, longitude] = await getLatLong(selectedZipCode, selectedCountry);
         // If there is another transaction, update the BoxInfo page
         if (nextMostRecentTransaction.data.length > 0) {
+          const [latitude, longitude] = await getLatLong(
+            nextMostRecentTransaction.data[0].zip_code,
+            nextMostRecentTransaction.data[0].country,
+          );
           // Copy the most recent transaction to Anchor_Box
           await FYABackend.put(`/boxHistory/approveBox`, {
             transactionID: nextMostRecentTransaction.data[0].transaction_id,
