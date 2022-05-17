@@ -10,6 +10,7 @@ import { FYABackend } from '../../common/utils';
 import { auth, getCurrentUser, sendPasswordReset } from '../../common/auth_utils';
 import CommonConfirmationPage from '../../common/CommonConfirmationPage/CommonConfirmationPage';
 import { useCustomToast } from '../ToastProvider/ToastProvider';
+import LoadingPage from '../../common/LoadingPage/LoadingPage';
 
 // Check if user exists in the database
 const userExists = async email => {
@@ -61,7 +62,7 @@ const ForgotPasswordForm = () => {
   }, []);
 
   if (isLoading) {
-    return <h1>LOADING...</h1>;
+    return <LoadingPage />;
   }
 
   // Redirects user to dashboard if they are logged in.

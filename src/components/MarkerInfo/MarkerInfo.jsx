@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ChakraProvider } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 import styles from './MarkerInfo.module.css';
 import BoxList from './BoxList/BoxList';
@@ -18,15 +17,18 @@ const MarkerInfo = ({
   zipCodeData,
   setZipCodeData,
   onMarkerInfoToggle,
+  boxListPageIndex,
+  setBoxListPageIndex,
 }) => {
   // This function clears the selected zip code/country states (called when the user exits out of the right side bar)
   const clearSelectedInfo = () => {
     onMarkerInfoToggle();
+    setSelectedBox(null);
     setSelectedZipCode(null);
     setSelectedCountry(null);
   };
   return (
-    <ChakraProvider>
+    <>
       <div
         className={`${
           !selectedBox ? styles['right-side-bar-box-list'] : styles['right-side-bar-box-info']
@@ -52,10 +54,12 @@ const MarkerInfo = ({
             selectedZipCode={selectedZipCode}
             setSelectedBox={setSelectedBox}
             updateBoxListSwitch={updateBoxListSwitch}
+            boxListPageIndex={boxListPageIndex}
+            setBoxListPageIndex={setBoxListPageIndex}
           />
         )}
       </div>
-    </ChakraProvider>
+    </>
   );
 };
 
@@ -86,6 +90,8 @@ MarkerInfo.propTypes = {
   ).isRequired,
   setZipCodeData: PropTypes.func.isRequired,
   onMarkerInfoToggle: PropTypes.bool.isRequired,
+  boxListPageIndex: PropTypes.number.isRequired,
+  setBoxListPageIndex: PropTypes.func.isRequired,
 };
 
 export default MarkerInfo;

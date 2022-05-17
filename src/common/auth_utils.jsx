@@ -135,7 +135,7 @@ const sendPasswordReset = async email => {
  */
 const sendInviteLink = async email => {
   const inviteId = nanoid();
-  const url = `http://localhost:3000/auth-email?mode=inviteUser&inviteID=${inviteId}`;
+  const url = `${process.env.REACT_APP_BASE_URL}/auth-email?mode=inviteUser&inviteID=${inviteId}`;
   const currentUserId = await getCurrentUser(auth);
   const currentUserInDB = await FYABackend.get(`/users/userId/${currentUserId.uid}`);
   await sendEmail(

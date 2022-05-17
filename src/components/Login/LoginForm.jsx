@@ -17,6 +17,7 @@ import {
   getCurrentUser,
   auth,
 } from '../../common/auth_utils';
+import LoadingPage from '../../common/LoadingPage/LoadingPage';
 
 const schema = yup.object({
   email: yup
@@ -67,7 +68,7 @@ const LoginForm = ({ cookies, redirectLink }) => {
   }, []);
 
   if (isLoading) {
-    return <h1>LOADING...</h1>;
+    return <LoadingPage />;
   }
 
   return (

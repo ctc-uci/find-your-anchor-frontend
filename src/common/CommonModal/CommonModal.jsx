@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  ModalCloseButton,
-  ChakraProvider,
-} from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import useMobileWidth from '../useMobileWidth';
 
@@ -31,7 +24,7 @@ const CommonModal = ({
   }
 
   return (
-    <ChakraProvider>
+    <>
       <Modal isOpen={isOpen} onClose={onClose} isCentered closeOnOverlayClick={closeOnOverlayClick}>
         <ModalOverlay />
         <ModalContent {...modalContentProps} borderRadius={20}>
@@ -39,7 +32,7 @@ const CommonModal = ({
           <ModalBody className={modalClassName}>{children}</ModalBody>
         </ModalContent>
       </Modal>
-    </ChakraProvider>
+    </>
   );
 };
 
