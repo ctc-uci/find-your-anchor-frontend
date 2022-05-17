@@ -184,12 +184,15 @@ const RelocationBox = ({
         zipCode: formData.zipcode,
         country: formData.country.value,
         generalLocation: formData.boxLocation,
-        message: formData.boxMessage,
+        message: messageState,
         launchedOrganically: formData.dropOffMethod === 'organic-launch',
         admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
       });
 
-      if (Date.parse(transaction.data[0].mostrecentdate) <= Date.parse(date)) {
+      if (
+        transaction.data.length === 0 ||
+        Date.parse(transaction.data[0].mostrecentdate) <= Date.parse(date)
+      ) {
         // Just in case the country value is null so it doesnt break, we can remove it once we clear the DB and have correct data
         let coordinates = await getLatLong(zipCode, formData.country.value);
         if (coordinates.length !== 2) {
