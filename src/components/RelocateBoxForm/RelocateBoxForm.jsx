@@ -35,30 +35,25 @@ const schema = yup
     boxholderEmail: yup
       .string()
       .email('Invalid email address')
-      .required('Invalid email address, please enter a valid email address')
-      .typeError('Invalid email address, please enter a valid email address'),
+      .required('Invalid email address')
+      .typeError('Invalid email address'),
     boxID: yup
       .number()
       .boxExists()
-      .min(1, 'Invalid box number, please enter a valid box number')
-      .required('Invalid box number, please enter a valid box number')
-      .typeError('Invalid box number, please enter a valid box number'),
-    date: yup
-      .date()
-      .required('Invalid date, please enter a valid date')
-      .typeError('Invalid date, please enter a valid date'),
-    zipcode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),
+      .min(1, 'Invalid box number')
+      .required('Invalid box number')
+      .typeError('Invalid box number'),
+    date: yup.date().required('Invalid date').typeError('Invalid date'),
+    zipcode: yup.string().required('Invalid zipcode'),
     country: yup.object({
-      label: yup.string().required('Invalid country, please select a country'),
+      label: yup.string().required('Invalid country'),
       value: yup.string(),
     }),
-    generalLocation: yup.string().typeError('Invalid location, please enter a valid location'),
-    dropOffMethod: yup
-      .string()
-      .required('Invalid drop off method, please enter a valid drop off method'),
-    message: yup.string().typeError('Invalid message, please enter a valid message'),
-    picture: yup.string().url(),
-    verificationPicture: yup.string().url(),
+    generalLocation: yup.string().typeError('Invalid location'),
+    dropOffMethod: yup.string().required('Invalid drop off method'),
+    message: yup.string().typeError('Invalid message'),
+    picture: yup.string().url().typeError('Invalid image'),
+    verificationPicture: yup.string().url().typeError('Invalid image'),
   })
   .isZipInCountry()
   .required();

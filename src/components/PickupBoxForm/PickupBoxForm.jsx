@@ -25,26 +25,19 @@ yup.addMethod(yup.number, 'boxExists', validateBoxIdInAnchorBox);
 const schema = yup
   .object({
     boxholderName: yup.string().typeError('Invalid name'),
-    boxID: yup
-      .number()
-      .boxExists()
-      .required('Invalid box number, please enter a valid box number')
-      .typeError('Invalid box number, please enter a valid box number'),
-    date: yup
-      .date()
-      .required('Invalid date, please enter a valid date')
-      .typeError('Invalid date, please enter a valid date'),
+    boxID: yup.number().boxExists().required('Invalid box number').typeError('Invalid box number'),
+    date: yup.date().required('Invalid date').typeError('Invalid date'),
     boxholderEmail: yup
       .string()
-      .required('Invalid email address, please enter a valid email address')
-      .typeError('Invalid email address, please enter a valid email address'),
-    zipcode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),
+      .required('Invalid email address')
+      .typeError('Invalid email address'),
+    zipcode: yup.string().required('Invalid zipcode'),
     country: yup.object({
-      label: yup.string().required('Invalid country, please select a country'),
-      value: yup.string().required('Invalid country, please select a country'),
+      label: yup.string().required('Invalid country'),
+      value: yup.string().required('Invalid country'),
     }),
-    picture: yup.string().url(),
-    verificationPicture: yup.string().url(),
+    picture: yup.string().url().typeError('Invalid image'),
+    verificationPicture: yup.string().url().typeError('Invalid image'),
   })
   .isZipInCountry()
   .required();
