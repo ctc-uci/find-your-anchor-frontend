@@ -36,14 +36,16 @@ const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl 
             />
           </Tooltip>
           <Text flexShrink="0" ml={4} mr={2}>
-            <Text as="span">Page</Text>
-            <Text as="span" color="black">
+            <Text as="span" textStyle="body">
+              Page
+            </Text>
+            <Text as="span" color="black" textStyle="body">
               {' '}
               {pageIndex + 1} of {pageLength}
             </Text>
           </Text>
           {!isMobile && (
-            <Text>
+            <Text textStyle="body">
               | Go to page:{' '}
               <input
                 type="number"
