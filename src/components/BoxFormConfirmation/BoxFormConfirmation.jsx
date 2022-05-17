@@ -35,7 +35,7 @@ const BoxFormConfirmation = ({ pickup }) => {
       <Button
         className={styles['confirmation-button']}
         size="sm"
-        colorScheme="blue"
+        colorScheme="button"
         onClick={handleBackToHome}
       >
         Back to Home

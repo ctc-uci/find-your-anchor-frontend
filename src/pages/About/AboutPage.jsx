@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
-import { ChakraProvider } from '@chakra-ui/provider';
 import FriendIcon from '../../assets/about-friend-icon.svg';
 import GlobeIcon from '../../assets/about-globe-icon.svg';
 import RocketIcon from '../../assets/about-rocket-icon.svg';
@@ -10,7 +9,7 @@ import styles from './AboutPage.module.css';
 
 const AboutPage = () => {
   return (
-    <ChakraProvider>
+    <>
       <div className={styles['about-page']}>
         <div className={styles['welcome-section']}>
           <div>
@@ -236,7 +235,7 @@ const AboutPage = () => {
         </div>
       </div>
       <Footer />
-    </ChakraProvider>
+    </>
   );
 };
 
