@@ -53,7 +53,12 @@ const CSVPreviewPage = () => {
         </div>
         {isMobile && (
           <div className={styles['button-section']}>
-            <Button border="1px" borderColor="#CBD5E0" bg="white" onClick={() => navigate('/')}>
+            <Button
+              border="1px"
+              borderColor="#CBD5E0"
+              bg="white"
+              onClick={() => navigate('/export-csv')}
+            >
               Cancel
             </Button>
             <Button className={styles['header-button']}>
