@@ -1,12 +1,14 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Button, Text } from '@chakra-ui/react';
-import { CheckCircleIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import styles from './BoxFormConfirmation.module.css';
+import CheckIcon from '../../assets/check-icon.svg';
+import useMobileWidth from '../../common/useMobileWidth';
 
 const BoxFormConfirmation = ({ pickup }) => {
   const navigate = useNavigate();
+  const isMobile = useMobileWidth();
 
   const handleBackToHome = () => {
     navigate('/');
@@ -14,12 +16,11 @@ const BoxFormConfirmation = ({ pickup }) => {
 
   return (
     <div className={styles['box-form-confirmation-page']}>
-      <CheckCircleIcon className={styles['confirmation-check-circle']} color="#345E80" />
+      <img src={CheckIcon} className={styles['check-icon']} alt="Logo" />
       <Text
         className={styles['confirmation-text']}
-        size="xl"
-        fontWeight="normal"
-        textStyle="header-1"
+        fontWeight="bold"
+        textStyle={isMobile ? 'subheader' : 'header-1'}
       >
         Your {pickup ? 'found' : 'launch'} box request has been confirmed!
       </Text>
@@ -27,7 +28,7 @@ const BoxFormConfirmation = ({ pickup }) => {
         className={styles['confirmation-message']}
         size="md"
         fontWeight="normal"
-        textStyle="header-1"
+        textStyle={isMobile ? 'body' : 'subheader'}
       >
         Please allow 1-3 business days for your request to be reviewed. You will receive more
         information via email.
