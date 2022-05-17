@@ -184,7 +184,7 @@ const RelocationBox = ({
         zipCode: formData.zipcode,
         country: formData.country.value,
         generalLocation: formData.boxLocation,
-        message: formData.boxMessage,
+        message: messageState,
         launchedOrganically: formData.dropOffMethod === 'organic-launch',
         admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
       });
