@@ -176,7 +176,12 @@ const EditableRow = ({
       <FormControl isInvalid={errors['']?.message}>
         {isMobile && <FormLabel>Country</FormLabel>}
         <InputGroup>
-          <Input id="country" placeholder="e.g. 90210" name="country" {...register('country')} />
+          <Input
+            id="country"
+            placeholder="e.g. United States"
+            name="country"
+            {...register('country')}
+          />
           {errors['']?.message && (
             <Tooltip hasArrow label={errors['']?.message} bg="red.600" {...tooltipMobileProp}>
               <InputRightElement className={styles['input-right-warning']}>
