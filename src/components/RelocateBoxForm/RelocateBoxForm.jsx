@@ -12,7 +12,6 @@ import {
   Input,
   Button,
   Textarea,
-  Select,
 } from '@chakra-ui/react';
 import { Select as ChakraReactSelect } from 'chakra-react-select';
 import { FYABackend, formatDate, getLatLong } from '../../common/utils';
@@ -267,14 +266,31 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.country?.label.message}</FormErrorMessage>
           </FormControl>
           <br />
-          <FormControl className={styles['section-wrapper']}>
+          <FormControl className={styles['section-wrapper']} isInvalid={errors?.dropOffMethod}>
             <FormLabel htmlFor="drop-off-method" className={styles['required-field']}>
               Launch Method
             </FormLabel>
-            <Select id="drop-off-method" {...register('dropOffMethod')}>
-              <option value="given-to-someone">Given to Someone</option>
-              <option value="organic-launch">Dropped off at a location</option>
-            </Select>
+            <Controller
+              control={control}
+              name="drop-off-method"
+              // eslint-disable-next-line no-unused-vars
+              render={({ field: { onChange, value, ref } }) => (
+                <ChakraReactSelect
+                  options={[
+                    {
+                      label: 'Given to Someone',
+                      value: 'Given to Someone',
+                    },
+                    {
+                      label: 'Dropped off at a location',
+                      value: 'Dropped off at a location',
+                    },
+                  ]}
+                  value={value}
+                  onChange={onChange}
+                />
+              )}
+            />
             <FormErrorMessage>{errors.dropOffMethod?.message}</FormErrorMessage>
           </FormControl>
           <br />
