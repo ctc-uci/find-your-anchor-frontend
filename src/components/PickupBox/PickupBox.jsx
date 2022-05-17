@@ -65,7 +65,10 @@ const PickupBox = ({
         pickup,
         admin: `${userInDB.data.user.first_name} ${userInDB.data.user.last_name}`,
       });
-      if (Date.parse(transaction.data[0].mostrecentdate) <= Date.parse(date)) {
+      if (
+        transaction.data.length === 0 ||
+        Date.parse(transaction.data[0].mostrecentdate) <= Date.parse(date)
+      ) {
         // TODO: REPLACE US WITH COUNTRY INPUT
         let coordinates = await getLatLong(zipCode, country);
         if (coordinates.length !== 2) {
