@@ -4,27 +4,11 @@
   width: inherit;
   height: inherit;
 }
-/* Customization of leaflet popup */
-.leaflet-popup-content-wrapper {
-  width: 250px;
-  background-color: #171923;
-}
-
-.leaflet-popup-tip {
-  background: none;
-  box-shadow: none;
-}
 
 /* Customization of material in popup  */
 .marker-popup {
   width: 100%;
   text-align: center;
-}
-
-.popup-header {
-  margin: 0px;
-  color: white;
-  font-size: 15px;
 }
 
 .leaflet-control-geosearch form {
@@ -39,29 +23,29 @@
 
 .leaflet-touch .leaflet-control-layers,
 .leaflet-touch .leaflet-bar {
-  border-left: 2px solid rgba(0, 0, 0, 0.2);
+  border-left: 2px solid rgba(var(--color-black), 0.2);
   border-radius: 2px 0px 0px 2px;
-  border-top: 2px solid rgba(0, 0, 0, 0.2);
-  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  border-top: 2px solid rgba(var(--color-black), 0.2);
+  border-bottom: 2px solid rgba(var(--color-black), 0.2);
 }
 
 .tooltip {
-  background-color: #345e80;
-  color: white;
+  background-color: var(--color-teal);
+  color: var(--color-white);
   border: 0px;
 }
 
 .marker-cluster {
-  background-color: #345e80;
-  color: white;
-  border: 0px;
+  background-color: var(--color-white);
+  color: var(--color-teal);
+  border: 1px solid var(--color-teal);
   border-radius: 50%;
   text-align: center;
   padding-top: 6px;
 }
 
 .leaflet-tooltip-top:before {
-  border-top-color: #345e80 !important;
+  border-top-color: var(--color-teal) !important;
 }
 
 .leaflet-top {

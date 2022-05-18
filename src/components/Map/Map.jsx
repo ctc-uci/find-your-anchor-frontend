@@ -148,13 +148,13 @@ const Map = ({
 
   // This is a cluster icon. It sums up the box_count of all boxes of a single country.
   const clusterIcon = cluster => {
-    let clusterCount = 0;
-    cluster.getAllChildMarkers().forEach(marker => {
-      clusterCount += parseInt(marker.options.children.props.children, 10);
-    });
+    // let clusterCount = 0;
+    // cluster.getAllChildMarkers().forEach(marker => {
+    //   clusterCount += parseInt(marker.options.children.props.children, 10);
+    // });
 
     return Leaflet.divIcon({
-      html: `<span>${clusterCount}</span>`,
+      html: `<span>${cluster.getChildCount()}</span>`,
       className: 'marker-cluster',
       iconSize: Leaflet.point(30, 30),
     });
@@ -185,7 +185,6 @@ const Map = ({
       />
       <MarkerClusterGroup
         iconCreateFunction={clusterIcon}
-        key={1}
         onClick={() => {
           handleMarkerClusterClicked();
         }}
