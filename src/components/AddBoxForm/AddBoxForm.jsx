@@ -328,17 +328,15 @@ const AddBoxForm = () => {
           </div>
         </div>
         <br />
-        <div className={styles['submit-button']}>
-          <Button
-            type="submit"
-            size="md"
-            colorScheme="button"
-            isLoading={loading}
-            loadingText="Submitting"
-          >
-            Submit
-          </Button>
-        </div>
+        <Button
+          type="submit"
+          className={styles['submit-button']}
+          colorScheme="button"
+          isLoading={loading}
+          loadingText="Submitting"
+        >
+          Submit
+        </Button>
       </div>
     </form>
   );

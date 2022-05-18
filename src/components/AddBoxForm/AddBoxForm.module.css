@@ -155,7 +155,9 @@
   }
 
   .submit-button {
-    margin-left: 60%;
+    margin-top: 0%;
+    margin-bottom: 8%;
+    width: 100% !important;
   }
 
   .dropzone {
