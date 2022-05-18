@@ -14,7 +14,11 @@ import Footer from '../../components/Footer/Footer';
 const Dashboard = () => {
   const navigate = useNavigate();
   const { isOpen: boxApprovalIsOpen, onToggle: onBoxApprovalToggle } = useDisclosure();
-  const { isOpen: markerInfoIsOpen, onToggle: onMarkerInfoToggle } = useDisclosure();
+  const {
+    isOpen: markerInfoIsOpen,
+    onClose: closeMarkerInfo,
+    onToggle: onMarkerInfoToggle,
+  } = useDisclosure();
 
   // This state contains the currently selected zip code (set when a user clicks on a map pin)
   const [selectedZipCode, setSelectedZipCode] = useState(null);
@@ -91,6 +95,7 @@ const Dashboard = () => {
               boxApprovalIsOpen={boxApprovalIsOpen}
               onBoxApprovalToggle={onBoxApprovalToggle}
               onMarkerInfoToggle={onMarkerInfoToggle}
+              closeMarkerInfo={closeMarkerInfo}
               markerInfoIsOpen={markerInfoIsOpen}
               setBoxListPageIndex={setBoxListPageIndex}
             />

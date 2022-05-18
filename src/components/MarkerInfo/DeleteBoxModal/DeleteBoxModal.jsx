@@ -76,6 +76,9 @@ const DeleteBoxModal = ({
       }
       // Set the delete box to null
       setSelectedBox(null);
+      // Refetch markers
+      const zipCodes = await FYABackend.get('/anchorBox/locations');
+      setZipCodeData(zipCodes.data);
       showToast({
         title: `Box #${selectedBox} Deleted`,
         message: 'Box Successfully Deleted',

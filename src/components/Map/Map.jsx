@@ -30,6 +30,7 @@ const Map = ({
   setZipCodeData,
   boxApprovalIsOpen,
   onBoxApprovalToggle,
+  closeMarkerInfo,
   onMarkerInfoToggle,
   markerInfoIsOpen,
   setBoxListPageIndex,
@@ -61,6 +62,7 @@ const Map = ({
 
   // This function makes it so that when a marker cluser is clicked, the right side bar closes.
   const handleMarkerClusterClicked = () => {
+    closeMarkerInfo();
     setSelectedCountry(null);
     setSelectedZipCode(null);
     setSelectedBox(null);
@@ -239,6 +241,7 @@ Map.propTypes = {
   onBoxApprovalToggle: PropTypes.func.isRequired,
   onMarkerInfoToggle: PropTypes.bool.isRequired,
   markerInfoIsOpen: PropTypes.func.isRequired,
+  closeMarkerInfo: PropTypes.func.isRequired,
   setBoxListPageIndex: PropTypes.func.isRequired,
 };
 

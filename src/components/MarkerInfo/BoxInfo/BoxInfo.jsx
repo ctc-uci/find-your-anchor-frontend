@@ -195,7 +195,7 @@ const BoxInfo = ({
                       <MarkerHistoryElement
                         key={1}
                         id={pos}
-                        boxLocation={box.general_location}
+                        boxLocation={box.zip_code}
                         date={box.date}
                         pickup={box.pickup}
                       />

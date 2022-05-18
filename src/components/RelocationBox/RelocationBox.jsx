@@ -195,6 +195,7 @@ const RelocationBox = ({
       ) {
         // Just in case the country value is null so it doesnt break, we can remove it once we clear the DB and have correct data
         let coordinates = await getLatLong(zipCode, formData.country.value);
+
         if (coordinates.length !== 2) {
           coordinates = [null, null];
         }

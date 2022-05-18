@@ -18,9 +18,9 @@ FYABackend.interceptors.response.use(
     console.error(`[Axios] FYABackend error: ${JSON.stringify(error.toJSON(), null, 2)}`);
 
     // Redirect to internal server error page for 500 errors.
-    if (error.toJSON().status === 500) {
-      window.location.href = '/500';
-    }
+    // if (error.toJSON().status === 500) {
+    //   window.location.href = '/500';
+    // }
     return Promise.reject(error.response);
   },
 );
@@ -50,11 +50,14 @@ export const sendEmail = async (name, email, messageHtml, subject) => {
 };
 
 export const getLatLong = async (zipCode, country) => {
-  const response = await axios.get(
-    `https://nominatim.openstreetmap.org/search?postalcode=${zipCode}&country=${country}&format=json`,
-  );
-  if (response.status === 200 && response.data.length > 0) {
-    const { lat: latitude, lon: longitude } = response.data[0];
+  const response = await FYABackend.get('/boxHistory/latLong', {
+    params: {
+      zipCode,
+      country,
+    },
+  });
+  if (response.status === 200) {
+    const [latitude, longitude] = response.data;
     return [latitude, longitude];
   }
   return [];
