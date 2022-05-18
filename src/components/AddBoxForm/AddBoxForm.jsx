@@ -24,6 +24,7 @@ import {
   validateZip,
   validateBoxNumber,
   uploadBoxPhoto,
+  validateDate,
 } from '../../common/FormUtils/boxFormUtils';
 import { FYABackend, formatDate, getLatLong } from '../../common/utils';
 
@@ -35,6 +36,7 @@ import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
+yup.addMethod(yup.date, 'dateNotInFuture', validateDate);
 const schema = yup
   .object({
     boxNumber: yup
@@ -45,6 +47,7 @@ const schema = yup
       .typeError('Invalid box number'),
     date: yup
       .date()
+      .dateNotInFuture()
       .required('Invalid date, please enter a valid date')
       .typeError('Invalid date, please enter a valid date'),
     zipcode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),

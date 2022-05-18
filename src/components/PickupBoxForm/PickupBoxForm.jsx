@@ -11,6 +11,7 @@ import {
   uploadBoxPhoto,
   validateZip,
   validateBoxIdInAnchorBox,
+  validateDate,
 } from '../../common/FormUtils/boxFormUtils';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import { formatDate, FYABackend, getLatLong } from '../../common/utils';
@@ -22,11 +23,12 @@ import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 yup.addMethod(yup.number, 'boxExists', validateBoxIdInAnchorBox);
+yup.addMethod(yup.date, 'dateNotInFuture', validateDate);
 const schema = yup
   .object({
     boxholderName: yup.string().typeError('Invalid name'),
     boxID: yup.number().boxExists().required('Invalid box number').typeError('Invalid box number'),
-    date: yup.date().required('Invalid date').typeError('Invalid date'),
+    date: yup.date().dateNotInFuture().required('Invalid date').typeError('Invalid date'),
     boxholderEmail: yup
       .string()
       .required('Invalid email address')
