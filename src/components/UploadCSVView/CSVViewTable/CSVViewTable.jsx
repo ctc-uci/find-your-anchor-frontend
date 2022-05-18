@@ -379,7 +379,6 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
         pageCount={pageCount}
         pageSize={pageSize}
         pageControl={{
-          setPageSize,
           gotoPage,
           nextPage,
           previousPage,

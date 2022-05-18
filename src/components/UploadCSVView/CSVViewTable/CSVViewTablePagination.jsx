@@ -90,7 +90,6 @@ CSVViewTablePagination.propTypes = {
   pageIndex: PropTypes.number.isRequired,
   pageCount: PropTypes.number.isRequired,
   pageControl: PropTypes.exact({
-    setPageSize: PropTypes.func,
     gotoPage: PropTypes.func,
     nextPage: PropTypes.func,
     previousPage: PropTypes.func,
