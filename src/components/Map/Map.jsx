@@ -171,7 +171,7 @@ const Map = ({
       zoom={8}
       scrollWheelZoom
       zoomControl={false}
-      minZoom={2.4}
+      minZoom={2.8}
       maxBounds={[
         [-90, -180],
         [90, 180],
