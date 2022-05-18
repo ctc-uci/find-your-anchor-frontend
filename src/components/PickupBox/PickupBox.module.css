@@ -2,29 +2,33 @@
   padding: 0px 15px 0px 15px;
   margin-top: 15px;
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--color-white);
 }
 
 .rejected-icon {
-  color: red;
+  color: var(--color-warning);
   font-size: 30px;
 }
 
 .approved-icon {
-  color: green;
+  color: var(--color-success);
   font-size: 30px;
 }
 
 .status-message-approved {
-  color: #38a169;
+  align-self: center;
+  color: var(--color-approved);
+  width: 90%;
 }
 
 .status-message-pending {
-  color: #3182ce;
+  color: var(--color-pending-changes);
+  width: 90%;
 }
 
 .status-message-rejected {
-  color: #e53e3e;
+  width: 90%;
+  color: var(--color-warning);
 }
 
 .image-wrapper {
@@ -32,7 +36,7 @@
   height: 100%;
   margin: auto;
   border-radius: 10px;
-  border: 1px dashed black;
+  border: 1px dashed var(--color-black);
   opacity: 0.4;
 }
 
@@ -45,26 +49,26 @@
 }
 
 .accordion-panel {
-  background-color: white;
+  background-color: var(--color-white);
   border-radius: 10px;
 }
 
 .box-approved {
-  background-color: #c6f6d5;
+  background-color: var(--color-approved);
   padding: 0px 15px 15px 15px;
   margin-top: 15px;
   border-radius: 10px;
 }
 
 .box-rejected {
-  background-color: #fed7d7;
+  background-color: var(--color-light-warning);
   padding: 0px 15px 15px 15px;
   margin-top: 15px;
   border-radius: 10px;
 }
 
 .box-pending {
-  background-color: #bee3f8;
+  background-color: var(--color-light-pending-changes);
   padding: 0px 15px 15px 15px;
   margin-top: 15px;
   border-radius: 10px;
@@ -148,6 +152,8 @@
 .image-functionality-wrapper {
   display: flex;
   width: 100%;
+  align-items: center;
+  margin-top: 2%;
 }
 
 .image-functionality {
@@ -159,31 +165,32 @@
 .approval-button,
 .rejection-button {
   float: left;
-  margin: 2% 2% 0% 0%;
+  margin: 0% 2% 0% 0%;
 }
 
 .image-approved {
-  border: 1px solid green;
+  border: 1px solid var(--color-success);
 }
 
 .image-rejected {
-  border: 1px solid red;
+  border: 1px solid var(--color-warning);
 }
 
 .status-message {
   float: left;
   padding: 1%;
   width: 100%;
-  text-align: left;
   margin-left: 1%;
 }
 
 .approval-message {
-  color: green;
+  text-align: left;
+  color: var(--color-success);
 }
 
 .rejection-message {
-  color: red;
+  text-align: left;
+  color: var(--color-warning);
 }
 
 .image-approved-button {

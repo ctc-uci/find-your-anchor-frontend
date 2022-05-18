@@ -11,6 +11,9 @@ const ChakraTheme = extendTheme({
     cancel: {
       500: 'var(--color-light-gray)',
     },
+    'request-changes': {
+      500: 'var(--color-request-changes)',
+    },
   },
   textStyles: {
     'header-1': {

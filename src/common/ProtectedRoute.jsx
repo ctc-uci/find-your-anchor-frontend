@@ -4,6 +4,7 @@ import { PropTypes, instanceOf } from 'prop-types';
 import { withCookies, Cookies, clearCookies } from './cookie_utils';
 import { refreshToken } from './auth_utils';
 import { FYABackend } from './utils';
+import LoadingPage from './LoadingPage/LoadingPage';
 
 const userIsAuthenticated = async cookies => {
   try {
@@ -36,7 +37,7 @@ const ProtectedRoute = ({ Component, redirectPath, cookies }) => {
     setIsLoading(false);
   }, []);
   if (isLoading) {
-    return <h1>LOADING...</h1>;
+    return <LoadingPage />;
   }
   if (isAuthenticated) {
     return <Component />;

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ChakraProvider } from '@chakra-ui/react';
 import PickupBoxForm from '../../components/PickupBoxForm/PickupBoxForm';
 import styles from './PickupBoxFormPage.module.css';
 import BoxFormConfirmation from '../../components/BoxFormConfirmation/BoxFormConfirmation';
@@ -8,7 +7,7 @@ const PickupBoxFormPage = () => {
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <ChakraProvider>
+    <>
       {submitted ? (
         <BoxFormConfirmation pickup />
       ) : (
@@ -17,7 +16,7 @@ const PickupBoxFormPage = () => {
           <PickupBoxForm setFormSubmitted={setSubmitted} />
         </div>
       )}
-    </ChakraProvider>
+    </>
   );
 };
 

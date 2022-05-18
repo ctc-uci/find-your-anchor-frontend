@@ -1,7 +1,6 @@
 /* eslint-disable prefer-object-spread */
 import React, { useState, useEffect, Fragment, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import countryList from 'react-select-country-list';
 import PropTypes from 'prop-types';
 import {
   Button,
@@ -20,18 +19,16 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { useTable, usePagination } from 'react-table';
-import zipcodeDataDump from '../../../common/zipcodeDataDump.json';
 
 import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../EditableRow/EditableRow';
 import { FYABackend, formatDate } from '../../../common/utils';
-import BoxSchema from '../../UploadCSV/UploadCSVUtils';
 import CSVViewTablePagination from './CSVViewTablePagination';
 import { useCustomToast } from '../../ToastProvider/ToastProvider';
 import useMobileWidth from '../../../common/useMobileWidth';
 
-const CSVViewTable = ({ rows, boxNumberMap }) => {
+const CSVViewTable = ({ rows, boxNumberMap, CSVFilename }) => {
   const isMobile = useMobileWidth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -150,23 +147,22 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
     }
   };
 
-  const updateBoxNumberMap = (oldBoxNum, lineNum, newBoxNum) => {
+  const updateBoxNumberMap = (oldBoxNum, newBoxNum) => {
     // if either oldBoxNum or newBoxNum is empty
     if (oldBoxNum === 0 || newBoxNum === 0) {
       return;
     }
 
-    boxNumbers.get(oldBoxNum).delete(lineNum);
+    boxNumbers[oldBoxNum] -= 1;
 
-    if (boxNumbers.get(oldBoxNum).size === 0) {
-      boxNumbers.delete(oldBoxNum);
+    if (boxNumbers[oldBoxNum] === 0) {
+      delete boxNumbers[oldBoxNum];
     }
 
-    if (!boxNumbers.has(newBoxNum)) {
-      boxNumbers.set(newBoxNum, new Set());
+    if (!(newBoxNum in boxNumbers)) {
+      boxNumbers[newBoxNum] = 0;
     }
-
-    boxNumbers.get(newBoxNum).add(lineNum);
+    boxNumbers[newBoxNum] += 1;
   };
 
   const handleEditFormSubmit = editRowData => {
@@ -195,49 +191,29 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
     setDeleted(!deleted);
   };
 
-  const checkErrors = async CSVRow => {
-    try {
-      // the context allows us to pass extra arguments to yup validation
-      // passing boxNumbers so yup validation can use this to check if there's a duplicate box number
-      await BoxSchema.validate(CSVRow, { context: boxNumbers });
-      return {
-        ...CSVRow,
-        error: false,
-      };
-    } catch (err) {
-      return {
-        ...CSVRow,
-        error: true,
-      };
-    }
-  };
-
   const addToMap = async e => {
     e.preventDefault();
     setIsLoading(true);
 
-    // check all rows again for any errors
-    const processedRows = await Promise.all(formDatas.map(async formData => checkErrors(formData)));
     // find the first row that has an error
-    const firstErrorRowIndex = processedRows.findIndex(row => row.error);
+    const firstErrorRowIndex = formDatas.findIndex(row => row.error);
 
     // if an error is found in any of the rows, change the first row to EditableRow
     if (firstErrorRowIndex !== -1) {
       setIsLoading(false);
-      editRow(e, processedRows[firstErrorRowIndex], firstErrorRowIndex, false);
+      editRow(e, formDatas[firstErrorRowIndex], firstErrorRowIndex, false);
     } else {
       try {
-        // if no errors with any of the rows, set lat/long for each row
-        formDatas.forEach((formData, index) => {
-          const countryCode = countryList().getValue(formData.country);
-          formDatas[index].country = countryCode;
-          formDatas[index].latitude = zipcodeDataDump[countryCode][formData.zipCode].lat;
-          formDatas[index].longitude = zipcodeDataDump[countryCode][formData.zipCode].long;
-        });
-
+        // if no errors with any of the rows, upload all boxes
         await FYABackend.post('/anchorBox/boxes', formDatas);
         setIsLoading(false);
         navigate('/');
+        showToast({
+          title: `${CSVFilename} added to Map`,
+          message: `Successfully added ${formDatas.length} Boxes To Map`,
+          toastPosition: 'bottom-left',
+          type: 'success',
+        });
       } catch (err) {
         showToast({
           title: `Failed to add boxes to Map`,
@@ -291,7 +267,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
               </Tr>
             </Thead>
             <Tbody>
-              {page.map((rowData, index) => {
+              {page.map(rowData => {
                 prepareRow(rowData);
                 return (
                   <Fragment key={rowData.original.id}>
@@ -302,7 +278,6 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
                         isError={rowData.values.error}
                         boxNumberMap={boxNumbers}
                         updateBoxNumberMap={updateBoxNumberMap}
-                        lineNumber={pageIndex * 10 + index + 1}
                         handleDeleteRow={handleDeleteRow}
                       />
                     ) : (
@@ -403,6 +378,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
 CSVViewTable.propTypes = {
   rows: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])).isRequired,
   boxNumberMap: PropTypes.instanceOf(Map).isRequired,
+  CSVFilename: PropTypes.string.isRequired,
 };
 
 export default CSVViewTable;
