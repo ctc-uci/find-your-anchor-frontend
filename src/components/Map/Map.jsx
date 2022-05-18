@@ -59,11 +59,13 @@ const Map = ({
   };
 
   // This function makes it so that when a marker cluster is clicked, the right side bar closes.
-  const handleMarkerClusterClicked = () => {
+  const handleMarkerClusterClicked = cluster => {
+    // console.log(cluster.sourceTarget.getAllChildMarkers());
     closeMarkerInfo();
     setSelectedCountry(null);
     setSelectedZipCode(null);
     setSelectedBox(null);
+    console.log(cluster);
   };
 
   // Sets zipcodeData to be an object
@@ -148,13 +150,12 @@ const Map = ({
 
   // This is a cluster icon. It sums up the box_count of all boxes of a single country.
   const clusterIcon = cluster => {
-    // let clusterCount = 0;
-    // cluster.getAllChildMarkers().forEach(marker => {
-    //   clusterCount += parseInt(marker.options.children.props.children, 10);
-    // });
-
+    let clusterCount = 0;
+    cluster.getAllChildMarkers().forEach(marker => {
+      clusterCount += parseInt(marker.options.children.props.children, 10);
+    });
     return Leaflet.divIcon({
-      html: `<span>${cluster.getChildCount()}</span>`,
+      html: `<span>${clusterCount}</span>`,
       className: 'marker-cluster',
       iconSize: Leaflet.point(30, 30),
     });
@@ -185,8 +186,8 @@ const Map = ({
       />
       <MarkerClusterGroup
         iconCreateFunction={clusterIcon}
-        onClick={() => {
-          handleMarkerClusterClicked();
+        onClick={cluster => {
+          handleMarkerClusterClicked(cluster);
         }}
       >
         {/* Map the marker data into <Marker /> components. These markers are grouped into MarkerClusterGroups by country */}
