@@ -15,7 +15,7 @@ const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl 
           <Tooltip label="First Page">
             <IconButton
               background="transparent"
-              color="black"
+              color="var(--color-black)"
               icon={<ArrowLeftIcon h={6} w={6} />}
               isDisabled={!canPreviousPage}
               variant="noHover"
@@ -28,7 +28,7 @@ const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl 
           <Tooltip label="Previous Page">
             <IconButton
               background="transparent"
-              color="black"
+              color="var(--color-black)"
               icon={<ChevronLeftIcon h={9} w={9} />}
               isDisabled={!canPreviousPage}
               variant="noHover"
@@ -39,7 +39,7 @@ const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl 
             <Text as="span" textStyle="body">
               Page
             </Text>
-            <Text as="span" color="black" textStyle="body">
+            <Text as="span" color="var(--color-black)" textStyle="body">
               {' '}
               {pageIndex + 1} of {pageLength}
             </Text>
@@ -61,7 +61,7 @@ const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl 
           <Tooltip label="Next Page">
             <IconButton
               background="transparent"
-              color="black"
+              color="var(--color-black)"
               icon={<ChevronRightIcon h={9} w={9} />}
               isDisabled={!canNextPage}
               variant="noHover"
@@ -74,7 +74,7 @@ const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl 
           <Tooltip label="Last Page">
             <IconButton
               background="transparent"
-              color="black"
+              color="var(--color-black)"
               icon={<ArrowRightIcon h={6} w={6} />}
               isDisabled={!canNextPage}
               variant="noHover"

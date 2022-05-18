@@ -7,11 +7,6 @@
   margin-top: 100px;
 }
 
-.error-modal-text {
-  font-weight: 700;
-  font-size: 1.5rem;
-}
-
 .error-modal-buttons {
   display: flex;
   gap: 30px;
@@ -28,9 +23,9 @@
 }
 
 .error-modal-file-name {
-  color: rgb(0, 183, 255);
+  color: var(--color-hyperlink);
 }
 
 .error-modal-red-text {
-  color: red;
+  color: var(--color-warning);
 }

@@ -80,7 +80,7 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow, isError }) => {
             }}
           />
           {errors?.date && (
-            <Tooltip hasArrow label={errors.date?.message} bg="red.600">
+            <Tooltip hasArrow label={errors.date?.message} bg="var(--color-warning)">
               <InputRightElement className={styles['input-right-warning']}>
                 <WarningIcon />
               </InputRightElement>
@@ -98,7 +98,7 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow, isError }) => {
         <InputGroup>
           <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
           {errors?.boxNumber && (
-            <Tooltip hasArrow label={errors.boxNumber?.message} bg="red.600">
+            <Tooltip hasArrow label={errors.boxNumber?.message} bg="var(--color-warning)">
               <InputRightElement className={styles['input-right-warning']}>
                 <WarningIcon />
               </InputRightElement>
@@ -117,7 +117,7 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow, isError }) => {
         <InputGroup>
           <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
           {errors?.zipCode && (
-            <Tooltip hasArrow label={errors.zipCode?.message} bg="red.600">
+            <Tooltip hasArrow label={errors.zipCode?.message} bg="var(--color-warning)">
               <InputRightElement className={styles['input-right-warning']}>
                 <WarningIcon />
               </InputRightElement>
@@ -136,7 +136,7 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow, isError }) => {
         <InputGroup>
           <Input id="country" placeholder="e.g. 90210" name="country" {...register('country')} />
           {errors['']?.message && (
-            <Tooltip hasArrow label={errors['']?.message} bg="red.600">
+            <Tooltip hasArrow label={errors['']?.message} bg="var(--color-warning)">
               <InputRightElement className={styles['input-right-warning']}>
                 <WarningIcon />
               </InputRightElement>
@@ -201,7 +201,7 @@ const ReadOnlyRow = ({ data, editRow, handleDeleteRow, isError }) => {
           <EditIcon w={6} h={6} alt="Edit Icon" />
         </button>
         <button type="button" onClick={onOpenDeleteModal}>
-          <DeleteIcon color="#E53E3E" w={6} h={6} alt="Delete Icon" />
+          <DeleteIcon color="var(--color-warning)" w={6} h={6} alt="Delete Icon" />
         </button>
       </Flex>
     </Flex>
