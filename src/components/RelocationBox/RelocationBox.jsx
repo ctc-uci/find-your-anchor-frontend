@@ -83,6 +83,7 @@ const RelocationBox = ({
   imageStatus,
   admin,
   verificationPicture,
+  reloadMap,
 }) => {
   const { showToast } = useCustomToast();
   const countryOptions = useMemo(() => countryList().getData(), []);
@@ -213,6 +214,7 @@ const RelocationBox = ({
         fetchBoxes('under review', false),
         fetchBoxes('pending changes', false),
         fetchBoxes('evaluated', false),
+        reloadMap(),
         sendEmail(
           formData.name,
           formData.email,
@@ -702,6 +704,7 @@ RelocationBox.propTypes = {
   imageStatus: PropTypes.string.isRequired,
   admin: PropTypes.string.isRequired,
   verificationPicture: PropTypes.string.isRequired,
+  reloadMap: PropTypes.func.isRequired,
 };
 
 export default RelocationBox;

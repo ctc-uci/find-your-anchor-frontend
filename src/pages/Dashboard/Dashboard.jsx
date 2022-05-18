@@ -76,7 +76,7 @@ const Dashboard = () => {
               icon={<CloseIcon />}
               onClick={onBoxApprovalToggle}
             />
-            <BoxApproval />
+            <BoxApproval setZipCodeData={setZipCodeData} />
           </Slide>
           <div
             className={`${styles.map} ${

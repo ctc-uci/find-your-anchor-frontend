@@ -76,9 +76,6 @@ const DeleteBoxModal = ({
       }
       // Set the delete box to null
       setSelectedBox(null);
-      // Refetch markers
-      const zipCodes = await FYABackend.get('/anchorBox/locations');
-      setZipCodeData(zipCodes.data);
       showToast({
         title: `Box #${selectedBox} Deleted`,
         message: 'Box Successfully Deleted',
@@ -123,6 +120,8 @@ const DeleteBoxModal = ({
             longitude,
             isMostRecentDate: true,
           });
+          setSelectedZipCode(nextMostRecentTransaction.data[0].zip_code);
+          setSelectedCountry(nextMostRecentTransaction.data[0].country);
           // Update boxInfo to get rid of last transaction
           setTransactionToggle(!transactionToggle);
           // Having no 2nd most recent transaction is equivalent to deleting the box

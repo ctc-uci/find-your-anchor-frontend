@@ -185,8 +185,6 @@ const Map = ({
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         noWrap
       />
-      <ZoomControl position="bottomright" />
-      {/* Map the marker data into <Marker /> components. These markers are grouped into MarkerClusterGroups by country */}
       <MarkerClusterGroup
         iconCreateFunction={clusterIcon}
         key={1}
@@ -194,29 +192,33 @@ const Map = ({
           handleMarkerClusterClicked();
         }}
       >
+        {/* Map the marker data into <Marker /> components. These markers are grouped into MarkerClusterGroups by country */}
         {zipCodeData &&
-          zipCodeData.map(markerObject => (
-            /* eslint-disable react/no-array-index-key */
-            // >
-            <Marker
-              icon={markerIcon}
-              key={markerObject.box_id}
-              position={[markerObject.latitude, markerObject.longitude]}
-              eventHandlers={{
-                // Marker click effect
-                click: () => {
-                  handleMarkerClicked(markerObject);
-                },
-              }}
-            >
-              <Tooltip interactive className="tooltip" direction="top" permanent>
-                {markerObject.box_count}
-              </Tooltip>
-            </Marker>
-          ))}
+          zipCodeData.map(
+            (
+              markerObject /* eslint-disable react/no-array-index-key */, // >
+            ) => (
+              <Marker
+                icon={markerIcon}
+                key={markerObject.box_id}
+                position={[markerObject.latitude, markerObject.longitude]}
+                eventHandlers={{
+                  // Marker click effect
+                  click: () => {
+                    handleMarkerClicked(markerObject);
+                  },
+                }}
+              >
+                <Tooltip interactive className="tooltip" direction="top" permanent>
+                  {markerObject.box_count}
+                </Tooltip>
+              </Marker>
+            ),
+          )}
       </MarkerClusterGroup>
       <LocationSearchField />
       <BoxSearchField />
+      <ZoomControl position="bottomright" />
     </MapContainer>
   );
 };

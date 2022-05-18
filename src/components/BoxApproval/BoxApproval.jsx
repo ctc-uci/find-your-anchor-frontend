@@ -1,4 +1,5 @@
 import { React, useEffect, useState } from 'react';
+import { PropTypes } from 'prop-types';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import { BsFillArrowRightCircleFill } from 'react-icons/bs';
 import PickupBox from '../PickupBox/PickupBox';
@@ -9,7 +10,7 @@ import RelocateBoxIcon from '../../assets/BoxIcons/RelocateBoxIcon.svg';
 import PaginationController from '../../common/CommonPaginationController/PaginationController';
 import PickupBoxIcon from '../../assets/BoxIcons/PickupBoxIcon.svg';
 
-const BoxApproval = () => {
+const BoxApproval = ({ setZipCodeData }) => {
   const [boxesUnderReview, setBoxesUnderReview] = useState([]);
   // Page number for under review tab
   const [underReviewPageIndex, setUnderReviewPageIndex] = useState(1);
@@ -25,6 +26,11 @@ const BoxApproval = () => {
 
   // Page size to be used with pagination
   const PAGE_SIZE = 8;
+
+  const reloadMap = async () => {
+    const zipCodes = await FYABackend.get('/anchorBox/locations');
+    setZipCodeData(zipCodes.data);
+  };
 
   // Gets pagesize number of relocation/pickup boxes for a certain status
   const fetchBoxes = async status => {
@@ -81,6 +87,7 @@ const BoxApproval = () => {
         imageStatus={boxData.image_status}
         admin={boxData.admin}
         verificationPicture={boxData.verification_picture}
+        reloadMap={reloadMap}
       />
     ) : (
       <RelocationBox
@@ -106,6 +113,7 @@ const BoxApproval = () => {
         imageStatus={boxData.image_status}
         admin={boxData.admin}
         verificationPicture={boxData.verification_picture}
+        reloadMap={reloadMap}
       />
     );
 
@@ -191,6 +199,10 @@ const BoxApproval = () => {
       </div>
     </>
   );
+};
+
+BoxApproval.propTypes = {
+  setZipCodeData: PropTypes.func.isRequired,
 };
 
 export default BoxApproval;
