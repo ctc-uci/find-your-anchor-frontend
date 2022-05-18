@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ResetPasswordPage from '../../pages/ResetPasswordPage/ResetPasswordPage';
 import { FYABackend } from '../../common/utils';
 import RegisterPage from '../../pages/Register/RegisterPage';
+import LoadingPage from '../../common/LoadingPage/LoadingPage';
 
 const AuthEmail = ({ redirectPath }) => {
   const [invitedUser, setInvitedUser] = useState();
@@ -24,7 +25,7 @@ const AuthEmail = ({ redirectPath }) => {
   }, []);
 
   if (isLoading) {
-    return <h1>LOADING...</h1>;
+    return <LoadingPage />;
   }
   if (mode === 'inviteUser') {
     if (inviteID === null) {

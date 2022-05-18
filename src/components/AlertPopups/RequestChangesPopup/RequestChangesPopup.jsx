@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ChakraProvider,
   Button,
   AlertDialog,
   AlertDialogBody,
@@ -73,7 +72,7 @@ const RequestChangesPopup = ({
   };
 
   return (
-    <ChakraProvider>
+    <>
       <div className={styles['request-changes-popup']}>
         <AlertDialog
           isOpen={isOpen}
@@ -101,7 +100,7 @@ const RequestChangesPopup = ({
                   Cancel
                 </Button>
                 <Button
-                  colorScheme="orange"
+                  colorScheme="request-changes"
                   onClick={async () => handleRequestChangesClicked()}
                   ml={3}
                 >
@@ -112,7 +111,7 @@ const RequestChangesPopup = ({
           </AlertDialogOverlay>
         </AlertDialog>
       </div>
-    </ChakraProvider>
+    </>
   );
 };
 

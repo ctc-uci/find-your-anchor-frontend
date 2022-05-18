@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ChakraProvider } from '@chakra-ui/react';
 import RelocateBoxForm from '../../components/RelocateBoxForm/RelocateBoxForm';
 import styles from './RelocateBoxFormPage.module.css';
 
@@ -9,7 +8,7 @@ const RelocateBoxFormPage = () => {
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <ChakraProvider>
+    <>
       {submitted ? (
         <BoxFormConfirmation pickup={false} />
       ) : (
@@ -18,7 +17,7 @@ const RelocateBoxFormPage = () => {
           <RelocateBoxForm setFormSubmitted={setSubmitted} />
         </>
       )}
-    </ChakraProvider>
+    </>
   );
 };
 

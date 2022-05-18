@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react';
-import { ChakraProvider, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import { BsFillArrowRightCircleFill } from 'react-icons/bs';
 import PickupBox from '../PickupBox/PickupBox';
 import RelocationBox from '../RelocationBox/RelocationBox';
@@ -125,7 +125,7 @@ const BoxApproval = () => {
   };
 
   return (
-    <ChakraProvider>
+    <>
       <div className={styles['box-approval']}>
         <Tabs align="center" variant="line" className={styles['tab-wrapper']} isLazy>
           <TabList>
@@ -189,7 +189,7 @@ const BoxApproval = () => {
           </div>
         </Tabs>
       </div>
-    </ChakraProvider>
+    </>
   );
 };
 

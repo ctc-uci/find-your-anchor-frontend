@@ -1,7 +1,7 @@
 .box-approval {
   width: 100%;
   padding: 1%;
-  background-color: #eef6f8;
+  background-color: var(--color-light-blue);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -27,7 +27,7 @@
   flex-direction: column;
 }
 .legend {
-  background-color: #eef6f8;
+  background-color: var(--color-light-blue);
   width: 100%;
   padding: 1%;
   display: flex;
@@ -72,7 +72,7 @@
   width: 25px;
   float: left;
   margin-right: 4%;
-  color: #dd6b20;
+  color: var(--color-request-changes);
 }
 
 .relocate-box-icon {
@@ -98,13 +98,13 @@
   .box-approval {
     padding: 1%;
     height: 100vh;
-    background-color: #eef6f8;
+    background-color: var(--color-light-blue);
     position: relative;
   }
 
   .legend {
     display: flex;
-    background-color: #eef6f8;
+    background-color: var(--color-light-blue);
     width: 100%;
     margin-left: 0;
     font-size: 12px;

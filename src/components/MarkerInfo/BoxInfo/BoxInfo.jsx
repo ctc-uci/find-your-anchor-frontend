@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  ChakraProvider,
   FormControl,
   FormLabel,
   Input,
@@ -77,7 +76,7 @@ const BoxInfo = ({
     }
   }, [selectedBox, transactionToggle]);
   return (
-    <ChakraProvider>
+    <>
       <div className={styles['box-info']} onLoad={updateXarrow}>
         <div className={styles.header}>
           <ChevronLeftIcon
@@ -109,14 +108,18 @@ const BoxInfo = ({
         <img src={picture} alt="" className={styles.image} />
         <div className={styles['box-data']}>
           <FormControl>
-            {adminIsLoggedIn && (
+            {/* Box name */}
+            {adminIsLoggedIn && boxHolderName && (
               <>
-                {/* Box name */}
                 <FormLabel htmlFor="name" className={styles['form-label']}>
                   Name
                 </FormLabel>
                 <Input isReadOnly id="name" type="name" value={boxHolderName} />
-                {/* Box email */}
+              </>
+            )}
+            {/* Box email */}
+            {adminIsLoggedIn && boxHolderEmail && (
+              <>
                 <FormLabel isReadOnly htmlFor="email" className={styles['form-label']}>
                   Email
                 </FormLabel>
@@ -124,20 +127,37 @@ const BoxInfo = ({
               </>
             )}
             {/* Box zip code */}
-            <FormLabel isReadOnly htmlFor="zipCode" className={styles['form-label']}>
-              Zip Code
-            </FormLabel>
-            <Input isReadOnly id="zipCode" type="zipCode" value={zipCode} />
+            {zipCode && (
+              <>
+                <FormLabel isReadOnly htmlFor="zipCode" className={styles['form-label']}>
+                  Zip Code
+                </FormLabel>
+                <Input isReadOnly id="zipCode" type="zipCode" value={zipCode} />
+              </>
+            )}
             {/* Box country */}
-            <FormLabel isReadOnly htmlFor="country" className={styles['form-label']}>
-              Country
-            </FormLabel>
-            <Input isReadOnly id="country" type="country" value={country} />
+            {country && (
+              <>
+                <FormLabel isReadOnly htmlFor="country" className={styles['form-label']}>
+                  Country
+                </FormLabel>
+                <Input isReadOnly id="country" type="country" value={country} />
+              </>
+            )}
             {/* Box general location */}
-            <FormLabel isReadOnly htmlFor="generalLocation" className={styles['form-label']}>
-              General Location
-            </FormLabel>
-            <Input isReadOnly id="generalLocation" type="generalLocation" value={generalLocation} />
+            {generalLocation && (
+              <>
+                <FormLabel isReadOnly htmlFor="generalLocation" className={styles['form-label']}>
+                  General Location
+                </FormLabel>
+                <Input
+                  isReadOnly
+                  id="generalLocation"
+                  type="generalLocation"
+                  value={generalLocation}
+                />
+              </>
+            )}
             {/* Box drop off method */}
             <FormLabel htmlFor="dropOffMethod" className={styles['form-label']}>
               Drop Off Method
@@ -185,7 +205,7 @@ const BoxInfo = ({
                           start={`box-history-element-${pos}`}
                           end={`box-history-element-${pos + 1}`}
                           showHead={false}
-                          color="#E2E8F0"
+                          color="var(--color-light-gray)"
                         />
                       )}
                     </>
@@ -203,7 +223,12 @@ const BoxInfo = ({
                   size="50px"
                 />
               ) : (
-                <Button colorScheme="red" size="md" onClick={onOpenDeleteBoxModal}>
+                <Button
+                  className={styles['desktop-delete-box-button']}
+                  colorScheme="warning"
+                  size="md"
+                  onClick={onOpenDeleteBoxModal}
+                >
                   Delete Box
                 </Button>
               )}
@@ -226,7 +251,7 @@ const BoxInfo = ({
           )}
         </div>
       </div>
-    </ChakraProvider>
+    </>
   );
 };
 

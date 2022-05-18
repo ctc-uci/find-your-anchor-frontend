@@ -10,11 +10,16 @@ const DeleteBoxModalContent = ({ deleteBox, deleteTransaction }) => (
       Do you want to delete the entire box or just the last transaction?
     </div>
     <div className={styles.buttons}>
-      {/* TODO: DELETE LAST TRANSACTION BUTTON FUNCTIONALITY */}
-      <Button type="button" fontWeight="semibold" onClick={deleteTransaction}>
+      <Button
+        type="button"
+        fontWeight="semibold"
+        colorScheme="cancel"
+        color="var(--color-black)"
+        onClick={deleteTransaction}
+      >
         Delete Last Transaction
       </Button>
-      <Button type="button" onClick={deleteBox} colorScheme="red" fontWeight="semibold">
+      <Button type="button" onClick={deleteBox} colorScheme="warning" fontWeight="semibold">
         Delete Entire Box
       </Button>
     </div>
