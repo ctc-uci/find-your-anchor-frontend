@@ -81,6 +81,9 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
 
   const data = useMemo(() => formDatas, [formDatas]);
 
+  console.log(columns);
+  console.log(data);
+
   const {
     prepareRow,
     page, // instead of using formDatas, we'll use page, which has only the rows for the active page
