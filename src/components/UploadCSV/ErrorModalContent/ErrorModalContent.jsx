@@ -25,8 +25,8 @@ const ErrorModalContent = ({
   if (!isMobile) {
     return (
       <div className={styles['error-modal-content']}>
-        <WarningIcon alt="Icon" boxSize="70px" color="red" marginBottom="20px" />
-        <Text className={styles['error-modal-text']}>Oops!</Text>
+        <WarningIcon alt="Icon" boxSize="70px" color="var(--color-warning)" marginBottom="20px" />
+        <Text textStyle="header-1">Oops!</Text>
         <p>
           {' '}
           There were <span className={styles['error-modal-red-text']}>
@@ -36,10 +36,15 @@ const ErrorModalContent = ({
         </p>
         <p className={styles['error-modal-file-name']}>{CSVFileName}</p>
         <ButtonGroup className={styles['error-modal-buttons']}>
-          <Button size="md" color="white" bg="#1F2F38" onClick={uploadNewFile}>
+          <Button
+            size="md"
+            color="var(--color-white)"
+            bg="var(--color-black)"
+            onClick={uploadNewFile}
+          >
             Upload New File
           </Button>
-          <Button size="md" color="white" bg="#345E80" onClick={viewFile}>
+          <Button size="md" color="var(--color-white)" bg="var(--color-teal)" onClick={viewFile}>
             View File
           </Button>
         </ButtonGroup>

@@ -246,7 +246,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
 
   return (
     <form onSubmit={addToMap} className={styles['csv-table-form']}>
-      <Stack direction="row" justify="right" marginTop="-40px" marginBottom="25px">
+      <Stack direction="row" justify="right" marginTop="-40px" marginBottom="25px" gap="30px">
         {!isMobile && (
           <select
             value={pageSize}
@@ -265,8 +265,7 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
         <Button
           isLoading={isLoading}
           type="submit"
-          color="white"
-          bg="#345E80"
+          colorScheme="button"
           borderRadius={isMobile ? 'xl' : 'md'}
         >
           Add to Map
@@ -325,13 +324,13 @@ const CSVViewTable = ({ rows, boxNumberMap }) => {
                   key={rowData.original.id}
                   borderWidth="1px"
                   borderRadius="8px"
-                  borderColor={rowData.values.error && 'red'}
+                  borderColor={rowData.values.error && 'var(--color-warning)'}
                 >
                   {({ isExpanded }) => (
                     <>
                       <h2>
                         <AccordionButton
-                          _expanded={{ bg: 'white' }}
+                          _expanded={{ bg: 'var(--color-white)' }}
                           onClick={() => {
                             setEditId(null);
                           }}
