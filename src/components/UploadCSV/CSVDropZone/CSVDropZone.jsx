@@ -38,7 +38,7 @@ function CSVDropZone({ setFile }) {
         onClick={removeUploadedPhoto}
       >
         {isMobile ? (
-          <CloseIcon w={10} h={10} color="gray.400" />
+          <CloseIcon w={5} h={5} color="gray.400" />
         ) : (
           <CloseIcon w={4} h={4} color="gray.400" />
         )}

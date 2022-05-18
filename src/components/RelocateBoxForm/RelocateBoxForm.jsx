@@ -320,7 +320,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <Button
               type="submit"
               size="md"
-              colorScheme="teal"
+              colorScheme="button"
               isLoading={loading}
               loadingText="Submitting"
               className={styles['submit-button']}

@@ -12,7 +12,7 @@ const PaginationController = ({ paginatedIndex, setPaginatedIndex, totalNumberOf
         className={styles['start-button']}
         type="button"
         onClick={() => {
-          setPaginatedIndex(0);
+          setPaginatedIndex(1);
         }}
       >
         <FaAngleDoubleLeft />
@@ -23,20 +23,20 @@ const PaginationController = ({ paginatedIndex, setPaginatedIndex, totalNumberOf
         className={styles['back-button']}
         type="button"
         onClick={() => {
-          setPaginatedIndex(old => Math.max(0, old - 1));
+          setPaginatedIndex(Math.max(1, paginatedIndex - 1));
         }}
       >
         <MdArrowBackIos />
       </button>
       <div>Page&nbsp;</div>
-      <div>{totalNumberOfPages === 0 ? 0 : paginatedIndex + 1}</div>
+      <div>{totalNumberOfPages === 0 ? 0 : paginatedIndex}</div>
       <div>&nbsp;of&nbsp;</div>
       <div>{totalNumberOfPages}</div>
       <button
         className={styles['forward-button']}
         type="button"
         onClick={() => {
-          setPaginatedIndex(old => Math.min(totalNumberOfPages - 1, old + 1));
+          setPaginatedIndex(old => Math.min(totalNumberOfPages, old + 1));
         }}
       >
         <MdArrowForwardIos />
@@ -47,7 +47,7 @@ const PaginationController = ({ paginatedIndex, setPaginatedIndex, totalNumberOf
         className={styles['end-button']}
         type="button"
         onClick={() => {
-          setPaginatedIndex(totalNumberOfPages - 1);
+          setPaginatedIndex(totalNumberOfPages);
         }}
       >
         <FaAngleDoubleRight />

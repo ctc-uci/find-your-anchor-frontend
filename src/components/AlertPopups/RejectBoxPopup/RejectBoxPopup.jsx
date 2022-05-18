@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ChakraProvider,
   Button,
   AlertDialog,
   AlertDialogBody,
@@ -73,7 +72,7 @@ const RejectBoxPopup = ({
   };
 
   return (
-    <ChakraProvider>
+    <>
       <div className={styles['reject-box-popup']}>
         <AlertDialog
           isOpen={isOpen}
@@ -100,7 +99,7 @@ const RejectBoxPopup = ({
                   Cancel
                 </Button>
                 <Button
-                  colorScheme="red"
+                  colorScheme="warning"
                   onClick={async () => {
                     handleRejectButtonClicked();
                   }}
@@ -113,7 +112,7 @@ const RejectBoxPopup = ({
           </AlertDialogOverlay>
         </AlertDialog>
       </div>
-    </ChakraProvider>
+    </>
   );
 };
 

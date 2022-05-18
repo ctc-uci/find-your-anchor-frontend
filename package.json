@@ -30,6 +30,7 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "firebase": "^9.6.7",
     "firebase-tools": "^10.2.2",
+    "form-data": "^4.0.0",
     "framer-motion": "^4",
     "is-valid-zipcode": "^1.0.3",
     "leaflet": "^1.7.1",
