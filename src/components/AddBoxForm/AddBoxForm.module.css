@@ -121,6 +121,10 @@
   margin-right: 80%;
 }
 
+.additional-comments-sub-label {
+  color: var(--text-gray-color);
+}
+
 @media screen and (max-width: 768px) {
   .add-box-form {
     flex-direction: column;

@@ -227,6 +227,7 @@ const AddBoxForm = () => {
         <br />
         <FormControl>
           <FormLabel htmlFor="comments">Additional Comments</FormLabel>
+          <p className={styles['additional-comments-sub-label']}>For internal use only</p>
           <Textarea
             id="message"
             placeholder="200 characters max"
@@ -270,6 +271,7 @@ const AddBoxForm = () => {
               <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
             </FormControl>
             <br />
+            <br />
           </>
         )}
         <FormControl isInvalid={errors?.launchedOrganically}>
@@ -307,6 +309,7 @@ const AddBoxForm = () => {
           <FormErrorMessage>{errors.launchedOrganically?.message}</FormErrorMessage>
         </FormControl>
         <br />
+        {!isMobile && <br />}
         <FormControl>
           <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
           <DropZone setFiles={setFiles} />
