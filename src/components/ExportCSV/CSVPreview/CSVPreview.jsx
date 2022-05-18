@@ -60,7 +60,6 @@ const CSVPreview = ({ formValues }) => {
             </Thead>
             <Tbody>
               {page.map(rowData => {
-                console.log('[CSVPreview] rowData: ', rowData);
                 prepareRow(rowData);
                 return <ExportCSVRow key={rowData.values.box_id} data={rowData.values} />;
               })}
