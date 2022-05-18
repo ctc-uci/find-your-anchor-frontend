@@ -13,11 +13,16 @@ import Footer from '../../components/Footer/Footer';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { isOpen: boxApprovalIsOpen, onToggle: onBoxApprovalToggle } = useDisclosure();
+  const {
+    isOpen: boxApprovalIsOpen,
+    onClose: closeBoxApproval,
+    onOpen: openBoxApproval,
+    onToggle: onBoxApprovalToggle,
+  } = useDisclosure();
   const {
     isOpen: markerInfoIsOpen,
     onClose: closeMarkerInfo,
-    onToggle: onMarkerInfoToggle,
+    onOpen: openMarkerInfo,
   } = useDisclosure();
 
   // This state contains the currently selected zip code (set when a user clicks on a map pin)
@@ -45,11 +50,10 @@ const Dashboard = () => {
   // This function opens the left sidebar closes the right sidebar when the review submission button is clicked
   const handleReviewSubmissionsClicked = () => {
     // Close right sidebar
-    if (markerInfoIsOpen) onMarkerInfoToggle();
+    closeMarkerInfo();
     setSelectedZipCode(null);
     setSelectedCountry(null);
-    // Toggle left sidebar
-    onBoxApprovalToggle();
+    openBoxApproval();
   };
   const btnRef = useRef();
   // A list containing all unique zip codes stored in Anchor_Box
@@ -94,9 +98,9 @@ const Dashboard = () => {
               setZipCodeData={setZipCodeData}
               boxApprovalIsOpen={boxApprovalIsOpen}
               onBoxApprovalToggle={onBoxApprovalToggle}
-              onMarkerInfoToggle={onMarkerInfoToggle}
+              closeBoxApproval={closeBoxApproval}
               closeMarkerInfo={closeMarkerInfo}
-              markerInfoIsOpen={markerInfoIsOpen}
+              openMarkerInfo={openMarkerInfo}
               setBoxListPageIndex={setBoxListPageIndex}
             />
           </div>
@@ -139,7 +143,8 @@ const Dashboard = () => {
               adminIsLoggedIn={adminIsLoggedIn}
               zipCodeData={zipCodeData}
               setZipCodeData={setZipCodeData}
-              onMarkerInfoToggle={onMarkerInfoToggle}
+              openMarkerInfo={openMarkerInfo}
+              closeMarkerInfo={closeMarkerInfo}
               markerInfoIsOpen={markerInfoIsOpen}
               boxListPageIndex={boxListPageIndex}
               setBoxListPageIndex={setBoxListPageIndex}
