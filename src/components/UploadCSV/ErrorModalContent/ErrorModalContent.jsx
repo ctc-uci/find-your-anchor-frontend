@@ -8,7 +8,7 @@ import useMobileWidth from '../../../common/useMobileWidth';
 const ErrorModalContent = ({
   CSVFileName,
   setIsUploadingNewFile,
-  uploadErrors,
+  numUploadErrors,
   onEditViewFile,
 }) => {
   const isMobile = useMobileWidth();
@@ -29,9 +29,7 @@ const ErrorModalContent = ({
         <Text className={styles['error-modal-text']}>Oops!</Text>
         <p>
           {' '}
-          There were <span className={styles['error-modal-red-text']}>
-            {uploadErrors.length}
-          </span>{' '}
+          There were <span className={styles['error-modal-red-text']}>{numUploadErrors}</span>{' '}
           errors with the uploaded file:{' '}
         </p>
         <p className={styles['error-modal-file-name']}>{CSVFileName}</p>
@@ -55,8 +53,8 @@ const ErrorModalContent = ({
       </Flex>
       <Spacer />
       <span>
-        There were <span className={styles['error-modal-red-text']}>{uploadErrors.length}</span>{' '}
-        errors with the uploaded file:{' '}
+        There were <span className={styles['error-modal-red-text']}>{numUploadErrors}</span> errors
+        with the uploaded file:{' '}
         <span className={styles['error-modal-file-name']}>{CSVFileName}</span>
       </span>
       <Spacer />
@@ -72,7 +70,7 @@ const ErrorModalContent = ({
 ErrorModalContent.propTypes = {
   CSVFileName: PropTypes.string.isRequired,
   setIsUploadingNewFile: PropTypes.func.isRequired,
-  uploadErrors: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
+  numUploadErrors: PropTypes.number.isRequired,
   onEditViewFile: PropTypes.func.isRequired,
 };
 
