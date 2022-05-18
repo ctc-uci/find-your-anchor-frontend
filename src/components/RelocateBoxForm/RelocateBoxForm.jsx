@@ -52,7 +52,10 @@ const schema = yup
       value: yup.string(),
     }),
     generalLocation: yup.string().typeError('Invalid location'),
-    dropOffMethod: yup.string().required('Invalid drop off method'),
+    dropOffMethod: yup.object({
+      label: yup.string().required('Invalid drop off method'),
+      value: yup.string(),
+    }),
     message: yup.string().typeError('Invalid message'),
     picture: yup.string().url().typeError('Invalid image'),
     verificationPicture: yup.string().url().typeError('Invalid image'),
@@ -263,13 +266,13 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.country?.label.message}</FormErrorMessage>
           </FormControl>
           <br />
-          <FormControl className={styles['section-wrapper']} isInvalid={errors?.dropOffMethod}>
-            <FormLabel htmlFor="drop-off-method" className={styles['required-field']}>
+          <FormControl isInvalid={errors?.dropOffMethod}>
+            <FormLabel htmlFor="dropOffMethod" className={styles['required-field']}>
               Launch Method
             </FormLabel>
             <Controller
               control={control}
-              name="drop-off-method"
+              name="dropOffMethod"
               // eslint-disable-next-line no-unused-vars
               render={({ field: { onChange, value, ref } }) => (
                 <ChakraReactSelect
@@ -288,7 +291,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
                 />
               )}
             />
-            <FormErrorMessage>{errors.dropOffMethod?.message}</FormErrorMessage>
+            <FormErrorMessage>{errors.dropOffMethod?.label.message}</FormErrorMessage>
           </FormControl>
           <br />
           <FormControl isInvalid={errors?.message}>
