@@ -37,3 +37,13 @@
 .nav-modal {
   border-radius: 0px !important;
 }
+
+.nav-link-container-mobile {
+  margin-top: 25px;
+}
+
+@media screen and (max-width: 768px) {
+  .nav-link {
+    font-size: 1.5em !important;
+  }
+}

@@ -213,7 +213,7 @@ const NavBar = ({ isAdmin }) => {
         <ModalContent className={styles['nav-modal']}>
           <ModalCloseButton />
           <ModalBody>
-            <Flex direction="column" p="5">
+            <Flex direction="column" p="5" className={styles['nav-link-container-mobile']}>
               {navElements}
             </Flex>
           </ModalBody>
