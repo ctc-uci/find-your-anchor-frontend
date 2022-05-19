@@ -177,7 +177,7 @@ const NavBar = ({ isAdmin }) => {
 
   return (
     <ChakraProvider>
-      <Flex minWidth="100%" boxShadow="md" alignItems="center" gap="2">
+      <Flex minWidth="100%" boxShadow="md" alignItems="center" gap="2" className={styles.navbar}>
         <Box p="1">
           <Link as={NavLink} to="/">
             <div className={styles['fya-logo']}>

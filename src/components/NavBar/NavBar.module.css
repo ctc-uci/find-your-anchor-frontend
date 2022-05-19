@@ -1,3 +1,9 @@
+.navbar {
+  position: sticky;
+  z-index: 900;
+  background-color: var(--color-white);
+}
+
 .navbar-initials {
   height: 48px;
   width: 48px;
