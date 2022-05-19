@@ -203,7 +203,12 @@ const NavBar = ({ isAdmin }) => {
           )}
         </Box>
       </Flex>
-      <Modal isOpen={isMobileNavOpen && isMobile} onClose={onMobileNavClose} size="full">
+      <Modal
+        isOpen={isMobileNavOpen && isMobile}
+        onClose={onMobileNavClose}
+        size="full"
+        motionPreset="slideInRight"
+      >
         <ModalOverlay />
         <ModalContent className={styles['nav-modal']}>
           <ModalCloseButton />
