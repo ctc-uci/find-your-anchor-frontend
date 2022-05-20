@@ -122,6 +122,14 @@ const DeleteBoxModal = ({
           });
           // Update boxInfo to get rid of last transaction
           setTransactionToggle(!transactionToggle);
+
+          showToast({
+            title: `Last Transaction of Box #${selectedBox} Deleted`,
+            message: 'Box Successfully Deleted',
+            toastPosition: 'bottom-right',
+            type: 'error',
+          });
+
           // Having no 2nd most recent transaction is equivalent to deleting the box
         } else {
           deleteBox();
@@ -131,8 +139,12 @@ const DeleteBoxModal = ({
       }
       closeModal();
     } catch (err) {
-      // TODO: TOAST
-      console.log(err);
+      showToast({
+        title: 'Error Deleting Transaction',
+        message: err.message,
+        toastPosition: 'bottom-right',
+        type: 'error',
+      });
     }
   };
   return (
