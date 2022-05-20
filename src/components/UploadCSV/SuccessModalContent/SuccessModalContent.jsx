@@ -25,7 +25,7 @@ const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile }) => {
           File Uploaded Successfully
         </Text>
         <Flex gap={10} mt={10}>
-          <Button color="var(--color-white)" bg="var(--color-black)" onClick={uploadNewFile}>
+          <Button color="var(--color-white)" bg="var(--color-dark-blue)" onClick={uploadNewFile}>
             Upload New File
           </Button>
           <Button type="submit" colorScheme="teal">
