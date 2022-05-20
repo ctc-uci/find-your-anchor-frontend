@@ -59,13 +59,11 @@ const Map = ({
   };
 
   // This function makes it so that when a marker cluster is clicked, the right side bar closes.
-  const handleMarkerClusterClicked = cluster => {
-    // console.log(cluster.sourceTarget.getAllChildMarkers());
+  const handleMarkerClusterClicked = () => {
     closeMarkerInfo();
     setSelectedCountry(null);
     setSelectedZipCode(null);
     setSelectedBox(null);
-    console.log(cluster);
   };
 
   // Sets zipcodeData to be an object
@@ -184,12 +182,7 @@ const Map = ({
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         noWrap
       />
-      <MarkerClusterGroup
-        iconCreateFunction={clusterIcon}
-        onClick={cluster => {
-          handleMarkerClusterClicked(cluster);
-        }}
-      >
+      <MarkerClusterGroup iconCreateFunction={clusterIcon} onClick={handleMarkerClusterClicked}>
         {/* Map the marker data into <Marker /> components. These markers are grouped into MarkerClusterGroups by country */}
         {zipCodeData &&
           zipCodeData.map(
