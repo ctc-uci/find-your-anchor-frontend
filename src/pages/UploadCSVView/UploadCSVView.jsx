@@ -26,7 +26,11 @@ const UploadCSVView = () => {
             />
           )}
         </Flex>
-        <CSVViewTable rows={state.rows} boxNumberMap={state.boxNumberMap} />
+        <CSVViewTable
+          rows={state.rows}
+          boxNumberMap={state.boxNumberMap}
+          CSVFilename={state.filename}
+        />
       </Flex>
     </>
   );

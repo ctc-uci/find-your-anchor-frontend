@@ -1,16 +1,18 @@
 import React from 'react';
 import { Text, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
-import { ChakraProvider } from '@chakra-ui/provider';
 import FriendIcon from '../../assets/about-friend-icon.svg';
 import GlobeIcon from '../../assets/about-globe-icon.svg';
 import RocketIcon from '../../assets/about-rocket-icon.svg';
 import PrivacyNoteIcon from '../../assets/about-privacy-note-icon.svg';
 import Footer from '../../components/Footer/Footer';
 import styles from './AboutPage.module.css';
+import useMobileWidth from '../../common/useMobileWidth';
 
 const AboutPage = () => {
+  const isMobile = useMobileWidth();
+
   return (
-    <ChakraProvider>
+    <>
       <div className={styles['about-page']}>
         <div className={styles['welcome-section']}>
           <div>
@@ -115,12 +117,20 @@ const AboutPage = () => {
           <Tabs size="lg" className={styles.tabs}>
             <TabList>
               <Tab>
-                <Text size="md" className={styles['tab-heading']} textStyle="header-1">
+                <Text
+                  size="md"
+                  className={styles['tab-heading']}
+                  textStyle={isMobile ? 'body' : 'header-2'}
+                >
                   Launch a Box
                 </Text>
               </Tab>
               <Tab>
-                <Text size="md" className={styles['tab-heading']} textStyle="header-1">
+                <Text
+                  size="md"
+                  className={styles['tab-heading']}
+                  textStyle={isMobile ? 'body' : 'header-2'}
+                >
                   Found a Box
                 </Text>
               </Tab>
@@ -236,7 +246,7 @@ const AboutPage = () => {
         </div>
       </div>
       <Footer />
-    </ChakraProvider>
+    </>
   );
 };
 

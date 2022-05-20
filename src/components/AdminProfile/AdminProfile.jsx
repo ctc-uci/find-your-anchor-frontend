@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
-import { ChakraProvider, Button, useDisclosure, Input, Text } from '@chakra-ui/react';
+import { Button, useDisclosure, Input, Text } from '@chakra-ui/react';
 
 import { RiPencilFill, RiCheckFill } from 'react-icons/ri';
 import styles from './AdminProfile.module.css';
@@ -26,7 +26,7 @@ const TextInput = ({
 }) => {
   return (
     <div className={styles['form-input']}>
-      <Text>{inputLabel}</Text>
+      <Text textStyle="body">{inputLabel}</Text>
       <div className={styles['editable-input']}>
         <Input
           top="5px"
@@ -43,9 +43,9 @@ const TextInput = ({
           onClick={makeEditable}
         >
           {editState ? (
-            <RiCheckFill color="#38a169" size={35} onClick={handleCheckMarkClicked} />
+            <RiCheckFill color="var(--color-success)" size={35} onClick={handleCheckMarkClicked} />
           ) : (
-            <RiPencilFill color="#8E8E8E" size={35} />
+            <RiPencilFill color="var(--color-gray)" size={35} />
           )}
         </button>
       </div>
@@ -96,121 +96,84 @@ const AdminProfile = () => {
   }, []);
   const isMobile = useMobileWidth();
   return (
-    <ChakraProvider>
-      <div className={styles['flex-wrapper']}>
-        <div className={styles['profile-page-wrapper']}>
-          {isMobile && (
-            <>
-              <div className={styles['background-image-container']}>
-                <img src={BackgroundImageMobile} alt="Profile Page Background" />
-              </div>
-              <div className={styles['logo-container']}>
-                <img
-                  className={styles['fya-logo']}
-                  src={FYALogoLarge}
-                  alt="Find Your Anchor Logo"
-                />
-              </div>
-            </>
+    <div className={styles['flex-wrapper']}>
+      <div className={styles['profile-page-wrapper']}>
+        {isMobile && (
+          <>
+            <div className={styles['background-image-container']}>
+              <img src={BackgroundImageMobile} alt="Profile Page Background" />
+            </div>
+            <div className={styles['logo-container']}>
+              <img className={styles['fya-logo']} src={FYALogoLarge} alt="Find Your Anchor Logo" />
+            </div>
+          </>
+        )}
+        <div className={styles['top-buttons']}>
+          {!isMobile && (
+            <Button onClick={onOpenLinkModal} colorScheme="button" size="lg">
+              Send Registration Link
+            </Button>
           )}
-          <div className={styles['top-buttons']}>
-            {!isMobile && (
-              <Button
-                onClick={onOpenLinkModal}
-                color="white"
-                bg="#1F2F38"
-                fontSize="20px"
-                size="lg"
-              >
+
+          <SendLinkModal isOpen={isOpenLinkModal} onClose={onCloseLinkModal} />
+        </div>
+        <div className={styles['profile-form']}>
+          {!isMobile && (
+            <div className={styles['logo-wrapper']}>
+              <img className={styles['fya-logo']} src={FYALogoLarge} alt="Find Your Anchor Logo" />
+            </div>
+          )}
+
+          <TextInput
+            inputLabel="First Name"
+            placeHolder={firstName}
+            value={firstName}
+            setValue={setFirstName}
+            editable
+            editState={editFirst}
+            makeEditable={() => setEditFirst(!editFirst)}
+            handleCheckMarkClicked={handleCheckMarkClicked}
+            textStyle="body"
+          />
+          <TextInput
+            inputLabel="Last Name"
+            placeHolder={lastName}
+            value={lastName}
+            setValue={setLastName}
+            editable
+            editState={editLast}
+            makeEditable={() => setEditLast(!editLast)}
+            handleCheckMarkClicked={handleCheckMarkClicked}
+            textStyle="body"
+          />
+          <TextInput inputLabel="Email" placeHolder={email} editState={false} />
+          {isMobile && (
+            <div className={styles['bottom-buttons']}>
+              <Button onClick={onOpenLinkModal} colorScheme="button" size="lg" width="100%">
                 Send Registration Link
               </Button>
-            )}
-
-            <SendLinkModal isOpen={isOpenLinkModal} onClose={onCloseLinkModal} />
-          </div>
-          <div className={styles['profile-form']}>
-            {!isMobile && (
-              <div className={styles['logo-wrapper']}>
-                <img
-                  className={styles['fya-logo']}
-                  src={FYALogoLarge}
-                  alt="Find Your Anchor Logo"
-                />
-              </div>
-            )}
-
-            <TextInput
-              inputLabel="First Name"
-              placeHolder={firstName}
-              value={firstName}
-              setValue={setFirstName}
-              editable
-              editState={editFirst}
-              makeEditable={() => setEditFirst(!editFirst)}
-              handleCheckMarkClicked={handleCheckMarkClicked}
-            />
-            <TextInput
-              inputLabel="Last Name"
-              placeHolder={lastName}
-              value={lastName}
-              setValue={setLastName}
-              editable
-              editState={editLast}
-              makeEditable={() => setEditLast(!editLast)}
-              handleCheckMarkClicked={handleCheckMarkClicked}
-            />
-            <TextInput inputLabel="Email" placeHolder={email} editState={false} />
-            {isMobile && (
-              <div className={styles['bottom-buttons']}>
-                <Button
-                  onClick={onOpenLinkModal}
-                  color="white"
-                  bg="#1F2F38"
-                  fontSize="18px"
-                  size="lg"
-                  width={isMobile ? '100%' : 'auto'}
-                >
-                  Send Registration Link
-                </Button>
-                <Button
-                  onClick={onOpenDeleteModal}
-                  colorScheme="red"
-                  size="lg"
-                  width={isMobile ? '100%' : 'auto'}
-                >
-                  Delete Account
-                </Button>
-                <DeleteAccountModal isOpen={isOpenDeleteModal} onClose={onCloseDeleteModal} />
-                <LogoutModal isOpen={isOpenLogoutModal} onClose={onCloseLogoutModal} />
-              </div>
-            )}
-          </div>
-          {!isMobile && (
-            <div className={styles['bottom-buttons']}>
-              <Button
-                onClick={onOpenDeleteModal}
-                colorScheme="red"
-                size="lg"
-                width={isMobile ? '100%' : 'auto'}
-              >
+              <Button onClick={onOpenDeleteModal} colorScheme="warning" size="lg" width="100%">
                 Delete Account
-              </Button>
-              <Button
-                onClick={onOpenLogoutModal}
-                colorScheme="teal"
-                bg="#345E80"
-                fontSize="20px"
-                size="lg"
-              >
-                Logout
               </Button>
               <DeleteAccountModal isOpen={isOpenDeleteModal} onClose={onCloseDeleteModal} />
               <LogoutModal isOpen={isOpenLogoutModal} onClose={onCloseLogoutModal} />
             </div>
           )}
         </div>
+        {!isMobile && (
+          <div className={styles['bottom-buttons']}>
+            <Button onClick={onOpenDeleteModal} colorScheme="warning" size="lg" width="auto">
+              Delete Account
+            </Button>
+            <Button onClick={onOpenLogoutModal} colorScheme="button" size="lg">
+              Logout
+            </Button>
+            <DeleteAccountModal isOpen={isOpenDeleteModal} onClose={onCloseDeleteModal} />
+            <LogoutModal isOpen={isOpenLogoutModal} onClose={onCloseLogoutModal} />
+          </div>
+        )}
       </div>
-    </ChakraProvider>
+    </div>
   );
 };
 

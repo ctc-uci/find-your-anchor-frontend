@@ -1,5 +1,5 @@
 :root {
-  --text-gray-color: #808080;
+  --text-gray-color: var(--color-gray);
 }
 
 * {
@@ -14,22 +14,19 @@
 
 .required-field::after {
   content: ' *';
-  color: red;
+  color: var(--color-warning);
 }
 
 /* box image section */
 .box-image {
   width: 100%;
   height: 100%;
-  border-radius: 5px;
-  border-width: 2px;
-  border-style: dashed;
-  border-color: #b9b9b9;
 }
 
 .box-image img {
   width: 100%;
   height: 100%;
+  border-radius: 10px;
 }
 
 .box-bottom {
