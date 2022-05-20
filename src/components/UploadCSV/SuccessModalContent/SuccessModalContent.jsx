@@ -31,7 +31,7 @@ const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile }) => {
           <Button type="submit" colorScheme="teal">
             Add to Map
           </Button>
-          <Button color="var(--color-white)" bg="var(--color-teal)" onClick={viewFile}>
+          <Button colorScheme="button" onClick={viewFile}>
             View File
           </Button>
         </Flex>
@@ -51,7 +51,7 @@ const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile }) => {
         <Button type="submit" colorScheme="teal">
           Add to Map
         </Button>
-        <Button color="var(--color-white)" bg="var(--color-teal)" onClick={viewFile}>
+        <Button colorScheme="button" onClick={viewFile}>
           View File
         </Button>
       </Flex>
