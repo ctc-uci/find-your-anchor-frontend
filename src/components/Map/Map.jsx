@@ -25,8 +25,6 @@ const Map = memo(
     setSelectedCountry,
     setSelectedZipCode,
     setSelectedBox,
-    setUpdateBoxListSwitch,
-    updateBoxListSwitch,
     zipCodeData,
     setZipCodeData,
     boxApprovalIsOpen,
@@ -35,7 +33,6 @@ const Map = memo(
     markerInfoIsOpen,
     setBoxListPageIndex,
   }) => {
-    console.log('hi');
     const [isLoading, setIsLoading] = useState(true);
     const [mapState, setMapState] = useState(null);
 
@@ -44,14 +41,13 @@ const Map = memo(
     // 2. Switches PinInformation to box list view
     const handleMarkerClicked = markerObject => {
       // Close the left sidebar if open
-      // if (boxApprovalIsOpen) onBoxApprovalToggle();
+      if (boxApprovalIsOpen) onBoxApprovalToggle();
+      // Update the right sidebar
       setSelectedCountry(markerObject.country);
       setSelectedZipCode(markerObject.zip_code);
-      // Toggle updateBoxListSwitch, which will update update the box list in the right side bar
-      setUpdateBoxListSwitch(!updateBoxListSwitch);
       // Open the right sidebar
       if (!markerInfoIsOpen) onMarkerInfoToggle();
-      // setSelectedBox(null);
+      setSelectedBox(null);
       // Set box list page index to 1
       setBoxListPageIndex(1);
       // IMPORTANT: mapState.flyTo(xxx) must be called LAST in order to avoid a moving pin bug
@@ -229,9 +225,7 @@ Map.displayName = 'Map';
 Map.propTypes = {
   setSelectedCountry: PropTypes.func.isRequired,
   setSelectedZipCode: PropTypes.func.isRequired,
-  setUpdateBoxListSwitch: PropTypes.func.isRequired,
   setSelectedBox: PropTypes.func.isRequired,
-  updateBoxListSwitch: PropTypes.bool.isRequired,
   zipCodeData: PropTypes.arrayOf(
     PropTypes.shape({
       zip_code: PropTypes.string,
