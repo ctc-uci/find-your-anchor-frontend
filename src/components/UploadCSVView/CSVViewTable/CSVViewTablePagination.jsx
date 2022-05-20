@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Text, Tooltip, IconButton, Box } from '@chakra-ui/react';
+import { Flex, Text, Tooltip, IconButton, Box, Input } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 import useMobileWidth from '../../../common/useMobileWidth';
@@ -15,7 +15,7 @@ const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl 
           <Tooltip label="First Page">
             <IconButton
               background="transparent"
-              color="black"
+              color="var(--color-black)"
               icon={<ArrowLeftIcon h={6} w={6} />}
               isDisabled={!canPreviousPage}
               variant="noHover"
@@ -28,7 +28,7 @@ const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl 
           <Tooltip label="Previous Page">
             <IconButton
               background="transparent"
-              color="black"
+              color="var(--color-black)"
               icon={<ChevronLeftIcon h={9} w={9} />}
               isDisabled={!canPreviousPage}
               variant="noHover"
@@ -36,30 +36,35 @@ const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl 
             />
           </Tooltip>
           <Text flexShrink="0" ml={4} mr={2}>
-            <Text as="span">Page</Text>
-            <Text as="span" color="black">
+            <Text as="span" textStyle="body">
+              Page
+            </Text>
+            <Text as="span" color="var(--color-black)" textStyle="body">
               {' '}
               {pageIndex + 1} of {pageLength}
             </Text>
           </Text>
           {!isMobile && (
-            <Text>
-              | Go to page:{' '}
-              <input
+            <Text textStyle="body">
+              | Go to page:
+              <Input
                 type="number"
-                defaultValue={pageIndex + 1}
+                value={pageIndex + 1}
                 onChange={e => {
                   const page = e.target.value ? Number(e.target.value) - 1 : 0;
                   gotoPage(page);
                 }}
-                style={{ width: '30px' }}
+                ml="10px"
+                size="md"
+                textAlign="center"
+                width="70px"
               />
             </Text>
           )}{' '}
           <Tooltip label="Next Page">
             <IconButton
               background="transparent"
-              color="black"
+              color="var(--color-black)"
               icon={<ChevronRightIcon h={9} w={9} />}
               isDisabled={!canNextPage}
               variant="noHover"
@@ -72,7 +77,7 @@ const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl 
           <Tooltip label="Last Page">
             <IconButton
               background="transparent"
-              color="black"
+              color="var(--color-black)"
               icon={<ArrowRightIcon h={6} w={6} />}
               isDisabled={!canNextPage}
               variant="noHover"

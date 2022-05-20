@@ -227,7 +227,7 @@ const CSVViewTable = ({ rows, boxNumberMap, CSVFilename }) => {
 
   return (
     <form onSubmit={addToMap} className={styles['csv-table-form']}>
-      <Stack direction="row" justify="right" marginTop="-40px" marginBottom="25px">
+      <Stack direction="row" justify="right" marginTop="-40px" marginBottom="25px" gap="30px">
         {!isMobile && (
           <select
             value={pageSize}
@@ -246,8 +246,7 @@ const CSVViewTable = ({ rows, boxNumberMap, CSVFilename }) => {
         <Button
           isLoading={isLoading}
           type="submit"
-          color="white"
-          bg="#345E80"
+          colorScheme="button"
           borderRadius={isMobile ? 'xl' : 'md'}
         >
           Add to Map
