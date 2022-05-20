@@ -229,7 +229,7 @@ const BoxInfo = ({
                   size="md"
                   onClick={onOpenDeleteBoxModal}
                 >
-                  Delete Box
+                  Delete
                 </Button>
               )}
               <DeleteBoxModal
