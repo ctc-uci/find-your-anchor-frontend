@@ -17,7 +17,7 @@
 .csv-table-container {
   display: flex;
   flex-direction: column;
-  height: calc(97vh - 240px);
+  height: calc(100vh - 260px);
 }
 
 .csv-table {
@@ -72,4 +72,8 @@
 
 .show-pages-select {
   margin-right: 20px;
+}
+
+.csv-table-container-mobile {
+  min-height: 65vh;
 }

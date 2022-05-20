@@ -34,15 +34,10 @@ const ErrorModalContent = ({
         </p>
         <p className={styles['error-modal-file-name']}>{CSVFileName}</p>
         <ButtonGroup className={styles['error-modal-buttons']}>
-          <Button
-            size="md"
-            color="var(--color-white)"
-            bg="var(--color-black)"
-            onClick={uploadNewFile}
-          >
+          <Button size="md" colorScheme="darkButton" onClick={uploadNewFile}>
             Upload New File
           </Button>
-          <Button size="md" color="var(--color-white)" bg="var(--color-teal)" onClick={viewFile}>
+          <Button size="md" colorScheme="button" onClick={viewFile}>
             View File
           </Button>
         </ButtonGroup>
@@ -64,7 +59,7 @@ const ErrorModalContent = ({
       </span>
       <Spacer />
       <Flex justifyContent="flex-end">
-        <Button size="md" color="white" bg="#345E80" onClick={viewFile}>
+        <Button size="md" colorScheme="button" onClick={viewFile}>
           View File
         </Button>
       </Flex>

@@ -27,8 +27,7 @@ const UploadModalContent = ({ setCSVFile, onUpload }) => {
       <Button
         className={styles['upload-modal-button']}
         size="md"
-        color="var(--color-white)"
-        bg="var(--color-teal)"
+        colorScheme="button"
         onClick={e => onUpload(e)}
         isFullWidth={isMobile}
       >

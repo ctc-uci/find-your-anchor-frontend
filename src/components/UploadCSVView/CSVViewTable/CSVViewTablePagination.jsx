@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Text, Tooltip, IconButton, Box } from '@chakra-ui/react';
+import { Flex, Text, Tooltip, IconButton, Box, Input } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
 import useMobileWidth from '../../../common/useMobileWidth';
@@ -46,15 +46,18 @@ const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl 
           </Text>
           {!isMobile && (
             <Text textStyle="body">
-              | Go to page:{' '}
-              <input
+              | Go to page:
+              <Input
                 type="number"
-                defaultValue={pageIndex + 1}
+                value={pageIndex + 1}
                 onChange={e => {
                   const page = e.target.value ? Number(e.target.value) - 1 : 0;
                   gotoPage(page);
                 }}
-                style={{ width: '30px' }}
+                ml="10px"
+                size="md"
+                textAlign="center"
+                width="70px"
               />
             </Text>
           )}{' '}
