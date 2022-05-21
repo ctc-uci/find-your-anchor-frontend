@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChakraProvider, Button, Text, useDisclosure } from '@chakra-ui/react';
+import { Button, ChakraProvider, Text, useDisclosure } from '@chakra-ui/react';
 import { CSVLink } from 'react-csv';
 import { useLocation } from 'react-router-dom';
 import renameProperty from '../../components/ExportCSV/ExportCSVUtils';
@@ -7,6 +7,7 @@ import CSVPreview from '../../components/ExportCSV/CSVPreview/CSVPreview';
 
 import styles from '../ExportCSV/ExportCSV.module.css';
 import ExportSuccessModal from '../../components/ExportCSV/ExportSuccessModal/ExportSuccessModal';
+import ChakraTheme from '../../common/ChakraTheme';
 
 const CSVPreviewPage = () => {
   const { state } = useLocation();
@@ -28,17 +29,17 @@ const CSVPreviewPage = () => {
   };
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={ChakraTheme}>
       <div className={styles['export-csv-wrapper']}>
         <div className={styles['export-csv-header']}>
           <div className={styles['header-text']}>
-            <Text fontSize="3xl" className={styles['header-title']}>
+            <Text textStyle="header-1" className={styles['header-title']}>
               Export CSV
             </Text>
             <Text fontSize="lg">{state.rows.length} boxes</Text>
           </div>
           <div className={styles['button-section']}>
-            <Button className={styles['header-button']}>
+            <Button colorScheme="button">
               <CSVLink {...csvReport}>Export to CSV</CSVLink>
             </Button>
           </div>

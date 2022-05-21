@@ -4,6 +4,7 @@ import ExportCSVForm from '../../components/ExportCSV/ExportCSVForm/ExportCSVFor
 import styles from './ExportCSV.module.css';
 
 import useMobileWidth from '../../common/useMobileWidth';
+import ChakraTheme from '../../common/ChakraTheme';
 
 const ExportCSV = () => {
   // Used to connect submit button outside form
@@ -11,17 +12,17 @@ const ExportCSV = () => {
 
   const isMobile = useMobileWidth();
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={ChakraTheme}>
       <div className={styles['export-csv-wrapper']}>
         <div className={styles['export-csv-header']}>
           <div className={styles['header-text']}>
-            <Text fontSize="3xl" className={styles['header-title']}>
+            <Text textStyle="header-1" className={styles['header-title']}>
               Export CSV
             </Text>
           </div>
           {!isMobile && (
             <div className={styles['button-section']}>
-              <Button form={formID} type="submit" className={styles['header-button']}>
+              <Button form={formID} type="submit" colorScheme="button">
                 Preview CSV
               </Button>
             </div>

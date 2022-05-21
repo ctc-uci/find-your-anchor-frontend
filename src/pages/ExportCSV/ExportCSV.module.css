@@ -33,11 +33,6 @@
   font-size: 18px !important;
 }
 
-.header-button {
-  background-color: var(--color-teal) !important;
-  color: var(--color-white) !important;
-}
-
 .export-csv-wrapper .export-csv-content {
   display: flex;
   flex-direction: column;

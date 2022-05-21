@@ -553,12 +553,10 @@ const ExportCSVForm = ({ formID }) => {
       </form>
 
       <div className={styles['buttons-container']}>
-        <Button border="1px" borderColor="#CBD5E0" bg="white">
+        <Button colorScheme="cancel" color="var(--color-text)">
           Cancel
         </Button>
-        <Button textColor="white" bg="#345E80">
-          Preview CSV
-        </Button>
+        <Button colorScheme="button">Preview CSV</Button>
       </div>
     </div>
   );
