@@ -2,9 +2,9 @@ import React from 'react';
 import { Flex, Text, Tooltip, IconButton, Box } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
-import useMobileWidth from '../../../common/useMobileWidth';
+import useMobileWidth from '../useMobileWidth';
 
-const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl }) => {
+const TablePagination = ({ pageLength, pageIndex, pageCount, pageControl }) => {
   const { gotoPage, nextPage, previousPage, canNextPage, canPreviousPage } = pageControl;
   const isMobile = useMobileWidth();
 
@@ -85,7 +85,7 @@ const CSVViewTablePagination = ({ pageLength, pageIndex, pageCount, pageControl 
   );
 };
 
-CSVViewTablePagination.propTypes = {
+TablePagination.propTypes = {
   pageLength: PropTypes.number.isRequired,
   pageIndex: PropTypes.number.isRequired,
   pageCount: PropTypes.number.isRequired,
@@ -98,4 +98,4 @@ CSVViewTablePagination.propTypes = {
   }).isRequired,
 };
 
-export default CSVViewTablePagination;
+export default TablePagination;

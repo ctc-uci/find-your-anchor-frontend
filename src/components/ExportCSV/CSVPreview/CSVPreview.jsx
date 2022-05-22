@@ -6,7 +6,7 @@ import { useTable, usePagination } from 'react-table';
 import styles from './CSVPreview.module.css';
 import ExportCSVRow from '../ExportCSVRow/ExportCSVRow';
 import renameProperty from '../ExportCSVUtils';
-import CSVViewTablePagination from '../../UploadCSVView/CSVViewTable/CSVViewTablePagination';
+import TablePagination from '../../../common/TablePagination/TablePagination';
 
 // this component is used for Export CSV
 const CSVPreview = ({ formValues, selectedPageSize }) => {
@@ -72,7 +72,7 @@ const CSVPreview = ({ formValues, selectedPageSize }) => {
           </Table>
         )}
       </div>
-      <CSVViewTablePagination
+      <TablePagination
         pageLength={pageOptions.length}
         pageIndex={pageIndex}
         pageCount={pageCount}
