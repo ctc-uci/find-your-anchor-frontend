@@ -45,6 +45,10 @@ const CSVViewTable = ({ rows, boxNumberMap, CSVFilename }) => {
 
   const [currentPage, setCurrentPage] = useState(null);
   const [deleted, setDeleted] = useState(false);
+  const [accordionProps, setAccordionProps] = useState({
+    allowToggle: true,
+    index: [],
+  });
 
   const columns = useMemo(
     () => [
@@ -139,6 +143,7 @@ const CSVViewTable = ({ rows, boxNumberMap, CSVFilename }) => {
       setEditFormData(formValues);
       setEditId(rowData.id);
       gotoPage(Math.floor(firstErrorIndex / pageSize));
+      setAccordionProps({ ...accordionProps, index: [firstErrorIndex] });
     }
   };
 
@@ -222,7 +227,7 @@ const CSVViewTable = ({ rows, boxNumberMap, CSVFilename }) => {
 
   return (
     <form onSubmit={addToMap} className={styles['csv-table-form']}>
-      <Stack direction="row" justify="right" marginTop="-40px" marginBottom="25px">
+      <Stack direction="row" justify="right" marginTop="-40px" marginBottom="25px" gap="30px">
         {!isMobile && (
           <select
             value={pageSize}
@@ -241,8 +246,7 @@ const CSVViewTable = ({ rows, boxNumberMap, CSVFilename }) => {
         <Button
           isLoading={isLoading}
           type="submit"
-          color="white"
-          bg="#345E80"
+          colorScheme="button"
           borderRadius={isMobile ? 'xl' : 'md'}
         >
           Add to Map
@@ -291,58 +295,66 @@ const CSVViewTable = ({ rows, boxNumberMap, CSVFilename }) => {
         </div>
       )}
       {isMobile && (
-        <Accordion allowToggle>
-          <Flex flexDirection="column" gap="20px">
-            {page.map(rowData => {
-              prepareRow(rowData);
-              return (
-                <AccordionItem
-                  key={rowData.original.id}
-                  borderWidth="1px"
-                  borderRadius="8px"
-                  borderColor={rowData.values.error && 'red'}
-                >
-                  {({ isExpanded }) => (
-                    <>
-                      <h2>
-                        <AccordionButton
-                          _expanded={{ bg: 'white' }}
-                          onClick={() => {
-                            setEditId(null);
-                          }}
-                        >
-                          <Box flex="1" textAlign="left" fontWeight="bold">
-                            {!isExpanded ? `Box #${rowData.values.boxNumber}` : ''}
-                          </Box>
-                          <AccordionIcon />
-                        </AccordionButton>
-                      </h2>
-                      <AccordionPanel pb={4}>
-                        {editId === rowData.original.id ? (
-                          <EditableRow
-                            editFormData={editFormData}
-                            handleEditFormSubmit={handleEditFormSubmit}
-                            isError={rowData.values.error}
-                            boxNumberMap={boxNumbers}
-                            updateBoxNumberMap={updateBoxNumberMap}
-                            handleDeleteRow={handleDeleteRow}
-                          />
-                        ) : (
-                          <ReadOnlyRow
-                            data={rowData}
-                            editRow={editRow}
-                            handleDeleteRow={handleDeleteRow}
-                            isError={rowData.values.error}
-                          />
-                        )}
-                      </AccordionPanel>
-                    </>
-                  )}
-                </AccordionItem>
-              );
-            })}
-          </Flex>
-        </Accordion>
+        <div className={styles['csv-table-container-mobile']}>
+          <Accordion {...accordionProps}>
+            <Flex flexDirection="column" gap="20px">
+              {page.map((rowData, index) => {
+                prepareRow(rowData);
+                return (
+                  <AccordionItem
+                    key={rowData.original.id}
+                    borderWidth="1px"
+                    borderRadius="8px"
+                    borderColor={rowData.values.error && 'var(--color-warning)'}
+                  >
+                    {({ isExpanded }) => (
+                      <>
+                        <h2>
+                          <AccordionButton
+                            _expanded={{ bg: 'var(--color-white)' }}
+                            onClick={() => {
+                              setEditId(null);
+                              if (isExpanded) {
+                                setAccordionProps({ ...accordionProps, index: [] });
+                              } else {
+                                setAccordionProps({ ...accordionProps, index: [index] });
+                              }
+                            }}
+                          >
+                            <Box flex="1" textAlign="left" fontWeight="bold">
+                              {!isExpanded ? `Box #${rowData.values.boxNumber}` : ''}
+                            </Box>
+                            <AccordionIcon />
+                          </AccordionButton>
+                        </h2>
+                        <AccordionPanel pb={4}>
+                          {editId === rowData.original.id ? (
+                            <EditableRow
+                              editFormData={editFormData}
+                              handleEditFormSubmit={handleEditFormSubmit}
+                              isError={rowData.values.error}
+                              boxNumberMap={boxNumbers}
+                              updateBoxNumberMap={updateBoxNumberMap}
+                              lineNumber={pageIndex * 10 + index + 1}
+                              handleDeleteRow={handleDeleteRow}
+                            />
+                          ) : (
+                            <ReadOnlyRow
+                              data={rowData}
+                              editRow={editRow}
+                              handleDeleteRow={handleDeleteRow}
+                              isError={rowData.values.error}
+                            />
+                          )}
+                        </AccordionPanel>
+                      </>
+                    )}
+                  </AccordionItem>
+                );
+              })}
+            </Flex>
+          </Accordion>
+        </div>
       )}
       <TablePagination
         pageLength={pageOptions.length}
