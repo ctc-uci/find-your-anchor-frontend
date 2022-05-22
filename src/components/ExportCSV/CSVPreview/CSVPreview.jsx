@@ -26,7 +26,7 @@ const CSVPreview = ({ formValues }) => {
             </Thead>
             <Tbody>
               {formValues.map(data => (
-                <ExportCSVRow gay key={data.box_id} data={data} resize={false} />
+                <ExportCSVRow key={data.box_id} data={data} resize={false} />
               ))}
             </Tbody>
           </Table>
