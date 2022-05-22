@@ -1,11 +1,11 @@
-import React from 'react';
-import { ChakraProvider, Button, Text, useDisclosure } from '@chakra-ui/react';
+import { React, useState } from 'react';
+import { ChakraProvider, Button, Text } from '@chakra-ui/react';
 import { CSVLink } from 'react-csv';
 import { useLocation, useNavigate } from 'react-router-dom';
 import renameProperty from '../../components/ExportCSV/ExportCSVUtils';
 import CSVPreview from '../../components/ExportCSV/CSVPreview/CSVPreview';
 import styles from '../ExportCSV/ExportCSV.module.css';
-import ExportSuccessModal from '../../components/ExportCSV/ExportSuccessModal/ExportSuccessModal';
+import CommonConfirmationPage from '../../common/CommonConfirmationPage/CommonConfirmationPage';
 import useMobileWidth from '../../common/useMobileWidth';
 
 const CSVPreviewPage = () => {
@@ -13,11 +13,7 @@ const CSVPreviewPage = () => {
   const isMobile = useMobileWidth();
   const navigate = useNavigate();
 
-  const {
-    isOpen: isUploadCSVOpenModal,
-    onOpen: onUploadCSVOpenModal,
-    onClose: onCloseUploadCSVOpenModal,
-  } = useDisclosure();
+  const [openConfirmation, setOpenConfirmation] = useState(false);
 
   const csvReport = {
     data: state.rows,
@@ -26,7 +22,7 @@ const CSVPreviewPage = () => {
       key: property,
     })),
     filename: 'FYA-CSV.csv',
-    onClick: () => onUploadCSVOpenModal(),
+    onClick: () => setOpenConfirmation(true),
   };
 
   return (
@@ -66,7 +62,13 @@ const CSVPreviewPage = () => {
             </Button>
           </div>
         )}
-        <ExportSuccessModal isOpen={isUploadCSVOpenModal} onClose={onCloseUploadCSVOpenModal} />
+        <CommonConfirmationPage
+          isOpen={openConfirmation}
+          confirmationTitle="Export Successful!"
+          confirmationText="You CSV file is now available to view."
+          isReturnHome
+          showFYALogo={false}
+        />
       </div>
     </ChakraProvider>
   );

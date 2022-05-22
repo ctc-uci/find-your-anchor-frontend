@@ -14,10 +14,7 @@ import {
   FormControl,
   FormLabel,
   Input,
-  // Select,
   Text,
-  // Radio,
-  // RadioGroup,
   Checkbox,
   CheckboxGroup,
   Button,
@@ -31,8 +28,6 @@ import {
   DrawerContent,
   DrawerBody,
   DrawerHeader,
-  // Box,
-  // Stack,
 } from '@chakra-ui/react';
 import { Select as ReactSelect } from 'chakra-react-select';
 import countryList from 'react-select-country-list';
@@ -436,11 +431,6 @@ const ExportCSVForm = ({ formID }) => {
             </AccordionItem>
           </Accordion>
         </div>
-        {/* TODO: CSV Preview Flow for Mobile View */}
-        {/* <Box className={styles['preview-csv-button']} onClick={handleSubmit(onSubmit)}>
-          <Text className={styles['csv-form-labels']}>CSV Preview</Text>
-          <ChevronRightIcon boxSize={6} />
-        </Box> */}
         <Drawer onToggle={customBoxInputToggle} isOpen={customBoxInputOpen} size="full">
           <DrawerContent>
             <ChevronLeftIcon
@@ -606,7 +596,7 @@ const ExportCSVForm = ({ formID }) => {
             <ChevronLeftIcon
               className={styles['back-button']}
               boxSize={7}
-              onClick={() => (isValid ? customCountryInputToggle() : console.log(isValid))}
+              onClick={() => (isValid ? customCountryInputToggle() : undefined)}
             />
             <DrawerHeader className={styles['additional-input-header']}>Country</DrawerHeader>
             <DrawerBody>
