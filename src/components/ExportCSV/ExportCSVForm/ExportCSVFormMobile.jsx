@@ -10,6 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import DatePicker from 'react-datepicker';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import * as yup from 'yup';
+import { CountryDropdown } from 'react-country-region-selector';
 import {
   FormControl,
   FormLabel,
@@ -87,6 +88,8 @@ const ExportCSVForm = ({ formID }) => {
 
   const { isOpen: customZipInputOpen, onToggle: customZipInputToggle } = useDisclosure();
 
+  const { isOpen: countryOptionsOpen, onToggle: countryOptionsToggle } = useDisclosure();
+
   const {
     control,
     reset,
@@ -107,8 +110,18 @@ const ExportCSVForm = ({ formID }) => {
       endDate: '',
       zipOption: 'zip-code-all',
       zipCode: '',
+      countryOption: 'country-all',
+      otherCountry: '',
       launchedOrganically: 'yes',
-      boxDetails: [],
+      boxDetails: [
+        'date',
+        'box_id',
+        'zip_code',
+        'picture',
+        'general_location',
+        'launched_organically',
+        'message',
+      ],
     },
     resolver: yupResolver(schema),
     delayError: 750,
@@ -131,6 +144,10 @@ const ExportCSVForm = ({ formID }) => {
     if (watchAllFields.zipOption === 'zip-code-all') {
       setValue('zipCode', '');
       clearErrors('zipCode');
+    }
+
+    if (watchAllFields.countryOption === 'country-all') {
+      setValue('otherCountry', '');
     }
 
     if (watchAllFields.dateOption === 'date-all') {
@@ -308,6 +325,29 @@ const ExportCSVForm = ({ formID }) => {
                           value: 'zip-code-custom',
                           setAdditionalValueInput: customZipInputToggle,
                           additionalValue: getValues('zipCode'),
+                        },
+                      ]}
+                      isHeader={false}
+                      isInPlane={true}
+                      inputValue={value}
+                      setValue={onChange}
+                    />
+                  )}
+                />
+
+                <Controller
+                  control={control}
+                  name="countryOption"
+                  render={({ field: { value, onChange } }) => (
+                    <AccordionTemplate
+                      headerText="Country"
+                      options={[
+                        { name: 'All', value: 'country-all' },
+                        {
+                          name: 'Other',
+                          value: 'other-country',
+                          setAdditionalValueInput: countryOptionsToggle,
+                          additionalValue: getValues('otherCountry'),
                         },
                       ]}
                       isHeader={false}
@@ -546,6 +586,36 @@ const ExportCSVForm = ({ formID }) => {
                     {...register('zipCode')}
                   />
                 )}
+              </FormControl>
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
+        <Drawer onToggle={countryOptionsToggle} isOpen={countryOptionsOpen} size="full">
+          <DrawerContent>
+            <ChevronLeftIcon
+              className={styles['back-button']}
+              boxSize={7}
+              onClick={() => (isValid ? countryOptionsToggle() : undefined)}
+            />
+            <DrawerHeader className={styles['additional-input-header']}>Country</DrawerHeader>
+            <DrawerBody>
+              <FormControl isInvalid={errors?.sortBy}>
+                <FormLabel htmlFor="country">Country</FormLabel>
+                <Controller
+                  id="country"
+                  name="countryChoices"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <CountryDropdown
+                      defaultOptionLabel="All"
+                      defaultValue="country-all"
+                      value={value}
+                      onChange={onChange}
+                      className={styles['custom-input']}
+                      // {...register('otherCountry')}
+                    />
+                  )}
+                />
               </FormControl>
             </DrawerBody>
           </DrawerContent>

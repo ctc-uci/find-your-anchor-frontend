@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm, useWatch } from 'react-hook-form';
@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import DatePicker from 'react-datepicker';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import * as yup from 'yup';
+import { CountryDropdown } from 'react-country-region-selector';
 
 import {
   FormControl,
@@ -84,8 +85,17 @@ const ExportCSVForm = ({ formID }) => {
       endDate: '',
       zipOption: 'zip-code-all',
       zipCode: '',
+      countryOption: 'country-all',
       launchedOrganically: 'yes',
-      boxDetails: [],
+      boxDetails: [
+        'date',
+        'box_id',
+        'zip_code',
+        'picture',
+        'general_location',
+        'launched_organically',
+        'message',
+      ],
     },
     resolver: yupResolver(schema),
     delayError: 750,
@@ -332,6 +342,29 @@ const ExportCSVForm = ({ formID }) => {
                     />
                   )}
                   <p className={styles['error-message']}>{errors.zipCode?.message}</p>
+                </div>
+              </FormControl>
+            </div>
+            <div className={styles['filter-choices']}>
+              <FormControl className={styles['filter-label-select']} isInvalid={errors?.sortBy}>
+                <FormLabel htmlFor="country">Country</FormLabel>
+                <div className={styles['country-container']}>
+                  <Controller
+                    id="country"
+                    name="countryChoices"
+                    control={control}
+                    // eslint-disable-next-line no-unused-vars
+                    render={({ field: { onChange, value, ref } }) => (
+                      <CountryDropdown
+                        className={styles['country-box-options']}
+                        defaultOptionLabel="All"
+                        defaultValue="country-all"
+                        value={value}
+                        onChange={onChange}
+                        // {...register('countryOption')}
+                      />
+                    )}
+                  />
                 </div>
               </FormControl>
             </div>
