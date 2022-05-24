@@ -5,11 +5,17 @@ const ChakraTheme = extendTheme({
     button: {
       500: 'var(--color-teal)',
     },
+    darkButton: {
+      500: 'var(--color-dark-blue)',
+    },
     warning: {
       500: 'var(--color-warning)',
     },
     cancel: {
       500: 'var(--color-light-gray)',
+    },
+    'request-changes': {
+      500: 'var(--color-request-changes)',
     },
   },
   textStyles: {

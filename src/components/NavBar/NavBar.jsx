@@ -33,6 +33,7 @@ import aboutIcon from '../../assets/navBarIcons/about-icon.svg';
 import admingLoginIcon from '../../assets/navBarIcons/admin-login-icon.svg';
 import foundBoxIcon from '../../assets/navBarIcons/found-box-icon.svg';
 import launchBoxIcon from '../../assets/navBarIcons/launch-box-icon.svg';
+import ChakraTheme from '../../common/ChakraTheme';
 
 const NavBar = ({ isAdmin }) => {
   const isMobile = useMobileWidth();
@@ -176,7 +177,7 @@ const NavBar = ({ isAdmin }) => {
   );
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={ChakraTheme}>
       <Flex minWidth="100%" boxShadow="md" alignItems="center" gap="2">
         <Box p="1">
           <Link as={NavLink} to="/">
