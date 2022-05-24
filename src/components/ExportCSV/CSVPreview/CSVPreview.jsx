@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Tbody, Thead, Th, Tr, Text } from '@chakra-ui/react';
 import { useTable, usePagination } from 'react-table';
@@ -9,7 +9,7 @@ import renameProperty from '../ExportCSVUtils';
 import TablePagination from '../../../common/TablePagination/TablePagination';
 
 // this component is used for Export CSV
-const CSVPreview = ({ formValues, selectedPageSize }) => {
+const CSVPreview = ({ formValues }) => {
   const columns = useMemo(
     () =>
       Object.keys(formValues[0]).map(property => {
@@ -31,7 +31,6 @@ const CSVPreview = ({ formValues, selectedPageSize }) => {
     gotoPage,
     nextPage,
     previousPage,
-    setPageSize,
     state: { pageIndex, pageSize },
   } = useTable(
     {
@@ -41,11 +40,6 @@ const CSVPreview = ({ formValues, selectedPageSize }) => {
     },
     usePagination,
   );
-
-  // this is used to set the number of rows to display per page
-  useEffect(() => {
-    setPageSize(selectedPageSize);
-  }, [selectedPageSize]);
 
   return (
     <div className={styles['csv-preview']}>
@@ -91,7 +85,6 @@ const CSVPreview = ({ formValues, selectedPageSize }) => {
 
 CSVPreview.propTypes = {
   formValues: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])).isRequired,
-  selectedPageSize: PropTypes.number.isRequired,
 };
 
 export default CSVPreview;
