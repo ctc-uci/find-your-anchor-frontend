@@ -5,7 +5,7 @@ import SuccessCheckIcon from '../../../assets/Check.png';
 import styles from './SuccessModalContent.module.css';
 import useMobileWidth from '../../../common/useMobileWidth';
 
-const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile }) => {
+const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile, isLoading }) => {
   const isMobile = useMobileWidth();
 
   const uploadNewFile = () => {
@@ -28,7 +28,7 @@ const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile }) => {
           <Button colorScheme="darkButton" onClick={uploadNewFile}>
             Upload New File
           </Button>
-          <Button type="submit" colorScheme="teal">
+          <Button type="submit" colorScheme="teal" isLoading={isLoading}>
             Add to Map
           </Button>
           <Button colorScheme="button" onClick={viewFile}>
@@ -62,6 +62,7 @@ const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile }) => {
 SuccessModalContent.propTypes = {
   setIsUploadingNewFile: PropTypes.func.isRequired,
   onEditViewFile: PropTypes.func.isRequired,
+  isLoading: PropTypes.func.isRequired,
 };
 
 export default SuccessModalContent;

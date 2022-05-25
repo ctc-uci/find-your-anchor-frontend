@@ -83,11 +83,14 @@ const UploadCSV = ({ isOpen, onClose }) => {
 
   const addToMap = async e => {
     e.preventDefault();
+    setIsLoading(true);
+
     try {
       // if no errors with any of the rows, upload all boxes
       await FYABackend.post('/anchorBox/boxes', formDatas);
       setIsLoading(false);
       navigate('/');
+      onCloseModal();
       showToast({
         title: `${CSVFilename} added to Map`,
         message: `Successfully added ${formDatas.length} Boxes To Map`,
@@ -112,7 +115,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
     <CommonModal isOpen={isOpen} onClose={onCloseModal} className={styles['common-modal']}>
       <form onSubmit={addToMap}>
         {(() => {
-          if (isLoading) {
+          if (isUploadingNewFile && isLoading) {
             return <div className={styles['loading-text']}>Uploading...</div>;
           }
           if (isUploadingNewFile) {
@@ -123,6 +126,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
               <SuccessModalContent
                 setIsUploadingNewFile={setIsUploadingNewFile}
                 onEditViewFile={onEditViewFile}
+                isLoading={isLoading}
               />
             );
           }
