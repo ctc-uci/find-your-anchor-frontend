@@ -3,7 +3,14 @@ import postalCodes from 'postal-codes-js';
 import countryList from 'react-select-country-list';
 import { renderEmail } from 'react-html-email';
 
-const baseURL = `${process.env.REACT_APP_HOST}:3050/api`;
+let baseURL = '';
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  // dev code
+  baseURL = `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}`;
+} else {
+  // production code
+  baseURL = `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api`;
+}
 
 // Import this wherever you make calls to backend.
 export const FYABackend = axios.create({
