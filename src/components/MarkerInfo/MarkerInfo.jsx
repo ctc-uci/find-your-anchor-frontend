@@ -4,6 +4,7 @@ import { CloseIcon } from '@chakra-ui/icons';
 import styles from './MarkerInfo.module.css';
 import BoxList from './BoxList/BoxList';
 import BoxInfo from './BoxInfo/BoxInfo';
+import useMobileWidth from '../../common/useMobileWidth';
 
 const MarkerInfo = ({
   selectedCountry,
@@ -20,6 +21,7 @@ const MarkerInfo = ({
   boxListPageIndex,
   setBoxListPageIndex,
 }) => {
+  const isMobile = useMobileWidth();
   // This function clears the selected zip code/country states (called when the user exits out of the right side bar)
   const clearSelectedInfo = () => {
     closeMarkerInfo();
@@ -34,7 +36,9 @@ const MarkerInfo = ({
           !selectedBox ? styles['right-side-bar-box-list'] : styles['right-side-bar-box-info']
         }`}
       >
-        <CloseIcon boxSize={7} className={styles['close-button']} onClick={clearSelectedInfo} />
+        {!isMobile && (
+          <CloseIcon boxSize={7} className={styles['close-button']} onClick={clearSelectedInfo} />
+        )}
         {selectedBox ? (
           <BoxInfo
             selectedBox={selectedBox}
