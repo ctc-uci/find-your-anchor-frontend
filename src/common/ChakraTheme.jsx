@@ -1,6 +1,23 @@
 import { extendTheme } from '@chakra-ui/react';
 
 const ChakraTheme = extendTheme({
+  colors: {
+    button: {
+      500: 'var(--color-teal)',
+    },
+    darkButton: {
+      500: 'var(--color-dark-blue)',
+    },
+    warning: {
+      500: 'var(--color-warning)',
+    },
+    cancel: {
+      500: 'var(--color-light-gray)',
+    },
+    'request-changes': {
+      500: 'var(--color-request-changes)',
+    },
+  },
   textStyles: {
     'header-1': {
       fontFamily: 'Inter, sans-serif',

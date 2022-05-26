@@ -5,7 +5,7 @@ import SuccessCheckIcon from '../../../assets/Check.png';
 import styles from './SuccessModalContent.module.css';
 import useMobileWidth from '../../../common/useMobileWidth';
 
-const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile }) => {
+const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile, isLoading }) => {
   const isMobile = useMobileWidth();
 
   const uploadNewFile = () => {
@@ -21,17 +21,17 @@ const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile }) => {
     return (
       <div className={styles['success-modal-content']}>
         <Image mb={7} boxSize="90px" src={SuccessCheckIcon} alt="Success Icon" />
-        <Text mb={5} className={styles['success-modal-text']}>
+        <Text mb={5} textStyle="header-1">
           File Uploaded Successfully
         </Text>
         <Flex gap={10} mt={10}>
-          <Button color="white" bg="#1F2F38" onClick={uploadNewFile}>
+          <Button colorScheme="darkButton" onClick={uploadNewFile}>
             Upload New File
           </Button>
-          <Button type="submit" colorScheme="teal">
+          <Button type="submit" colorScheme="teal" isLoading={isLoading}>
             Add to Map
           </Button>
-          <Button color="white" bg="#345E80" onClick={viewFile}>
+          <Button colorScheme="button" onClick={viewFile}>
             View File
           </Button>
         </Flex>
@@ -43,7 +43,7 @@ const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile }) => {
     <Flex flexDirection="column" justifyContent="space-between" gap="15px" marginTop="20px">
       <Flex gap="10px" marginTop="4px">
         <Image boxSize="30px" src={SuccessCheckIcon} alt="Success Icon" />
-        <Text fontSize="xl" fontWeight="bold">
+        <Text textStyle="subheader" fontWeight="bold">
           File Uploaded Successfully
         </Text>
       </Flex>
@@ -51,7 +51,7 @@ const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile }) => {
         <Button type="submit" colorScheme="teal">
           Add to Map
         </Button>
-        <Button color="white" bg="#345E80" onClick={viewFile}>
+        <Button colorScheme="button" onClick={viewFile}>
           View File
         </Button>
       </Flex>
@@ -62,6 +62,7 @@ const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile }) => {
 SuccessModalContent.propTypes = {
   setIsUploadingNewFile: PropTypes.func.isRequired,
   onEditViewFile: PropTypes.func.isRequired,
+  isLoading: PropTypes.func.isRequired,
 };
 
 export default SuccessModalContent;

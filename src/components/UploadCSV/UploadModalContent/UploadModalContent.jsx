@@ -16,7 +16,7 @@ const UploadModalContent = ({ setCSVFile, onUpload }) => {
       {isMobile && (
         <IconButton
           background="transparent"
-          color="black"
+          color="var(--color-black)"
           icon={<ChevronLeftIcon h={50} w={50} />}
           onClick={() => navigate('/')}
           className={styles['upload-modal-back-button']}
@@ -27,8 +27,7 @@ const UploadModalContent = ({ setCSVFile, onUpload }) => {
       <Button
         className={styles['upload-modal-button']}
         size="md"
-        color="white"
-        bg="#345E80"
+        colorScheme="button"
         onClick={e => onUpload(e)}
         isFullWidth={isMobile}
       >

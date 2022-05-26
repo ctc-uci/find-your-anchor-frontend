@@ -23,13 +23,15 @@ const CSVPreview = ({ formValues }) => {
               <Tr>
                 {/* eslint-disable react/no-array-index-key */}
                 {Object.keys(formValues[0]).map((property, index) => (
-                  <Th key={index}>{renameProperty(property)}</Th>
+                  <Th key={index} resize={false}>
+                    {renameProperty(property)}
+                  </Th>
                 ))}
               </Tr>
             </Thead>
             <Tbody>
               {formValues.map(data => (
-                <ExportCSVRow key={data.box_id} data={data} />
+                <ExportCSVRow key={data.box_id} data={data} resize={false} />
               ))}
             </Tbody>
           </Table>

@@ -7,7 +7,7 @@ import styles from './ExportCSVRow.module.css';
 
 const ExportCSVRow = ({ data }) => {
   return (
-    <Tr key={data.box_id}>
+    <Tr key={data.box_id} resize={false}>
       {/* eslint-disable react/no-array-index-key */}
       {Object.entries(data).map(([property, value], index) => {
         if (property === 'launched_organically') {

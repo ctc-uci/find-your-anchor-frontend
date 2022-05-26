@@ -8,7 +8,7 @@ import useMobileWidth from '../../../common/useMobileWidth';
 const ErrorModalContent = ({
   CSVFileName,
   setIsUploadingNewFile,
-  uploadErrors,
+  numUploadErrors,
   onEditViewFile,
 }) => {
   const isMobile = useMobileWidth();
@@ -25,21 +25,19 @@ const ErrorModalContent = ({
   if (!isMobile) {
     return (
       <div className={styles['error-modal-content']}>
-        <WarningIcon alt="Icon" boxSize="70px" color="red" marginBottom="20px" />
-        <Text className={styles['error-modal-text']}>Oops!</Text>
+        <WarningIcon alt="Icon" boxSize="70px" color="var(--color-warning)" marginBottom="20px" />
+        <Text textStyle="header-1">Oops!</Text>
         <p>
           {' '}
-          There were <span className={styles['error-modal-red-text']}>
-            {uploadErrors.length}
-          </span>{' '}
+          There were <span className={styles['error-modal-red-text']}>{numUploadErrors}</span>{' '}
           errors with the uploaded file:{' '}
         </p>
         <p className={styles['error-modal-file-name']}>{CSVFileName}</p>
         <ButtonGroup className={styles['error-modal-buttons']}>
-          <Button size="md" color="white" bg="#1F2F38" onClick={uploadNewFile}>
+          <Button size="md" colorScheme="darkButton" onClick={uploadNewFile}>
             Upload New File
           </Button>
-          <Button size="md" color="white" bg="#345E80" onClick={viewFile}>
+          <Button size="md" colorScheme="button" onClick={viewFile}>
             View File
           </Button>
         </ButtonGroup>
@@ -55,13 +53,13 @@ const ErrorModalContent = ({
       </Flex>
       <Spacer />
       <span>
-        There were <span className={styles['error-modal-red-text']}>{uploadErrors.length}</span>{' '}
-        errors with the uploaded file:{' '}
+        There were <span className={styles['error-modal-red-text']}>{numUploadErrors}</span> errors
+        with the uploaded file:{' '}
         <span className={styles['error-modal-file-name']}>{CSVFileName}</span>
       </span>
       <Spacer />
       <Flex justifyContent="flex-end">
-        <Button size="md" color="white" bg="#345E80" onClick={viewFile}>
+        <Button size="md" colorScheme="button" onClick={viewFile}>
           View File
         </Button>
       </Flex>
@@ -72,7 +70,7 @@ const ErrorModalContent = ({
 ErrorModalContent.propTypes = {
   CSVFileName: PropTypes.string.isRequired,
   setIsUploadingNewFile: PropTypes.func.isRequired,
-  uploadErrors: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
+  numUploadErrors: PropTypes.number.isRequired,
   onEditViewFile: PropTypes.func.isRequired,
 };
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { ChakraProvider, Button, Slide, IconButton, useDisclosure } from '@chakra-ui/react';
+import { Button, Slide, IconButton, useDisclosure } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 
 import { useNavigate } from 'react-router-dom';
@@ -30,6 +30,9 @@ const Dashboard = () => {
   // This state determines whether an admin is logged in or not
   const [adminIsLoggedIn, setAdminIsLoggedIn] = useState(false);
 
+  // This state determines the box list page index
+  const [boxListPageIndex, setBoxListPageIndex] = useState(1);
+
   // This function is called to set isAdmin
   useEffect(async () => {
     setAdminIsLoggedIn((await getCurrentUser(auth)) !== null);
@@ -48,13 +51,21 @@ const Dashboard = () => {
   // A list containing all unique zip codes stored in Anchor_Box
   const [zipCodeData, setZipCodeData] = useState([]);
   return (
-    <ChakraProvider>
+    <>
       <div className={styles.navbar}>
         <NavBar isAdmin={adminIsLoggedIn} />
       </div>
       <div className={styles['admin-dashboard-container']}>
         <div className={styles['side-bar-and-map-container']}>
-          <Slide className={styles['box-approval-slide']} direction="left" in={boxApprovalIsOpen}>
+          <Slide
+            className={
+              adminIsLoggedIn
+                ? styles['box-approval-slide-admin']
+                : styles['box-approval-slide-general']
+            }
+            direction="left"
+            in={boxApprovalIsOpen}
+          >
             <IconButton
               className={styles['close-button']}
               aria-label="Close Control Panel"
@@ -81,6 +92,7 @@ const Dashboard = () => {
               onBoxApprovalToggle={onBoxApprovalToggle}
               onMarkerInfoToggle={onMarkerInfoToggle}
               markerInfoIsOpen={markerInfoIsOpen}
+              setBoxListPageIndex={setBoxListPageIndex}
             />
           </div>
           {adminIsLoggedIn ? (
@@ -88,6 +100,7 @@ const Dashboard = () => {
               className={`${styles['review-submission-button']} ${styles['admin-button']}`}
               ref={btnRef}
               onClick={handleReviewSubmissionsClicked}
+              colorScheme="button"
             >
               Review Submission
             </Button>
@@ -95,33 +108,42 @@ const Dashboard = () => {
             <Button
               className={`${styles['review-submission-button']} ${styles['general-user-button']}`}
               onClick={() => navigate('/login')}
+              colorScheme="button"
             >
               Admin Login
             </Button>
           )}
-          <div className={`${styles['side-bar']} ${markerInfoIsOpen ? styles['show-info'] : ''}`}>
-            <Slide className={styles['marker-info-slide']} direction="right" in={markerInfoIsOpen}>
-              <MarkerInfo
-                selectedZipCode={selectedZipCode}
-                selectedCountry={selectedCountry}
-                setSelectedZipCode={setSelectedZipCode}
-                setSelectedCountry={setSelectedCountry}
-                setUpdateBoxListSwitch={setUpdateBoxListSwitch}
-                updateBoxListSwitch={updateBoxListSwitch}
-                setSelectedBox={setSelectedBox}
-                selectedBox={selectedBox}
-                adminIsLoggedIn={adminIsLoggedIn}
-                zipCodeData={zipCodeData}
-                setZipCodeData={setZipCodeData}
-                onMarkerInfoToggle={onMarkerInfoToggle}
-                markerInfoIsOpen={markerInfoIsOpen}
-              />
-            </Slide>
-          </div>
-          {!adminIsLoggedIn && <Footer />}
+          <Slide
+            className={
+              adminIsLoggedIn
+                ? styles['marker-info-slide-admin']
+                : styles['marker-info-slide-general']
+            }
+            direction="right"
+            in={markerInfoIsOpen}
+          >
+            <MarkerInfo
+              selectedZipCode={selectedZipCode}
+              selectedCountry={selectedCountry}
+              setSelectedZipCode={setSelectedZipCode}
+              setSelectedCountry={setSelectedCountry}
+              setUpdateBoxListSwitch={setUpdateBoxListSwitch}
+              updateBoxListSwitch={updateBoxListSwitch}
+              setSelectedBox={setSelectedBox}
+              selectedBox={selectedBox}
+              adminIsLoggedIn={adminIsLoggedIn}
+              zipCodeData={zipCodeData}
+              setZipCodeData={setZipCodeData}
+              onMarkerInfoToggle={onMarkerInfoToggle}
+              markerInfoIsOpen={markerInfoIsOpen}
+              boxListPageIndex={boxListPageIndex}
+              setBoxListPageIndex={setBoxListPageIndex}
+            />
+          </Slide>
         </div>
+        {!adminIsLoggedIn && <Footer />}
       </div>
-    </ChakraProvider>
+    </>
   );
 };
 

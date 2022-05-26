@@ -29,7 +29,6 @@ const EditableRow = ({
   isError,
   boxNumberMap,
   updateBoxNumberMap,
-  lineNumber,
   handleDeleteRow,
 }) => {
   const isMobile = useMobileWidth();
@@ -71,12 +70,12 @@ const EditableRow = ({
 
   const handleEditFormSubmitError = () => {
     // Revert update to box map if new box number causes error
-    updateBoxNumberMap(boxNumRef.current, lineNumber, editFormData.boxNumber);
+    updateBoxNumberMap(boxNumRef.current, editFormData.boxNumber);
   };
 
   const onSave = () => {
     boxNumRef.current = Number(getValues('boxNumber'));
-    updateBoxNumberMap(editFormData.boxNumber, lineNumber, boxNumRef.current);
+    updateBoxNumberMap(editFormData.boxNumber, boxNumRef.current);
     if (isFirstRender.current) {
       // this ensures that we are just validating the inputs and not actually editing the form
       handleSubmit(() => {}, handleEditFormSubmitError)();
@@ -123,7 +122,12 @@ const EditableRow = ({
             }}
           />
           {errors?.date && (
-            <Tooltip hasArrow label={errors.date?.message} bg="red.600" {...tooltipMobileProp}>
+            <Tooltip
+              hasArrow
+              label={errors.date?.message}
+              bg="var(--color-warning)"
+              {...tooltipMobileProp}
+            >
               <InputRightElement className={styles['input-right-warning']}>
                 <WarningIcon />
               </InputRightElement>
@@ -141,7 +145,12 @@ const EditableRow = ({
         <InputGroup>
           <Input id="boxNumber" placeholder="12345" name="boxNumber" {...register('boxNumber')} />
           {errors?.boxNumber && (
-            <Tooltip hasArrow label={errors.boxNumber?.message} bg="red.600" {...tooltipMobileProp}>
+            <Tooltip
+              hasArrow
+              label={errors.boxNumber?.message}
+              bg="var(--color-warning)"
+              {...tooltipMobileProp}
+            >
               <InputRightElement className={styles['input-right-warning']}>
                 <WarningIcon />
               </InputRightElement>
@@ -160,7 +169,12 @@ const EditableRow = ({
         <InputGroup>
           <Input id="zipCode" placeholder="e.g. 90210" name="zipCode" {...register('zipCode')} />
           {errors?.zipCode && (
-            <Tooltip hasArrow label={errors.zipCode?.message} bg="red.600" {...tooltipMobileProp}>
+            <Tooltip
+              hasArrow
+              label={errors.zipCode?.message}
+              bg="var(--color-warning)"
+              {...tooltipMobileProp}
+            >
               <InputRightElement className={styles['input-right-warning']}>
                 <WarningIcon />
               </InputRightElement>
@@ -177,9 +191,19 @@ const EditableRow = ({
       <FormControl isInvalid={errors['']?.message}>
         {isMobile && <FormLabel>Country</FormLabel>}
         <InputGroup>
-          <Input id="country" placeholder="e.g. 90210" name="country" {...register('country')} />
+          <Input
+            id="country"
+            placeholder="e.g. United States"
+            name="country"
+            {...register('country')}
+          />
           {errors['']?.message && (
-            <Tooltip hasArrow label={errors['']?.message} bg="red.600" {...tooltipMobileProp}>
+            <Tooltip
+              hasArrow
+              label={errors['']?.message}
+              bg="var(--color-warning)"
+              {...tooltipMobileProp}
+            >
               <InputRightElement className={styles['input-right-warning']}>
                 <WarningIcon />
               </InputRightElement>
@@ -244,10 +268,10 @@ const EditableRow = ({
           onDelete={onDelete}
         />
         <button type="button" onClick={onSave}>
-          <CheckIcon color="#38A169" w={6} h={6} alt="Check Icon" />
+          <CheckIcon color="var(--color-success)" w={6} h={6} alt="Check Icon" />
         </button>
         <button type="button" onClick={onOpenDeleteModal}>
-          <DeleteIcon color="#E53E3E" w={6} h={6} alt="Delete Icon" />
+          <DeleteIcon color="var(--color-warning)" w={6} h={6} alt="Delete Icon" />
         </button>
       </Flex>
     </Flex>
@@ -267,7 +291,6 @@ EditableRow.propTypes = {
   isError: PropTypes.bool.isRequired,
   boxNumberMap: PropTypes.instanceOf(Map).isRequired,
   updateBoxNumberMap: PropTypes.func.isRequired,
-  lineNumber: PropTypes.number.isRequired,
   handleDeleteRow: PropTypes.func.isRequired,
 };
 

@@ -29,18 +29,18 @@ const DeleteBoxModal = ({
   const deleteBox = async () => {
     try {
       const deletedBox = (await FYABackend.get(`/anchorBox/box/${selectedBox}`)).data[0];
-      const deleteRequests = [
-        // Delete the box in Box_History
+      const deletePromises = [
         FYABackend.delete(`/boxHistory/box/${selectedBox}`),
-        // Delete the box in Anchor_Box
         FYABackend.delete(`/anchorBox/${selectedBox}`),
       ];
-      await Promise.allSettled(deleteRequests);
+      await Promise.allSettled(deletePromises);
       // Refetch box list
       const anchorBoxesInZipCode = await FYABackend.get('/anchorBox', {
         params: {
           zipCode: selectedZipCode,
           country: selectedCountry,
+          pageSize: 8,
+          pageIndex: 1,
         },
       });
       // If the box list is now empty, remove marker from map
@@ -98,27 +98,34 @@ const DeleteBoxModal = ({
       const mostRecentTransaction = await FYABackend.get(
         `/boxHistory/mostRecentTransaction/${selectedBox}`,
       );
-      // Delete the most recent transaction for the selected box
-      await FYABackend.delete(
-        `/boxHistory/transaction/${mostRecentTransaction.data[0].transaction_id}`,
-      );
-      // Get the 2nd most recent transaction for the selected box
-      const nextMostRecentTransaction = await FYABackend.get(
-        `/boxHistory/mostRecentTransaction/${selectedBox}`,
-      );
-      const [latitude, longitude] = await getLatLong(selectedZipCode, selectedCountry);
-      // If there is another transaction, update the BoxInfo page
-      if (nextMostRecentTransaction.data.length > 0) {
-        // Copy the most recent transaction to Anchor_Box
-        await FYABackend.put(`/boxHistory/approveBox`, {
-          transactionID: nextMostRecentTransaction.data[0].transaction_id,
-          latitude,
-          longitude,
-          isMostRecentDate: true,
-        });
-        // Update boxInfo to get rid of last transaction
-        setTransactionToggle(!transactionToggle);
-        // Having no 2nd most recent transaction is equivalent to deleting the box
+      if (mostRecentTransaction.data.length > 0) {
+        // Delete the most recent transaction for the selected box
+        await FYABackend.delete(
+          `/boxHistory/transaction/${mostRecentTransaction.data[0].transaction_id}`,
+        );
+        // Get the 2nd most recent transaction for the selected box
+        const nextMostRecentTransaction = await FYABackend.get(
+          `/boxHistory/mostRecentTransaction/${selectedBox}`,
+        );
+        // If there is another transaction, update the BoxInfo page
+        if (nextMostRecentTransaction.data.length > 0) {
+          const [latitude, longitude] = await getLatLong(
+            nextMostRecentTransaction.data[0].zip_code,
+            nextMostRecentTransaction.data[0].country,
+          );
+          // Copy the most recent transaction to Anchor_Box
+          await FYABackend.put(`/boxHistory/approveBox`, {
+            transactionID: nextMostRecentTransaction.data[0].transaction_id,
+            latitude,
+            longitude,
+            isMostRecentDate: true,
+          });
+          // Update boxInfo to get rid of last transaction
+          setTransactionToggle(!transactionToggle);
+          // Having no 2nd most recent transaction is equivalent to deleting the box
+        } else {
+          deleteBox();
+        }
       } else {
         deleteBox();
       }

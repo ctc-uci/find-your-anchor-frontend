@@ -1,4 +1,4 @@
-import { ChakraProvider, Flex, IconButton, Text } from '@chakra-ui/react';
+import { Flex, IconButton, Text } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -11,24 +11,28 @@ const UploadCSVView = () => {
   const navigate = useNavigate();
 
   return (
-    <ChakraProvider>
+    <>
       <Flex direction="column" margin="30px">
-        <Text mb={3} fontSize="xl" fontWeight="500" color={isMobile && '#3182CE'}>
+        <Text color={isMobile && 'var(--color-hyperlink)'} textStyle="subheader">
           {state.filename}
         </Text>
         <Flex ml={-2}>
           {isMobile && (
             <IconButton
               background="transparent"
-              color="black"
+              color="var(--color-black)"
               icon={<ChevronLeftIcon h={9} w={9} />}
               onClick={() => navigate('/')}
             />
           )}
         </Flex>
-        <CSVViewTable rows={state.rows} boxNumberMap={state.boxNumberMap} />
+        <CSVViewTable
+          rows={state.rows}
+          boxNumberMap={state.boxNumberMap}
+          CSVFilename={state.filename}
+        />
       </Flex>
-    </ChakraProvider>
+    </>
   );
 };
 
