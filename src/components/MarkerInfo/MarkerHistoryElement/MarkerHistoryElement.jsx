@@ -7,8 +7,6 @@ import styles from './MarkerHistoryElement.module.css';
 
 // MarkerHistoryElement is a subcomponent of the History section of BoxInfo.
 const MarkerHistoryElement = ({ id, boxLocation, date, pickup, picture }) => {
-  console.log(picture);
-
   return (
     <div className={styles.wrapper} id={`wrapper-${id}`}>
       {/* This div has to be here or else there's too much padding between the connecting lines */}
