@@ -18,7 +18,7 @@ const DeleteBoxModal = ({
   setZipCodeData,
   transactionToggle,
   setTransactionToggle,
-  onMarkerInfoToggle,
+  closeMarkerInfo,
 }) => {
   const { showToast } = useCustomToast();
   const closeModal = () => {
@@ -54,7 +54,7 @@ const DeleteBoxModal = ({
         );
         setSelectedZipCode(null);
         setSelectedCountry(null);
-        onMarkerInfoToggle();
+        closeMarkerInfo();
         // If box list is not empty, decrement the marker's label
       } else {
         // Find the marker inside zipCodeData
@@ -120,6 +120,8 @@ const DeleteBoxModal = ({
             longitude,
             isMostRecentDate: true,
           });
+          setSelectedZipCode(nextMostRecentTransaction.data[0].zip_code);
+          setSelectedCountry(nextMostRecentTransaction.data[0].country);
           // Update boxInfo to get rid of last transaction
           setTransactionToggle(!transactionToggle);
           // Having no 2nd most recent transaction is equivalent to deleting the box
@@ -176,7 +178,7 @@ DeleteBoxModal.propTypes = {
   setZipCodeData: PropTypes.func.isRequired,
   setTransactionToggle: PropTypes.func.isRequired,
   transactionToggle: PropTypes.bool.isRequired,
-  onMarkerInfoToggle: PropTypes.func.isRequired,
+  closeMarkerInfo: PropTypes.func.isRequired,
 };
 
 export default DeleteBoxModal;

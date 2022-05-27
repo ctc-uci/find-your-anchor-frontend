@@ -24,9 +24,9 @@ import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../EditableRow/EditableRow';
 import { FYABackend, formatDate } from '../../../common/utils';
-import CSVViewTablePagination from './CSVViewTablePagination';
 import { useCustomToast } from '../../ToastProvider/ToastProvider';
 import useMobileWidth from '../../../common/useMobileWidth';
+import TablePagination from '../../../common/TablePagination/TablePagination';
 
 const CSVViewTable = ({ rows, boxNumberMap, CSVFilename }) => {
   const isMobile = useMobileWidth();
@@ -227,7 +227,7 @@ const CSVViewTable = ({ rows, boxNumberMap, CSVFilename }) => {
 
   return (
     <form onSubmit={addToMap} className={styles['csv-table-form']}>
-      <Stack direction="row" justify="right" marginTop="-40px" marginBottom="25px">
+      <Stack direction="row" justify="right" marginTop="-40px" marginBottom="25px" gap="30px">
         {!isMobile && (
           <select
             value={pageSize}
@@ -246,8 +246,7 @@ const CSVViewTable = ({ rows, boxNumberMap, CSVFilename }) => {
         <Button
           isLoading={isLoading}
           type="submit"
-          color="white"
-          bg="#345E80"
+          colorScheme="button"
           borderRadius={isMobile ? 'xl' : 'md'}
         >
           Add to Map
@@ -357,13 +356,12 @@ const CSVViewTable = ({ rows, boxNumberMap, CSVFilename }) => {
           </Accordion>
         </div>
       )}
-      <CSVViewTablePagination
+      <TablePagination
         pageLength={pageOptions.length}
         pageIndex={pageIndex}
         pageCount={pageCount}
         pageSize={pageSize}
         pageControl={{
-          setPageSize,
           gotoPage,
           nextPage,
           previousPage,

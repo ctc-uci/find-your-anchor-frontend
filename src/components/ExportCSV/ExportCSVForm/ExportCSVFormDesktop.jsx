@@ -85,7 +85,15 @@ const ExportCSVForm = ({ formID }) => {
       zipOption: 'zip-code-all',
       zipCode: '',
       launchedOrganically: 'yes',
-      boxDetails: [],
+      boxDetails: [
+        'date',
+        'box_id',
+        'zip_code',
+        'picture',
+        'general_location',
+        'launched_organically',
+        'message',
+      ],
     },
     resolver: yupResolver(schema),
     delayError: 750,
@@ -164,8 +172,8 @@ const ExportCSVForm = ({ formID }) => {
         navigate('/export-csv-preview', { state: { rows: res.data } });
       } else {
         showToast({
-          title: 'No Matching Records',
-          message: `There was no records that matched your query`,
+          title: 'Preview Unavailable',
+          message: `No records match your selected filters`,
           toastPosition: 'bottom-right',
           type: 'error',
         });

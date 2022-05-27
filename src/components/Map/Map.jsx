@@ -27,10 +27,9 @@ const Map = memo(
     setSelectedBox,
     zipCodeData,
     setZipCodeData,
-    boxApprovalIsOpen,
-    onBoxApprovalToggle,
-    onMarkerInfoToggle,
-    markerInfoIsOpen,
+    closeBoxApproval,
+    closeMarkerInfo,
+    openMarkerInfo,
     setBoxListPageIndex,
   }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -41,12 +40,12 @@ const Map = memo(
     // 2. Switches PinInformation to box list view
     const handleMarkerClicked = markerObject => {
       // Close the left sidebar if open
-      if (boxApprovalIsOpen) onBoxApprovalToggle();
-      // Update the right sidebar
+      closeBoxApproval();
+      // Change the box list in right sidebar
       setSelectedCountry(markerObject.country);
       setSelectedZipCode(markerObject.zip_code);
       // Open the right sidebar
-      if (!markerInfoIsOpen) onMarkerInfoToggle();
+      openMarkerInfo();
       setSelectedBox(null);
       // Set box list page index to 1
       setBoxListPageIndex(1);
@@ -59,9 +58,10 @@ const Map = memo(
 
     // This function makes it so that when a marker cluser is clicked, the right side bar closes.
     const handleMarkerClusterClicked = () => {
-      // setSelectedCountry(null);
-      // setSelectedZipCode(null);
-      // setSelectedBox(null);
+      closeMarkerInfo();
+      setSelectedCountry(null);
+      setSelectedZipCode(null);
+      setSelectedBox(null);
     };
 
     // Sets zipcodeData to be an object
@@ -116,11 +116,11 @@ const Map = memo(
         // Only show the right sidebar if the user searched for box number (not location)
         if (custom) {
           // Close left sidebar
-          if (boxApprovalIsOpen) onBoxApprovalToggle();
+          closeBoxApproval();
           // Open right sidebar
           setSelectedZipCode(zipCode);
           setSelectedCountry(country);
-          if (!markerInfoIsOpen) onMarkerInfoToggle();
+          openMarkerInfo();
           // Change right sidebar into BoxList view
           setSelectedBox(boxID);
           // Fly to marker with box
@@ -202,7 +202,6 @@ const Map = memo(
                   // Marker click effect
                   click: () => {
                     handleMarkerClicked(markerObject);
-                    // console.log('test');
                   },
                 }}
               >
@@ -236,10 +235,9 @@ Map.propTypes = {
     }),
   ).isRequired,
   setZipCodeData: PropTypes.func.isRequired,
-  boxApprovalIsOpen: PropTypes.bool.isRequired,
-  onBoxApprovalToggle: PropTypes.func.isRequired,
-  onMarkerInfoToggle: PropTypes.bool.isRequired,
-  markerInfoIsOpen: PropTypes.func.isRequired,
+  closeBoxApproval: PropTypes.func.isRequired,
+  openMarkerInfo: PropTypes.func.isRequired,
+  closeMarkerInfo: PropTypes.func.isRequired,
   setBoxListPageIndex: PropTypes.func.isRequired,
 };
 

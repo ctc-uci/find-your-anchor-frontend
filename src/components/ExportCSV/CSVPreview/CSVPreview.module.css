@@ -1,9 +1,9 @@
 .csv-preview-wrapper {
   border: 2px solid #d2dae4;
   width: 100%;
-  height: 620px;
-  margin: 1em 2em 1.4em 0em;
+  margin: 1em 2em 0em 0em;
   padding: 0 20px;
+  height: calc(100vh - 352px);
 }
 
 .scrollable-div {
@@ -62,6 +62,8 @@
   text-transform: none;
   font-size: 1rem;
   letter-spacing: 0;
+  justify-content: center;
+  white-space: nowrap;
   color: black;
 }
 
