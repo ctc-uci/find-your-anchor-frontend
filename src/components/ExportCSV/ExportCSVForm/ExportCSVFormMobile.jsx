@@ -120,7 +120,16 @@ const ExportCSVForm = ({ formID }) => {
       countryOption: 'country-all',
       country: '',
       launchedOrganically: 'yes',
-      boxDetails: [],
+      boxDetails: [
+        'date',
+        'box_id',
+        'zip_code',
+        'picture',
+        'general_location',
+        'launched_organically',
+        'message',
+        'country',
+      ],
     },
     resolver: yupResolver(schema),
     delayError: 750,
@@ -620,12 +629,7 @@ const ExportCSVForm = ({ formID }) => {
           <Button border="1px" borderColor="#CBD5E0" bg="white" onClick={() => navigate('/')}>
             Cancel
           </Button>
-          <Button
-            className={styles['preview-csv-button']}
-            textColor="white"
-            bg="#345E80"
-            type="submit"
-          >
+          <Button textColor="white" bg="#345E80" type="submit">
             Preview CSV
           </Button>
         </div>

@@ -105,6 +105,7 @@ const ExportCSVForm = ({ formID }) => {
         'general_location',
         'launched_organically',
         'message',
+        'country',
       ],
     },
     resolver: yupResolver(schema),
