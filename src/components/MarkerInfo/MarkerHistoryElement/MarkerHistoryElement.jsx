@@ -6,7 +6,9 @@ import foundBoxIcon from '../../../assets/BoxIcons/PickupBoxIcon.svg';
 import styles from './MarkerHistoryElement.module.css';
 
 // MarkerHistoryElement is a subcomponent of the History section of BoxInfo.
-const MarkerHistoryElement = ({ id, boxLocation, date, pickup }) => {
+const MarkerHistoryElement = ({ id, boxLocation, date, pickup, picture }) => {
+  console.log(picture);
+
   return (
     <div className={styles.wrapper} id={`wrapper-${id}`}>
       {/* This div has to be here or else there's too much padding between the connecting lines */}
@@ -22,6 +24,7 @@ const MarkerHistoryElement = ({ id, boxLocation, date, pickup }) => {
       <div className={styles[`text-wrapper`]}>
         <p className={styles['box-location']}>{boxLocation}</p>
         <p className={styles['box-date']}>{date}</p>
+        {picture && <img className={styles['box-history-picture']} src={picture} alt="" />}
       </div>
     </div>
   );
@@ -32,6 +35,7 @@ MarkerHistoryElement.propTypes = {
   boxLocation: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   pickup: PropTypes.bool.isRequired,
+  picture: PropTypes.string.isRequired,
 };
 
 export default MarkerHistoryElement;

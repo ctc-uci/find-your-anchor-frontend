@@ -198,6 +198,7 @@ const BoxInfo = ({
                         boxLocation={box.general_location}
                         date={box.date}
                         pickup={box.pickup}
+                        picture={box.picture}
                       />
                       {pos < boxHistory.length - 1 && (
                         // This line connects the elements in box history together

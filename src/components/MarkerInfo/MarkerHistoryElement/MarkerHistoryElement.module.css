@@ -8,3 +8,15 @@
   padding-left: 10px;
   flex-direction: column;
 }
+
+.box-history-picture {
+  border-radius: 5px;
+  max-width: 300px;
+}
+
+@media screen and (max-width: 768px) {
+  .box-history-picture {
+    border-radius: 5px;
+    max-width: 400px;
+  }
+}
