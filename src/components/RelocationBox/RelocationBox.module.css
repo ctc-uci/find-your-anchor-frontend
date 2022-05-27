@@ -24,7 +24,7 @@
 
 .status-message-approved {
   align-self: center;
-  color: var(--color-approved);
+  color: var(--color-success);
   width: 90%;
 }
 

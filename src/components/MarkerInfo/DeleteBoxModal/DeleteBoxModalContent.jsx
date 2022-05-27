@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@chakra-ui/react';
 import styles from './DeleteBoxModalContent.module.css';
+// Sets zipcodeData to be an object
+// {country : { zipcode, country, latitude, longitude, box_count}}
 
 const DeleteBoxModalContent = ({ deleteBox, deleteTransaction }) => (
   <div className={styles['content-wrapper']}>
@@ -11,6 +13,7 @@ const DeleteBoxModalContent = ({ deleteBox, deleteTransaction }) => (
     </div>
     <div className={styles.buttons}>
       <Button
+        className={styles['delete-last-transaction-button']}
         type="button"
         fontWeight="semibold"
         colorScheme="cancel"
@@ -19,7 +22,13 @@ const DeleteBoxModalContent = ({ deleteBox, deleteTransaction }) => (
       >
         Delete Last Transaction
       </Button>
-      <Button type="button" onClick={deleteBox} colorScheme="warning" fontWeight="semibold">
+      <Button
+        className={styles['delete-entire-box-button']}
+        type="button"
+        onClick={deleteBox}
+        colorScheme="warning"
+        fontWeight="semibold"
+      >
         Delete Entire Box
       </Button>
     </div>

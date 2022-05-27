@@ -28,10 +28,9 @@ const Map = ({
   updateBoxListSwitch,
   zipCodeData,
   setZipCodeData,
-  boxApprovalIsOpen,
-  onBoxApprovalToggle,
-  onMarkerInfoToggle,
-  markerInfoIsOpen,
+  closeBoxApproval,
+  closeMarkerInfo,
+  openMarkerInfo,
   setBoxListPageIndex,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -42,13 +41,13 @@ const Map = ({
   // 2. Switches PinInformation to box list view
   const handleMarkerClicked = markerObject => {
     // Close the left sidebar if open
-    if (boxApprovalIsOpen) onBoxApprovalToggle();
+    closeBoxApproval();
     setSelectedCountry(markerObject.country);
     setSelectedZipCode(markerObject.zip_code);
     // Toggle updateBoxListSwitch, which will update update the box list in the right side bar
     setUpdateBoxListSwitch(!updateBoxListSwitch);
     // Open the right sidebar
-    if (!markerInfoIsOpen) onMarkerInfoToggle();
+    openMarkerInfo();
     setSelectedBox(null);
     // Set box list page index to 1
     setBoxListPageIndex(1);
@@ -59,8 +58,9 @@ const Map = ({
     );
   };
 
-  // This function makes it so that when a marker cluser is clicked, the right side bar closes.
+  // This function makes it so that when a marker cluster is clicked, the right side bar closes.
   const handleMarkerClusterClicked = () => {
+    closeMarkerInfo();
     setSelectedCountry(null);
     setSelectedZipCode(null);
     setSelectedBox(null);
@@ -118,11 +118,11 @@ const Map = ({
       // Only show the right sidebar if the user searched for box number (not location)
       if (custom) {
         // Close left sidebar
-        if (boxApprovalIsOpen) onBoxApprovalToggle();
+        closeBoxApproval();
         // Open right sidebar
         setSelectedZipCode(zipCode);
         setSelectedCountry(country);
-        if (!markerInfoIsOpen) onMarkerInfoToggle();
+        openMarkerInfo();
         // Change right sidebar into BoxList view
         setSelectedBox(boxID);
         // Fly to marker with box
@@ -152,7 +152,6 @@ const Map = ({
     cluster.getAllChildMarkers().forEach(marker => {
       clusterCount += parseInt(marker.options.children.props.children, 10);
     });
-
     return Leaflet.divIcon({
       html: `<span>${clusterCount}</span>`,
       className: 'marker-cluster',
@@ -170,7 +169,7 @@ const Map = ({
       zoom={8}
       scrollWheelZoom
       zoomControl={false}
-      minZoom={2.4}
+      minZoom={2.8}
       maxBounds={[
         [-90, -180],
         [90, 180],
@@ -183,38 +182,34 @@ const Map = ({
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         noWrap
       />
-      <ZoomControl position="bottomright" />
-      {/* Map the marker data into <Marker /> components. These markers are grouped into MarkerClusterGroups by country */}
-      <MarkerClusterGroup
-        iconCreateFunction={clusterIcon}
-        key={1}
-        onClick={() => {
-          handleMarkerClusterClicked();
-        }}
-      >
+      <MarkerClusterGroup iconCreateFunction={clusterIcon} onClick={handleMarkerClusterClicked}>
+        {/* Map the marker data into <Marker /> components. These markers are grouped into MarkerClusterGroups by country */}
         {zipCodeData &&
-          zipCodeData.map(markerObject => (
-            /* eslint-disable react/no-array-index-key */
-            // >
-            <Marker
-              icon={markerIcon}
-              key={markerObject.box_id}
-              position={[markerObject.latitude, markerObject.longitude]}
-              eventHandlers={{
-                // Marker click effect
-                click: () => {
-                  handleMarkerClicked(markerObject);
-                },
-              }}
-            >
-              <Tooltip interactive className="tooltip" direction="top" permanent>
-                {markerObject.box_count}
-              </Tooltip>
-            </Marker>
-          ))}
+          zipCodeData.map(
+            (
+              markerObject /* eslint-disable react/no-array-index-key */, // >
+            ) => (
+              <Marker
+                icon={markerIcon}
+                key={markerObject.box_id}
+                position={[markerObject.latitude, markerObject.longitude]}
+                eventHandlers={{
+                  // Marker click effect
+                  click: () => {
+                    handleMarkerClicked(markerObject);
+                  },
+                }}
+              >
+                <Tooltip interactive className="tooltip" direction="top" permanent>
+                  {markerObject.box_count}
+                </Tooltip>
+              </Marker>
+            ),
+          )}
       </MarkerClusterGroup>
       <LocationSearchField />
       <BoxSearchField />
+      <ZoomControl position="bottomright" />
     </MapContainer>
   );
 };
@@ -235,10 +230,9 @@ Map.propTypes = {
     }),
   ).isRequired,
   setZipCodeData: PropTypes.func.isRequired,
-  boxApprovalIsOpen: PropTypes.bool.isRequired,
-  onBoxApprovalToggle: PropTypes.func.isRequired,
-  onMarkerInfoToggle: PropTypes.bool.isRequired,
-  markerInfoIsOpen: PropTypes.func.isRequired,
+  closeBoxApproval: PropTypes.func.isRequired,
+  openMarkerInfo: PropTypes.func.isRequired,
+  closeMarkerInfo: PropTypes.func.isRequired,
   setBoxListPageIndex: PropTypes.func.isRequired,
 };
 
