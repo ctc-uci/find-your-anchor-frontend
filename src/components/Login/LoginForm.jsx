@@ -81,7 +81,7 @@ const LoginForm = ({ cookies, redirectLink }) => {
           register={register('email')}
           error={errors?.email}
           type="text"
-          placeholder="name@findyouranchor.us"
+          placeholder="celinedion@findyouranchor.us"
           title="FYA Email Address"
         />
         <PasswordInput

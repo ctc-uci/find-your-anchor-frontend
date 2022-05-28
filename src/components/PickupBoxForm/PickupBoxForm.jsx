@@ -129,7 +129,7 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
               <FormLabel htmlFor="boxholderName">Name</FormLabel>
               <Input
                 id="boxholderName"
-                placeholder="John Adams"
+                placeholder="Celine Dion"
                 name="boxholderName"
                 {...register('boxholderName')}
               />
@@ -142,7 +142,7 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
               </FormLabel>
               <Input
                 id="boxholderEmail"
-                placeholder="name@domain.com"
+                placeholder="celinedion@domain.com"
                 name="boxholderEmail"
                 {...register('boxholderEmail')}
               />
