@@ -6,10 +6,12 @@ import { useTable, usePagination } from 'react-table';
 import styles from './CSVPreview.module.css';
 import ExportCSVRow from '../ExportCSVRow/ExportCSVRow';
 import renameProperty from '../ExportCSVUtils';
+import useMobileWidth from '../../../common/useMobileWidth';
 import TablePagination from '../../../common/TablePagination/TablePagination';
 
 // this component is used for Export CSV
 const CSVPreview = ({ formValues }) => {
+  const isMobile = useMobileWidth();
   const columns = useMemo(
     () =>
       Object.keys(formValues[0]).map(property => {
@@ -43,7 +45,10 @@ const CSVPreview = ({ formValues }) => {
 
   return (
     <div className={styles['csv-preview']}>
-      <Text className={styles['csv-preview-title']}>CSV Preview</Text>
+      <div className={styles['csv-preview-header']}>
+        <Text className={styles['csv-preview-title']}>CSV Preview</Text>
+        {isMobile && <Text fontSize="lg">{formValues.length} boxes</Text>}
+      </div>
       <div className={`${styles['csv-preview-wrapper']} ${styles['scrollable-div']}`}>
         {formValues.length > 0 && (
           <Table className={styles['csv-preview']}>

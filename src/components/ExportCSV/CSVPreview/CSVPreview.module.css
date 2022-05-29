@@ -28,6 +28,13 @@
   border-spacing: 0px 20px;
 }
 
+.csv-preview-header {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
 .csv-preview-title {
   font-size: 1.5rem;
   margin-top: 2rem;
@@ -69,4 +76,11 @@
 
 .csv-preview th:first-child {
   padding-left: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .scrollable-div {
+    overflow-y: overlay;
+    max-height: 65vh;
+  }
 }

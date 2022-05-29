@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
-import React from 'react';
+import { React, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { ChevronLeftIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -14,10 +14,7 @@ import {
   FormControl,
   FormLabel,
   Input,
-  // Select,
   Text,
-  // Radio,
-  // RadioGroup,
   Checkbox,
   CheckboxGroup,
   Button,
@@ -31,8 +28,9 @@ import {
   DrawerContent,
   DrawerBody,
   DrawerHeader,
-  Box,
 } from '@chakra-ui/react';
+import { Select as ReactSelect } from 'chakra-react-select';
+import countryList from 'react-select-country-list';
 import AccordionTemplate from '../../../common/CommonAccordionSelector/CommonAccordionSelector';
 import styles from './ExportCSVForm.module.css';
 import { formatDate, FYABackend } from '../../../common/utils';
@@ -57,6 +55,15 @@ const schema = yup
       then: yup.mixed().isValidRange(),
       otherwise: yup.mixed().nullable().notRequired(),
     }),
+    countryOption: yup.string(),
+    country: yup.mixed().when('countryOption', {
+      is: 'country-custom',
+      then: yup.object({
+        label: yup.string(),
+        value: yup.string(),
+      }),
+      otherwise: yup.mixed().nullable().notRequired(),
+    }),
     dateOption: yup.string(),
     singleDate: yup.mixed().when('dateOption', {
       is: 'date-single',
@@ -78,6 +85,7 @@ const schema = yup
 
 const ExportCSVForm = ({ formID }) => {
   const navigate = useNavigate();
+  const countryOptions = useMemo(() => countryList().getData(), []);
 
   const { isOpen: singleDateInputOpen, onToggle: singleDateInputToggle } = useDisclosure();
 
@@ -86,6 +94,8 @@ const ExportCSVForm = ({ formID }) => {
   const { isOpen: rangeDateInputOpen, onToggle: rangeDateInputToggle } = useDisclosure();
 
   const { isOpen: customZipInputOpen, onToggle: customZipInputToggle } = useDisclosure();
+
+  const { isOpen: customCountryInputOpen, onToggle: customCountryInputToggle } = useDisclosure();
 
   const {
     control,
@@ -107,12 +117,23 @@ const ExportCSVForm = ({ formID }) => {
       endDate: '',
       zipOption: 'zip-code-all',
       zipCode: '',
+      countryOption: 'country-all',
+      country: '',
       launchedOrganically: 'yes',
-      boxDetails: [],
+      boxDetails: [
+        'date',
+        'box_id',
+        'zip_code',
+        'picture',
+        'general_location',
+        'launched_organically',
+        'message',
+        'country',
+      ],
     },
     resolver: yupResolver(schema),
     delayError: 750,
-    mode: 'onTouched',
+    mode: 'onChange',
   });
 
   const { showToast } = useCustomToast();
@@ -131,6 +152,11 @@ const ExportCSVForm = ({ formID }) => {
     if (watchAllFields.zipOption === 'zip-code-all') {
       setValue('zipCode', '');
       clearErrors('zipCode');
+    }
+
+    if (watchAllFields.countryOption === 'country-all') {
+      setValue('country', '');
+      clearErrors('country');
     }
 
     if (watchAllFields.dateOption === 'date-all') {
@@ -175,6 +201,8 @@ const ExportCSVForm = ({ formID }) => {
     } else if (data.dateOption === 'date-single') {
       formData.singleDate = formatDate(data.singleDate);
     }
+
+    if (data.countryOption === 'country-custom') formData.country = formData.country.value;
 
     const res = await FYABackend.post('/exportCSV/boxes', formData, {
       headers: {
@@ -320,6 +348,31 @@ const ExportCSVForm = ({ formID }) => {
 
                 <Controller
                   control={control}
+                  name="countryOption"
+                  render={({ field: { value, onChange } }) => (
+                    <AccordionTemplate
+                      headerText="Country"
+                      options={[
+                        { name: 'All', value: 'country-all' },
+                        {
+                          name: 'Custom',
+                          value: 'country-custom',
+                          setAdditionalValueInput: customCountryInputToggle,
+                          additionalValue: getValues('country')
+                            ? getValues('country').label
+                            : undefined,
+                        },
+                      ]}
+                      isHeader={false}
+                      isInPlane={true}
+                      inputValue={value}
+                      setValue={onChange}
+                    />
+                  )}
+                />
+
+                <Controller
+                  control={control}
                   name="launchedOrganically"
                   render={({ field: { value, onChange } }) => (
                     <AccordionTemplate
@@ -373,6 +426,7 @@ const ExportCSVForm = ({ formID }) => {
                           <Checkbox value="date">Date</Checkbox>
                           <Checkbox value="box_id">Box Number</Checkbox>
                           <Checkbox value="zip_code">Zip Code</Checkbox>
+                          <Checkbox value="country">Country</Checkbox>
                           <Checkbox value="picture">Image</Checkbox>
                           <Checkbox value="general_location">Landmarks</Checkbox>
                           <Checkbox value="launched_organically">Launch Type</Checkbox>
@@ -386,11 +440,6 @@ const ExportCSVForm = ({ formID }) => {
             </AccordionItem>
           </Accordion>
         </div>
-        {/* TODO: CSV Preview Flow for Mobile View */}
-        <Box className={styles['preview-csv-button']} onClick={handleSubmit(onSubmit)}>
-          <Text className={styles['csv-form-labels']}>CSV Preview</Text>
-          <ChevronRightIcon boxSize={6} />
-        </Box>
         <Drawer onToggle={customBoxInputToggle} isOpen={customBoxInputOpen} size="full">
           <DrawerContent>
             <ChevronLeftIcon
@@ -550,16 +599,41 @@ const ExportCSVForm = ({ formID }) => {
             </DrawerBody>
           </DrawerContent>
         </Drawer>
-      </form>
 
-      <div className={styles['buttons-container']}>
-        <Button border="1px" borderColor="#CBD5E0" bg="white">
-          Cancel
-        </Button>
-        <Button textColor="white" bg="#345E80">
-          Preview CSV
-        </Button>
-      </div>
+        <Drawer onToggle={customCountryInputToggle} isOpen={customCountryInputOpen} size="full">
+          <DrawerContent>
+            <ChevronLeftIcon
+              className={styles['back-button']}
+              boxSize={7}
+              onClick={() => (isValid ? customCountryInputToggle() : undefined)}
+            />
+            <DrawerHeader className={styles['additional-input-header']}>Country</DrawerHeader>
+            <DrawerBody>
+              <FormControl isInvalid={errors?.sortBy}>
+                <FormLabel htmlFor="country">Custom</FormLabel>
+                {watchAllFields.countryOption === 'country-custom' && (
+                  <Controller
+                    control={control}
+                    name="country"
+                    // eslint-disable-next-line no-unused-vars
+                    render={({ field: { onChange, value, ref } }) => (
+                      <ReactSelect options={countryOptions} value={value} onChange={onChange} />
+                    )}
+                  />
+                )}
+              </FormControl>
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
+        <div className={styles['buttons-container']}>
+          <Button border="1px" borderColor="#CBD5E0" bg="white" onClick={() => navigate('/')}>
+            Cancel
+          </Button>
+          <Button textColor="white" bg="#345E80" type="submit">
+            Preview CSV
+          </Button>
+        </div>
+      </form>
     </div>
   );
 };

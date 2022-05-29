@@ -46,12 +46,14 @@
 }
 
 @media screen and (max-width: 768px) {
-  .buttons-container {
-    justify-content: center;
-    margin: 80% auto 1.4em;
+  .export-csv-wrapper .button-section {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    column-gap: 1em;
+    justify-content: center;
+    gap: 0.6em;
+  }
+
+  .export-csv-wrapper {
+    margin: 1em 2em;
+    max-height: 100vh;
   }
 }
