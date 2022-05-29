@@ -193,7 +193,6 @@ const Map = memo(
           {zipCodeData &&
             zipCodeData.map(markerObject => (
               /* eslint-disable react/no-array-index-key */
-              // >
               <Marker
                 icon={markerIcon}
                 key={markerObject.box_id}
