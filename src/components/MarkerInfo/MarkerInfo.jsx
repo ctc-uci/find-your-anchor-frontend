@@ -11,7 +11,6 @@ const MarkerInfo = ({
   setSelectedZipCode,
   setSelectedCountry,
   setSelectedBox,
-  updateBoxListSwitch,
   selectedBox,
   adminIsLoggedIn,
   zipCodeData,
@@ -54,7 +53,6 @@ const MarkerInfo = ({
             selectedCountry={selectedCountry}
             selectedZipCode={selectedZipCode}
             setSelectedBox={setSelectedBox}
-            updateBoxListSwitch={updateBoxListSwitch}
             boxListPageIndex={boxListPageIndex}
             setBoxListPageIndex={setBoxListPageIndex}
           />
@@ -73,7 +71,6 @@ MarkerInfo.defaultProps = {
 
 MarkerInfo.propTypes = {
   selectedCountry: PropTypes.string,
-  updateBoxListSwitch: PropTypes.bool.isRequired,
   setSelectedZipCode: PropTypes.func.isRequired,
   setSelectedCountry: PropTypes.func.isRequired,
   selectedZipCode: PropTypes.string,

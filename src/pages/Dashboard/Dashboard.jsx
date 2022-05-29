@@ -29,9 +29,6 @@ const Dashboard = () => {
   const [selectedZipCode, setSelectedZipCode] = useState(null);
   // This state contains the currently selected country (set when a user clicks on a map pin)
   const [selectedCountry, setSelectedCountry] = useState(null);
-  // This state determines when to update the box list. This state is inverted whenever a pin is clicked so that box list is updated
-  // See BoxList.jsx for the corresponding useEffect
-  const [updateBoxListSwitch, setUpdateBoxListSwitch] = useState(false);
   // This state determines which view to show in the right side bar (set when a user clicks on a box in the right side bar)
   // Not null: Show the full box info view
   // Null: show the box list view
@@ -92,8 +89,6 @@ const Dashboard = () => {
               setSelectedCountry={setSelectedCountry}
               selectedBox={selectedBox}
               setSelectedBox={setSelectedBox}
-              updateBoxListSwitch={updateBoxListSwitch}
-              setUpdateBoxListSwitch={setUpdateBoxListSwitch}
               zipCodeData={zipCodeData}
               setZipCodeData={setZipCodeData}
               boxApprovalIsOpen={boxApprovalIsOpen}
@@ -136,8 +131,6 @@ const Dashboard = () => {
               selectedCountry={selectedCountry}
               setSelectedZipCode={setSelectedZipCode}
               setSelectedCountry={setSelectedCountry}
-              setUpdateBoxListSwitch={setUpdateBoxListSwitch}
-              updateBoxListSwitch={updateBoxListSwitch}
               setSelectedBox={setSelectedBox}
               selectedBox={selectedBox}
               adminIsLoggedIn={adminIsLoggedIn}
