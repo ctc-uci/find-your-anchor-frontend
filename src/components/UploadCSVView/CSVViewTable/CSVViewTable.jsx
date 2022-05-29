@@ -24,9 +24,9 @@ import styles from './CSVViewTable.module.css';
 import ReadOnlyRow from '../ReadOnlyRow/ReadOnlyRow';
 import EditableRow from '../EditableRow/EditableRow';
 import { FYABackend, formatDate } from '../../../common/utils';
-import CSVViewTablePagination from './CSVViewTablePagination';
 import { useCustomToast } from '../../ToastProvider/ToastProvider';
 import useMobileWidth from '../../../common/useMobileWidth';
+import TablePagination from '../../../common/TablePagination/TablePagination';
 
 const CSVViewTable = ({ rows, boxNumberMap, CSVFilename }) => {
   const isMobile = useMobileWidth();
@@ -356,13 +356,12 @@ const CSVViewTable = ({ rows, boxNumberMap, CSVFilename }) => {
           </Accordion>
         </div>
       )}
-      <CSVViewTablePagination
+      <TablePagination
         pageLength={pageOptions.length}
         pageIndex={pageIndex}
         pageCount={pageCount}
         pageSize={pageSize}
         pageControl={{
-          setPageSize,
           gotoPage,
           nextPage,
           previousPage,

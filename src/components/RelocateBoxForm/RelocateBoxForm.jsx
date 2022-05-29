@@ -144,7 +144,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
               <FormLabel htmlFor="boxholderName">Name</FormLabel>
               <Input
                 id="boxholderName"
-                placeholder="John Adams"
+                placeholder="Celine Dion"
                 name="boxholderName"
                 {...register('boxholderName')}
               />
@@ -157,7 +157,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
               </FormLabel>
               <Input
                 id="boxholderEmail"
-                placeholder="name@domain.com"
+                placeholder="celinedion@domain.com"
                 name="boxholderEmail"
                 {...register('boxholderEmail')}
               />
@@ -245,7 +245,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <FormLabel htmlFor="generalLocation">General Location</FormLabel>
             <Input
               id="generalLocation"
-              placeholder="ex. Santa Monica Pier"
+              placeholder="e.g. Santa Monica Pier"
               name="generalLocation"
               {...register('generalLocation')}
             />

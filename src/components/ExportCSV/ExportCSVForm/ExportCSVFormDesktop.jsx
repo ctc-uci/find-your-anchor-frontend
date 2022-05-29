@@ -192,8 +192,8 @@ const ExportCSVForm = ({ formID }) => {
         navigate('/export-csv-preview', { state: { rows: res.data } });
       } else {
         showToast({
-          title: 'No Matching Records',
-          message: `There was no records that matched your query`,
+          title: 'Preview Unavailable',
+          message: `No records match your selected filters`,
           toastPosition: 'bottom-right',
           type: 'error',
         });
