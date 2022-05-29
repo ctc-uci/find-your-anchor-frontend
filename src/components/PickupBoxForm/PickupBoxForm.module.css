@@ -39,6 +39,7 @@
 
 .submit-button {
   float: right;
+  margin-top: 3%;
 }
 
 .pickup-box-photo-preview-section {
@@ -51,6 +52,8 @@
 
 .verification-sub-label {
   color: var(--text-gray-color);
+  font-style: italic;
+  font-size: 14px;
 }
 
 .pickup-box-info-section-left,

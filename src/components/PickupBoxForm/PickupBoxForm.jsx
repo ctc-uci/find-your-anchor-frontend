@@ -157,7 +157,8 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
                 Box Number Verification
               </FormLabel>
               <p className={styles['verification-sub-label']}>
-                Please upload an image with the box number
+                In order to confirm your box, please include an image of the box number in the upper
+                left hand corner of the box.
               </p>
               <DropZone setFiles={setVerificationFiles} />
             </FormControl>

@@ -113,7 +113,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
         setLoading(true);
         await FYABackend.post('/boxHistory', {
           ...formData,
-          launchedOrganically: formData.dropOffMethod === 'organic-launch',
+          launchedOrganically: formData.dropOffMethod.value === 'organic-launch',
           pickup: false,
           status: 'under review',
           messageStatus: 'pending',
@@ -176,7 +176,8 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
                 Box Number Verification
               </FormLabel>
               <p className={styles['verification-sub-label']}>
-                Please upload an image with the box number
+                In order to confirm your box, please include an image of the box number in the upper
+                upper left hand corner of the box.
               </p>
               <DropZone setFiles={setVerificationFiles} />
             </FormControl>
@@ -251,6 +252,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.generalLocation?.message}</FormErrorMessage>
           </FormControl>
           <br />
+          {!isMobile && <br />}
           <FormControl isInvalid={errors?.country}>
             <FormLabel htmlFor="country" className={styles['required-field']}>
               Country
@@ -266,6 +268,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.country?.label.message}</FormErrorMessage>
           </FormControl>
           <br />
+          {!isMobile && <br />}
           <FormControl isInvalid={errors?.dropOffMethod}>
             <FormLabel htmlFor="dropOffMethod" className={styles['required-field']}>
               Launch Method
@@ -282,8 +285,8 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
                       value: 'Given to Someone',
                     },
                     {
-                      label: 'Dropped off at a location',
-                      value: 'Dropped off at a location',
+                      label: 'Launched at a location',
+                      value: 'organic-launch',
                     },
                   ]}
                   value={value}
@@ -294,6 +297,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.dropOffMethod?.label.message}</FormErrorMessage>
           </FormControl>
           <br />
+          {!isMobile && <br />}
           <FormControl isInvalid={errors?.message}>
             <FormLabel htmlFor="message">Message</FormLabel>
             <Textarea
