@@ -102,7 +102,7 @@ const ForgotPasswordForm = () => {
           register={register('email')}
           error={errors?.email}
           type="text"
-          placeholder="name@findyouranchor.us"
+          placeholder="celinedion@findyouranchor.us"
           title="FYA Email Address"
         />
         <div className={styles['action-panel']}>

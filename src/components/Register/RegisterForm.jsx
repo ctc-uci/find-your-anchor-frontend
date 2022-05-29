@@ -55,14 +55,14 @@ const RegisterForm = ({ email }) => {
           register={register('firstName')}
           error={errors?.firstName}
           type="text"
-          placeholder="Jane"
+          placeholder="Celine"
           title="First Name"
         />
         <TextInput
           register={register('lastName')}
           error={errors?.lastName}
           type="text"
-          placeholder="Doe"
+          placeholder="Dion"
           title="Last Name"
         />
         <TextInput
