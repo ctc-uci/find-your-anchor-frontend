@@ -12,6 +12,8 @@ const MarkerInfo = ({
   setSelectedCountry,
   setSelectedBox,
   selectedBox,
+  setSelectedBoxTransaction,
+  selectedBoxTransaction,
   adminIsLoggedIn,
   zipCodeData,
   setZipCodeData,
@@ -25,6 +27,7 @@ const MarkerInfo = ({
     setSelectedBox(null);
     setSelectedZipCode(null);
     setSelectedCountry(null);
+    setSelectedBoxTransaction(null);
   };
   return (
     <>
@@ -39,6 +42,8 @@ const MarkerInfo = ({
           <BoxInfo
             selectedBox={selectedBox}
             setSelectedBox={setSelectedBox}
+            selectedBoxTransaction={selectedBoxTransaction}
+            setSelectedBoxTransaction={setSelectedBoxTransaction}
             adminIsLoggedIn={adminIsLoggedIn}
             selectedZipCode={selectedZipCode}
             selectedCountry={selectedCountry}
@@ -66,6 +71,7 @@ MarkerInfo.defaultProps = {
   selectedZipCode: null,
   selectedCountry: null,
   selectedBox: null,
+  selectedBoxTransaction: null,
   adminIsLoggedIn: false,
 };
 
@@ -76,6 +82,8 @@ MarkerInfo.propTypes = {
   selectedZipCode: PropTypes.string,
   selectedBox: PropTypes.string,
   setSelectedBox: PropTypes.func.isRequired,
+  selectedBoxTransaction: PropTypes.string,
+  setSelectedBoxTransaction: PropTypes.func.isRequired,
   adminIsLoggedIn: PropTypes.bool,
   zipCodeData: PropTypes.arrayOf(
     PropTypes.shape({
