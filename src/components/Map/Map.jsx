@@ -25,6 +25,7 @@ const Map = memo(
     setSelectedCountry,
     setSelectedZipCode,
     setSelectedBox,
+    setSelectedBoxTransaction,
     zipCodeData,
     setZipCodeData,
     closeBoxApproval,
@@ -47,6 +48,7 @@ const Map = memo(
       // Open the right sidebar
       openMarkerInfo();
       setSelectedBox(null);
+      setSelectedBoxTransaction(null);
       // Set box list page index to 1
       setBoxListPageIndex(1);
       // IMPORTANT: mapState.flyTo(xxx) must be called LAST in order to avoid a moving pin bug
@@ -121,7 +123,8 @@ const Map = memo(
           setSelectedZipCode(zipCode);
           setSelectedCountry(country);
           openMarkerInfo();
-          // Change right sidebar into BoxList view
+          // Change right sidebar into BoxInfo view
+          setSelectedBoxTransaction(null);
           setSelectedBox(boxID);
           // Fly to marker with box
           if (mapState) {
@@ -224,6 +227,7 @@ Map.propTypes = {
   setSelectedCountry: PropTypes.func.isRequired,
   setSelectedZipCode: PropTypes.func.isRequired,
   setSelectedBox: PropTypes.func.isRequired,
+  setSelectedBoxTransaction: PropTypes.func.isRequired,
   zipCodeData: PropTypes.arrayOf(
     PropTypes.shape({
       zip_code: PropTypes.string,

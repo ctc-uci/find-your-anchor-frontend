@@ -101,29 +101,31 @@ const BoxInfo = ({
             boxSize={7}
             onClick={handleBackArrowClicked}
           />
-          {!isMobile && (
-            <img
-              className={styles['desktop-icon']}
-              src={pickup ? foundBoxIcon : launchBoxIcon}
-              alt="box-icon"
-            />
-          )}
-          <div className={styles.title}>
-            <div className={styles['icon-number-wrapper']}>
-              {isMobile && (
-                <img
-                  className={styles['mobile-icon']}
-                  src={pickup ? foundBoxIcon : launchBoxIcon}
-                  alt="box-icon"
-                />
-              )}
-              <p className={styles['box-number']}>
-                {selectedBoxTransaction && generalLocation
-                  ? generalLocation
-                  : `Box #${selectedBox}`}
-              </p>
+          <div className={styles['header-contents']}>
+            {!isMobile && (
+              <img
+                className={styles['desktop-icon']}
+                src={pickup ? foundBoxIcon : launchBoxIcon}
+                alt="box-icon"
+              />
+            )}
+            <div className={styles.title}>
+              <div className={styles['icon-number-wrapper']}>
+                {isMobile && (
+                  <img
+                    className={styles['mobile-icon']}
+                    src={pickup ? foundBoxIcon : launchBoxIcon}
+                    alt="box-icon"
+                  />
+                )}
+                <p className={styles['box-number']}>
+                  {selectedBoxTransaction && generalLocation
+                    ? generalLocation
+                    : `Box #${selectedBox}`}
+                </p>
+              </div>
+              <div className={styles.date}>{date}</div>
             </div>
-            <div className={styles.date}>{date}</div>
           </div>
         </div>
         <img src={picture} alt="" className={styles.image} />

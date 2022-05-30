@@ -93,6 +93,7 @@ const Dashboard = () => {
               setSelectedCountry={setSelectedCountry}
               selectedBox={selectedBox}
               setSelectedBox={setSelectedBox}
+              setSelectedBoxTransaction={setSelectedBoxTransaction}
               zipCodeData={zipCodeData}
               setZipCodeData={setZipCodeData}
               boxApprovalIsOpen={boxApprovalIsOpen}
