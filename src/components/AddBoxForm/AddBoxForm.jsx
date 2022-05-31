@@ -216,7 +216,7 @@ const AddBoxForm = () => {
           </>
         )}
         <FormControl>
-          <FormLabel htmlFor="message">Message:</FormLabel>
+          <FormLabel htmlFor="message">Message</FormLabel>
           <Textarea
             id="message"
             placeholder="200 characters max"
