@@ -24,6 +24,7 @@ import {
   validateZip,
   validateBoxNumber,
   uploadBoxPhoto,
+  validateDate,
 } from '../../common/FormUtils/boxFormUtils';
 import { FYABackend, formatDate, getLatLong } from '../../common/utils';
 
@@ -35,6 +36,7 @@ import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
+yup.addMethod(yup.date, 'dateNotInFuture', validateDate);
 const schema = yup
   .object({
     boxNumber: yup
@@ -45,6 +47,7 @@ const schema = yup
       .typeError('Invalid box number'),
     date: yup
       .date()
+      .dateNotInFuture()
       .required('Invalid date, please enter a valid date')
       .typeError('Invalid date, please enter a valid date'),
     zipcode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),
@@ -213,7 +216,7 @@ const AddBoxForm = () => {
           </>
         )}
         <FormControl>
-          <FormLabel htmlFor="message">Message:</FormLabel>
+          <FormLabel htmlFor="message">Message</FormLabel>
           <Textarea
             id="message"
             placeholder="200 characters max"
@@ -227,6 +230,7 @@ const AddBoxForm = () => {
         <br />
         <FormControl>
           <FormLabel htmlFor="comments">Additional Comments</FormLabel>
+          <p className={styles['additional-comments-sub-label']}>For internal use only</p>
           <Textarea
             id="message"
             placeholder="200 characters max"
@@ -270,6 +274,7 @@ const AddBoxForm = () => {
               <FormErrorMessage>{errors.boxNumber?.message}</FormErrorMessage>
             </FormControl>
             <br />
+            <br />
           </>
         )}
         <FormControl isInvalid={errors?.launchedOrganically}>
@@ -307,6 +312,7 @@ const AddBoxForm = () => {
           <FormErrorMessage>{errors.launchedOrganically?.message}</FormErrorMessage>
         </FormControl>
         <br />
+        {!isMobile && <br />}
         <FormControl>
           <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
           <DropZone setFiles={setFiles} />
@@ -325,17 +331,15 @@ const AddBoxForm = () => {
           </div>
         </div>
         <br />
-        <div className={styles['submit-button']}>
-          <Button
-            type="submit"
-            size="md"
-            colorScheme="button"
-            isLoading={loading}
-            loadingText="Submitting"
-          >
-            Submit
-          </Button>
-        </div>
+        <Button
+          type="submit"
+          className={styles['submit-button']}
+          colorScheme="button"
+          isLoading={loading}
+          loadingText="Submitting"
+        >
+          Submit
+        </Button>
       </div>
     </form>
   );

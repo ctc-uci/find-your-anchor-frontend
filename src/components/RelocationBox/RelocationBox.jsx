@@ -534,7 +534,7 @@ const RelocationBox = ({
                       {...register('dropOffMethod')}
                     >
                       <option value="given-to-someone">Given to Someone</option>
-                      <option value="organic-launch">Dropped at location</option>
+                      <option value="organic-launch">Launched at a location</option>
                     </Select>
                     <FormErrorMessage>{errors.dropOffMethod?.message}</FormErrorMessage>
                   </FormControl>

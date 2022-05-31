@@ -121,6 +121,10 @@
   margin-right: 80%;
 }
 
+.additional-comments-sub-label {
+  color: var(--text-gray-color);
+}
+
 @media screen and (max-width: 768px) {
   .add-box-form {
     flex-direction: column;
@@ -151,7 +155,9 @@
   }
 
   .submit-button {
-    margin-left: 60%;
+    margin-top: 0%;
+    margin-bottom: 8%;
+    width: 100% !important;
   }
 
   .dropzone {

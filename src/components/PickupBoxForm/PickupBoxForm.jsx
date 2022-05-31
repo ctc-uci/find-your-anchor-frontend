@@ -11,6 +11,7 @@ import {
   uploadBoxPhoto,
   validateZip,
   validateBoxIdInAnchorBox,
+  validateDate,
 } from '../../common/FormUtils/boxFormUtils';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import { formatDate, FYABackend, getLatLong } from '../../common/utils';
@@ -22,29 +23,23 @@ import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 yup.addMethod(yup.number, 'boxExists', validateBoxIdInAnchorBox);
+yup.addMethod(yup.date, 'dateNotInFuture', validateDate);
 const schema = yup
   .object({
     boxholderName: yup.string().typeError('Invalid name'),
-    boxID: yup
-      .number()
-      .boxExists()
-      .required('Invalid box number, please enter a valid box number')
-      .typeError('Invalid box number, please enter a valid box number'),
-    date: yup
-      .date()
-      .required('Invalid date, please enter a valid date')
-      .typeError('Invalid date, please enter a valid date'),
+    boxID: yup.number().boxExists().required('Invalid box number').typeError('Invalid box number'),
+    date: yup.date().dateNotInFuture().required('Invalid date').typeError('Invalid date'),
     boxholderEmail: yup
       .string()
-      .required('Invalid email address, please enter a valid email address')
-      .typeError('Invalid email address, please enter a valid email address'),
-    zipcode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),
+      .required('Invalid email address')
+      .typeError('Invalid email address'),
+    zipcode: yup.string().required('Invalid zipcode'),
     country: yup.object({
-      label: yup.string().required('Invalid country, please select a country'),
-      value: yup.string().required('Invalid country, please select a country'),
+      label: yup.string().required('Invalid country'),
+      value: yup.string().required('Invalid country'),
     }),
-    picture: yup.string().url(),
-    verificationPicture: yup.string().url(),
+    picture: yup.string().url().typeError('Invalid image'),
+    verificationPicture: yup.string().url().typeError('Invalid image'),
   })
   .isZipInCountry()
   .required();
@@ -162,7 +157,8 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
                 Box Number Verification
               </FormLabel>
               <p className={styles['verification-sub-label']}>
-                Please upload an image with the box number
+                In order to confirm your box, please include an image of the box number in the upper
+                left hand corner of the box.
               </p>
               <DropZone setFiles={setVerificationFiles} />
             </FormControl>
@@ -236,6 +232,7 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
           <br />
           <FormControl>
             <FormLabel htmlFor="boxPhoto">Attach Box Photo</FormLabel>
+            {!isMobile && <br />}
             <DropZone setFiles={setFiles} />
           </FormControl>
           <br />

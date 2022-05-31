@@ -12,7 +12,6 @@ import {
   Input,
   Button,
   Textarea,
-  Select,
 } from '@chakra-ui/react';
 import { Select as ChakraReactSelect } from 'chakra-react-select';
 import { FYABackend, formatDate, getLatLong } from '../../common/utils';
@@ -20,6 +19,7 @@ import {
   uploadBoxPhoto,
   validateZip,
   validateBoxIdInAnchorBox,
+  validateDate,
 } from '../../common/FormUtils/boxFormUtils';
 import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -30,36 +30,35 @@ import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 yup.addMethod(yup.number, 'boxExists', validateBoxIdInAnchorBox);
+yup.addMethod(yup.date, 'dateNotInFuture', validateDate);
 const schema = yup
   .object({
     boxholderName: yup.string().typeError('Invalid name'),
     boxholderEmail: yup
       .string()
       .email('Invalid email address')
-      .required('Invalid email address, please enter a valid email address')
-      .typeError('Invalid email address, please enter a valid email address'),
+      .required('Invalid email address')
+      .typeError('Invalid email address'),
     boxID: yup
       .number()
       .boxExists()
-      .min(1, 'Invalid box number, please enter a valid box number')
-      .required('Invalid box number, please enter a valid box number')
-      .typeError('Invalid box number, please enter a valid box number'),
-    date: yup
-      .date()
-      .required('Invalid date, please enter a valid date')
-      .typeError('Invalid date, please enter a valid date'),
-    zipcode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),
+      .min(1, 'Invalid box number')
+      .required('Invalid box number')
+      .typeError('Invalid box number'),
+    date: yup.date().dateNotInFuture().required('Invalid date').typeError('Invalid date'),
+    zipcode: yup.string().required('Invalid zipcode'),
     country: yup.object({
-      label: yup.string().required('Invalid country, please select a country'),
+      label: yup.string().required('Invalid country'),
       value: yup.string(),
     }),
-    generalLocation: yup.string().typeError('Invalid location, please enter a valid location'),
-    dropOffMethod: yup
-      .string()
-      .required('Invalid drop off method, please enter a valid drop off method'),
-    message: yup.string().typeError('Invalid message, please enter a valid message'),
-    picture: yup.string().url(),
-    verificationPicture: yup.string().url(),
+    generalLocation: yup.string().typeError('Invalid location'),
+    dropOffMethod: yup.object({
+      label: yup.string().required('Invalid drop off method'),
+      value: yup.string(),
+    }),
+    message: yup.string().typeError('Invalid message'),
+    picture: yup.string().url().typeError('Invalid image'),
+    verificationPicture: yup.string().url().typeError('Invalid image'),
   })
   .isZipInCountry()
   .required();
@@ -114,7 +113,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
         setLoading(true);
         await FYABackend.post('/boxHistory', {
           ...formData,
-          launchedOrganically: formData.dropOffMethod === 'organic-launch',
+          launchedOrganically: formData.dropOffMethod.value === 'organic-launch',
           pickup: false,
           status: 'under review',
           messageStatus: 'pending',
@@ -177,7 +176,8 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
                 Box Number Verification
               </FormLabel>
               <p className={styles['verification-sub-label']}>
-                Please upload an image with the box number
+                In order to confirm your box, please include an image of the box number in the upper
+                upper left hand corner of the box.
               </p>
               <DropZone setFiles={setVerificationFiles} />
             </FormControl>
@@ -252,6 +252,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.generalLocation?.message}</FormErrorMessage>
           </FormControl>
           <br />
+          {!isMobile && <br />}
           <FormControl isInvalid={errors?.country}>
             <FormLabel htmlFor="country" className={styles['required-field']}>
               Country
@@ -267,17 +268,36 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
             <FormErrorMessage>{errors.country?.label.message}</FormErrorMessage>
           </FormControl>
           <br />
-          <FormControl className={styles['section-wrapper']}>
-            <FormLabel htmlFor="drop-off-method" className={styles['required-field']}>
+          {!isMobile && <br />}
+          <FormControl isInvalid={errors?.dropOffMethod}>
+            <FormLabel htmlFor="dropOffMethod" className={styles['required-field']}>
               Launch Method
             </FormLabel>
-            <Select id="drop-off-method" {...register('dropOffMethod')}>
-              <option value="given-to-someone">Given to Someone</option>
-              <option value="organic-launch">Dropped off at a location</option>
-            </Select>
-            <FormErrorMessage>{errors.dropOffMethod?.message}</FormErrorMessage>
+            <Controller
+              control={control}
+              name="dropOffMethod"
+              // eslint-disable-next-line no-unused-vars
+              render={({ field: { onChange, value, ref } }) => (
+                <ChakraReactSelect
+                  options={[
+                    {
+                      label: 'Given to Someone',
+                      value: 'Given to Someone',
+                    },
+                    {
+                      label: 'Launched at a location',
+                      value: 'organic-launch',
+                    },
+                  ]}
+                  value={value}
+                  onChange={onChange}
+                />
+              )}
+            />
+            <FormErrorMessage>{errors.dropOffMethod?.label.message}</FormErrorMessage>
           </FormControl>
           <br />
+          {!isMobile && <br />}
           <FormControl isInvalid={errors?.message}>
             <FormLabel htmlFor="message">Message</FormLabel>
             <Textarea
