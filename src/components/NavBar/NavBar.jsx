@@ -109,10 +109,18 @@ const NavBar = ({ isAdmin }) => {
     {
       path: '/launch-box-form',
       display: 'Launch a Box',
+      onClick: () => {
+        navigate('/launch-box-form');
+        window.location.reload(false);
+      },
       icon: launchBoxIcon,
     },
     {
       path: '/found-box-form',
+      onClick: () => {
+        navigate('/found-box-form');
+        window.location.reload(false);
+      },
       display: 'Found a Box',
       icon: foundBoxIcon,
     },

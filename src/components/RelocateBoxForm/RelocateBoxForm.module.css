@@ -39,6 +39,7 @@
 
 .submit-button {
   float: right;
+  margin-top: 3%;
 }
 
 .relocate-box-photo-preview-section {
@@ -46,7 +47,9 @@
 }
 
 .verification-sub-label {
-  opacity: 36%;
+  color: var(--text-gray-color);
+  font-style: italic;
+  font-size: 14px;
 }
 
 .relocate-box-photo-preview-section-hidden {
@@ -61,6 +64,8 @@
 .privacy-statement {
   margin-left: 3%;
   padding-bottom: 5%;
+  font-size: 14px;
+  font-style: italic;
 }
 
 @media screen and (max-width: 768px) {
@@ -72,5 +77,9 @@
   .relocate-box-info-section-left,
   .relocate-box-info-section-right {
     width: 80%;
+  }
+
+  .submit-button {
+    width: 100% !important;
   }
 }

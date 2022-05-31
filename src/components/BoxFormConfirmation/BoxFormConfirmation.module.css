@@ -3,7 +3,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 15%;
+  height: 100%;
+  width: 100%;
 }
 
 .confirmation-text,
@@ -28,13 +29,8 @@
 }
 
 @media screen and (max-width: 768px) {
-  .box-form-confirmation-page {
-    display: flex;
-    margin-top: 35%;
-  }
-
   .confirmation-text {
-    margin-top: 15%;
+    margin-top: 10%;
   }
 
   .confirmation-message {

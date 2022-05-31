@@ -11,18 +11,17 @@ const MarkerInfo = ({
   setSelectedZipCode,
   setSelectedCountry,
   setSelectedBox,
-  updateBoxListSwitch,
   selectedBox,
   adminIsLoggedIn,
   zipCodeData,
   setZipCodeData,
-  onMarkerInfoToggle,
+  closeMarkerInfo,
   boxListPageIndex,
   setBoxListPageIndex,
 }) => {
   // This function clears the selected zip code/country states (called when the user exits out of the right side bar)
   const clearSelectedInfo = () => {
-    onMarkerInfoToggle();
+    closeMarkerInfo();
     setSelectedBox(null);
     setSelectedZipCode(null);
     setSelectedCountry(null);
@@ -35,6 +34,7 @@ const MarkerInfo = ({
         }`}
       >
         <CloseIcon boxSize={7} className={styles['close-button']} onClick={clearSelectedInfo} />
+
         {selectedBox ? (
           <BoxInfo
             selectedBox={selectedBox}
@@ -46,14 +46,13 @@ const MarkerInfo = ({
             setSelectedCountry={setSelectedCountry}
             zipCodeData={zipCodeData}
             setZipCodeData={setZipCodeData}
-            onMarkerInfoToggle={onMarkerInfoToggle}
+            closeMarkerInfo={closeMarkerInfo}
           />
         ) : (
           <BoxList
             selectedCountry={selectedCountry}
             selectedZipCode={selectedZipCode}
             setSelectedBox={setSelectedBox}
-            updateBoxListSwitch={updateBoxListSwitch}
             boxListPageIndex={boxListPageIndex}
             setBoxListPageIndex={setBoxListPageIndex}
           />
@@ -72,7 +71,6 @@ MarkerInfo.defaultProps = {
 
 MarkerInfo.propTypes = {
   selectedCountry: PropTypes.string,
-  updateBoxListSwitch: PropTypes.bool.isRequired,
   setSelectedZipCode: PropTypes.func.isRequired,
   setSelectedCountry: PropTypes.func.isRequired,
   selectedZipCode: PropTypes.string,
@@ -89,7 +87,7 @@ MarkerInfo.propTypes = {
     }),
   ).isRequired,
   setZipCodeData: PropTypes.func.isRequired,
-  onMarkerInfoToggle: PropTypes.bool.isRequired,
+  closeMarkerInfo: PropTypes.bool.isRequired,
   boxListPageIndex: PropTypes.number.isRequired,
   setBoxListPageIndex: PropTypes.func.isRequired,
 };

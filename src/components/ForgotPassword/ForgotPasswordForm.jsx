@@ -93,7 +93,7 @@ const ForgotPasswordForm = () => {
       <Text className={styles['form-heading']} textStyle="header-1">
         Forgot Password
       </Text>
-      <Text className={styles['info-text']}>
+      <Text className={styles['info-text']} textStyle="body">
         Please enter your registered FYA email address and we will send you a link to reset your
         password.
       </Text>
@@ -102,14 +102,19 @@ const ForgotPasswordForm = () => {
           register={register('email')}
           error={errors?.email}
           type="text"
-          placeholder="name@findyouranchor.us"
+          placeholder="celinedion@findyouranchor.us"
           title="FYA Email Address"
         />
         <div className={styles['action-panel']}>
           <Button to="/login" className={styles['return-to-login-button']} onClick={returnToLogin}>
             Return to Login
           </Button>
-          <Button className={styles['send-email-button']} type="submit" size="md">
+          <Button
+            className={styles['send-email-button']}
+            type="submit"
+            size="md"
+            colorScheme="button"
+          >
             Send Email
           </Button>
           <CommonConfirmationPage

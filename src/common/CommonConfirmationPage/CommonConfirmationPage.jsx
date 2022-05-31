@@ -7,11 +7,21 @@ import FYALogo from '../../assets/fya-text-logo.svg';
 import FYALogoMobile from '../../assets/fya-logo-large.svg';
 import styles from './CommonConfirmationPage.module.css';
 
-const CommonConfirmationPage = ({ isOpen, confirmationTitle, confirmationText, showFYALogo }) => {
+const CommonConfirmationPage = ({
+  isOpen,
+  confirmationTitle,
+  confirmationText,
+  showFYALogo,
+  isReturnHome,
+}) => {
   const navigate = useNavigate();
 
   const returnToLogin = () => {
     navigate('/login');
+  };
+
+  const returnToHome = () => {
+    navigate('/');
   };
 
   if (isOpen) {
@@ -29,9 +39,15 @@ const CommonConfirmationPage = ({ isOpen, confirmationTitle, confirmationText, s
               {confirmationText}
             </Text>
           </div>
-          <Button className={styles['confirmation-button']} onClick={returnToLogin}>
-            Return to Login
-          </Button>
+          {isReturnHome ? (
+            <Button className={styles['confirmation-button']} onClick={returnToHome}>
+              Return to Home
+            </Button>
+          ) : (
+            <Button className={styles['confirmation-button']} onClick={returnToLogin}>
+              Return to Login
+            </Button>
+          )}
         </div>
       </div>
     );
@@ -41,6 +57,7 @@ const CommonConfirmationPage = ({ isOpen, confirmationTitle, confirmationText, s
 
 CommonConfirmationPage.defaultProps = {
   showFYALogo: true,
+  isReturnHome: false,
 };
 
 CommonConfirmationPage.propTypes = {
@@ -48,6 +65,7 @@ CommonConfirmationPage.propTypes = {
   confirmationTitle: PropTypes.string.isRequired,
   confirmationText: PropTypes.string.isRequired,
   showFYALogo: PropTypes.bool,
+  isReturnHome: PropTypes.bool,
 };
 
 export default CommonConfirmationPage;

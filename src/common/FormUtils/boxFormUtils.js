@@ -33,6 +33,15 @@ function validateBoxNumber() {
   });
 }
 
+function validateDate() {
+  return this.test('dateNotInFuture', async function dateCheck(value) {
+    const { path, createError } = this;
+    return new Date(value) <= Date.now()
+      ? true
+      : createError({ path, message: 'Date cannot be in the future. Please enter a new date.' });
+  });
+}
+
 function validateBoxIdInAnchorBox() {
   return this.test('boxExists', async function boxCheck(value) {
     const { path, createError } = this;
@@ -59,4 +68,4 @@ const uploadBoxPhoto = async file => {
   return imageUrl;
 };
 
-export { validateZip, validateBoxNumber, uploadBoxPhoto, validateBoxIdInAnchorBox };
+export { validateZip, validateBoxNumber, uploadBoxPhoto, validateBoxIdInAnchorBox, validateDate };

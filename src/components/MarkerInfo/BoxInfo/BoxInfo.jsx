@@ -31,7 +31,7 @@ const BoxInfo = ({
   setSelectedCountry,
   zipCodeData,
   setZipCodeData,
-  onMarkerInfoToggle,
+  closeMarkerInfo,
 }) => {
   const isMobile = useMobileWidth();
   const [date, setDate] = useState('');
@@ -195,7 +195,7 @@ const BoxInfo = ({
                       <MarkerHistoryElement
                         key={1}
                         id={pos}
-                        boxLocation={box.general_location}
+                        boxLocation={box.zip_code}
                         date={box.date}
                         pickup={box.pickup}
                       />
@@ -229,7 +229,7 @@ const BoxInfo = ({
                   size="md"
                   onClick={onOpenDeleteBoxModal}
                 >
-                  Delete Box
+                  Delete
                 </Button>
               )}
               <DeleteBoxModal
@@ -245,7 +245,7 @@ const BoxInfo = ({
                 setZipCodeData={setZipCodeData}
                 transactionToggle={transactionToggle}
                 setTransactionToggle={setTransactionToggle}
-                onMarkerInfoToggle={onMarkerInfoToggle}
+                closeMarkerInfo={closeMarkerInfo}
               />
             </div>
           )}
@@ -279,6 +279,6 @@ BoxInfo.propTypes = {
     }),
   ).isRequired,
   setZipCodeData: PropTypes.func.isRequired,
-  onMarkerInfoToggle: PropTypes.func.isRequired,
+  closeMarkerInfo: PropTypes.func.isRequired,
 };
 export default BoxInfo;

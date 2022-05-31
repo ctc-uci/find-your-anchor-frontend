@@ -1,4 +1,4 @@
-import { React } from 'react';
+import { React, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm, useWatch } from 'react-hook-form';
@@ -6,7 +6,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import DatePicker from 'react-datepicker';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import * as yup from 'yup';
-import { CountryDropdown } from 'react-country-region-selector';
 
 import {
   FormControl,
@@ -20,6 +19,8 @@ import {
   CheckboxGroup,
   Button,
 } from '@chakra-ui/react';
+import { Select as ReactSelect } from 'chakra-react-select';
+import countryList from 'react-select-country-list';
 import styles from './ExportCSVForm.module.css';
 import { formatDate, FYABackend } from '../../../common/utils';
 import { isValidRange, isZip, isDate } from './ExportCSVFormValidators';
@@ -35,6 +36,15 @@ const schema = yup
     zipCode: yup.mixed().when('zipOption', {
       is: 'zip-code-custom',
       then: yup.mixed().isZip(),
+      otherwise: yup.mixed().nullable().notRequired(),
+    }),
+    countryOption: yup.string(),
+    country: yup.mixed().when('countryOption', {
+      is: 'country-custom',
+      then: yup.object({
+        label: yup.string().required('Invalid country, please select a country'),
+        value: yup.string().required('Invalid country, please select a country'),
+      }),
       otherwise: yup.mixed().nullable().notRequired(),
     }),
     boxOption: yup.string(),
@@ -64,6 +74,7 @@ const schema = yup
 
 const ExportCSVForm = ({ formID }) => {
   const navigate = useNavigate();
+  const countryOptions = useMemo(() => countryList().getData(), []);
 
   const {
     control,
@@ -95,6 +106,7 @@ const ExportCSVForm = ({ formID }) => {
         'general_location',
         'launched_organically',
         'message',
+        'country',
       ],
     },
     resolver: yupResolver(schema),
@@ -131,6 +143,11 @@ const ExportCSVForm = ({ formID }) => {
       setValue('singleDate', '');
       clearErrors('singleDate');
     }
+
+    if (watchAllFields.countryOption === 'country-all') {
+      setValue('country', '');
+      clearErrors('country');
+    }
   }, [watchAllFields]);
 
   const onSubmit = async data => {
@@ -161,6 +178,8 @@ const ExportCSVForm = ({ formID }) => {
       formData.singleDate = formatDate(data.singleDate);
     }
 
+    if (data.countryOption === 'country-custom') formData.country = formData.country.value;
+
     const res = await FYABackend.post('/exportCSV/boxes', formData, {
       headers: {
         'Content-Type': 'application/json',
@@ -174,8 +193,8 @@ const ExportCSVForm = ({ formID }) => {
         navigate('/export-csv-preview', { state: { rows: res.data } });
       } else {
         showToast({
-          title: 'No Matching Records',
-          message: `There was no records that matched your query`,
+          title: 'Preview Unavailable',
+          message: `No records match your selected filters`,
           toastPosition: 'bottom-right',
           type: 'error',
         });
@@ -348,23 +367,26 @@ const ExportCSVForm = ({ formID }) => {
             <div className={styles['filter-choices']}>
               <FormControl className={styles['filter-label-select']} isInvalid={errors?.sortBy}>
                 <FormLabel htmlFor="country">Country</FormLabel>
-                <div className={styles['country-container']}>
-                  <Controller
+                <div className={styles['input-drop-down']}>
+                  <Select
                     id="country"
-                    name="countryChoices"
-                    control={control}
-                    // eslint-disable-next-line no-unused-vars
-                    render={({ field: { onChange, value, ref } }) => (
-                      <CountryDropdown
-                        className={styles['country-box-options']}
-                        defaultOptionLabel="All"
-                        defaultValue="country-all"
-                        value={value}
-                        onChange={onChange}
-                        // {...register('countryOption')}
-                      />
-                    )}
-                  />
+                    className={styles['select-filter-options']}
+                    {...register('countryOption')}
+                  >
+                    <option value="country-all">All</option>
+                    <option value="country-custom">Custom</option>
+                  </Select>
+                  {watchAllFields.countryOption === 'country-custom' && (
+                    <Controller
+                      control={control}
+                      name="country"
+                      // eslint-disable-next-line no-unused-vars
+                      render={({ field: { onChange, value, ref } }) => (
+                        <ReactSelect options={countryOptions} value={value} onChange={onChange} />
+                      )}
+                    />
+                  )}
+                  <p className={styles['error-message']}>{errors.country?.message}</p>
                 </div>
               </FormControl>
             </div>
@@ -416,6 +438,7 @@ const ExportCSVForm = ({ formID }) => {
                     <Checkbox value="date">Date</Checkbox>
                     <Checkbox value="box_id">Box Number</Checkbox>
                     <Checkbox value="zip_code">Zip Code</Checkbox>
+                    <Checkbox value="country">Country</Checkbox>
                     <Checkbox value="picture">Image</Checkbox>
                     <Checkbox value="general_location">Landmarks</Checkbox>
                     <Checkbox value="launched_organically">Launch Type</Checkbox>

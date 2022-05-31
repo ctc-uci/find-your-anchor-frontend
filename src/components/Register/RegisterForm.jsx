@@ -55,14 +55,14 @@ const RegisterForm = ({ email }) => {
           register={register('firstName')}
           error={errors?.firstName}
           type="text"
-          placeholder="Jane"
+          placeholder="Celine"
           title="First Name"
         />
         <TextInput
           register={register('lastName')}
           error={errors?.lastName}
           type="text"
-          placeholder="Doe"
+          placeholder="Dion"
           title="Last Name"
         />
         <TextInput
@@ -79,7 +79,7 @@ const RegisterForm = ({ email }) => {
           error={errors?.confirmPassword}
           title="Confirm Password"
         />
-        <Button className={styles['register-button']} type="submit" size="md">
+        <Button className={styles['register-button']} type="submit" size="md" colorScheme="button">
           Register
         </Button>
       </form>
