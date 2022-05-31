@@ -73,7 +73,13 @@ const ResetPasswordForm = ({ code }) => {
           <Button to="/login" className={styles['return-to-login-button']} onClick={returnToLogin}>
             Return to Login
           </Button>
-          <Button className={styles['reset-password-button']} type="submit" size="md" align="right">
+          <Button
+            className={styles['reset-password-button']}
+            type="submit"
+            size="md"
+            align="right"
+            colorScheme="button"
+          >
             Reset Password
           </Button>
           <CommonConfirmationPage

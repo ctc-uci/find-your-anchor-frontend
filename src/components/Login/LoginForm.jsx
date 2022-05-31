@@ -90,7 +90,7 @@ const LoginForm = ({ cookies, redirectLink }) => {
           title="Password"
           showForgotPassword
         />
-        <Button className={styles['login-button']} type="submit" size="md">
+        <Button className={styles['login-button']} type="submit" size="md" colorScheme="button">
           Log In
         </Button>
         <Link className={styles['forgot-password']} to="/forgot-password">

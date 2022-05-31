@@ -13,8 +13,6 @@
 
 .register-button {
   width: 100% !important;
-  background-color: #345e80 !important;
-  color: white;
   align-self: flex-end;
 }
 

@@ -79,7 +79,7 @@ const RegisterForm = ({ email }) => {
           error={errors?.confirmPassword}
           title="Confirm Password"
         />
-        <Button className={styles['register-button']} type="submit" size="md">
+        <Button className={styles['register-button']} type="submit" size="md" colorScheme="button">
           Register
         </Button>
       </form>
