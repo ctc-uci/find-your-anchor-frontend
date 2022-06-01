@@ -24,6 +24,8 @@ import useMobileWidth from '../../../common/useMobileWidth';
 const BoxInfo = ({
   selectedBox,
   setSelectedBox,
+  selectedBoxTransaction,
+  setSelectedBoxTransaction,
   adminIsLoggedIn,
   selectedZipCode,
   selectedCountry,
@@ -57,7 +59,9 @@ const BoxInfo = ({
 
   useEffect(async () => {
     if (selectedBox) {
-      const boxData = await FYABackend.get(`/anchorBox/box/${selectedBox}`);
+      const boxData = selectedBoxTransaction
+        ? await FYABackend.get(`/boxHistory/transaction/${selectedBoxTransaction}`)
+        : await FYABackend.get(`/anchorBox/box/${selectedBox}`);
       setDate(boxData.data[0].date);
       setBoxHolderName(boxData.data[0].boxholder_name);
       setBoxHolderEmail(boxData.data[0].boxholder_email);
@@ -70,11 +74,24 @@ const BoxInfo = ({
       );
       setMessage(boxData.data[0].message);
       setPicture(boxData.data[0].picture);
-      const history = await FYABackend.get(`/boxHistory/history/${selectedBox}`);
-      setBoxHistory(history.data);
       setPickup(boxData.data[0].pickup);
+      if (!selectedBoxTransaction) {
+        const history = await FYABackend.get(`/boxHistory/history/${selectedBox}`);
+        setBoxHistory(history.data);
+      } else {
+        setBoxHistory([]);
+      }
     }
-  }, [selectedBox, transactionToggle]);
+  }, [selectedBoxTransaction, selectedBox, transactionToggle]);
+
+  const handleBackArrowClicked = () => {
+    if (selectedBoxTransaction) {
+      setSelectedBoxTransaction(null);
+    } else {
+      setSelectedBox(null);
+    }
+  };
+
   return (
     <>
       <div className={styles['box-info']} onLoad={updateXarrow}>
@@ -82,27 +99,33 @@ const BoxInfo = ({
           <ChevronLeftIcon
             className={styles['back-button']}
             boxSize={7}
-            onClick={() => setSelectedBox(null)}
+            onClick={handleBackArrowClicked}
           />
-          {!isMobile && (
-            <img
-              className={styles['desktop-icon']}
-              src={pickup ? foundBoxIcon : launchBoxIcon}
-              alt="box-icon"
-            />
-          )}
-          <div className={styles.title}>
-            <div className={styles['icon-number-wrapper']}>
-              {isMobile && (
-                <img
-                  className={styles['mobile-icon']}
-                  src={pickup ? foundBoxIcon : launchBoxIcon}
-                  alt="box-icon"
-                />
-              )}
-              <p className={styles['box-number']}>Box #{selectedBox}</p>
+          <div className={styles['header-contents']}>
+            {!isMobile && (
+              <img
+                className={styles['desktop-icon']}
+                src={pickup ? foundBoxIcon : launchBoxIcon}
+                alt="box-icon"
+              />
+            )}
+            <div className={styles.title}>
+              <div className={styles['icon-number-wrapper']}>
+                {isMobile && (
+                  <img
+                    className={styles['mobile-icon']}
+                    src={pickup ? foundBoxIcon : launchBoxIcon}
+                    alt="box-icon"
+                  />
+                )}
+                <p className={styles['box-number']}>
+                  {selectedBoxTransaction && generalLocation
+                    ? generalLocation
+                    : `Box #${selectedBox}`}
+                </p>
+              </div>
+              <div className={styles.date}>{date}</div>
             </div>
-            <div className={styles.date}>{date}</div>
           </div>
         </div>
         <img src={picture} alt="" className={styles.image} />
@@ -193,11 +216,13 @@ const BoxInfo = ({
                   {boxHistory.map((box, pos) => (
                     <>
                       <MarkerHistoryElement
-                        key={1}
+                        key={box.transaction_id}
                         id={pos}
-                        boxLocation={box.zip_code}
+                        transactionID={box.transaction_id}
+                        boxLocation={box.general_location ? box.general_location : box.zip_code}
                         date={box.date}
                         pickup={box.pickup}
+                        setSelectedBoxTransaction={setSelectedBoxTransaction}
                       />
                       {pos < boxHistory.length - 1 && (
                         // This line connects the elements in box history together
@@ -257,6 +282,7 @@ const BoxInfo = ({
 
 BoxInfo.defaultProps = {
   selectedBox: null,
+  selectedBoxTransaction: null,
   selectedZipCode: null,
   selectedCountry: null,
 };
@@ -264,6 +290,8 @@ BoxInfo.defaultProps = {
 BoxInfo.propTypes = {
   selectedBox: PropTypes.string,
   setSelectedBox: PropTypes.func.isRequired,
+  selectedBoxTransaction: PropTypes.string,
+  setSelectedBoxTransaction: PropTypes.func.isRequired,
   adminIsLoggedIn: PropTypes.bool.isRequired,
   selectedZipCode: PropTypes.string,
   selectedCountry: PropTypes.string,

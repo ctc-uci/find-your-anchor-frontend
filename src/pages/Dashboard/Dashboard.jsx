@@ -33,6 +33,10 @@ const Dashboard = () => {
   // Not null: Show the full box info view
   // Null: show the box list view
   const [selectedBox, setSelectedBox] = useState(null);
+
+  // Not null: show the box transaction view
+  const [selectedBoxTransaction, setSelectedBoxTransaction] = useState(null);
+
   // This state determines whether an admin is logged in or not
   const [adminIsLoggedIn, setAdminIsLoggedIn] = useState(false);
 
@@ -89,6 +93,7 @@ const Dashboard = () => {
               setSelectedCountry={setSelectedCountry}
               selectedBox={selectedBox}
               setSelectedBox={setSelectedBox}
+              setSelectedBoxTransaction={setSelectedBoxTransaction}
               zipCodeData={zipCodeData}
               setZipCodeData={setZipCodeData}
               boxApprovalIsOpen={boxApprovalIsOpen}
@@ -133,6 +138,8 @@ const Dashboard = () => {
               setSelectedCountry={setSelectedCountry}
               setSelectedBox={setSelectedBox}
               selectedBox={selectedBox}
+              setSelectedBoxTransaction={setSelectedBoxTransaction}
+              selectedBoxTransaction={selectedBoxTransaction}
               adminIsLoggedIn={adminIsLoggedIn}
               zipCodeData={zipCodeData}
               setZipCodeData={setZipCodeData}
