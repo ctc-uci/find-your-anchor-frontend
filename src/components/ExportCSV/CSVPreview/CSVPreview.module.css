@@ -72,6 +72,8 @@
   justify-content: center;
   white-space: nowrap;
   color: black;
+  justify-content: center;
+  white-space: nowrap;
 }
 
 .csv-preview th:first-child {

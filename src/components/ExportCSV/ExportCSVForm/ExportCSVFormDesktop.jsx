@@ -96,6 +96,7 @@ const ExportCSVForm = ({ formID }) => {
       endDate: '',
       zipOption: 'zip-code-all',
       zipCode: '',
+      countryOption: 'country-all',
       launchedOrganically: 'yes',
       boxDetails: [
         'date',
