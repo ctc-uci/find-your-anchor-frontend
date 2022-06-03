@@ -4,7 +4,7 @@
   "private": false,
   "dependencies": {
     "@angular/common": "^6.0.0",
-    "@angular/core": "^6.0.0",
+    "@angular/core": "^11.0.5",
     "@babel/core": "^7.0.0",
     "@chakra-ui/icons": "^1.1.1",
     "@chakra-ui/provider": "^1.7.7",
