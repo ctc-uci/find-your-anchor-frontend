@@ -9,6 +9,7 @@ import styles from './RegisterForm.module.css';
 import TextInput from '../Inputs/TextInput';
 import PasswordInput from '../Inputs/PasswordInput';
 import CommonConfirmationPage from '../../common/CommonConfirmationPage/CommonConfirmationPage';
+import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 const schema = yup.object({
   firstName: yup.string().required('Please enter your first name'),
@@ -29,8 +30,7 @@ const RegisterForm = ({ email }) => {
   });
 
   const [openConfirmation, setOpenConfirmation] = useState(false);
-
-  const [errorMessage, setErrorMessage] = useState();
+  const { showToast } = useCustomToast();
 
   const onSubmit = async e => {
     try {
@@ -39,9 +39,13 @@ const RegisterForm = ({ email }) => {
       }
       await registerWithEmailAndPassword(e.firstName, e.lastName, email, e.password);
       setOpenConfirmation(true);
-    } catch (error) {
-      setErrorMessage(error.message);
-      console.log(errorMessage);
+    } catch (err) {
+      showToast({
+        title: 'Error Registering Account',
+        message: err.message,
+        toastPosition: 'bottom-right',
+        type: 'error',
+      });
     }
   };
 
