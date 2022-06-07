@@ -7,7 +7,7 @@
 }
 
 .upload-modal-title {
-  color: black;
+  color: var(--color-black);
   font-weight: 600;
   font-size: 2rem;
   margin-bottom: 10px;
