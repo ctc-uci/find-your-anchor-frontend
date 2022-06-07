@@ -12,7 +12,6 @@ const BoxList = ({
   selectedCountry,
   selectedZipCode,
   setSelectedBox,
-  updateBoxListSwitch,
   boxListPageIndex,
   setBoxListPageIndex,
 }) => {
@@ -51,7 +50,7 @@ const BoxList = ({
       });
       setNumPages(totalNumberOfPages.data[0].totalNumberOfPages);
     }
-  }, [updateBoxListSwitch]);
+  }, [selectedZipCode, selectedCountry]);
 
   // Make another request to get the next page of boxes from the backend whenever pagination controls are used
   useEffect(async () => {
@@ -106,7 +105,6 @@ BoxList.propTypes = {
   selectedCountry: PropTypes.string,
   selectedZipCode: PropTypes.string,
   setSelectedBox: PropTypes.func.isRequired,
-  updateBoxListSwitch: PropTypes.bool.isRequired,
   boxListPageIndex: PropTypes.number.isRequired,
   setBoxListPageIndex: PropTypes.func.isRequired,
 };

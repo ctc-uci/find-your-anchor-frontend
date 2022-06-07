@@ -47,7 +47,7 @@ const ModalOne = ({ count, setCount, onClose }) => {
           <div className={styles['input-wrapper']}>
             <Text>Recipient Email Address</Text>
             <Input
-              placeholder="name@findyouranchor.us"
+              placeholder="celinedion@findyouranchor.us"
               value={email}
               size="lg"
               color="var(--color-gray)"
@@ -93,7 +93,7 @@ const ModalOne = ({ count, setCount, onClose }) => {
         <div className={styles['input-wrapper']}>
           <Text>Recipient Email Address</Text>
           <Input
-            placeholder="name@findyouranchor.us"
+            placeholder="celinedion@findyouranchor.us"
             value={email}
             size="lg"
             color="var(--color-gray)"
