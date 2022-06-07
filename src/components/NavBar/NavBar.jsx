@@ -186,7 +186,7 @@ const NavBar = ({ isAdmin }) => {
 
   return (
     <ChakraProvider theme={ChakraTheme}>
-      <Flex minWidth="100%" boxShadow="md" alignItems="center" gap="2">
+      <Flex minWidth="100%" boxShadow="md" alignItems="center" gap="2" className={styles.navbar}>
         <Box p="1">
           <Link as={NavLink} to="/">
             <div className={styles['fya-logo']}>
@@ -212,12 +212,17 @@ const NavBar = ({ isAdmin }) => {
           )}
         </Box>
       </Flex>
-      <Modal isOpen={isMobileNavOpen && isMobile} onClose={onMobileNavClose} size="full">
+      <Modal
+        isOpen={isMobileNavOpen && isMobile}
+        onClose={onMobileNavClose}
+        size="full"
+        motionPreset="slideInRight"
+      >
         <ModalOverlay />
         <ModalContent className={styles['nav-modal']}>
           <ModalCloseButton />
           <ModalBody>
-            <Flex direction="column" p="5">
+            <Flex direction="column" p="5" className={styles['nav-link-container-mobile']}>
               {navElements}
             </Flex>
           </ModalBody>
