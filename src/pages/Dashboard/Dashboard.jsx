@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Button, Slide, IconButton, useDisclosure } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
-
-import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 import Map from '../../components/Map/Map';
 import BoxApproval from '../../components/BoxApproval/BoxApproval';
@@ -12,7 +10,6 @@ import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const {
     isOpen: boxApprovalIsOpen,
     onClose: closeBoxApproval,
@@ -104,7 +101,7 @@ const Dashboard = () => {
               setBoxListPageIndex={setBoxListPageIndex}
             />
           </div>
-          {adminIsLoggedIn ? (
+          {adminIsLoggedIn && (
             <Button
               className={`${styles['review-submission-button']} ${styles['admin-button']}`}
               ref={btnRef}
@@ -112,14 +109,6 @@ const Dashboard = () => {
               colorScheme="button"
             >
               Review Submission
-            </Button>
-          ) : (
-            <Button
-              className={`${styles['review-submission-button']} ${styles['general-user-button']}`}
-              onClick={() => navigate('/login')}
-              colorScheme="button"
-            >
-              Admin Login
             </Button>
           )}
           <Slide

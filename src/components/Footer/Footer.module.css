@@ -14,10 +14,16 @@
 
 .social-icon-text {
   display: block;
+  text-decoration: underline;
+  margin-right: auto;
 }
 
 .social-icon {
-  margin-left: 25px;
+  width: 95%;
+}
+
+.social-icon-link {
+  margin-left: 35px;
 }
 
 @media screen and (max-width: 768px) {
@@ -32,7 +38,10 @@
   }
 
   .social-icon {
+    width: 70%;
+  }
+
+  .social-icon-link {
     margin: 0;
-    width: 65%;
   }
 }
