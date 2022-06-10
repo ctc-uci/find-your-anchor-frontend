@@ -1,5 +1,5 @@
 .csv-preview-wrapper {
-  border: 2px solid #d2dae4;
+  border: 2px solid var(--color-light-blue);
   width: 100%;
   margin: 1em 2em 0em 0em;
   padding: 0 20px;
@@ -48,7 +48,7 @@
   position: relative;
   padding: 8px;
   height: 80px;
-  background-color: #efefef;
+  background-color: var(--color-light-gray);
 }
 
 .csv-preview td:last-child,

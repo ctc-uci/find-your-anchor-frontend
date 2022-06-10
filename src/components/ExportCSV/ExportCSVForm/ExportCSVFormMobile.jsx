@@ -626,10 +626,10 @@ const ExportCSVForm = ({ formID }) => {
           </DrawerContent>
         </Drawer>
         <div className={styles['buttons-container']}>
-          <Button border="1px" borderColor="#CBD5E0" bg="white" onClick={() => navigate('/')}>
+          <Button colorScheme="cancel" color="var(--color-text)" onClick={() => navigate('/')}>
             Cancel
           </Button>
-          <Button textColor="white" bg="#345E80" type="submit">
+          <Button colorScheme="button" className={styles['preview-csv-button']} type="submit">
             Preview CSV
           </Button>
         </div>

@@ -46,7 +46,9 @@ const CSVPreview = ({ formValues }) => {
   return (
     <div className={styles['csv-preview']}>
       <div className={styles['csv-preview-header']}>
-        <Text className={styles['csv-preview-title']}>CSV Preview</Text>
+        <Text textStyle="header-2" className={styles['csv-preview-title']}>
+          CSV Preview
+        </Text>
         {isMobile && <Text fontSize="lg">{formValues.length} boxes</Text>}
       </div>
       <div className={`${styles['csv-preview-wrapper']} ${styles['scrollable-div']}`}>

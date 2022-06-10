@@ -2,9 +2,9 @@
 .one {
   opacity: 0;
   -webkit-animation: dot 1.3s infinite;
-  -webkit-animation-delay: 0.0s;
+  -webkit-animation-delay: 0s;
   animation: dot 1.3s infinite;
-  animation-delay: 0.0s;
+  animation-delay: 0s;
 }
 
 .two {
@@ -25,25 +25,25 @@
 
 @-webkit-keyframes dot {
   0% {
-      opacity: 0;
+    opacity: 0;
   }
   50% {
-      opacity: 0;
+    opacity: 0;
   }
   100% {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
 @keyframes dot {
   0% {
-      opacity: 0;
+    opacity: 0;
   }
   50% {
-      opacity: 0;
+    opacity: 0;
   }
   100% {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
