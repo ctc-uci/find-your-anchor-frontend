@@ -81,7 +81,7 @@ const LoginForm = ({ cookies, redirectLink }) => {
           register={register('email')}
           error={errors?.email}
           type="text"
-          placeholder="name@findyouranchor.us"
+          placeholder="celinedion@findyouranchor.us"
           title="FYA Email Address"
         />
         <PasswordInput
@@ -90,7 +90,7 @@ const LoginForm = ({ cookies, redirectLink }) => {
           title="Password"
           showForgotPassword
         />
-        <Button className={styles['login-button']} type="submit" size="md">
+        <Button className={styles['login-button']} type="submit" size="md" colorScheme="button">
           Log In
         </Button>
         <Link className={styles['forgot-password']} to="/forgot-password">

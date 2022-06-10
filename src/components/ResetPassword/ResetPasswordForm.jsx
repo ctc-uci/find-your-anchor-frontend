@@ -9,6 +9,7 @@ import styles from './ResetPasswordForm.module.css';
 import PasswordInput from '../Inputs/PasswordInput';
 import { confirmNewPassword } from '../../common/auth_utils';
 import CommonConfirmationPage from '../../common/CommonConfirmationPage/CommonConfirmationPage';
+import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 const schema = yup.object({
   newPassword: yup
@@ -32,8 +33,8 @@ const ResetPasswordForm = ({ code }) => {
   });
 
   const [openConfirmation, setOpenConfirmation] = useState(false);
-
   const navigate = useNavigate();
+  const { showToast } = useCustomToast();
 
   const returnToLogin = () => {
     navigate('/login');
@@ -44,8 +45,12 @@ const ResetPasswordForm = ({ code }) => {
       await confirmNewPassword(code, data.newPassword);
       setOpenConfirmation(true);
     } catch (err) {
-      // TODO: replace with toast component
-      console.log(err.message);
+      showToast({
+        title: 'Error Resetting Password',
+        message: err.message,
+        toastPosition: 'bottom-right',
+        type: 'error',
+      });
     }
   };
 
@@ -73,7 +78,13 @@ const ResetPasswordForm = ({ code }) => {
           <Button to="/login" className={styles['return-to-login-button']} onClick={returnToLogin}>
             Return to Login
           </Button>
-          <Button className={styles['reset-password-button']} type="submit" size="md" align="right">
+          <Button
+            className={styles['reset-password-button']}
+            type="submit"
+            size="md"
+            align="right"
+            colorScheme="button"
+          >
             Reset Password
           </Button>
           <CommonConfirmationPage

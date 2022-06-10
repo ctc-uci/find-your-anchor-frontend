@@ -11,21 +11,23 @@ const MarkerInfo = ({
   setSelectedZipCode,
   setSelectedCountry,
   setSelectedBox,
-  updateBoxListSwitch,
   selectedBox,
+  setSelectedBoxTransaction,
+  selectedBoxTransaction,
   adminIsLoggedIn,
   zipCodeData,
   setZipCodeData,
-  onMarkerInfoToggle,
+  closeMarkerInfo,
   boxListPageIndex,
   setBoxListPageIndex,
 }) => {
   // This function clears the selected zip code/country states (called when the user exits out of the right side bar)
   const clearSelectedInfo = () => {
-    onMarkerInfoToggle();
+    closeMarkerInfo();
     setSelectedBox(null);
     setSelectedZipCode(null);
     setSelectedCountry(null);
+    setSelectedBoxTransaction(null);
   };
   return (
     <>
@@ -35,10 +37,13 @@ const MarkerInfo = ({
         }`}
       >
         <CloseIcon boxSize={7} className={styles['close-button']} onClick={clearSelectedInfo} />
+
         {selectedBox ? (
           <BoxInfo
             selectedBox={selectedBox}
             setSelectedBox={setSelectedBox}
+            selectedBoxTransaction={selectedBoxTransaction}
+            setSelectedBoxTransaction={setSelectedBoxTransaction}
             adminIsLoggedIn={adminIsLoggedIn}
             selectedZipCode={selectedZipCode}
             selectedCountry={selectedCountry}
@@ -46,14 +51,13 @@ const MarkerInfo = ({
             setSelectedCountry={setSelectedCountry}
             zipCodeData={zipCodeData}
             setZipCodeData={setZipCodeData}
-            onMarkerInfoToggle={onMarkerInfoToggle}
+            closeMarkerInfo={closeMarkerInfo}
           />
         ) : (
           <BoxList
             selectedCountry={selectedCountry}
             selectedZipCode={selectedZipCode}
             setSelectedBox={setSelectedBox}
-            updateBoxListSwitch={updateBoxListSwitch}
             boxListPageIndex={boxListPageIndex}
             setBoxListPageIndex={setBoxListPageIndex}
           />
@@ -67,17 +71,19 @@ MarkerInfo.defaultProps = {
   selectedZipCode: null,
   selectedCountry: null,
   selectedBox: null,
+  selectedBoxTransaction: null,
   adminIsLoggedIn: false,
 };
 
 MarkerInfo.propTypes = {
   selectedCountry: PropTypes.string,
-  updateBoxListSwitch: PropTypes.bool.isRequired,
   setSelectedZipCode: PropTypes.func.isRequired,
   setSelectedCountry: PropTypes.func.isRequired,
   selectedZipCode: PropTypes.string,
   selectedBox: PropTypes.string,
   setSelectedBox: PropTypes.func.isRequired,
+  selectedBoxTransaction: PropTypes.string,
+  setSelectedBoxTransaction: PropTypes.func.isRequired,
   adminIsLoggedIn: PropTypes.bool,
   zipCodeData: PropTypes.arrayOf(
     PropTypes.shape({
@@ -89,7 +95,7 @@ MarkerInfo.propTypes = {
     }),
   ).isRequired,
   setZipCodeData: PropTypes.func.isRequired,
-  onMarkerInfoToggle: PropTypes.bool.isRequired,
+  closeMarkerInfo: PropTypes.bool.isRequired,
   boxListPageIndex: PropTypes.number.isRequired,
   setBoxListPageIndex: PropTypes.func.isRequired,
 };

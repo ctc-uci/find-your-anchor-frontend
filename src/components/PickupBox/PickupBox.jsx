@@ -42,6 +42,7 @@ const PickupBox = ({
   imageStatus,
   admin,
   verificationPicture,
+  reloadMap,
 }) => {
   // A state for determining whether or not the rejectBoxPopup is open
   // This state is set true when the reject button is clicked
@@ -86,6 +87,7 @@ const PickupBox = ({
       }
       const requests = [
         fetchBoxes('under review', true),
+        reloadMap(),
         sendEmail(boxHolderName, boxHolderEmail, <AdminApprovalProcessEmail type="approved" />),
       ];
       await Promise.all(requests);
@@ -351,6 +353,7 @@ PickupBox.propTypes = {
   imageStatus: PropTypes.string.isRequired,
   admin: PropTypes.string.isRequired,
   verificationPicture: PropTypes.string.isRequired,
+  reloadMap: PropTypes.func.isRequired,
 };
 
 export default PickupBox;

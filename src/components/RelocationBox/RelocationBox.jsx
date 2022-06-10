@@ -83,6 +83,7 @@ const RelocationBox = ({
   imageStatus,
   admin,
   verificationPicture,
+  reloadMap,
 }) => {
   const { showToast } = useCustomToast();
   const countryOptions = useMemo(() => countryList().getData(), []);
@@ -195,6 +196,7 @@ const RelocationBox = ({
       ) {
         // Just in case the country value is null so it doesnt break, we can remove it once we clear the DB and have correct data
         let coordinates = await getLatLong(zipCode, formData.country.value);
+
         if (coordinates.length !== 2) {
           coordinates = [null, null];
         }
@@ -212,6 +214,7 @@ const RelocationBox = ({
         fetchBoxes('under review', false),
         fetchBoxes('pending changes', false),
         fetchBoxes('evaluated', false),
+        reloadMap(),
         sendEmail(
           formData.name,
           formData.email,
@@ -531,7 +534,7 @@ const RelocationBox = ({
                       {...register('dropOffMethod')}
                     >
                       <option value="given-to-someone">Given to Someone</option>
-                      <option value="organic-launch">Dropped at location</option>
+                      <option value="organic-launch">Launched at a location</option>
                     </Select>
                     <FormErrorMessage>{errors.dropOffMethod?.message}</FormErrorMessage>
                   </FormControl>
@@ -701,6 +704,7 @@ RelocationBox.propTypes = {
   imageStatus: PropTypes.string.isRequired,
   admin: PropTypes.string.isRequired,
   verificationPicture: PropTypes.string.isRequired,
+  reloadMap: PropTypes.func.isRequired,
 };
 
 export default RelocationBox;

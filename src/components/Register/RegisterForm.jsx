@@ -9,6 +9,7 @@ import styles from './RegisterForm.module.css';
 import TextInput from '../Inputs/TextInput';
 import PasswordInput from '../Inputs/PasswordInput';
 import CommonConfirmationPage from '../../common/CommonConfirmationPage/CommonConfirmationPage';
+import { useCustomToast } from '../ToastProvider/ToastProvider';
 
 const schema = yup.object({
   firstName: yup.string().required('Please enter your first name'),
@@ -29,8 +30,7 @@ const RegisterForm = ({ email }) => {
   });
 
   const [openConfirmation, setOpenConfirmation] = useState(false);
-
-  const [errorMessage, setErrorMessage] = useState();
+  const { showToast } = useCustomToast();
 
   const onSubmit = async e => {
     try {
@@ -39,9 +39,13 @@ const RegisterForm = ({ email }) => {
       }
       await registerWithEmailAndPassword(e.firstName, e.lastName, email, e.password);
       setOpenConfirmation(true);
-    } catch (error) {
-      setErrorMessage(error.message);
-      console.log(errorMessage);
+    } catch (err) {
+      showToast({
+        title: 'Error Registering Account',
+        message: err.message,
+        toastPosition: 'bottom-right',
+        type: 'error',
+      });
     }
   };
 
@@ -55,14 +59,14 @@ const RegisterForm = ({ email }) => {
           register={register('firstName')}
           error={errors?.firstName}
           type="text"
-          placeholder="Jane"
+          placeholder="Celine"
           title="First Name"
         />
         <TextInput
           register={register('lastName')}
           error={errors?.lastName}
           type="text"
-          placeholder="Doe"
+          placeholder="Dion"
           title="Last Name"
         />
         <TextInput
@@ -79,7 +83,7 @@ const RegisterForm = ({ email }) => {
           error={errors?.confirmPassword}
           title="Confirm Password"
         />
-        <Button className={styles['register-button']} type="submit" size="md">
+        <Button className={styles['register-button']} type="submit" size="md" colorScheme="button">
           Register
         </Button>
       </form>

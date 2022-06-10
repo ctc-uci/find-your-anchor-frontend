@@ -1,3 +1,9 @@
+.navbar {
+  position: sticky;
+  z-index: 900;
+  background-color: var(--color-white);
+}
+
 .navbar-initials {
   height: 48px;
   width: 48px;
@@ -20,6 +26,11 @@
   font-family: var(--chakra-fonts-body) !important;
   text-align: justify;
 }
+
+.nav-link:hover {
+  text-decoration: none !important;
+}
+
 .nav-box {
   display: flex;
   flex-direction: row;
@@ -30,4 +41,14 @@
 }
 .nav-modal {
   border-radius: 0px !important;
+}
+
+.nav-link-container-mobile {
+  margin-top: 25px;
+}
+
+@media screen and (max-width: 768px) {
+  .nav-link {
+    font-size: 1.5em !important;
+  }
 }

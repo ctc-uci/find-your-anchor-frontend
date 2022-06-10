@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Button, Slide, IconButton, useDisclosure } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
-
-import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 import Map from '../../components/Map/Map';
 import BoxApproval from '../../components/BoxApproval/BoxApproval';
@@ -12,21 +10,30 @@ import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-  const { isOpen: boxApprovalIsOpen, onToggle: onBoxApprovalToggle } = useDisclosure();
-  const { isOpen: markerInfoIsOpen, onToggle: onMarkerInfoToggle } = useDisclosure();
+  const {
+    isOpen: boxApprovalIsOpen,
+    onClose: closeBoxApproval,
+    onOpen: openBoxApproval,
+    onToggle: onBoxApprovalToggle,
+  } = useDisclosure();
+  const {
+    isOpen: markerInfoIsOpen,
+    onClose: closeMarkerInfo,
+    onOpen: openMarkerInfo,
+  } = useDisclosure();
 
   // This state contains the currently selected zip code (set when a user clicks on a map pin)
   const [selectedZipCode, setSelectedZipCode] = useState(null);
   // This state contains the currently selected country (set when a user clicks on a map pin)
   const [selectedCountry, setSelectedCountry] = useState(null);
-  // This state determines when to update the box list. This state is inverted whenever a pin is clicked so that box list is updated
-  // See BoxList.jsx for the corresponding useEffect
-  const [updateBoxListSwitch, setUpdateBoxListSwitch] = useState(false);
   // This state determines which view to show in the right side bar (set when a user clicks on a box in the right side bar)
   // Not null: Show the full box info view
   // Null: show the box list view
   const [selectedBox, setSelectedBox] = useState(null);
+
+  // Not null: show the box transaction view
+  const [selectedBoxTransaction, setSelectedBoxTransaction] = useState(null);
+
   // This state determines whether an admin is logged in or not
   const [adminIsLoggedIn, setAdminIsLoggedIn] = useState(false);
 
@@ -41,11 +48,10 @@ const Dashboard = () => {
   // This function opens the left sidebar closes the right sidebar when the review submission button is clicked
   const handleReviewSubmissionsClicked = () => {
     // Close right sidebar
-    if (markerInfoIsOpen) onMarkerInfoToggle();
+    closeMarkerInfo();
     setSelectedZipCode(null);
     setSelectedCountry(null);
-    // Toggle left sidebar
-    onBoxApprovalToggle();
+    openBoxApproval();
   };
   const btnRef = useRef();
   // A list containing all unique zip codes stored in Anchor_Box
@@ -72,7 +78,7 @@ const Dashboard = () => {
               icon={<CloseIcon />}
               onClick={onBoxApprovalToggle}
             />
-            <BoxApproval />
+            <BoxApproval setZipCodeData={setZipCodeData} />
           </Slide>
           <div
             className={`${styles.map} ${
@@ -84,18 +90,18 @@ const Dashboard = () => {
               setSelectedCountry={setSelectedCountry}
               selectedBox={selectedBox}
               setSelectedBox={setSelectedBox}
-              updateBoxListSwitch={updateBoxListSwitch}
-              setUpdateBoxListSwitch={setUpdateBoxListSwitch}
+              setSelectedBoxTransaction={setSelectedBoxTransaction}
               zipCodeData={zipCodeData}
               setZipCodeData={setZipCodeData}
               boxApprovalIsOpen={boxApprovalIsOpen}
               onBoxApprovalToggle={onBoxApprovalToggle}
-              onMarkerInfoToggle={onMarkerInfoToggle}
-              markerInfoIsOpen={markerInfoIsOpen}
+              closeBoxApproval={closeBoxApproval}
+              closeMarkerInfo={closeMarkerInfo}
+              openMarkerInfo={openMarkerInfo}
               setBoxListPageIndex={setBoxListPageIndex}
             />
           </div>
-          {adminIsLoggedIn ? (
+          {adminIsLoggedIn && (
             <Button
               className={`${styles['review-submission-button']} ${styles['admin-button']}`}
               ref={btnRef}
@@ -103,14 +109,6 @@ const Dashboard = () => {
               colorScheme="button"
             >
               Review Submission
-            </Button>
-          ) : (
-            <Button
-              className={`${styles['review-submission-button']} ${styles['general-user-button']}`}
-              onClick={() => navigate('/login')}
-              colorScheme="button"
-            >
-              Admin Login
             </Button>
           )}
           <Slide
@@ -127,14 +125,15 @@ const Dashboard = () => {
               selectedCountry={selectedCountry}
               setSelectedZipCode={setSelectedZipCode}
               setSelectedCountry={setSelectedCountry}
-              setUpdateBoxListSwitch={setUpdateBoxListSwitch}
-              updateBoxListSwitch={updateBoxListSwitch}
               setSelectedBox={setSelectedBox}
               selectedBox={selectedBox}
+              setSelectedBoxTransaction={setSelectedBoxTransaction}
+              selectedBoxTransaction={selectedBoxTransaction}
               adminIsLoggedIn={adminIsLoggedIn}
               zipCodeData={zipCodeData}
               setZipCodeData={setZipCodeData}
-              onMarkerInfoToggle={onMarkerInfoToggle}
+              openMarkerInfo={openMarkerInfo}
+              closeMarkerInfo={closeMarkerInfo}
               markerInfoIsOpen={markerInfoIsOpen}
               boxListPageIndex={boxListPageIndex}
               setBoxListPageIndex={setBoxListPageIndex}
