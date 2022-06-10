@@ -146,7 +146,7 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
         <h1
           style={{
             'font-weight': 700,
-            color: '#2E688E',
+            color: 'var(--color-teal)',
             'font-size': '24px',
             padding: '100px 0 0 0',
             margin: 0,
@@ -172,7 +172,7 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
                   margin: 0,
                   'font-size': '18px',
                   'font-weight': 700,
-                  color: '#2E688E',
+                  color: 'var(--color-teal)',
                   'text-transform': 'uppercase',
                 }}
               >
@@ -187,7 +187,7 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
                     margin: 0,
                     'font-size': '18px',
                     'font-weight': 700,
-                    color: '#2E688E',
+                    color: 'var(--color-teal)',
                     'text-transform': 'uppercase',
                   }}
                 >

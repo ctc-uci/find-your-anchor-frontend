@@ -22,19 +22,19 @@ const ToastProvider = ({ children }) => {
     let statusIcon;
     switch (type) {
       case 'info':
-        bgColor = '#DD6B20';
+        bgColor = 'var(--color-request-changes)';
         statusIcon = InfoIcon;
         break;
       case 'error':
-        bgColor = '#E53E3E';
+        bgColor = 'var(--color-warning)';
         statusIcon = WarningTwoIcon;
         break;
       case 'success':
-        bgColor = '#38A169';
+        bgColor = 'var(--color-success)';
         statusIcon = CheckCircleIcon;
         break;
       default:
-        bgColor = '#DD6B20';
+        bgColor = 'var(--color-request-changes)';
         statusIcon = InfoIcon;
     }
 
