@@ -5,15 +5,11 @@
 
 .about-heading {
   font-weight: 700;
+  text-decoration: underline;
 }
 
-.about-text {
-  margin-top: 30px;
-}
-
-.about-text-center {
-  text-align: center;
-  padding: 75px 100px;
+.about-title-heading {
+  font-weight: 700;
 }
 
 .welcome-graphics-container-mobile {
@@ -24,8 +20,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  padding: 75px 100px;
+  align-items: flex-start;
+  padding: 75px 100px 75px 0px;
 }
 
 .welcome-graphics-row {
@@ -33,7 +29,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  width: 100%;
+  width: 75%;
 }
 
 .welcome-graphics-icon {
@@ -58,24 +54,23 @@
   padding: 0 5vw;
 }
 
-.privacy-note-section {
-  padding: 100px 0;
+.launch-box-about-text-center {
+  font-style: italic;
 }
 
-.privacy-note {
+.privacy-note-section{
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: flex-start;
-  background-color: var(--color-off-white);
+  background-color: var(--color-lightest-blue);
   border-radius: 15px;
-  padding: 30px 15px;
-  margin: 30px 0;
+  padding: 35px 35px;
+  margin-top: 75px;
 }
 
 .privacy-note-text {
   overflow-wrap: break-word;
-  margin-left: 15px;
 }
 
 .mobile-line-break {
@@ -92,6 +87,21 @@
 
 .tabs {
   color: var(--color-gray);
+}
+
+.user-guide-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.launch-box-section,
+.found-box-section {
+  width: 45%;
+}
+
+.waves-icon {
+  margin-left: -70px;
+  width: 400px;
 }
 
 @media screen and (max-width: 768px) {
@@ -153,15 +163,30 @@
     padding: 50px 0;
   }
 
-  .privacy-note-section {
-    padding: 50px 0;
-  }
-
   .mobile-line-break {
     display: block;
   }
 
   .newline-mobile {
     display: block;
+  }
+
+  .user-guide-section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .launch-box-section,
+  .found-box-section{
+    width: 100%;
+    padding: 0;
+  }
+
+  .privacy-note-section {
+    margin: 0;
+  }
+
+  .waves-icon {
+    margin-left: 0px;
   }
 }

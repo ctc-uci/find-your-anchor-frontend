@@ -18,7 +18,7 @@ import {
 import UploadCSV from '../UploadCSV/UploadCSV';
 import LogoutModal from '../AdminProfile/LogoutModal/LogoutModal';
 import styles from './NavBar.module.css';
-import FYALogo from '../../assets/fya-logo.png';
+import FYALogo from '../../assets/fya-logo.svg';
 import { FYABackend } from '../../common/utils';
 import { getCurrentUser, auth } from '../../common/auth_utils';
 import useMobileWidth from '../../common/useMobileWidth';
@@ -189,9 +189,7 @@ const NavBar = ({ isAdmin }) => {
       <Flex minWidth="100%" boxShadow="md" alignItems="center" gap="2" className={styles.navbar}>
         <Box p="1">
           <Link as={NavLink} to="/">
-            <div className={styles['fya-logo']}>
-              <img src={FYALogo} alt="Find Your Anchor Logo" />
-            </div>
+            <img className={styles['fya-logo']} src={FYALogo} alt="Find Your Anchor Logo" />
           </Link>
         </Box>
         <Spacer />

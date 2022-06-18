@@ -47,6 +47,10 @@
   margin-top: 25px;
 }
 
+.fya-logo {
+  width: 49px;
+}
+
 @media screen and (max-width: 768px) {
   .nav-link {
     font-size: 1.5em !important;
