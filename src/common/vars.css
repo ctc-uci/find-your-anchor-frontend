@@ -2,7 +2,7 @@
 @import 'font.css';
 
 :root {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Verdana', sans-serif;
   --color-black: #000000;
   --color-white: #ffffff;
   --color-gray: #8e8e8e;
@@ -22,4 +22,5 @@
   --color-pending-changes: #3182ce;
   --color-hyperlink: #3182ce;
   --color-text: #2d3748;
+  --color-lightest-blue: #EEF8F9;
 }

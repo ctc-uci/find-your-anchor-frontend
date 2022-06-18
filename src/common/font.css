@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Verdana&display=swap');
 
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: 'Inter', sans-serif !important;
+  font-family: 'Verdana', sans-serif !important;
   color: var(--color-text) !important;
   margin: 0;
   padding: 0;
