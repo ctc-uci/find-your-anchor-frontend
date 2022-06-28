@@ -167,8 +167,8 @@ const Map = memo(
     return (
       <MapContainer
         whenCreated={setMapState}
-        center={[33.684566, -117.826508]}
-        zoom={8}
+        center={[40.770142, -100.424654]}
+        zoom={5}
         scrollWheelZoom
         zoomControl={false}
         minZoom={2.4}

@@ -19,11 +19,11 @@
 }
 
 .social-icon {
-  width: 95%;
+  width: 85%;
 }
 
 .social-icon-link {
-  margin-left: 35px;
+  margin-left: 17.5px;
 }
 
 @media screen and (max-width: 768px) {
