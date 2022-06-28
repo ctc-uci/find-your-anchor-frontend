@@ -19,6 +19,7 @@ const AboutPage = () => {
               WELCOME TO THE
               <br /> FIND YOUR ANCHOR LAUNCH MAP
             </Text>
+            <br />
             <Text className={styles['about-text']}>
               We&apos;re so glad you&apos;re here!
               <br />
