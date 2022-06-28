@@ -58,7 +58,7 @@
   font-style: italic;
 }
 
-.privacy-note-section{
+.privacy-note-section {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -100,8 +100,8 @@
 }
 
 .waves-icon {
-  margin-left: -70px;
-  width: 400px;
+  margin-left: -45px;
+  width: 300px;
 }
 
 @media screen and (max-width: 768px) {
@@ -177,7 +177,7 @@
   }
 
   .launch-box-section,
-  .found-box-section{
+  .found-box-section {
     width: 100%;
     padding: 0;
   }
