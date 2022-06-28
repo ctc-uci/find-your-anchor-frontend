@@ -51,6 +51,7 @@
 }
 
 .verification-sub-label {
+  margin-bottom: 12px;
   color: var(--text-gray-color);
   font-style: italic;
   font-size: 14px;
