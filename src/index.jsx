@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 import { ChakraProvider } from '@chakra-ui/provider';
 import ReactDOM from 'react-dom';
+import { disableReactDevTools } from '@fvilers/disable-react-devtools';
 import './index.css';
 import { ToastProvider } from './components/ToastProvider/ToastProvider';
 import ProtectedRoute from './common/ProtectedRoute';
@@ -23,6 +24,11 @@ import ChakraTheme from './common/ChakraTheme';
 import UploadCSV from './components/UploadCSV/UploadCSV';
 import NotFoundErrorPage from './pages/ErrorPages/NotFoundErrorPage';
 import InternalServerErrorPage from './pages/ErrorPages/InternalServerErrorPage';
+
+// Disable react developer tools in production
+if (process.env.NODE_ENV === 'production') {
+  disableReactDevTools();
+}
 
 ReactDOM.render(
   <React.StrictMode>
