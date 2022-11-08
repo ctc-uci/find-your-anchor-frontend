@@ -14,8 +14,8 @@ class BoxProvider extends OpenStreetMapProvider {
   constructor(options) {
     super({
       ...options,
-      searchUrl: `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/anchorBox/search`,
-      reverseUrl: `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/anchorBox/search`,
+      searchUrl: `${process.env.REACT_APP_PROD_API_URL}/anchorBox/search`,
+      reverseUrl: `${process.env.REACT_APP_PROD_API_URL}/anchorBox/search`,
     });
   }
 }
@@ -192,6 +192,7 @@ const Map = memo(
           onClick={() => {
             handleMarkerClusterClicked();
           }}
+          removeOutsideVisibleBounds={false}
         >
           {zipCodeData &&
             zipCodeData.map(markerObject => (
