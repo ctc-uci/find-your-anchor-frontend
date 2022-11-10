@@ -53,8 +53,10 @@
   width: 350px;
   justify-content: space-between;
 }
+
+.leaflet-control-geosearch .results.active {
+  max-width: 200px;
+}
+
 @media screen and (max-width: 768px) {
-  .leaflet-top {
-    display: block;
-  }
 }
