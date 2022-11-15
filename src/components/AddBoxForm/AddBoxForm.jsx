@@ -112,6 +112,7 @@ const AddBoxForm = () => {
         });
         await FYABackend.post('/boxHistory/', {
           ...formData,
+          status: 'evaluated',
           boxholderEmail: user.email,
           boxholderName: `${user.first_name} ${user.last_name}`,
           boxID: formData.boxNumber,
