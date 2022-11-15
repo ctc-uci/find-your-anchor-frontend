@@ -183,7 +183,7 @@ const BoxInfo = ({
             )}
             {/* Box drop off method */}
             <FormLabel htmlFor="dropOffMethod" className={styles['form-label']}>
-              Drop Off Method
+              Launch Method
             </FormLabel>
             <Select disabled placeholder={dropOffMethod} />
             {/* Box message */}

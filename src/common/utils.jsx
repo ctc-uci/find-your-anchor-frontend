@@ -26,7 +26,7 @@ FYABackend.interceptors.response.use(
 
     // Redirect to internal server error page for 500 errors.
     if (error.toJSON().status === 500) {
-      window.location.href = '/500';
+      // window.location.href = '/500';
     }
     return Promise.reject(error.response);
   },
