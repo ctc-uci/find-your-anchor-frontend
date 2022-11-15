@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { useForm, Controller } from 'react-hook-form';
@@ -20,6 +20,7 @@ import { InfoIcon } from '@chakra-ui/icons';
 import { Select } from 'chakra-react-select';
 import countryList from 'react-select-country-list';
 
+import { auth, getCurrentUser } from '../../common/auth_utils';
 import {
   validateZip,
   validateBoxNumber,
@@ -70,6 +71,7 @@ const AddBoxForm = () => {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const { showToast } = useCustomToast();
+  const [user, setUser] = useState(null);
 
   const {
     register,
@@ -101,12 +103,19 @@ const AddBoxForm = () => {
     } else {
       try {
         setLoading(true);
-        /* eslint-disable object-shorthand */
+        // Box has to be inserted into Anchor_Box FIRST
         await FYABackend.post('/anchorBox/box', {
           ...formData,
-          latitude: latitude,
-          longitude: longitude,
+          latitude,
+          longitude,
           showOnMap: true,
+        });
+        await FYABackend.post('/boxHistory/', {
+          ...formData,
+          boxholderEmail: user.email,
+          boxholderName: `${user.first_name} ${user.last_name}`,
+          boxID: formData.boxNumber,
+          approved: true,
         });
         setLoading(false);
         navigate('/');
@@ -127,6 +136,12 @@ const AddBoxForm = () => {
       }
     }
   };
+
+  useEffect(async () => {
+    const firebaseUser = await getCurrentUser(auth);
+    const rdsUser = await FYABackend.get(`/users/email/${firebaseUser.email}`);
+    setUser(rdsUser.data.user);
+  }, []);
 
   return (
     <form className={styles['add-box-form']} onSubmit={handleSubmit(onSubmit)}>
