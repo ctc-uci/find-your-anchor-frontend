@@ -117,6 +117,7 @@ const AddBoxForm = () => {
           boxholderName: `${user.first_name} ${user.last_name}`,
           boxID: formData.boxNumber,
           approved: true,
+          pickup: false,
         });
         setLoading(false);
         navigate('/');

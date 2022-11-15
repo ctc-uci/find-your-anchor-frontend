@@ -21,7 +21,12 @@ import ApprovedPickupIcon from '../../assets/BoxIcons/ApprovedPickupIcon.svg';
 import RejectedPickupIcon from '../../assets/BoxIcons/RejectedPickupIcon.svg';
 import PendingPickupIcon from '../../assets/BoxIcons/PendingPickupIcon.svg';
 import AdminApprovalProcessEmail from '../Email/EmailTemplates/AdminApprovalProcessEmail';
-import { FYABackend, getLatLong, sendEmail } from '../../common/utils';
+import {
+  AdminApprovalProcessEmailSubject,
+  FYABackend,
+  getLatLong,
+  sendEmail,
+} from '../../common/utils';
 import { auth, getCurrentUser } from '../../common/auth_utils';
 import { useCustomToast } from '../ToastProvider/ToastProvider';
 
@@ -92,7 +97,7 @@ const PickupBox = ({
           boxHolderName,
           boxHolderEmail,
           <AdminApprovalProcessEmail type="approved" />,
-          AdminApprovalProcessEmail,
+          AdminApprovalProcessEmailSubject,
         ),
       ];
       await Promise.all(requests);
