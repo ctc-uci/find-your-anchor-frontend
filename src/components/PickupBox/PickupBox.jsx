@@ -88,7 +88,12 @@ const PickupBox = ({
       const requests = [
         fetchBoxes('under review', true),
         reloadMap(),
-        sendEmail(boxHolderName, boxHolderEmail, <AdminApprovalProcessEmail type="approved" />),
+        sendEmail(
+          boxHolderName,
+          boxHolderEmail,
+          <AdminApprovalProcessEmail type="approved" />,
+          AdminApprovalProcessEmail,
+        ),
       ];
       await Promise.all(requests);
       showToast({
