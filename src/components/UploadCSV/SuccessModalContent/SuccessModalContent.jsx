@@ -24,8 +24,12 @@ const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile, isLoading 
         <Text mb={5} textStyle="header-1">
           File Uploaded Successfully
         </Text>
-        <Flex gap={10} mt={10}>
-          <Button colorScheme="darkButton" onClick={uploadNewFile}>
+        <Flex gap={10} mt={10} align="center">
+          <Button
+            colorScheme="darkButton"
+            onClick={uploadNewFile}
+            className={styles['leftmost-button']}
+          >
             Upload New File
           </Button>
           <Button type="submit" colorScheme="teal" isLoading={isLoading}>
@@ -48,7 +52,7 @@ const SuccessModalContent = ({ setIsUploadingNewFile, onEditViewFile, isLoading 
         </Text>
       </Flex>
       <Flex justifyContent="flex-end" gap={5} mt={6}>
-        <Button type="submit" colorScheme="teal">
+        <Button type="submit" colorScheme="teal" className={styles['leftmost-button']}>
           Add to Map
         </Button>
         <Button colorScheme="button" onClick={viewFile}>
