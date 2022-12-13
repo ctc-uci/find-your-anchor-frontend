@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { instanceOf } from 'prop-types';
 import { Button, Slide, IconButton, useDisclosure } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 import styles from './Dashboard.module.css';
 import Map from '../../components/Map/Map';
 import BoxApproval from '../../components/BoxApproval/BoxApproval';
 import MarkerInfo from '../../components/MarkerInfo/MarkerInfo';
-import { getCurrentUser, auth } from '../../common/auth_utils';
+import { getCurrentUser, auth, refreshToken } from '../../common/auth_utils';
+import { withCookies, Cookies } from '../../common/cookie_utils';
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
 
-const Dashboard = () => {
+const Dashboard = ({ cookies }) => {
   const {
     isOpen: boxApprovalIsOpen,
     onClose: closeBoxApproval,
@@ -43,6 +45,7 @@ const Dashboard = () => {
   // This function is called to set isAdmin
   useEffect(async () => {
     setAdminIsLoggedIn((await getCurrentUser(auth)) !== null);
+    await refreshToken(cookies);
   }, []);
 
   // This function opens the left sidebar closes the right sidebar when the review submission button is clicked
@@ -146,4 +149,8 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+Dashboard.propTypes = {
+  cookies: instanceOf(Cookies).isRequired,
+};
+
+export default withCookies(Dashboard);
