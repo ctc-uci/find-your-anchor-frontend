@@ -69,9 +69,15 @@ const BoxInfo = ({
       setCountry(boxData.data[0].country);
       setGeneralLocation(boxData.data[0].general_location);
       setAdditionalComments(boxData.data[0].additional_comments);
-      setDropOffMethod(
-        boxData.data[0].launched_organically ? 'Left at Location' : 'Given to Someone',
-      );
+      if (boxData[0].pickup) {
+        setDropOffMethod(
+          boxData.data[0].launched_organically ? 'Found box organically' : 'Given a box directly',
+        );
+      } else {
+        setDropOffMethod(
+          boxData.data[0].launched_organically ? 'Left at Location' : 'Given to Someone',
+        );
+      }
       setMessage(boxData.data[0].message);
       setPicture(boxData.data[0].picture);
       setPickup(boxData.data[0].pickup);
@@ -183,7 +189,7 @@ const BoxInfo = ({
             )}
             {/* Box drop off method */}
             <FormLabel htmlFor="dropOffMethod" className={styles['form-label']}>
-              Launch Method
+              {pickup ? 'Pickup Method' : 'Launch Method'}
             </FormLabel>
             <Select disabled placeholder={dropOffMethod} />
             {/* Box message */}

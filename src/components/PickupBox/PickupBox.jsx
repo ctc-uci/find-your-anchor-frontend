@@ -45,6 +45,7 @@ const PickupBox = ({
   fetchBoxes,
   pickup,
   imageStatus,
+  launchedOrganically,
   admin,
   verificationPicture,
   reloadMap,
@@ -296,6 +297,16 @@ const PickupBox = ({
                     type="country"
                     value={country ? countryList().getLabel(country) : ''}
                   />
+                  {/* Whether the box was launched organically */}
+                  <FormLabel htmlFor="launchedOrganically" className={styles['form-label']}>
+                    Pickup method
+                  </FormLabel>
+                  <Input
+                    readOnly
+                    id="launchedOrganically"
+                    type="launchedOrganically"
+                    value={launchedOrganically ? 'Found box organically' : 'Given a box directly'}
+                  />
                   {/* Rejection reason text area (only show if box has been evaluated and bxo was rejected) */}
                   {status === 'evaluated' && !approved && (
                     <>
@@ -361,6 +372,7 @@ PickupBox.propTypes = {
   pickup: PropTypes.bool.isRequired,
   fetchBoxes: PropTypes.func.isRequired,
   imageStatus: PropTypes.string.isRequired,
+  launchedOrganically: PropTypes.bool.isRequired,
   admin: PropTypes.string.isRequired,
   verificationPicture: PropTypes.string.isRequired,
   reloadMap: PropTypes.func.isRequired,

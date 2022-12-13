@@ -38,6 +38,10 @@ const schema = yup
       label: yup.string().required('Invalid country'),
       value: yup.string().required('Invalid country'),
     }),
+    launchedOrganically: yup.object({
+      label: yup.string().required('Invalid selection'),
+      value: yup.string(),
+    }),
     picture: yup.string().url().typeError('Invalid image'),
     verificationPicture: yup.string().url().typeError('Invalid image'),
   })
@@ -81,6 +85,7 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
       verificationFiles.length > 0 ? await uploadBoxPhoto(verificationFiles[0]) : '';
 
     formData.country = formData.country.value;
+    formData.launchedOrganically = formData.launchedOrganically.value;
 
     const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
     if (latitude === undefined && longitude === undefined) {
@@ -181,6 +186,35 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
         </div>
         {isMobile && <br />}
         <div className={styles['pickup-box-info-section-right']}>
+          {!isMobile && <br />}
+          <FormControl isInvalid={errors?.launchedOrganically}>
+            <FormLabel htmlFor="launchedOrganically" className={styles['required-field']}>
+              How did you find the box?
+            </FormLabel>
+            <Controller
+              control={control}
+              name="launchedOrganically"
+              // eslint-disable-next-line no-unused-vars
+              render={({ field: { onChange, value, ref } }) => (
+                <Select
+                  options={[
+                    {
+                      label: 'Given a box directly',
+                      value: false,
+                    },
+                    {
+                      label: 'Found box organically',
+                      value: true,
+                    },
+                  ]}
+                  value={value}
+                  onChange={onChange}
+                />
+              )}
+            />
+            <FormErrorMessage>{errors.dropOffMethod?.label.message}</FormErrorMessage>
+          </FormControl>
+          <br />
           <FormControl isInvalid={errors?.date}>
             <FormLabel htmlFor="date" className={styles['required-field']}>
               Date
