@@ -13,8 +13,6 @@ import {
   Input,
   Select,
   Text,
-  Radio,
-  RadioGroup,
   Checkbox,
   CheckboxGroup,
   Button,
@@ -97,7 +95,7 @@ const ExportCSVForm = ({ formID }) => {
       zipOption: 'zip-code-all',
       zipCode: '',
       countryOption: 'country-all',
-      launchedOrganically: 'yes',
+      launchedOrganically: ['yes', 'no'],
       boxDetails: [
         'date',
         'box_id',
@@ -399,15 +397,15 @@ const ExportCSVForm = ({ formID }) => {
                   control={control}
                   // eslint-disable-next-line no-unused-vars
                   render={({ field: { onChange, value, ref } }) => (
-                    <RadioGroup
+                    <CheckboxGroup
                       className={styles['organically-radio-group']}
-                      defaultValue="yes"
+                      // defaultValue="yes"
                       value={value}
                       onChange={onChange}
                     >
-                      <Radio value="yes">Yes</Radio>
-                      <Radio value="no">No</Radio>
-                    </RadioGroup>
+                      <Checkbox value="yes">Yes</Checkbox>
+                      <Checkbox value="no">No</Checkbox>
+                    </CheckboxGroup>
                   )}
                 />
               </FormControl>
