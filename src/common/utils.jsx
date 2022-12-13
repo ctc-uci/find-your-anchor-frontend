@@ -25,8 +25,8 @@ FYABackend.interceptors.response.use(
     console.error(`[Axios] FYABackend error: ${JSON.stringify(error.toJSON(), null, 2)}`);
 
     // Redirect to internal server error page for 500 errors.
-    if (error.toJSON().status === 500) {
-      // window.location.href = '/500';
+    if (error.toJSON().status === 500 && process.env.NODE_ENV === 'production') {
+      window.location.href = '/500';
     }
     return Promise.reject(error.response);
   },
