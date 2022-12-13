@@ -69,7 +69,7 @@ const BoxInfo = ({
       setCountry(boxData.data[0].country);
       setGeneralLocation(boxData.data[0].general_location);
       setAdditionalComments(boxData.data[0].additional_comments);
-      if (boxData[0].pickup) {
+      if (boxData.data[0].pickup) {
         setDropOffMethod(
           boxData.data[0].launched_organically ? 'Found box organically' : 'Given a box directly',
         );
