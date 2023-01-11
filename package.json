@@ -33,6 +33,7 @@
     "firebase-tools": "^10.2.2",
     "form-data": "^4.0.0",
     "framer-motion": "^4",
+    "geocodio-library-node": "^1.5.0",
     "is-valid-zipcode": "^1.0.3",
     "leaflet": "^1.7.1",
     "leaflet-color-number-markers": "^1.0.7",

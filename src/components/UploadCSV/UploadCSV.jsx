@@ -88,6 +88,7 @@ const UploadCSV = ({ isOpen, onClose }) => {
     try {
       // if no errors with any of the rows, upload all boxes
       await FYABackend.post('/anchorBox/boxes', formDatas);
+      await FYABackend.post('/boxHistory/boxes', formDatas);
       setIsLoading(false);
       navigate('/');
       onCloseModal();
