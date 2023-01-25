@@ -82,6 +82,8 @@ const Map = memo(
         searchLabel: 'Search city or zipcode',
         showMarker: false,
         showPopup: false,
+        autoClose: true,
+        keepResult: true,
       });
       useEffect(() => {
         map.addControl(searchControl);
@@ -100,6 +102,7 @@ const Map = memo(
         showMarker: false,
         showPopup: false,
         updateMap: false,
+        autoClose: true,
         keepResult: true,
       });
 
