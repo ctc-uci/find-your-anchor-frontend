@@ -22,7 +22,6 @@ import countryList from 'react-select-country-list';
 
 import { auth, getCurrentUser } from '../../common/auth_utils';
 import {
-  validateZip,
   validateBoxNumber,
   uploadBoxPhoto,
   validateDate,
@@ -35,7 +34,6 @@ import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import useMobileWidth from '../../common/useMobileWidth';
 import { useCustomToast } from '../ToastProvider/ToastProvider';
 
-yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
 yup.addMethod(yup.date, 'dateNotInFuture', validateDate);
 const schema = yup
@@ -51,7 +49,6 @@ const schema = yup
       .dateNotInFuture()
       .required('Invalid date, please enter a valid date')
       .typeError('Invalid date, please enter a valid date'),
-    zipcode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),
     country: yup.object({
       label: yup.string().required('Invalid country, please select a country'),
       value: yup.string(),
@@ -62,7 +59,6 @@ const schema = yup
     launchedOrganically: yup.string().typeError('Invalid selection'),
     picture: yup.string().url(),
   })
-  .isZipInCountry()
   .required();
 
 const AddBoxForm = () => {
@@ -190,7 +186,7 @@ const AddBoxForm = () => {
             <br />
           </>
         )}
-        <FormControl isInvalid={errors?.zipcode || errors['']?.message.startsWith('Postal code')}>
+        <FormControl isInvalid={errors?.zipcode}>
           <FormLabel htmlFor="zipcode" className={styles['required-field']}>
             Zip Code
           </FormLabel>
@@ -198,9 +194,9 @@ const AddBoxForm = () => {
           {/* display an error if there is no zipcode */}
           <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
           {/* display an error if zipcode does not exist in country */}
-          {errors['']?.message !== 'zip validated' && (
+          {/* {errors['']?.message !== 'zip validated' && (
             <FormErrorMessage>{!errors.zipcode && errors['']?.message}</FormErrorMessage>
-          )}
+          )} */}
         </FormControl>
         <br />
         <FormControl isInvalid={errors?.country}>

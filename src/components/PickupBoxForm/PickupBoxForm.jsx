@@ -9,7 +9,6 @@ import { Select } from 'chakra-react-select';
 import countryList from 'react-select-country-list';
 import {
   uploadBoxPhoto,
-  validateZip,
   validateBoxIdInAnchorBox,
   validateDate,
 } from '../../common/FormUtils/boxFormUtils';
@@ -21,7 +20,6 @@ import styles from './PickupBoxForm.module.css';
 import useMobileWidth from '../../common/useMobileWidth';
 import { useCustomToast } from '../ToastProvider/ToastProvider';
 
-yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 yup.addMethod(yup.number, 'boxExists', validateBoxIdInAnchorBox);
 yup.addMethod(yup.date, 'dateNotInFuture', validateDate);
 const schema = yup
@@ -45,7 +43,6 @@ const schema = yup
     picture: yup.string().url().typeError('Invalid image'),
     verificationPicture: yup.string().url().typeError('Invalid image'),
   })
-  .isZipInCountry()
   .required();
 
 const PickupBoxForm = ({ setFormSubmitted }) => {

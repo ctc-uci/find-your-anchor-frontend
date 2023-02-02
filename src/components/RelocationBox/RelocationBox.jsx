@@ -36,10 +36,8 @@ import { auth, getCurrentUser } from '../../common/auth_utils';
 import RequestChangesPopup from '../AlertPopups/RequestChangesPopup/RequestChangesPopup';
 import RejectBoxPopup from '../AlertPopups/RejectBoxPopup/RejectBoxPopup';
 import styles from './RelocationBox.module.css';
-import { validateZip } from '../../common/FormUtils/boxFormUtils';
 import { useCustomToast } from '../ToastProvider/ToastProvider';
 
-yup.addMethod(yup.object, 'isZipInCountry', validateZip);
 const schema = yup
   .object({
     name: yup.string().typeError('Invalid name'),
@@ -58,7 +56,6 @@ const schema = yup
       .string()
       .required('Invalid drop off method, please enter a valid drop off method'),
   })
-  .isZipInCountry()
   .required();
 
 const RelocationBox = ({
