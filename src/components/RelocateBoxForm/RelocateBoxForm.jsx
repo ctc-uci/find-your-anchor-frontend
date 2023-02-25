@@ -27,7 +27,7 @@ import styles from './RelocateBoxForm.module.css';
 import useMobileWidth from '../../common/useMobileWidth';
 import { useCustomToast } from '../ToastProvider/ToastProvider';
 
-yup.addMethod(yup.number, 'boxExists', validateBoxIdInAnchorBox);
+yup.addMethod(yup.string, 'boxExists', validateBoxIdInAnchorBox);
 yup.addMethod(yup.date, 'dateNotInFuture', validateDate);
 const schema = yup
   .object({
@@ -37,12 +37,7 @@ const schema = yup
       .email('Invalid email address')
       .required('Invalid email address')
       .typeError('Invalid email address'),
-    boxID: yup
-      .number()
-      .boxExists()
-      .min(1, 'Invalid box number')
-      .required('Invalid box number')
-      .typeError('Invalid box number'),
+    boxID: yup.string().boxExists().required('Invalid box number').typeError('Invalid box number'),
     date: yup.date().dateNotInFuture().required('Invalid date').typeError('Invalid date'),
     zipcode: yup.string().required('Invalid zipcode'),
     country: yup.object({

@@ -37,10 +37,10 @@ function validateBoxNumber() {
 }
 
 yup.addMethod(yup.object, 'isZipInCountry', validateZipcodeInCountry);
-yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
+yup.addMethod(yup.string, 'boxNotExists', validateBoxNumber);
 export default yup
   .object({
-    boxNumber: yup.number().boxNotExists().required().typeError('Missing or invalid box number'),
+    boxNumber: yup.string().boxNotExists().required().typeError('Missing or invalid box number'),
     date: yup.date().required().typeError('Missing or invalid date'),
     zipCode: yup.string().required('Missing or invalid zip code'),
     country: yup.string(),

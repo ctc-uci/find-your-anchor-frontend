@@ -20,12 +20,12 @@ import styles from './PickupBoxForm.module.css';
 import useMobileWidth from '../../common/useMobileWidth';
 import { useCustomToast } from '../ToastProvider/ToastProvider';
 
-yup.addMethod(yup.number, 'boxExists', validateBoxIdInAnchorBox);
+yup.addMethod(yup.string, 'boxExists', validateBoxIdInAnchorBox);
 yup.addMethod(yup.date, 'dateNotInFuture', validateDate);
 const schema = yup
   .object({
     boxholderName: yup.string().typeError('Invalid name'),
-    boxID: yup.number().boxExists().required('Invalid box number').typeError('Invalid box number'),
+    boxID: yup.string().boxExists().required('Invalid box number').typeError('Invalid box number'),
     date: yup.date().dateNotInFuture().required('Invalid date').typeError('Invalid date'),
     boxholderEmail: yup
       .string()

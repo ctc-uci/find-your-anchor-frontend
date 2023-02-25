@@ -34,16 +34,11 @@ import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import useMobileWidth from '../../common/useMobileWidth';
 import { useCustomToast } from '../ToastProvider/ToastProvider';
 
-yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
+yup.addMethod(yup.string, 'boxNotExists', validateBoxNumber);
 yup.addMethod(yup.date, 'dateNotInFuture', validateDate);
 const schema = yup
   .object({
-    boxNumber: yup
-      .number()
-      .boxNotExists()
-      .min(1, 'Invalid box number, please enter a valid box number')
-      .required()
-      .typeError('Invalid box number'),
+    boxNumber: yup.string().boxNotExists().required().typeError('Invalid box number'),
     date: yup
       .date()
       .dateNotInFuture()
