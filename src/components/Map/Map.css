@@ -1,62 +1,61 @@
-/* Required for displaying the map properly */
+.App {
+  font-family: sans-serif;
+  text-align: center;
+  height: 100vh;
+}
+
 .leaflet-container {
   position: absolute;
-  width: inherit;
-  height: inherit;
+  width: 100vw;
+  height: 100vh;
 }
 
-/* Customization of material in popup  */
-.marker-popup {
+.Resizer {
+  background: #000;
+  opacity: 0.2;
+  z-index: 1;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding;
+  background-clip: padding-box;
+}
+
+.Resizer:hover {
+  -webkit-transition: all 2s ease;
+  transition: all 2s ease;
+}
+
+.Resizer.horizontal {
+  height: 11px;
+  margin: -5px 0;
+  border-top: 5px solid rgba(255, 255, 255, 0);
+  border-bottom: 5px solid rgba(255, 255, 255, 0);
+  cursor: row-resize;
   width: 100%;
-  text-align: center;
 }
 
-.leaflet-control-geosearch form {
-  display: block;
-  min-width: 250px;
-  left: 30.2px;
+.Resizer.horizontal:hover {
+  border-top: 5px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 5px solid rgba(0, 0, 0, 0.5);
 }
 
-.leaflet-touch .leaflet-bar a:last-child {
-  border-radius: 2px 0px 0px 2px;
+.Resizer.vertical {
+  width: 11px;
+  margin: 0 -5px;
+  border-left: 5px solid rgba(255, 255, 255, 0);
+  border-right: 5px solid rgba(255, 255, 255, 0);
+  cursor: col-resize;
 }
 
-.leaflet-touch .leaflet-control-layers,
-.leaflet-touch .leaflet-bar {
-  border-left: 2px solid rgba(0, 0, 0, 0.2);
-  border-radius: 2px 0px 0px 2px;
-  border-top: 2px solid rgba(0, 0, 0, 0.2);
-  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+.Resizer.vertical:hover {
+  border-left: 5px solid rgba(0, 0, 0, 0.5);
+  border-right: 5px solid rgba(0, 0, 0, 0.5);
 }
-
-.tooltip {
-  background-color: var(--color-teal);
-  color: var(--color-white);
-  border: 0px;
+.Resizer.disabled {
+  cursor: not-allowed;
 }
-
-.marker-cluster {
-  color: var(--color-white);
-  background-color: var(--color-teal);
-  border: 1px solid var(--color-teal);
-  border-radius: 50%;
-  text-align: center;
-  padding-top: 6px;
-}
-
-.leaflet-tooltip-top:before {
-  border-top-color: var(--color-teal) !important;
-}
-
-.leaflet-top {
-  display: flex;
-  width: 350px;
-  justify-content: space-between;
-}
-
-.leaflet-control-geosearch .results.active {
-  max-width: 200px;
-}
-
-@media screen and (max-width: 768px) {
+.Resizer.disabled:hover {
+  border-color: transparent;
 }

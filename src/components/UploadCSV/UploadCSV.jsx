@@ -84,11 +84,12 @@ const UploadCSV = ({ isOpen, onClose }) => {
   const addToMap = async e => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
       // if no errors with any of the rows, upload all boxes
+      const start = new Date();
       await FYABackend.post('/anchorBox/boxes', formDatas);
       await FYABackend.post('/boxHistory/boxes', formDatas);
+      console.log('Total time took at least ', new Date() - start, 'ms');
       setIsLoading(false);
       navigate('/');
       onCloseModal();

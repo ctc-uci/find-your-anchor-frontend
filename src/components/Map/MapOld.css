@@ -1,0 +1,62 @@
+/* Required for displaying the map properly */
+.leaflet-container {
+  position: absolute;
+  width: inherit;
+  height: inherit;
+}
+
+/* Customization of material in popup  */
+.marker-popup {
+  width: 100%;
+  text-align: center;
+}
+
+.leaflet-control-geosearch form {
+  display: block;
+  min-width: 250px;
+  left: 30.2px;
+}
+
+.leaflet-touch .leaflet-bar a:last-child {
+  border-radius: 2px 0px 0px 2px;
+}
+
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+  border-left: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 2px 0px 0px 2px;
+  border-top: 2px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.tooltip {
+  background-color: var(--color-teal);
+  color: var(--color-white);
+  border: 0px;
+}
+
+.marker-cluster {
+  color: var(--color-white);
+  background-color: var(--color-teal);
+  border: 1px solid var(--color-teal);
+  border-radius: 50%;
+  text-align: center;
+  padding-top: 6px;
+}
+
+.leaflet-tooltip-top:before {
+  border-top-color: var(--color-teal) !important;
+}
+
+.leaflet-top {
+  display: flex;
+  width: 350px;
+  justify-content: space-between;
+}
+
+.leaflet-control-geosearch .results.active {
+  max-width: 200px;
+}
+
+@media screen and (max-width: 768px) {
+}
