@@ -14,14 +14,14 @@ const markerIcon = selected =>
     shadowUrl: 'https://unpkg.com/leaflet@1.5.1/dist/images/marker-shadow.png',
   });
 
-export function MarkerContainer({ position, id, onMarkerClick, selected }) {
+export function MarkerContainer({ position, zipCode, country, onMarkerClick, selected }) {
   const eventHandlers = React.useMemo(
     () => ({
       click(e) {
-        onMarkerClick(id, position);
+        onMarkerClick(zipCode, country, position);
       },
     }),
-    [onMarkerClick, id, position],
+    [onMarkerClick, zipCode, country, position],
   );
 
   return (
@@ -29,7 +29,7 @@ export function MarkerContainer({ position, id, onMarkerClick, selected }) {
       <Marker position={position} eventHandlers={eventHandlers} icon={markerIcon(selected)}>
         {selected && (
           <Tooltip direction="right" offset={[0, -10]} opacity={1} permanent>
-            {id}
+            {zipCode}
           </Tooltip>
         )}
       </Marker>

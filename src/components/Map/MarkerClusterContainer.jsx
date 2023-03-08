@@ -18,9 +18,9 @@ function MarkerClusterContainer({ mapRef, width, height, markers, onMarkerClick 
         <MarkerContainer
           position={[marker.latitude, marker.longitude]}
           key={marker.id}
-          id={marker.id}
+          zipCode={marker.zip_code}
+          country={marker.country}
           onMarkerClick={onMarkerClick}
-          selected={marker.selected}
         />
       );
     });
