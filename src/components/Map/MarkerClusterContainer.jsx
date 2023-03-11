@@ -1,8 +1,9 @@
 /* eslint-disable */
 import * as React from 'react';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
-import 'react-leaflet-markercluster/dist/styles.min.css';
+import Leaflet from 'leaflet';
 import { MarkerContainer } from './MarkerContainer';
+import 'react-leaflet-markercluster/dist/styles.min.css';
 
 function MarkerClusterContainer({ mapRef, width, height, markers, onMarkerClick }) {
   React.useEffect(() => {
@@ -10,6 +11,19 @@ function MarkerClusterContainer({ mapRef, width, height, markers, onMarkerClick 
       mapRef.invalidateSize();
     }
   }, [mapRef, width, height]);
+  // This is a cluster icon. It sums up the box_count of all boxes of a single country.
+  const clusterIcon = cluster => {
+    let clusterCount = 0;
+    cluster.getAllChildMarkers().forEach(marker => {
+      clusterCount += parseInt(marker.options.children.props.children, 10);
+    });
+
+    return Leaflet.divIcon({
+      html: `<span>${clusterCount}</span>`,
+      className: 'marker-cluster',
+      iconSize: Leaflet.point(30, 30),
+    });
+  };
 
   const markerComponents = React.useMemo(() => {
     console.log('recomputing whole thing');
@@ -20,6 +34,7 @@ function MarkerClusterContainer({ mapRef, width, height, markers, onMarkerClick 
           key={marker.id}
           zipCode={marker.zip_code}
           country={marker.country}
+          boxCount={marker.box_count}
           onMarkerClick={onMarkerClick}
         />
       );
@@ -27,17 +42,8 @@ function MarkerClusterContainer({ mapRef, width, height, markers, onMarkerClick 
   }, [markers, onMarkerClick]);
 
   return (
-    <>
-      <MarkerClusterGroup>{markerComponents}</MarkerClusterGroup>
-    </>
+    <MarkerClusterGroup iconCreateFunction={clusterIcon}>{markerComponents}</MarkerClusterGroup>
   );
 }
 
 export default MarkerClusterContainer;
-
-// export default React.memo(MarkerClusterContainer, (props, nextProps) => {
-//   if (props.width !== nextProps.width || props.height !== nextProps.height) {
-//     props.mapRef.invalidateSize();
-//     return true;
-//   }
-// });

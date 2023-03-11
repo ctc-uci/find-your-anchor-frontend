@@ -188,8 +188,6 @@ const Map = memo(
       ));
     }, [zipCodeData, handleMarkerClicked]);
 
-    // const MarkerClusterContainer =
-
     if (isLoading) {
       return <LoadingPage />;
     }

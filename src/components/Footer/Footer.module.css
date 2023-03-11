@@ -10,6 +10,7 @@
   align-items: center;
   font-size: 1.5rem;
   height: 55px;
+  z-index: 999;
 }
 
 .social-icon-text {

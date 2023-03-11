@@ -2,7 +2,8 @@
 .leaflet-container {
   position: absolute;
   width: inherit;
-  height: inherit;
+  /* height: inherit; */
+  height: calc(100vh - 57px - 55px);
 }
 
 /* Customization of material in popup  */

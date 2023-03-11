@@ -1,6 +1,5 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
-import Leaflet from 'leaflet';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import LoadingPage from '../../common/LoadingPage/LoadingPage';
 
@@ -10,8 +9,6 @@ import { FYABackend } from '../../common/utils';
 import 'leaflet/dist/leaflet.css';
 
 import './Map.css';
-
-Leaflet.Icon.Default.imagePath = '//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/images/';
 
 function Map({
   setSelectedZipCode,
@@ -34,6 +31,7 @@ function Map({
     width: '100vw',
     height: '100vh',
   };
+
   useEffect(async () => {
     const zipCodes = await FYABackend.get('/anchorBox/locations');
     setMarkers(zipCodes.data);
@@ -45,10 +43,21 @@ function Map({
   }
   return (
     <div style={style}>
-      <MapContainer center={[40.770142, -100.424654]} zoom={5}>
+      <MapContainer
+        center={[40.770142, -100.424654]}
+        zoom={5}
+        zoomControl={false}
+        maxBounds={[
+          [-90, -180],
+          [90, 180],
+        ]}
+        maxBoundsViscosity={1.0}
+      >
         <TileLayer
-          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
+          // Can change this url to display different tilelayers (samples: https://leaflet-extras.github.io/leaflet-providers/preview/)
+          url={`https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png?api_key=${process.env.REACT_APP_MAP_APIKEY}`}
+          attribution='&copy; <&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+          noWrap
         />
         <MapRef
           width={dimensions.width}
