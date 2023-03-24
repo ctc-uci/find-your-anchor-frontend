@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet';
 import LoadingPage from '../../common/LoadingPage/LoadingPage';
 
 import MapRef from './MapRef';
@@ -59,6 +59,7 @@ function Map({
           attribution='&copy; <&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
           noWrap
         />
+        <ZoomControl position="bottomright" />
         <MapRef
           width={dimensions.width}
           height={dimensions.height}

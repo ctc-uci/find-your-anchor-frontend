@@ -2,7 +2,7 @@
 .leaflet-container {
   position: absolute;
   width: inherit;
-  height: calc(100vh - 57px - 55px);
+  height: calc(100vh - 57px);
 }
 /* Customization of material in popup  */
 .marker-popup {

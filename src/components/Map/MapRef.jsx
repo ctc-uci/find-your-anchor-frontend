@@ -13,10 +13,10 @@ class BoxProvider extends OpenStreetMapProvider {
   constructor(options) {
     super({
       ...options,
-      // searchUrl: `${process.env.REACT_APP_PROD_API_URL}/anchorBox/search`,
-      // reverseUrl: `${process.env.REACT_APP_PROD_API_URL}/anchorBox/search`,
-      searchUrl: 'http://localhost:3001/anchorBox/search',
-      reverseUrl: 'http://localhost:3001/anchorBox/search',
+      searchUrl: `${process.env.REACT_APP_PROD_API_URL}/anchorBox/search`,
+      reverseUrl: `${process.env.REACT_APP_PROD_API_URL}/anchorBox/search`,
+      // searchUrl: 'http://localhost:3001/anchorBox/search',
+      // reverseUrl: 'http://localhost:3001/anchorBox/search',
     });
   }
 }
