@@ -40,7 +40,7 @@ const MapRef = ({
   const LocationSearchField = () => {
     const searchControl = new GeoSearchControl({
       provider: new OpenStreetMapProvider(),
-      searchLabel: 'Search city or zipcode',
+      searchLabel: 'Enter zip code and country name',
       showMarker: false,
       showPopup: false,
       autoClose: true,
