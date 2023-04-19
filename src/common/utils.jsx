@@ -1,4 +1,5 @@
 import axios from 'axios';
+import https from 'https';
 import postalCodes from 'postal-codes-js';
 import countryList from 'react-select-country-list';
 import { renderEmail } from 'react-html-email';
@@ -16,6 +17,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 export const FYABackend = axios.create({
   baseURL,
   withCredentials: true,
+  httpsAgent: new https.Agent({ keepAlive: true }),
 });
 
 FYABackend.interceptors.response.use(
