@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { useForm, Controller } from 'react-hook-form';
@@ -20,8 +20,8 @@ import { InfoIcon } from '@chakra-ui/icons';
 import { Select } from 'chakra-react-select';
 import countryList from 'react-select-country-list';
 
+import { auth, getCurrentUser } from '../../common/auth_utils';
 import {
-  validateZip,
   validateBoxNumber,
   uploadBoxPhoto,
   validateDate,
@@ -34,23 +34,16 @@ import DropZone from '../../common/FormUtils/DropZone/DropZone';
 import useMobileWidth from '../../common/useMobileWidth';
 import { useCustomToast } from '../ToastProvider/ToastProvider';
 
-yup.addMethod(yup.object, 'isZipInCountry', validateZip);
-yup.addMethod(yup.number, 'boxNotExists', validateBoxNumber);
+yup.addMethod(yup.string, 'boxNotExists', validateBoxNumber);
 yup.addMethod(yup.date, 'dateNotInFuture', validateDate);
 const schema = yup
   .object({
-    boxNumber: yup
-      .number()
-      .boxNotExists()
-      .min(1, 'Invalid box number, please enter a valid box number')
-      .required()
-      .typeError('Invalid box number'),
+    boxNumber: yup.string().boxNotExists().required().typeError('Invalid box number'),
     date: yup
       .date()
       .dateNotInFuture()
       .required('Invalid date, please enter a valid date')
       .typeError('Invalid date, please enter a valid date'),
-    zipcode: yup.string().required('Invalid zipcode, please enter a valid zipcode'),
     country: yup.object({
       label: yup.string().required('Invalid country, please select a country'),
       value: yup.string(),
@@ -61,7 +54,6 @@ const schema = yup
     launchedOrganically: yup.string().typeError('Invalid selection'),
     picture: yup.string().url(),
   })
-  .isZipInCountry()
   .required();
 
 const AddBoxForm = () => {
@@ -70,6 +62,7 @@ const AddBoxForm = () => {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const { showToast } = useCustomToast();
+  const [user, setUser] = useState(null);
 
   const {
     register,
@@ -101,12 +94,21 @@ const AddBoxForm = () => {
     } else {
       try {
         setLoading(true);
-        /* eslint-disable object-shorthand */
+        // Box has to be inserted into Anchor_Box FIRST
         await FYABackend.post('/anchorBox/box', {
           ...formData,
-          latitude: latitude,
-          longitude: longitude,
+          latitude,
+          longitude,
           showOnMap: true,
+        });
+        await FYABackend.post('/boxHistory/', {
+          ...formData,
+          status: 'evaluated',
+          boxholderEmail: user.email,
+          boxholderName: `${user.first_name} ${user.last_name}`,
+          boxID: formData.boxNumber,
+          approved: true,
+          pickup: false,
         });
         setLoading(false);
         navigate('/');
@@ -127,6 +129,12 @@ const AddBoxForm = () => {
       }
     }
   };
+
+  useEffect(async () => {
+    const firebaseUser = await getCurrentUser(auth);
+    const rdsUser = await FYABackend.get(`/users/email/${firebaseUser.email}`);
+    setUser(rdsUser.data.user);
+  }, []);
 
   return (
     <form className={styles['add-box-form']} onSubmit={handleSubmit(onSubmit)}>
@@ -173,7 +181,7 @@ const AddBoxForm = () => {
             <br />
           </>
         )}
-        <FormControl isInvalid={errors?.zipcode || errors['']?.message.startsWith('Postal code')}>
+        <FormControl isInvalid={errors?.zipcode}>
           <FormLabel htmlFor="zipcode" className={styles['required-field']}>
             Zip Code
           </FormLabel>
@@ -181,9 +189,9 @@ const AddBoxForm = () => {
           {/* display an error if there is no zipcode */}
           <FormErrorMessage>{errors.zipcode?.message}</FormErrorMessage>
           {/* display an error if zipcode does not exist in country */}
-          {errors['']?.message !== 'zip validated' && (
+          {/* {errors['']?.message !== 'zip validated' && (
             <FormErrorMessage>{!errors.zipcode && errors['']?.message}</FormErrorMessage>
-          )}
+          )} */}
         </FormControl>
         <br />
         <FormControl isInvalid={errors?.country}>

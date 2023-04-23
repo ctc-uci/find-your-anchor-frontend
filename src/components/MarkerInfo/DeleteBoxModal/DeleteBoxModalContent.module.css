@@ -12,20 +12,23 @@
 
 .buttons {
   display: flex;
+  flex-direction: column;
   width: 100%;
-  justify-content: space-around;
+  justify-content: space-between;
+  height: 90px;
 }
 
 @media screen and (max-width: 768px) {
+  .content-wrapper {
+    height: 180px;
+  }
   .buttons {
-    width: 80%;
+    width: 90%;
     align-self: center;
     flex-direction: column;
-    padding-bottom: 20px;
   }
 
-  .delete-last-transaction-button,
   .delete-entire-box-button {
-    margin-top: 15px;
+    margin-top: 10px;
   }
 }

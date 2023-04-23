@@ -11,6 +11,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import { cookieKeys, cookieConfig, clearCookies } from './cookie_utils';
+// eslint-disable-next-line import/no-cycle
 import { FYABackend, sendEmail } from './utils';
 
 import AdminInviteEmail from '../components/Email/EmailTemplates/AdminInviteEmail';
@@ -168,69 +169,70 @@ const logout = async cookies => {
   clearCookies(cookies);
 };
 
-/**
- * Adds an axios interceptor for auth to given axiosInstance
- * @param {AxiosInstance} axiosInstance instance of axios to apply interceptor to
- * Reference utils.js for axios instance
- */
-const addAuthInterceptor = axiosInstance => {
-  // This response interceptor will refresh the user's access token using the refreshToken helper method
-  axiosInstance.interceptors.response.use(
-    response => {
-      return response;
-    },
-    async error => {
-      if (error.response) {
-        const { status, data } = error.response;
-        switch (status) {
-          case 400:
-            // check if 400 error was token
-            if (data === '@verifyToken no access token') {
-              // token has expired;
-              try {
-                // attempting to refresh token;
-                await refreshToken();
-                // token refreshed, reattempting request;
-                const { config } = error.response;
-                // configure new request in a new instance;
-                return await axios({
-                  method: config.method,
-                  url: `${config.baseURL}${config.url}`,
-                  data: config.data,
-                  params: config.params,
-                  headers: config.headers,
-                  withCredentials: true,
-                });
-              } catch (e) {
-                return Promise.reject(e);
-              }
-            } else {
-              return Promise.reject(error);
-            }
-          default:
-            return Promise.reject(error);
-        }
-      } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        return Promise.reject(error);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        return Promise.reject(error);
-      }
-    },
-  );
-};
+// /**
+//  * Adds an axios interceptor for auth to given axiosInstance
+//  * @param {AxiosInstance} axiosInstance instance of axios to apply interceptor to
+//  * Reference utils.js for axios instance
+//  */
+// const addAuthInterceptor = axiosInstance => {
+//   // This response interceptor will refresh the user's access token using the refreshToken helper method
+//   axiosInstance.interceptors.response.use(
+//     response => {
+//       return response;
+//     },
+//     async error => {
+//       if (error.response) {
+//         const { status, data } = error.response;
+//         console.log('hello wtf');
+//         switch (status) {
+//           case 400:
+//             // check if 400 error was token
+//             if (data === '@verifyToken no access token') {
+//               // token has expired;
+//               try {
+//                 // attempting to refresh token;
+//                 await refreshToken();
+//                 // token refreshed, reattempting request;
+//                 const { config } = error.response;
+//                 // configure new request in a new instance;
+//                 return await axios({
+//                   method: config.method,
+//                   url: `${config.baseURL}${config.url}`,
+//                   data: config.data,
+//                   params: config.params,
+//                   headers: config.headers,
+//                   withCredentials: true,
+//                 });
+//               } catch (e) {
+//                 return Promise.reject(e);
+//               }
+//             } else {
+//               return Promise.reject(error);
+//             }
+//           default:
+//             return Promise.reject(error);
+//         }
+//       } else if (error.request) {
+//         // The request was made but no response was received
+//         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+//         // http.ClientRequest in node.js
+//         return Promise.reject(error);
+//       } else {
+//         // Something happened in setting up the request that triggered an Error
+//         return Promise.reject(error);
+//       }
+//     },
+//   );
+// };
 
-addAuthInterceptor(FYABackend);
+// addAuthInterceptor(FYABackend);
 
 export {
   auth,
   useNavigate,
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
-  addAuthInterceptor,
+  // addAuthInterceptor,
   sendPasswordReset,
   logout,
   refreshToken,

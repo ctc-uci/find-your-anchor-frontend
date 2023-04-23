@@ -85,6 +85,7 @@ const BoxApproval = ({ setZipCodeData }) => {
         pickup={boxData.pickup}
         fetchBoxes={fetchBoxes}
         imageStatus={boxData.image_status}
+        launchedOrganically={boxData.launched_organically}
         admin={boxData.admin}
         verificationPicture={boxData.verification_picture}
         reloadMap={reloadMap}

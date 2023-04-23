@@ -156,7 +156,7 @@ const DeleteBoxModal = ({
       showCloseButton
       closeOnOverlayClick
       width={448}
-      height={196}
+      height={230}
     >
       <DeleteBoxModalContent deleteBox={deleteBox} deleteTransaction={deleteTransaction} />
     </CommonModal>

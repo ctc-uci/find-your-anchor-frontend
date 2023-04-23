@@ -76,6 +76,10 @@
   float: right;
 }
 
+.footer {
+  z-index: 999;
+}
+
 @media screen and (max-width: 768px) {
   .marker-info-slide-admin,
   .box-approval-slide-admin,

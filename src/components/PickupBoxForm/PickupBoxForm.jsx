@@ -9,7 +9,6 @@ import { Select } from 'chakra-react-select';
 import countryList from 'react-select-country-list';
 import {
   uploadBoxPhoto,
-  validateZip,
   validateBoxIdInAnchorBox,
   validateDate,
 } from '../../common/FormUtils/boxFormUtils';
@@ -21,13 +20,12 @@ import styles from './PickupBoxForm.module.css';
 import useMobileWidth from '../../common/useMobileWidth';
 import { useCustomToast } from '../ToastProvider/ToastProvider';
 
-yup.addMethod(yup.object, 'isZipInCountry', validateZip);
-yup.addMethod(yup.number, 'boxExists', validateBoxIdInAnchorBox);
+yup.addMethod(yup.string, 'boxExists', validateBoxIdInAnchorBox);
 yup.addMethod(yup.date, 'dateNotInFuture', validateDate);
 const schema = yup
   .object({
     boxholderName: yup.string().typeError('Invalid name'),
-    boxID: yup.number().boxExists().required('Invalid box number').typeError('Invalid box number'),
+    boxID: yup.string().boxExists().required('Invalid box number').typeError('Invalid box number'),
     date: yup.date().dateNotInFuture().required('Invalid date').typeError('Invalid date'),
     boxholderEmail: yup
       .string()
@@ -38,10 +36,13 @@ const schema = yup
       label: yup.string().required('Invalid country'),
       value: yup.string().required('Invalid country'),
     }),
+    launchedOrganically: yup.object({
+      label: yup.string().required('Invalid selection'),
+      value: yup.string(),
+    }),
     picture: yup.string().url().typeError('Invalid image'),
     verificationPicture: yup.string().url().typeError('Invalid image'),
   })
-  .isZipInCountry()
   .required();
 
 const PickupBoxForm = ({ setFormSubmitted }) => {
@@ -81,6 +82,7 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
       verificationFiles.length > 0 ? await uploadBoxPhoto(verificationFiles[0]) : '';
 
     formData.country = formData.country.value;
+    formData.launchedOrganically = formData.launchedOrganically.value;
 
     const [latitude, longitude] = await getLatLong(formData.zipcode, formData.country);
     if (latitude === undefined && longitude === undefined) {
@@ -181,6 +183,35 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
         </div>
         {isMobile && <br />}
         <div className={styles['pickup-box-info-section-right']}>
+          {!isMobile && <br />}
+          <FormControl isInvalid={errors?.launchedOrganically}>
+            <FormLabel htmlFor="launchedOrganically" className={styles['required-field']}>
+              How did you find the box?
+            </FormLabel>
+            <Controller
+              control={control}
+              name="launchedOrganically"
+              // eslint-disable-next-line no-unused-vars
+              render={({ field: { onChange, value, ref } }) => (
+                <Select
+                  options={[
+                    {
+                      label: 'Given a box directly',
+                      value: false,
+                    },
+                    {
+                      label: 'Found box organically',
+                      value: true,
+                    },
+                  ]}
+                  value={value}
+                  onChange={onChange}
+                />
+              )}
+            />
+            <FormErrorMessage>{errors.dropOffMethod?.label.message}</FormErrorMessage>
+          </FormControl>
+          <br />
           <FormControl isInvalid={errors?.date}>
             <FormLabel htmlFor="date" className={styles['required-field']}>
               Date

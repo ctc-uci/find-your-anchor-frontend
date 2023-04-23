@@ -13,7 +13,7 @@ const UploadCSVView = () => {
   return (
     <>
       <Flex direction="column" margin="30px">
-        <Text color={isMobile && 'var(--color-hyperlink)'} textStyle="subheader">
+        <Text color={isMobile && 'var(--color-hyperlink)'} textStyle="subheader" maxWidth="65%">
           {state.filename}
         </Text>
         <Flex ml={-2}>
