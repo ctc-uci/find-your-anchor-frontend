@@ -1,8 +1,11 @@
+/* eslint-disable */
 import axios from 'axios';
 import https from 'https';
 import postalCodes from 'postal-codes-js';
 import countryList from 'react-select-country-list';
 import { renderEmail } from 'react-html-email';
+
+import { refreshToken } from './auth_utils';
 
 let baseURL = '';
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -22,15 +25,48 @@ export const FYABackend = axios.create({
 
 FYABackend.interceptors.response.use(
   response => response,
-  error => {
-    // eslint-disable-next-line no-console
-    console.error(`[Axios] FYABackend error: ${JSON.stringify(error.toJSON(), null, 2)}`);
-
-    // Redirect to internal server error page for 500 errors.
-    if (error.toJSON().status === 500 && process.env.NODE_ENV === 'production') {
-      window.location.href = '/500';
+  async error => {
+    if (error.response) {
+      const { status, data } = error.response;
+      switch (status) {
+        case 400:
+          // check if 400 error was token
+          if (data === '@verifyToken no access token') {
+            // token has expired;
+            try {
+              // attempting to refresh token;
+              await refreshToken();
+              // token refreshed, reattempting request;
+              const { config } = error.response;
+              // configure new request in a new instance;
+              return await axios({
+                method: config.method,
+                url: `${config.baseURL}${config.url}`,
+                data: config.data,
+                params: config.params,
+                headers: config.headers,
+                withCredentials: true,
+              });
+            } catch (e) {
+              return Promise.reject(e);
+            }
+          } else {
+            return Promise.reject(error);
+          }
+        case 500:
+          if (process.env.NODE_ENV === 'production') window.location.href = '/500';
+        default:
+          return Promise.reject(error);
+      }
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      return Promise.reject(error);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      return Promise.reject(error);
     }
-    return Promise.reject(error.response);
   },
 );
 
