@@ -10,15 +10,11 @@ const DeleteBoxModal = ({
   onClose,
   selectedBox,
   setSelectedBox,
-  selectedZipCode,
   setSelectedZipCode,
-  selectedCountry,
   setSelectedCountry,
-  zipCodeData,
   setZipCodeData,
   transactionToggle,
   setTransactionToggle,
-  closeMarkerInfo,
 }) => {
   const { showToast } = useCustomToast();
   const closeModal = () => {
@@ -27,69 +23,21 @@ const DeleteBoxModal = ({
 
   // Deletes the currently selected box in both Anchor_Box and Box_History
   const deleteBox = async () => {
-    try {
-      const deletedBox = (await FYABackend.get(`/anchorBox/box/${selectedBox}`)).data[0];
-      const deletePromises = [
-        FYABackend.delete(`/boxHistory/box/${selectedBox}`),
-        FYABackend.delete(`/anchorBox/${selectedBox}`),
-      ];
-      await Promise.allSettled(deletePromises);
-      // Refetch box list
-      const anchorBoxesInZipCode = await FYABackend.get('/anchorBox', {
-        params: {
-          zipCode: selectedZipCode,
-          country: selectedCountry,
-          pageSize: 8,
-          pageIndex: 1,
-        },
-      });
-      // If the box list is now empty, remove marker from map
-      if (anchorBoxesInZipCode.data.length === 0) {
-        setZipCodeData(
-          zipCodeData.filter(
-            zipCodeInfo =>
-              zipCodeInfo.zip_code !== deletedBox.zip_code ||
-              zipCodeInfo.country !== deletedBox.country,
-          ),
-        );
-        setSelectedZipCode(null);
-        setSelectedCountry(null);
-        closeMarkerInfo();
-        // If box list is not empty, decrement the marker's label
-      } else {
-        // Find the marker inside zipCodeData
-        const index = zipCodeData.findIndex(
-          zipCodeInfo =>
-            zipCodeInfo.zip_code === deletedBox.zip_code &&
-            zipCodeInfo.country === deletedBox.country,
-        );
-        // Decrement the marker's box_count
-        const newZipCodeInfo = {
-          ...zipCodeData[index],
-          box_count: zipCodeData[index].box_count - 1,
-        };
-        // Generate a new zipCodeData with the updated marker
-        setZipCodeData([
-          ...zipCodeData.filter((zipCodeInfo, pos) => pos !== index),
-          newZipCodeInfo,
-        ]);
-      }
-      // Set the delete box to null
-      setSelectedBox(null);
-      showToast({
-        title: `Box #${selectedBox} Deleted`,
-        message: 'Box Successfully Deleted',
-        toastPosition: 'bottom-right',
-        type: 'error',
-      });
-    } catch (err) {
-      showToast({
-        title: `Failed to Delete Box #${selectedBox}`,
-        message: err.message,
-        toastPosition: 'bottom-right',
-        type: 'error',
-      });
-    }
+    // try {
+    const deletePromises = [
+      FYABackend.delete(`/boxHistory/box/${selectedBox}`),
+      FYABackend.delete(`/anchorBox/${selectedBox}`),
+    ];
+    await Promise.all(deletePromises);
+    const zipCodes = await FYABackend.get('/anchorBox/locations');
+    setZipCodeData(zipCodes.data);
+    setSelectedBox(null);
+    showToast({
+      title: `Box #${selectedBox} Deleted`,
+      message: 'Box Successfully Deleted',
+      toastPosition: 'bottom-right',
+      type: 'error',
+    });
   };
 
   const deleteTransaction = async () => {
@@ -165,8 +113,6 @@ const DeleteBoxModal = ({
 
 DeleteBoxModal.defaultProps = {
   selectedBox: null,
-  selectedZipCode: null,
-  selectedCountry: null,
 };
 
 DeleteBoxModal.propTypes = {
@@ -174,23 +120,11 @@ DeleteBoxModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   selectedBox: PropTypes.string,
   setSelectedBox: PropTypes.func.isRequired,
-  selectedZipCode: PropTypes.string,
-  selectedCountry: PropTypes.string,
   setSelectedZipCode: PropTypes.func.isRequired,
   setSelectedCountry: PropTypes.func.isRequired,
-  zipCodeData: PropTypes.arrayOf(
-    PropTypes.shape({
-      zip_code: PropTypes.string,
-      country: PropTypes.string,
-      longitude: PropTypes.number,
-      latitude: PropTypes.number,
-      box_count: PropTypes.number,
-    }),
-  ).isRequired,
   setZipCodeData: PropTypes.func.isRequired,
   setTransactionToggle: PropTypes.func.isRequired,
   transactionToggle: PropTypes.bool.isRequired,
-  closeMarkerInfo: PropTypes.func.isRequired,
 };
 
 export default DeleteBoxModal;
