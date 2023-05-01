@@ -133,7 +133,7 @@ const AboutPage = () => {
             <Text className={styles['launch-box-about-text-center']}>
               <strong>
                 This is when you organically (and intentionally) place a box in a new location for
-                for someone else to find, or give the box directly to someone else.
+                someone else to find, or give the box directly to someone else.
               </strong>
             </Text>
             <br />
@@ -205,7 +205,7 @@ const AboutPage = () => {
             <em>
               &#10024;&#10024; -- Please know we will never display, share, or sell your personal
               information, so please do not include anything identifying yourself. Email will only
-              submission status updates.
+              be used for submission status updates.
             </em>
           </Text>
           <br />
