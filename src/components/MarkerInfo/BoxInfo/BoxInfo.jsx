@@ -78,8 +78,8 @@ const BoxInfo = ({
           boxData.data[0].launched_organically ? 'Left at Location' : 'Given to Someone',
         );
       }
-      setMessage(boxData.data[0].message);
-      setPicture(boxData.data[0].picture);
+      setMessage(boxData[0].message_status !== 'rejected' ? boxData.data[0].message : null);
+      setPicture(boxData.data[0].image_status !== 'rejected' ? boxData.data[0].picture : null);
       setPickup(boxData.data[0].pickup);
       if (!selectedBoxTransaction) {
         const history = await FYABackend.get(`/boxHistory/history/${selectedBox}`);
