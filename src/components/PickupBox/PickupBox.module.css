@@ -53,6 +53,11 @@
   border-radius: 10px;
 }
 
+.arrow-forward-icon {
+  width: 33.33%;
+  float: left;
+}
+
 .box-approved {
   background-color: var(--color-approved);
   padding: 0px 15px 15px 15px;
@@ -119,11 +124,18 @@
   padding-top: 5%;
 }
 
+.request-changes-icon {
+  color: var(--color-request-changes);
+  font-size: 30px;
+}
+
 .close-icon {
+  width: 33.33%;
   float: left;
 }
 
 .check-icon {
+  width: 33.33%;
   float: right;
 }
 
@@ -166,6 +178,13 @@
 .rejection-button {
   float: left;
   margin: 0% 2% 0% 0%;
+}
+
+.review-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .image-approved {

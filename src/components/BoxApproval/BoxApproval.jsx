@@ -82,6 +82,7 @@ const BoxApproval = ({ setZipCodeData }) => {
         status={boxData.status}
         approved={boxData.approved}
         rejectionReason={boxData.rejection_reason}
+        changesRequested={boxData.changes_requested}
         pickup={boxData.pickup}
         fetchBoxes={fetchBoxes}
         imageStatus={boxData.image_status}

@@ -330,7 +330,6 @@ const RelocationBox = ({
                 {status === 'pending changes' && (
                   <button
                     type="button"
-                    style={true ? {} : { visibility: 'hidden' }}
                     className={styles['pencil-check-icon']}
                     onClick={() => {
                       setEditPendingChangesState(!editPendingChangesState || !isValid);
