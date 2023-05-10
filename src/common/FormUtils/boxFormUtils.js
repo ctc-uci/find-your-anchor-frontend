@@ -26,7 +26,7 @@ import { FYABackend } from '../utils';
 function validateBoxNumber() {
   return this.test('boxNotExists', async function boxCheck(value) {
     const { path, createError } = this;
-    const box = await FYABackend.get(`/anchorBox/box/${value}`);
+    const box = await FYABackend.get(`/anchorBox/box/${value.replace(',', '')}`);
     return box.data.length === 0
       ? true
       : createError({ path, message: `Box number ${value} already exists` });
@@ -45,7 +45,7 @@ function validateDate() {
 function validateBoxIdInAnchorBox() {
   return this.test('boxExists', async function boxCheck(value) {
     const { path, createError } = this;
-    const box = await FYABackend.get(`/anchorBox/box/${value}`);
+    const box = await FYABackend.get(`/anchorBox/box/${value.replace(',', '')}`);
     return box.data.length !== 0
       ? true
       : createError({ path, message: `Box number ${value} does not exist` });
