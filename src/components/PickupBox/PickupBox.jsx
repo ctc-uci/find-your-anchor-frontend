@@ -135,7 +135,7 @@ const PickupBox = ({
         Date.parse(transaction.data[0].mostrecentdate) <= Date.parse(date)
       ) {
         // TODO: REPLACE US WITH COUNTRY INPUT
-        let coordinates = await getLatLong(formData.zipcode, formData.country);
+        let coordinates = await getLatLong(formData.zipcode, formData.country.value);
         if (coordinates.length !== 2) {
           coordinates = [null, null];
         }
