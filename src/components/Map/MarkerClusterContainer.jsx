@@ -18,10 +18,11 @@ function MarkerClusterContainer({ mapRef, width, height, markers, onMarkerClick 
       clusterCount += parseInt(marker.options.children.props.children, 10);
     });
 
+    const size = Math.max(30, clusterCount.toString().length * 10 + 5);
     return Leaflet.divIcon({
-      html: `<span>${clusterCount}</span>`,
+      html: `<span style="line-height: ${size}px;">${clusterCount}</span>`,
       className: 'marker-cluster',
-      iconSize: Leaflet.point(30, 30),
+      iconSize: Leaflet.point(size, size),
     });
   };
 
