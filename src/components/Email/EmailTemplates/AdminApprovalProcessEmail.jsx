@@ -148,7 +148,7 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
             'font-weight': 700,
             color: 'var(--color-teal)',
             'font-size': '24px',
-            padding: '100px 0 0 0',
+            padding: '50px 0 5px 0',
             margin: 0,
           }}
         >
@@ -159,7 +159,6 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
           <div
             style={{
               width: '60%',
-              'padding-top': '30px',
             }}
           >
             <div
