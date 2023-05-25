@@ -139,6 +139,7 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
             position: 'absolute',
             top: 0,
             left: 0,
+            width: '175px',
           }}
           src={FYATextLogo}
           alt="FYA logo"
