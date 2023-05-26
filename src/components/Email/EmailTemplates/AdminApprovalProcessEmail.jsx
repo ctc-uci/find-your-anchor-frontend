@@ -149,13 +149,13 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
             'font-weight': 700,
             color: 'var(--color-teal)',
             'font-size': '24px',
-            padding: '50px 0 5px 0',
+            padding: '50px 0 0 0',
             margin: 0,
           }}
         >
           {headerContent}
         </h1>
-        <p style={{ color: 'black' }}>{headerSubtextContent}</p>
+        <p style={{ color: 'black', marginTop: 0 }}>{headerSubtextContent}</p>
         <div style={{ display: 'flex' }}>
           <div
             style={{
