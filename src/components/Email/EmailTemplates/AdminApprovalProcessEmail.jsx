@@ -77,18 +77,10 @@ const AdminApprovalProcessEmail = ({ type, changesRequested, rejectionReason }) 
     ],
     'changes requested': [
       <li key={1}>
-        Resubmit your box request including the missing information{' '}
-        <a
-          href={`${process.env.REACT_APP_BASE_URL}`}
-          style={{
-            'font-weight': 700,
-          }}
-        >
-          here
-        </a>
+        If everything looks good on our end, you&apos;ll receive a box launch confirmation email.
+        Otherwise, we&apos;ll follow-up for more info!
       </li>,
-      <li key={2}>Wait for a new submission confirmation email</li>,
-      <li key={3}>
+      <li key={2}>
         Any questions? Email us at{' '}
         <span
           style={{
