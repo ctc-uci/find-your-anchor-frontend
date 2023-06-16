@@ -5,6 +5,7 @@ import LoadingPage from '../../common/LoadingPage/LoadingPage';
 
 import MapRef from './MapRef';
 import { FYABackend } from '../../common/utils';
+import { getCurrentUser, auth } from '../../common/auth_utils';
 
 import 'leaflet/dist/leaflet.css';
 
@@ -20,6 +21,7 @@ function Map({
   setBoxListPageIndex,
 }) {
   const [isLoading, setIsLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [markers, setMarkers] = useState([]);
 
   const style = {
@@ -34,6 +36,8 @@ function Map({
 
   useEffect(async () => {
     const zipCodes = await FYABackend.get('/anchorBox/locations');
+    const user = await getCurrentUser(auth);
+    setIsAdmin(user);
     setMarkers(zipCodes.data);
     setIsLoading(false);
   }, []);
@@ -42,7 +46,7 @@ function Map({
     return <LoadingPage />;
   }
   return (
-    <div style={style}>
+    <div className={isAdmin ? 'map-wrapper-admin' : 'map-wrapper'}>
       <MapContainer
         center={[40.770142, -100.424654]}
         zoom={5}

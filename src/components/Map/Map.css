@@ -1,8 +1,18 @@
+.map-wrapper {
+  width: 100%;
+  height: calc(100vh - 57px - 55px);
+}
+
+.map-wrapper-admin {
+  width: 100%;
+  height: calc(100vh - 57px);
+}
+
 /* Required for displaying the map properly */
 .leaflet-container {
   position: absolute;
   width: inherit;
-  height: calc(100vh - 57px);
+  height: inherit;
 }
 /* Customization of material in popup  */
 .marker-popup {
