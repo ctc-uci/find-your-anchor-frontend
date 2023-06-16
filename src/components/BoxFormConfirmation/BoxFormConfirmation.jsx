@@ -22,7 +22,7 @@ const BoxFormConfirmation = ({ pickup }) => {
         fontWeight="bold"
         textStyle={isMobile ? 'subheader' : 'header-1'}
       >
-        Your {pickup ? 'found' : 'launch'} box request has been confirmed!
+        Your {pickup && 'found'} box {!pickup && 'launch'} request has been confirmed!
       </Text>
       <Text
         className={styles['confirmation-message']}

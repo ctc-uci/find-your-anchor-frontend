@@ -284,7 +284,7 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
           {isMobile && (
             <h3 className={styles['privacy-statement']}>
               * All personal information you provide on this form will be only used for internal
-              purposes. They will not be shared publicly.
+              purposes. It will not be shared publicly.
             </h3>
           )}
           <div className={styles['box-bottom']}>
@@ -305,7 +305,7 @@ const PickupBoxForm = ({ setFormSubmitted }) => {
       {!isMobile && (
         <h3 className={styles['privacy-statement']}>
           * All personal information you provide on this form will be only used for internal
-          purposes. They will not be shared publicly.
+          purposes. It will not be shared publicly.
         </h3>
       )}
     </form>

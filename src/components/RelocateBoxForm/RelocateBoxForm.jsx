@@ -169,7 +169,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
               </FormLabel>
               <p className={styles['verification-sub-label']}>
                 In order to confirm your box, please include an image of the box number in the upper
-                upper left hand corner of the box.
+                left hand corner of the box.
               </p>
               <DropZone setFiles={setVerificationFiles} />
             </FormControl>
@@ -325,7 +325,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
           {isMobile && (
             <h3 className={styles['privacy-statement']}>
               * All personal information you provide on this form will be only used for internal
-              purposes. They will not be shared publicly.
+              purposes. It will not be shared publicly.
             </h3>
           )}
           <div className={styles['box-bottom']}>
@@ -346,7 +346,7 @@ const RelocateBoxForm = ({ setFormSubmitted }) => {
       {!isMobile && (
         <h3 className={styles['privacy-statement']}>
           * All personal information you provide on this form will be only used for internal
-          purposes. They will not be shared publicly.
+          purposes. It will not be shared publicly.
         </h3>
       )}
     </form>
